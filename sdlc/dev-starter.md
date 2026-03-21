@@ -140,6 +140,307 @@ Format for each question:
 
 ---
 
+## INTAKE MODE SELECTION
+
+Before asking questions, present the 3 intake modes:
+
+```
+📋 How would you like to set up this project?
+
+  1. ⚡ Quick Start (8 questions — pick a ready-made stack)
+  2. 🔧 Custom (15 questions — choose each piece yourself)
+  3. 💬 Describe (1 question — tell me everything, I'll figure it out)
+
+Type 1, 2, or 3:
+```
+
+---
+
+## MODE 1 — Quick Start (8 Questions)
+
+Ask ONE question at a time. Every question has option `0. Let Claude decide`.
+User can type a single answer, comma-separated numbers, or free text.
+
+**For questions that need multiple lines** (e.g. features, description):
+Tell the user to separate items with commas or semicolons on one line.
+Example: `login, product catalog, cart, checkout, payment`
+
+---
+
+**Q1. What is the project name?**
+(e.g. MyShop, HRSystem, TaskManager)
+
+---
+
+**Q2. What does this project do?**
+(1-2 sentences — what problem it solves and who uses it)
+
+---
+
+**Q3. What are you building?**
+1. 🌐 Web Application
+2. 📱 Mobile App (iOS + Android)
+3. 🌐📱 Web + Mobile (shared backend)
+4. 🖥️ Desktop App (Windows / macOS / Linux)
+5. ⚡ API only (no UI)
+6. 💻 Console / CLI Tool
+7. ⚙️ Background Service / Worker
+
+---
+
+**Q4. Choose a Solution Stack:**
+
+Show ONLY the stacks that match Q3. Each stack is a complete bundle (frontend + backend + database).
+
+### If Q3 = 🌐 Web Application:
+```
+🟢 Starter (เริ่มต้น — เรียนรู้ง่าย, เหมาะกับ prototype)
+  1. React + Express + SQLite
+  2. Vue + Express + SQLite
+  3. Svelte + Express + SQLite
+
+🟡 Standard (กลาง — production ready)
+  4. React + Express + PostgreSQL
+  5. Angular + NestJS + PostgreSQL
+  6. Next.js + Prisma + PostgreSQL
+  7. Vue + FastAPI + PostgreSQL
+
+🔵 Professional (สูง — enterprise scale)
+  8. Angular + ASP.NET Core + SQL Server
+  9. React + NestJS + PostgreSQL + Redis
+  10. Next.js + Go + PostgreSQL
+
+🎯 0. Let Claude recommend based on Q2
+```
+
+### If Q3 = 📱 Mobile App:
+```
+🟢 Starter
+  1. Flutter + Firebase (serverless)
+  2. React Native + Express + SQLite
+
+🟡 Standard
+  3. Flutter + Express + PostgreSQL
+  4. React Native + NestJS + PostgreSQL
+
+🔵 Professional
+  5. Flutter + NestJS + PostgreSQL + Redis
+  6. Swift (iOS) + Kotlin (Android) + Express + PostgreSQL
+
+🎯 0. Let Claude recommend
+```
+
+### If Q3 = 🌐📱 Web + Mobile:
+```
+🟡 Standard
+  1. React + Flutter + Express + PostgreSQL
+  2. Next.js + React Native + Express + PostgreSQL
+
+🔵 Professional
+  3. Next.js + Flutter + NestJS + PostgreSQL
+  4. Angular + Flutter + ASP.NET Core + SQL Server
+
+🎯 0. Let Claude recommend
+```
+
+### If Q3 = 🖥️ Desktop App:
+```
+🟢 Starter
+  1. Electron + SQLite
+  2. Tauri (Rust) + SQLite
+
+🟡 Standard
+  3. Electron + React + SQLite
+  4. .NET WPF + SQL Server
+
+🔵 Professional
+  5. .NET MAUI (cross-platform) + SQL Server
+  6. Tauri + React + PostgreSQL
+
+🎯 0. Let Claude recommend
+```
+
+### If Q3 = ⚡ API only:
+```
+🟢 Starter
+  1. Express (Node.js) + SQLite
+  2. FastAPI (Python) + SQLite
+
+🟡 Standard
+  3. Express (Node.js) + PostgreSQL
+  4. FastAPI (Python) + PostgreSQL
+  5. NestJS (Node.js) + PostgreSQL
+
+🔵 Professional
+  6. ASP.NET Core + SQL Server
+  7. Go (Gin) + PostgreSQL
+  8. NestJS + PostgreSQL + Redis
+
+🎯 0. Let Claude recommend
+```
+
+### If Q3 = 💻 Console / CLI:
+```
+  1. Node.js CLI (commander.js)
+  2. Python CLI (click/typer)
+  3. Go CLI (cobra)
+  4. .NET CLI (System.CommandLine)
+
+🎯 0. Let Claude recommend
+```
+
+### If Q3 = ⚙️ Background Service:
+```
+  1. Node.js + BullMQ + Redis
+  2. Python + Celery + Redis
+  3. .NET Worker Service
+  4. Go worker
+
+🎯 0. Let Claude recommend
+```
+
+---
+
+**Q5. Want to customize the stack?**
+
+After user picks a stack, ask:
+```
+Your stack: [Frontend] + [Backend] + [Database]
+
+  1. ✅ Use as-is
+  2. 🔄 Customize (change some parts)
+
+```
+
+If user picks 2 (Customize):
+```
+Change which part? (Enter to keep)
+  Frontend:  [current] → ?
+  Backend:   [current] → ?
+  Database:  [current] → ?
+```
+
+Show only compatible options for each change. After customizing, confirm:
+```
+Final stack: [Frontend] + [Backend] + [Database]
+ORM: [auto-selected based on backend + database]
+OK? (yes / change again)
+```
+
+---
+
+**Q6. What are the main features?**
+(comma-separated, e.g. login, product catalog, cart, checkout, payment, admin dashboard)
+Type 0 for Claude to suggest based on Q2.
+
+---
+
+**Q7. What user roles are needed?**
+(comma-separated, e.g. admin, user, manager)
+Type 0 for Claude to suggest based on Q6.
+
+---
+
+**Q8. Design preferences** (skip if Q3 = API only / CLI / Background Service)
+```
+  1. 🎨 Modern & Clean (Tailwind-style, minimal)
+  2. 🏢 Corporate & Professional (structured, formal)
+  3. 🎮 Playful & Colorful (bold colors, rounded)
+  4. 🖤 Dark Mode First (dark background, neon accents)
+  5. 📱 Mobile-First (thumb-friendly, large touch targets)
+  6. 🪶 Minimal & Content-focused (whitespace, typography)
+  7. 🎯 Dashboard & Data-heavy (charts, tables, filters)
+  8. 🎯 0. Let Claude decide based on project type
+```
+
+---
+
+**After Q8 — Auto-Decide the Rest**
+
+Claude automatically selects (based on stack + features + best practices):
+- Auth method (JWT recommended for API, session for SSO)
+- Security level (OWASP Top 10 always applied)
+- ORM (auto from backend + database)
+- CI/CD (GitHub Actions default)
+- Deploy target (suggest based on stack level)
+- Rate limiting (yes)
+
+Show summary for approval:
+```
+📋 PROJECT SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Project:    [Q1]
+Purpose:    [Q2]
+Platform:   [Q3]
+Stack:      [Q4/Q5 — Frontend + Backend + Database]
+ORM:        [auto]
+Auth:       [auto — JWT / Session / OAuth]
+Security:   OWASP Top 10 applied
+Features:   [Q6]
+Roles:      [Q7]
+Design:     [Q8]
+CI/CD:      GitHub Actions
+Deploy:     [suggested based on stack]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  "approve"           → proceed to Gate 1 documents
+  "change [item]"     → modify specific item
+```
+
+---
+
+## MODE 2 — Custom (15 Questions)
+
+Same as Quick Start Q1-Q5, then ask individually for each remaining choice.
+Every question has `0. Let Claude decide`.
+
+**Smart Narrowing Rules:**
+- If Q3 = Web → skip mobile/desktop/CLI questions
+- If Q3 = API only → skip frontend + design preferences
+- If Q3 = CLI → skip frontend + database + design + deploy
+- ORM auto-selected from backend + database (don't ask)
+- If backend chosen → only show compatible databases
+- If database chosen → only show compatible ORMs
+
+Additional questions (after Q1-Q5):
+```
+Q6.  Auth method? (1. JWT  2. Session  3. OAuth  4. None  0. Auto)
+Q7.  Security level? (1. Basic  2. OWASP Top 10  0. Auto=OWASP)
+Q8.  Main features? (comma-separated)
+Q9.  User roles? (comma-separated)
+Q10. Design style? (1-8 or 0)
+Q11. Primary color? (hex or name or 0)
+Q12. Font style? (1. Sans  2. Serif  3. Mono  0. Auto)
+Q13. Dark/Light mode? (1. Light  2. Dark  3. Both  4. System  0. Auto)
+Q14. Deploy target? (list or 0)
+Q15. Third-party integrations? (comma-separated or "none")
+```
+
+Then show same summary for approval.
+
+---
+
+## MODE 3 — Describe (1 Question)
+
+```
+📋 Describe your project in as much detail as you want.
+Include anything: features, tech stack, design, users — everything helps.
+I'll figure out the rest.
+
+Example:
+"เว็บขายของ ใช้ React กับ Python มี login สินค้า ตะกร้า จ่ายเงิน deploy Railway"
+
+>
+```
+
+After user describes:
+1. Claude extracts: project name, purpose, platform, stack, features, roles
+2. Claude fills gaps with best-practice defaults
+3. Show same PROJECT SUMMARY for approval
+4. User can "change [item]" or "approve"
+
+---
+
 ## PHASE 1 — Project Identity
 
 **Q1. What is the project name?**
@@ -152,12 +453,13 @@ Format for each question:
 
 ---
 
-**Q3. Who are the stakeholders and end users?**
-(free text — e.g. internal staff, customers, admins, third-party systems)
+## LEGACY PHASES (below) — Superseded by MODE 1/2/3 above
+## These are kept ONLY as reference for Custom mode (MODE 2) smart narrowing.
+## When using MODE 1 (Quick Start) or MODE 3 (Describe), SKIP all phases below.
 
 ---
 
-## PHASE 2 — Project Type
+## PHASE 2 — Project Type (reference only)
 
 **Q4. What type of project is this?**
 (you may select multiple — reply with numbers separated by commas)
