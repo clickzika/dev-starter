@@ -11,7 +11,18 @@ Agents read this file when Notion operations are needed.
 - curl JSON body: use double quotes with escaped inner quotes
 - Temp files: write curl output to files (`-o file.json`) then parse with Node.js
 - Always clean up temp files after use
-- **Temp directory:** Always use `TMP_D="$HOME/.claude/.tmp" && mkdir -p "$TMP_D"` — Windows has no `/tmp/`
+- **Temp directory:** Always set up temp paths at the start of any script:
+  ```bash
+  TMP_D="$HOME/.claude/.tmp"
+  mkdir -p "$TMP_D"
+  # Windows Node.js needs C:/Users/... not /c/Users/...
+  if command -v cygpath &>/dev/null; then
+    TMP_D_NODE="$(cygpath -m "$TMP_D")"
+  else
+    TMP_D_NODE="$TMP_D"
+  fi
+  ```
+  Use `$TMP_D` for curl/bash, use `$TMP_D_NODE` inside `node -e` readFileSync
 
 ---
 
@@ -30,7 +41,7 @@ curl -s -X POST https://api.notion.com/v1/search \
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/notion_check.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/notion_check.json', 'utf8'));
 if (data.status === 401) { console.log('ERROR:401'); process.exit(1); }
 console.log('OK');
 "
@@ -59,7 +70,7 @@ curl -s -X POST https://api.notion.com/v1/search \
 
 PARENT_PAGE_ID=$(node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/nt_search.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_search.json', 'utf8'));
 const pages = (data.results || []).filter(p => {
   const title = ((p.properties && p.properties.title && p.properties.title.title) || [])
     .map(t => t.plain_text).join('');
@@ -80,7 +91,7 @@ if [ "$PARENT_PAGE_ID" = "NOT_FOUND" ]; then
 
   ANY_PAGE_ID=$(node -e "
   const fs = require('fs');
-  const data = JSON.parse(fs.readFileSync('$TMP_D/nt_any.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_any.json', 'utf8'));
   console.log(data.results && data.results.length > 0 ? data.results[0].id : 'NO_PAGES');
   ")
   rm -f $TMP_D/nt_any.json
@@ -102,7 +113,7 @@ if [ "$PARENT_PAGE_ID" = "NOT_FOUND" ]; then
 
   PARENT_PAGE_ID=$(node -e "
   const fs = require('fs');
-  const data = JSON.parse(fs.readFileSync('$TMP_D/nt_new_parent.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_new_parent.json', 'utf8'));
   console.log(data.id || 'ERROR');
   ")
   rm -f $TMP_D/nt_new_parent.json
@@ -177,7 +188,7 @@ curl -s -X POST https://api.notion.com/v1/databases \
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/nt_db.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_db.json', 'utf8'));
 if (data.id) {
   console.log('DB_ID=' + data.id);
   console.log('DB_URL=' + (data.url || ''));
@@ -223,7 +234,7 @@ curl -s -X POST https://api.notion.com/v1/pages \
 
 TASK_ID=$(node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/nt_task.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_task.json', 'utf8'));
 console.log(data.id || 'ERROR');
 ")
 rm -f $TMP_D/nt_task.json
@@ -261,7 +272,7 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/$NOTION_TASK_ID" \
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/nt_update.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_update.json', 'utf8'));
 console.log(data.id ? '✅ Status updated to: $NEW_STATUS' : 'ERROR: ' + JSON.stringify(data).substring(0, 100));
 "
 rm -f $TMP_D/nt_update.json
@@ -455,7 +466,7 @@ curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" 
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/nt_query.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_query.json', 'utf8'));
 const tasks = data.results || [];
 console.log('Found: ' + tasks.length + ' tasks with status: $QUERY_STATUS');
 tasks.forEach(t => {
@@ -482,7 +493,7 @@ curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" 
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/nt_query_role.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_query_role.json', 'utf8'));
 const tasks = data.results || [];
 console.log('Found: ' + tasks.length + ' tasks for role: $QUERY_ROLE');
 tasks.forEach(t => {
@@ -508,7 +519,7 @@ curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" 
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/nt_blocked.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_blocked.json', 'utf8'));
 const tasks = data.results || [];
 if (tasks.length === 0) {
   console.log('✅ No blocked tasks');
@@ -545,7 +556,7 @@ curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" 
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/nt_all.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/nt_all.json', 'utf8'));
 const tasks = data.results || [];
 const total = tasks.length;
 

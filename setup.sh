@@ -12,8 +12,16 @@ RED='\033[0;31m'
 RESET='\033[0m'
 
 ENV_FILE="$HOME/.claude/.env"
+
+# Temp dir — must work for both Git Bash (curl) and Windows Node.js
 TMP_D="$HOME/.claude/.tmp"
 mkdir -p "$TMP_D"
+# Convert to Windows path if running in Git Bash/MSYS (Node.js needs C:/Users/... not /c/Users/...)
+if command -v cygpath &>/dev/null; then
+  TMP_D_NODE="$(cygpath -m "$TMP_D")"
+else
+  TMP_D_NODE="$TMP_D"
+fi
 
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════════╗${RESET}"
@@ -128,7 +136,7 @@ curl -s -X POST https://api.notion.com/v1/search \
 
 NOTION_STATUS=$(node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('$TMP_D/notion_test.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D_NODE/notion_test.json', 'utf8'));
 console.log(data.status || 'ok');
 ")
 
