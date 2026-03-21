@@ -58,6 +58,11 @@ cp -r Dev_Starter_V1/* ~/.claude/
 bash ~/.claude/setup.sh
 ```
 
+The setup script will:
+- Check prerequisites (git, gh, node, etc.)
+- Configure GitHub + Notion tokens
+- **Auto-configure permissions** in `settings.json` (merges with existing settings, won't overwrite)
+
 ### 2. Configure Secrets
 
 ```bash

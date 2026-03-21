@@ -137,6 +137,98 @@ echo ""
 ask "Notion parent page name for projects? (default: Projects)" "${NOTION_PARENT_PAGE:-Projects}"
 NOTION_PARENT_PAGE="$REPLY"
 
+# ─── Merge Permissions into settings.json ─────────────
+echo -e "${BOLD}━━━ Permissions ━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
+echo ""
+echo -e "${CYAN}Setting up auto-approve permissions for common commands...${RESET}"
+echo -e "${YELLOW}This prevents Claude from asking 'Allow?' for every command.${RESET}"
+echo ""
+
+SETTINGS_FILE="$HOME/.claude/settings.json"
+
+# Permissions to add (won't duplicate if already present)
+PERMISSIONS_TO_ADD=(
+  "Bash(npm *)"
+  "Bash(npx *)"
+  "Bash(node *)"
+  "Bash(git *)"
+  "Bash(gh *)"
+  "Bash(mkdir *)"
+  "Bash(cp *)"
+  "Bash(mv *)"
+  "Bash(cat *)"
+  "Bash(ls *)"
+  "Bash(find *)"
+  "Bash(grep *)"
+  "Bash(curl *)"
+  "Bash(echo *)"
+  "Bash(rm *)"
+  "Bash(chmod *)"
+  "Bash(wc *)"
+  "Bash(head *)"
+  "Bash(tail *)"
+  "Bash(sed *)"
+  "Bash(awk *)"
+  "Bash(sort *)"
+  "Bash(date *)"
+  "Bash(pwd)"
+  "Bash(dotnet *)"
+  "Bash(docker *)"
+  "Bash(docker-compose *)"
+  "Read"
+  "Write"
+  "Edit"
+)
+
+# Create settings.json if doesn't exist
+if [ ! -f "$SETTINGS_FILE" ]; then
+  echo '{}' > "$SETTINGS_FILE"
+fi
+
+# Use Node.js to safely merge permissions without overwriting existing settings
+node -e "
+const fs = require('fs');
+const settingsFile = '$SETTINGS_FILE';
+const newPerms = $(printf '%s\n' "${PERMISSIONS_TO_ADD[@]}" | node -e "
+  const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\n');
+  console.log(JSON.stringify(lines));
+");
+
+let settings = {};
+try {
+  settings = JSON.parse(fs.readFileSync(settingsFile, 'utf8'));
+} catch(e) {
+  settings = {};
+}
+
+// Ensure permissions.allow exists
+if (!settings.permissions) settings.permissions = {};
+if (!Array.isArray(settings.permissions.allow)) settings.permissions.allow = [];
+
+// Merge — add only if not already present
+let added = 0;
+newPerms.forEach(p => {
+  if (!settings.permissions.allow.includes(p)) {
+    settings.permissions.allow.push(p);
+    added++;
+  }
+});
+
+fs.writeFileSync(settingsFile, JSON.stringify(settings, null, 2));
+console.log('ADDED=' + added);
+console.log('TOTAL=' + settings.permissions.allow.length);
+"
+
+RESULT=$(node -e "
+const fs = require('fs');
+const s = JSON.parse(fs.readFileSync('$SETTINGS_FILE', 'utf8'));
+console.log(s.permissions.allow.length);
+")
+
+echo -e "${GREEN}✅ Permissions configured: $RESULT rules in settings.json${RESET}"
+echo -e "  Existing settings preserved — only new permissions added"
+echo ""
+
 # ─── Write .env ───────────────────────────────────────
 mkdir -p "$HOME/.claude"
 
@@ -161,6 +253,7 @@ echo -e "${GREEN}${BOLD}║            ✅ Setup Complete!             ║${RESE
 echo -e "${GREEN}${BOLD}╚══════════════════════════════════════════╝${RESET}"
 echo ""
 echo -e "  📄 Config saved to: ${CYAN}~/.claude/.env${RESET}"
+echo -e "  🔓 Permissions:     ${CYAN}~/.claude/settings.json${RESET}"
 echo -e "  📁 Projects folder: ${CYAN}${PROJECTS_ROOT}${RESET}"
 echo -e "  🐙 GitHub user:     ${CYAN}${GITHUB_USERNAME}${RESET}"
 echo -e "  📋 Notion parent:   ${CYAN}${NOTION_PARENT_PAGE}${RESET}"
