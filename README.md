@@ -28,10 +28,12 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 │   ├── uxui.md              ← Design system, prototypes, wireframes
 │   └── docs.md              ← Technical writing, API docs, runbooks
 │
-├── commands/
-│   ├── context.md           ← Refresh CLAUDE.md when project evolves
-│   ├── export.md            ← Backup everything for transfer
-│   └── import.md            ← Restore from backup
+├── commands/ (21 slash commands)
+│   ├── new.md               ← /new — start new project
+│   ├── change.md            ← /change — add feature / fix bug
+│   ├── release.md           ← /release — deploy pipeline
+│   ├── context.md           ← /context — refresh CLAUDE.md
+│   └── ...                  ← 17 more shortcuts
 │
 ├── templates/
 │   ├── CLAUDE.md.template   ← Project context file template
@@ -79,39 +81,38 @@ The setup wizard asks:
 ### Start Building
 
 ```bash
-# Open any project folder
-cd ~/Projects
-
-# Start Claude Code
 claude
-
-# Then type:
-> Read ~/.claude/dev-menu.md and help me get started
+> /menu          # show launcher menu
+> /new           # or go directly — start a new project
 ```
 
-Pick option **1 (New Project)** and the system walks you through everything — from requirements to deployment.
+## Slash Commands (21)
 
-## Workflows (17 Runbooks)
+Every workflow has a shortcut — no need to remember file paths:
 
-| Category | Workflow | File |
-|----------|----------|------|
-| **Setup** | New Project (full lifecycle) | `dev-starter.md` |
-| | Existing Project | `dev-existing.md` |
-| | Migration (new stack) | `dev-migrate.md` |
-| | Audit & Review | `dev-audit.md` |
-| **Daily** | Change (feature/bugfix) | `dev-change.md` |
-| | Sprint Planning | `dev-sprint.md` |
-| | Dependency Update | `dev-dependency.md` |
-| **Team** | Onboard New Member | `dev-onboarding.md` |
-| | Handover Project | `dev-handover.md` |
-| | Sprint Retrospective | `dev-retrospective.md` |
-| **Production** | Release + Deploy | `dev-release.md` |
-| | Hotfix (critical) | `dev-hotfix.md` |
-| | Rollback | `dev-rollback.md` |
-| | Incident Response | `dev-incident.md` |
-| **Infra** | Local Environment Setup | `dev-env.md` |
-| | Secrets Management | `dev-secrets.md` |
-| | Monitoring Setup | `dev-monitor.md` |
+| Category | Command | What it does |
+|----------|---------|-------------|
+| **Menu** | `/menu` | Show launcher menu |
+| **Setup** | `/new` | New project (full 5-gate lifecycle) |
+| | `/existing` | Setup existing project |
+| | `/migrate` | Migration to new tech stack |
+| | `/audit` | Audit & review project |
+| **Daily** | `/change` | Add/remove feature, fix bug |
+| | `/sprint` | Sprint planning |
+| | `/dependency` | Update dependencies |
+| **Team** | `/onboard` | Onboard new member |
+| | `/handover` | Handover project |
+| | `/retro` | Sprint retrospective |
+| **Production** | `/release` | Release + deploy (DEV → SIT → UAT → DEPLOY) |
+| | `/hotfix` | Critical production bug fix |
+| | `/rollback` | Rollback production |
+| | `/incident` | Incident response |
+| **Infra** | `/env` | Setup local environment |
+| | `/secrets` | Secrets management |
+| | `/monitor` | Setup monitoring |
+| **Utility** | `/context` | Refresh CLAUDE.md from codebase |
+| | `/export` | Backup everything to zip |
+| | `/import` | Restore from zip |
 
 ## Agents (12 Specialists)
 
@@ -130,21 +131,79 @@ Invoke any agent directly:
 > Read ~/.claude/agents/uxui.md and design the UI
 ```
 
-Or let `dev-starter.md` orchestrate them automatically through the 5-gate build process.
+Or use `/new` and the system orchestrates all agents automatically through the 5-gate build process.
 
 ## The 5-Gate Build Process
 
-When you start a new project with `dev-starter.md`:
+When you start a new project with `/new`:
 
 ```
-Gate 1: Discovery      → Requirements (Q1–Q26), CLAUDE.md, USER.md
-Gate 2: Architecture   → Tech stack, DB schema, API design, UI prototype
-Gate 3: Implementation → Sprint-by-sprint coding with all agents
-Gate 4: Quality        → Testing, security audit, performance
-Gate 5: Delivery       → Deploy, monitoring, documentation, handover
+Gate 0: Setup          → GitHub repo, Notion board, branch strategy (auto)
+Gate 1: Discovery      → Requirements (Q1–Q26), CLAUDE.md, BRD, SRS
+Gate 2: Architecture   → DB schema, API design, security, UI prototype
+Gate 3: Foundation     → Task breakdown, GitHub Issues, Notion tasks, scaffold
+Gate 4: Development    → Feature-by-feature with PR review per feature
+Gate 5: Quality        → Testing, security audit, performance
 ```
 
-Each gate has a **Definition of Done** checklist. No shortcuts.
+## Release Flow
+
+After Gate 5, use `/release` for the full deployment pipeline:
+
+```
+develop ──→ Local Test ──→ uat ──→ User Test ──→ main ──→ Production
+
+⛔ "DEV approved"    → proceed to SIT
+⛔ "SIT approved"    → proceed to UAT
+⛔ "UAT approved"    → proceed to Production
+⛔ "DEPLOY v[X.Y.Z]" → deploy
+```
+
+## Usage Examples
+
+### Example 1 — Build a new web app from scratch
+```
+claude
+> /new
+# Answer 26 questions about your project
+# Claude creates: CLAUDE.md, BRD, SRS, DB design, API, prototype...
+# Approve each gate → Claude builds feature by feature
+# /release when done → DEV → SIT → UAT → Production
+```
+
+### Example 2 — Add a feature to existing project
+```
+claude
+> /change
+# Claude reads CLAUDE.md, asks what to change
+# Creates feature branch → implements → PR → review → merge
+```
+
+### Example 3 — Critical bug in production
+```
+claude
+> /hotfix
+# Claude branches from main → fixes → PR to main
+# After merge: backports to uat + develop automatically
+```
+
+### Example 4 — Plan next sprint
+```
+claude
+> /sprint
+# Claude reads Notion backlog → proposes sprint tasks
+# Assigns to sprint → shows sprint board
+```
+
+### Example 5 — Release to production
+```
+claude
+> /release
+# Gate 1: "DEV approved"     → checklist passed
+# Gate 2: "SIT approved"     → automated tests passed
+# Gate 3: "UAT approved"     → user tested and approved
+# Gate 4: "DEPLOY v1.2.0"    → deployed to production
+```
 
 ## Deploying Project Docs
 
