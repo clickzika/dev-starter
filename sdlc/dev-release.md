@@ -376,25 +376,179 @@ npx gh-pages -d dist
 
 ---
 
-## PHASE 5 — Staging Smoke Test
+## PHASE 5 — Local Staging Test
 
-Deploy to staging first using the strategy above, then verify:
+Before deploying to production, run the full app locally in **production mode** to catch issues early.
+
+### Step 1 — Create staging environment file
+
+```bash
+# Create .env.staging (same structure as production but local values)
+cat > .env.staging << 'EOF'
+NODE_ENV=production
+DATABASE_URL=postgresql://postgres:postgres@localhost:5433/staging_db
+JWT_SECRET=staging-secret-key-min-32-chars-long
+API_URL=http://localhost:3000
+CORS_ORIGIN=http://localhost:4000
+EOF
+```
+
+### Step 2 — Create docker-compose.staging.yml
+
+```yaml
+# docker-compose.staging.yml — local production-like environment
+# Uses production build but local ports and staging DB
+
+services:
+  db-staging:
+    image: postgres:16-alpine
+    ports:
+      - "5433:5432"      # Different port from dev DB
+    environment:
+      POSTGRES_DB: staging_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - staging_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 5
+
+  backend-staging:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      db-staging:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db-staging:5432/staging_db
+      JWT_SECRET: staging-secret-key-min-32-chars-long
+      NODE_ENV: production
+    ports:
+      - "3001:3000"      # Different port from dev
+
+  frontend-staging:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - backend-staging
+    environment:
+      API_URL: http://backend-staging:3000
+    ports:
+      - "4001:80"        # Different port from dev
+
+volumes:
+  staging_pgdata:
+```
+
+### Step 3 — Run staging locally
+
+```bash
+# Build production images and start
+docker compose -f docker-compose.staging.yml build
+docker compose -f docker-compose.staging.yml up -d
+
+# Run database migrations
+docker compose -f docker-compose.staging.yml exec backend-staging \
+  npx prisma migrate deploy
+# Or .NET: dotnet ef database update
+# Or Python: alembic upgrade head
+
+# Verify all services are running
+docker compose -f docker-compose.staging.yml ps
+
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "STAGING READY"
+echo "  Frontend: http://localhost:4001"
+echo "  Backend:  http://localhost:3001"
+echo "  Database: localhost:5433"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+```
+
+### Step 4 — Automated Tests (Claude runs these)
+
+```bash
+# 4a. API health check
+echo "--- API Health ---"
+curl -sf http://localhost:3001/health && echo " ✅ API healthy" || echo " ❌ API down"
+
+# 4b. Run unit tests against staging
+echo "--- Unit Tests ---"
+cd backend && npm test 2>&1 | tail -5
+cd ..
+
+# 4c. Run integration tests against staging DB
+echo "--- Integration Tests ---"
+cd backend && DATABASE_URL=postgresql://postgres:postgres@localhost:5433/staging_db \
+  npm run test:integration 2>&1 | tail -5
+cd ..
+
+# 4d. Run E2E tests against staging frontend
+echo "--- E2E Tests ---"
+cd frontend && npx playwright test --reporter=list 2>&1 | tail -10
+cd ..
+# Or: npx cypress run --config baseUrl=http://localhost:4001
+
+# 4e. Security quick check
+echo "--- Security ---"
+cd backend && npm audit --production 2>&1 | tail -3
+cd ..
+
+# 4f. Build verification
+echo "--- Build Check ---"
+docker compose -f docker-compose.staging.yml logs --tail=20 backend-staging | grep -i "error" && echo " ❌ Errors found" || echo " ✅ No errors in logs"
+docker compose -f docker-compose.staging.yml logs --tail=20 frontend-staging | grep -i "error" && echo " ❌ Errors found" || echo " ✅ No errors in logs"
+```
+
+### Step 5 — Manual Smoke Test Checklist
+
+After automated tests pass, verify manually:
 
 ```
-[ ] App loads without errors
-[ ] Login works
+[ ] http://localhost:4001 loads without errors
+[ ] Login works (create test account or use seed data)
 [ ] Core feature [1] works end-to-end
 [ ] Core feature [2] works end-to-end
-[ ] No errors in browser console
-[ ] No errors in server logs
-[ ] API /health endpoint returns 200
-[ ] Database migrations applied correctly
-[ ] Environment variables loaded correctly
+[ ] No errors in browser console (F12 → Console)
+[ ] API responses are correct (no debug data leaking)
+[ ] Images and assets load correctly
+[ ] Responsive layout works (mobile/tablet/desktop)
+```
+
+### Step 6 — Show staging results
+
+```
+STAGING TEST RESULTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+API Health:         ✅ 200 OK
+Unit Tests:         ✅ [N] passed, 0 failed
+Integration Tests:  ✅ [N] passed, 0 failed
+E2E Tests:          ✅ [N] passed, 0 failed
+Security Audit:     ✅ 0 vulnerabilities
+Build Logs:         ✅ No errors
+Manual Smoke Test:  [✅/❌] (user verifies)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 ```
 ⛔ GATE 2 — STAGING APPROVAL
-Show smoke test results → wait for "approve"
+All automated tests passed.
+Manual smoke test: [status]
+
+  "approve"  → proceed to production deploy
+  "fix [issue]" → fix then re-test
+```
+
+### Step 7 — Cleanup staging
+
+```bash
+# After staging approved, tear down local staging
+docker compose -f docker-compose.staging.yml down -v
+echo "✅ Staging cleaned up"
 ```
 
 ---
