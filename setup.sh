@@ -31,16 +31,24 @@ check_cmd() {
   fi
 }
 
+check_cmd_optional() {
+  if ! command -v "$1" &>/dev/null; then
+    echo -e "  ${YELLOW}⚠️  '$1' not found${RESET} — $2 (optional)"
+  else
+    echo -e "  ${GREEN}✅ $1${RESET}"
+  fi
+}
+
 MISSING=0
 check_cmd git    "install from https://git-scm.com"
 check_cmd gh     "install from https://cli.github.com"
 check_cmd node   "install from https://nodejs.org"
 check_cmd curl   "install from your package manager"
-check_cmd docker "install from https://docker.com (optional)"
+check_cmd_optional docker "install from https://docker.com"
 
 if [ "$MISSING" = "1" ]; then
   echo ""
-  echo -e "${RED}Please install missing tools above, then run setup.sh again.${RESET}"
+  echo -e "${RED}Please install required tools above, then run setup.sh again.${RESET}"
   exit 1
 fi
 

@@ -45,40 +45,38 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 
 ## Quick Start
 
-### 1. Clone & Install
+### Option A — One Command (recommended)
 
 ```bash
-# Clone the repo
-git clone https://github.com/YOUR_USERNAME/Dev_Starter_V1.git
+git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/install.sh
+```
+
+This single command will:
+1. Clone the repo
+2. Backup existing `~/.claude/` files (if any)
+3. Copy everything to `~/.claude/`
+4. Run setup wizard (GitHub, Notion, profile, permissions)
+
+### Option B — Manual Install
+
+```bash
+# Clone
+git clone https://github.com/clickzika/dev-starter.git
 
 # Copy to Claude Code's config directory
-cp -r Dev_Starter_V1/* ~/.claude/
+cp -r dev-starter/* ~/.claude/
 
 # Run setup
 bash ~/.claude/setup.sh
 ```
 
-The setup script will:
-- Check prerequisites (git, gh, node, etc.)
-- Configure GitHub + Notion tokens
-- **Auto-configure permissions** in `settings.json` (merges with existing settings, won't overwrite)
+The setup wizard asks:
+- GitHub username + CLI auth
+- Notion API key (optional)
+- 3 profile questions (experience, skills, language)
+- Auto-configures permissions in `settings.json` (merges, won't overwrite)
 
-### 2. Configure Secrets
-
-```bash
-# Copy the example and fill in your tokens
-cp ~/.claude/.env.example ~/.claude/.env
-```
-
-Edit `~/.claude/.env` with your:
-- **GitHub** username + personal access token
-- **Notion** integration API key (optional)
-
-### 3. Fill Your Profile
-
-Edit `~/.claude/USER.md` with your skill levels. Agents auto-calibrate their explanation depth based on this.
-
-### 4. Start Building
+### Start Building
 
 ```bash
 # Open any project folder
