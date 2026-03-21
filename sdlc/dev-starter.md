@@ -436,10 +436,13 @@ Before announcing any handoff to the next agent:
 8. Google Cloud Run
 9. Railway
 10. Vercel (frontend) + separate backend
-11. Apple App Store (mobile)
-12. Google Play Store (mobile)
-13. Windows installer / enterprise
-14. Other (specify)
+11. Netlify
+12. Cloudflare Pages
+13. GitHub Pages (static sites only)
+14. Apple App Store (mobile)
+15. Google Play Store (mobile)
+16. Windows installer / enterprise
+17. Other (specify)
 
 ---
 
