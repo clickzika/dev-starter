@@ -73,11 +73,19 @@ else
   git remote add origin "https://github.com/$GITHUB_USERNAME/$PROJECT_NAME.git" 2>/dev/null || true
 fi
 
-# Create branch strategy
+# Create branch strategy: main (production) + uat (user testing) + develop (development)
 git checkout -b develop 2>/dev/null || git checkout develop
 git push -u origin develop 2>/dev/null || true
 
-echo "✅ Branch strategy: main (production) + develop (staging)"
+git checkout -b uat 2>/dev/null || git checkout uat
+git push -u origin uat 2>/dev/null || true
+
+git checkout develop
+
+echo "✅ Branch strategy:"
+echo "   develop  → Claude develops + local test"
+echo "   uat      → User acceptance testing"
+echo "   main     → Production"
 ```
 
 ---
@@ -283,9 +291,24 @@ echo "✅ PR merged, issue #$ISSUE_NUMBER closed"
 
 ---
 
-## PROC-GH-09 — Final Merge to Main (production)
+## PROC-GH-09 — Release Merge Flow (develop → uat → main)
 
-**Used by:** Gate 5 final delivery
+**Used by:** dev-release.md
+
+### Step 1 — Merge develop → uat (for user acceptance testing)
+
+```bash
+git checkout uat
+git pull origin uat
+git merge develop --no-ff -m "release: merge develop to uat for testing"
+git push origin uat
+
+echo "✅ Merged develop → uat"
+echo "📋 Ready for User Acceptance Testing"
+echo "⛔ Wait for user to approve UAT before merging to main"
+```
+
+### Step 2 — Merge uat → main (after UAT approved)
 
 ```bash
 git checkout main
@@ -296,7 +319,7 @@ LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
 # Default to minor bump — override with RELEASE_TYPE if set
 NEXT_VERSION=$(PROC-GH-15 logic — see below)
 
-git merge develop --no-ff -m "release: $PROJECT_NAME $NEXT_VERSION"
+git merge uat --no-ff -m "release: $PROJECT_NAME $NEXT_VERSION"
 git tag "$NEXT_VERSION"
 git push origin main --tags
 
@@ -333,7 +356,25 @@ echo "   - Require 1 PR review"
 echo "   - Dismiss stale reviews on new push"
 echo "   - No direct push allowed"
 
-# Note: develop branch is NOT protected by default
+# Note: uat branch uses same protection as main
+gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/uat/protection \
+  --method PUT \
+  --input - << 'EOF2'
+{
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true
+  },
+  "enforce_admins": false,
+  "required_status_checks": null,
+  "restrictions": null
+}
+EOF2
+
+echo "✅ Branch protection set on uat:"
+echo "   - Only merge from develop (via PROC-GH-09)"
+
+# Note: develop branch is NOT protected
 # (agents need to push directly during Gate 3 scaffold)
 # After Gate 3, optionally protect develop too:
 # gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/develop/protection ...
@@ -430,7 +471,7 @@ echo "✅ Hotfix PR created: $PR_URL"
 echo "⛔ Wait for approval before merging"
 ```
 
-### Step 3 — After PR approved: merge to main + backport to develop
+### Step 3 — After PR approved: merge to main + backport to uat + develop
 
 ```bash
 cd "$PROJECT_DIR"
@@ -447,6 +488,14 @@ git push origin main --tags
 
 echo "✅ Hotfix merged to main — tagged $PATCH_VERSION"
 
+# Backport to uat
+git checkout uat
+git pull origin uat
+git merge main --no-ff -m "chore: backport hotfix $PATCH_VERSION to uat"
+git push origin uat
+
+echo "✅ Hotfix backported to uat"
+
 # Backport to develop
 git checkout develop
 git pull origin develop
@@ -454,7 +503,7 @@ git merge main --no-ff -m "chore: backport hotfix $PATCH_VERSION to develop"
 git push origin develop
 
 echo "✅ Hotfix backported to develop"
-gh issue close "$ISSUE_NUMBER" --comment "✅ Hotfix $PATCH_VERSION deployed and backported."
+gh issue close "$ISSUE_NUMBER" --comment "✅ Hotfix $PATCH_VERSION deployed and backported to uat + develop."
 ```
 
 ---

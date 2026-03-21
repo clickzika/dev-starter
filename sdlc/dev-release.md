@@ -5,7 +5,27 @@
 When ready to release a version:
 ```
 claude
-> Read ~/.claude/dev-release.md and prepare release v[X.Y.Z]
+> Read ~/.claude/sdlc/dev-release.md and prepare release v[X.Y.Z]
+```
+
+## Release Flow Overview
+
+```
+develop ──→ Local Test (Claude) ──→ uat ──→ User Test ──→ main ──→ Production
+              Phase 5                  Phase 6               Phase 7
+
+PHASE 1: Release scope (version, environment)
+PHASE 2: Pre-release checklist
+PHASE 3: Deploy preparation (env vars, strategy)
+PHASE 4: Deploy strategy selection (A-H)
+PHASE 5: Local staging test (Docker) — Claude runs automated tests
+  ⛔ GATE 2: Local test approval
+PHASE 6: UAT — merge develop → uat — User tests manually
+  ⛔ GATE 3: UAT approval (user only)
+PHASE 7: Production — merge uat → main — deploy production
+  ⛔ GATE 4: Production deploy approval
+PHASE 8: Post-deploy verification
+PHASE 9: Release notes
 ```
 
 ---
@@ -539,26 +559,93 @@ Manual Smoke Test:  [✅/❌] (user verifies)
 All automated tests passed.
 Manual smoke test: [status]
 
-  "approve"  → proceed to production deploy
+  "approve"  → proceed to UAT
   "fix [issue]" → fix then re-test
 ```
 
-### Step 7 — Cleanup staging
+### Step 7 — Cleanup local staging
 
 ```bash
-# After staging approved, tear down local staging
 docker compose -f docker-compose.staging.yml down -v
-echo "✅ Staging cleaned up"
+echo "✅ Local staging cleaned up"
 ```
 
 ---
 
-## PHASE 6 — Production Deploy
+## PHASE 6 — UAT (User Acceptance Testing)
+
+### Step 1 — Merge develop → uat
 
 ```bash
-# Read ~/.claude/sdlc/dev-github.md → PROC-GH-15 (semver) + PROC-GH-09 (merge)
+# Read ~/.claude/sdlc/dev-github.md → PROC-GH-09 Step 1
+git checkout uat
+git pull origin uat
+git merge develop --no-ff -m "release: merge develop to uat for testing"
+git push origin uat
+```
+
+### Step 2 — Deploy UAT environment
+
+Deploy using the same strategy from Phase 4 but targeting **UAT environment**:
+- UAT uses **separate URL** from production (e.g. `uat.myapp.com` or `myapp-uat.pages.dev`)
+- UAT uses **separate database** (copy of production schema, test data)
+- UAT environment variables point to UAT services
+
+```bash
+# Docker example:
+docker compose -f docker-compose.uat.yml up -d
+
+# Or cloud: deploy uat branch to staging/preview slot
+```
+
+### Step 3 — User tests manually
+
+```
+UAT ENVIRONMENT READY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+URL:      [UAT_URL]
+Branch:   uat
+Version:  [pending v.X.Y.Z]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Please test the following:
+[ ] Login / Register
+[ ] Core feature [1] — [description]
+[ ] Core feature [2] — [description]
+[ ] Core feature [3] — [description]
+[ ] Edge cases and error handling
+[ ] Mobile responsiveness (if applicable)
+[ ] Data correctness (numbers, dates, calculations)
+
+When done:
+  "UAT approved"     → proceed to production
+  "UAT fix [issue]"  → fix then re-deploy UAT
+```
+
+```
+⛔ GATE 3 — UAT APPROVAL
+User must test and type "UAT approved" to proceed.
+Claude does NOT approve UAT — only the user can.
+```
+
+### Step 4 — Fix UAT issues (if any)
+
+If user reports issues:
+1. Fix on develop branch
+2. Re-run Phase 5 (local test)
+3. Re-merge develop → uat
+4. Re-deploy UAT
+5. User re-tests
+
+---
+
+## PHASE 7 — Production Deploy
+
+```bash
+# Read ~/.claude/sdlc/dev-github.md → PROC-GH-15 (semver) + PROC-GH-09 Step 2
 git checkout main
-git merge develop --no-ff -m "release: v[X.Y.Z]"
+git pull origin main
+git merge uat --no-ff -m "release: v[X.Y.Z]"
 git tag "v[X.Y.Z]" -m "Release v[X.Y.Z]: [summary]"
 git push origin main --tags
 ```
@@ -566,13 +653,13 @@ git push origin main --tags
 Then run the deploy strategy (Phase 4) against **production** environment.
 
 ```
-⛔ GATE 3 — PRODUCTION DEPLOY APPROVAL (FINAL)
+⛔ GATE 4 — PRODUCTION DEPLOY APPROVAL (FINAL)
 Type "DEPLOY v[X.Y.Z]" to confirm production release.
 ```
 
 ---
 
-## PHASE 7 — Post-Deploy Verification
+## PHASE 8 — Post-Deploy Verification
 
 ```
 [ ] Production URL loads
@@ -584,12 +671,11 @@ Type "DEPLOY v[X.Y.Z]" to confirm production release.
 [ ] Check server metrics (CPU, memory, response time)
 [ ] SSL/HTTPS working
 [ ] CORS working (frontend ↔ backend)
-[ ] Notify team: "v[X.Y.Z] deployed successfully"
 ```
 
 ---
 
-## PHASE 6 — Release Notes
+## PHASE 9 — Release Notes
 
 Agent writes `docs/release-[vX.Y.Z].html`:
 ```
