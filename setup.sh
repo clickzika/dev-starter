@@ -163,54 +163,36 @@ echo -e "${YELLOW}This prevents Claude from asking 'Allow?' for every command.${
 echo ""
 
 SETTINGS_FILE="$HOME/.claude/settings.json"
-
-# Permissions to add (won't duplicate if already present)
-PERMISSIONS_TO_ADD=(
-  "Bash(npm *)"
-  "Bash(npx *)"
-  "Bash(node *)"
-  "Bash(git *)"
-  "Bash(gh *)"
-  "Bash(mkdir *)"
-  "Bash(cp *)"
-  "Bash(mv *)"
-  "Bash(cat *)"
-  "Bash(ls *)"
-  "Bash(find *)"
-  "Bash(grep *)"
-  "Bash(curl *)"
-  "Bash(echo *)"
-  "Bash(rm *)"
-  "Bash(chmod *)"
-  "Bash(wc *)"
-  "Bash(head *)"
-  "Bash(tail *)"
-  "Bash(sed *)"
-  "Bash(awk *)"
-  "Bash(sort *)"
-  "Bash(date *)"
-  "Bash(pwd)"
-  "Bash(dotnet *)"
-  "Bash(docker *)"
-  "Bash(docker-compose *)"
-  "Read"
-  "Write"
-  "Edit"
-)
+SETTINGS_FILE_NODE="$TMP_D_NODE/../settings.json"
 
 # Create settings.json if doesn't exist
 if [ ! -f "$SETTINGS_FILE" ]; then
   echo '{}' > "$SETTINGS_FILE"
 fi
 
+# Write permissions list to temp file (avoids /dev/stdin issues on Windows)
+cat > "$TMP_D/perms.json" << 'PERMSEOF'
+[
+  "Bash(npm *)", "Bash(npx *)", "Bash(node *)",
+  "Bash(git *)", "Bash(gh *)", "Bash(mkdir *)",
+  "Bash(cp *)", "Bash(mv *)", "Bash(cat *)",
+  "Bash(ls *)", "Bash(find *)", "Bash(grep *)",
+  "Bash(curl *)", "Bash(echo *)", "Bash(rm *)",
+  "Bash(chmod *)", "Bash(wc *)", "Bash(head *)",
+  "Bash(tail *)", "Bash(sed *)", "Bash(awk *)",
+  "Bash(sort *)", "Bash(date *)", "Bash(pwd)",
+  "Bash(dotnet *)", "Bash(docker *)", "Bash(docker-compose *)",
+  "Read", "Write", "Edit"
+]
+PERMSEOF
+
 # Use Node.js to safely merge permissions without overwriting existing settings
 node -e "
 const fs = require('fs');
-const settingsFile = '$SETTINGS_FILE';
-const newPerms = $(printf '%s\n' "${PERMISSIONS_TO_ADD[@]}" | node -e "
-  const lines = require('fs').readFileSync('/dev/stdin','utf8').trim().split('\n');
-  console.log(JSON.stringify(lines));
-");
+const path = require('path');
+const settingsFile = '$SETTINGS_FILE_NODE';
+const permsFile = '$TMP_D_NODE/perms.json';
+const newPerms = JSON.parse(fs.readFileSync(permsFile, 'utf8'));
 
 let settings = {};
 try {
@@ -237,9 +219,11 @@ console.log('ADDED=' + added);
 console.log('TOTAL=' + settings.permissions.allow.length);
 "
 
+rm -f "$TMP_D/perms.json"
+
 RESULT=$(node -e "
 const fs = require('fs');
-const s = JSON.parse(fs.readFileSync('$SETTINGS_FILE', 'utf8'));
+const s = JSON.parse(fs.readFileSync('$SETTINGS_FILE_NODE', 'utf8'));
 console.log(s.permissions.allow.length);
 ")
 
@@ -303,6 +287,11 @@ esac
 
 # Generate USER.md using Node.js for reliable string handling
 USER_FILE="$HOME/.claude/USER.md"
+if command -v cygpath &>/dev/null; then
+  USER_FILE_NODE="$(cygpath -m "$USER_FILE")"
+else
+  USER_FILE_NODE="$USER_FILE"
+fi
 
 node -e "
 const fs = require('fs');
@@ -417,7 +406,7 @@ If USER.md is missing → agent asks once: \"What is your experience level with 
 Then calibrates — never asks again in the same session.
 \`;
 
-fs.writeFileSync('$USER_FILE', md);
+fs.writeFileSync('$USER_FILE_NODE', md);
 console.log('OK');
 "
 
