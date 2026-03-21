@@ -11,7 +11,7 @@ Agents read this file when Notion operations are needed.
 - curl JSON body: use double quotes with escaped inner quotes
 - Temp files: write curl output to files (`-o file.json`) then parse with Node.js
 - Always clean up temp files after use
-- **Temp directory:** Always use `TMP_D="${TMPDIR:-${TEMP:-/tmp}}"` — Windows has no `/tmp/`
+- **Temp directory:** Always use `TMP_D="$HOME/.claude/.tmp" && mkdir -p "$TMP_D"` — Windows has no `/tmp/`
 
 ---
 

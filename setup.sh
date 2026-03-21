@@ -12,7 +12,8 @@ RED='\033[0;31m'
 RESET='\033[0m'
 
 ENV_FILE="$HOME/.claude/.env"
-TMP_D="${TMPDIR:-${TEMP:-/tmp}}"
+TMP_D="$HOME/.claude/.tmp"
+mkdir -p "$TMP_D"
 
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════════╗${RESET}"

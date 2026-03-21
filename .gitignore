@@ -14,5 +14,8 @@ desktop.ini
 *.swo
 *~
 
+# Temp files
+.tmp/
+
 # Node (if any tooling is added later)
 node_modules/
