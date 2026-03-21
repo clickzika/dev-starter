@@ -70,7 +70,41 @@ Please confirm the file was saved before continuing.
 
 ---
 
-### Rule 3 — Save Before Handing Off
+### Rule 3 — Read Agent File Before Doing Any Work
+
+Before any agent produces output, you MUST read that agent's file first.
+The agent file defines the format, template, standards, and quality gate for every deliverable.
+
+```
+Agent          File to read first
+──────         ─────────────────────────────
+BA          → ~/.claude/agents/ba.md
+Tech Lead   → ~/.claude/agents/techlead.md
+DBA         → ~/.claude/agents/dba.md
+Backend     → ~/.claude/agents/backend.md
+Security    → ~/.claude/agents/security.md
+DevOps      → ~/.claude/agents/devops.md
+QA          → ~/.claude/agents/qa.md
+UX/UI       → ~/.claude/agents/uxui.md
+PM          → ~/.claude/agents/pm.md
+Frontend    → ~/.claude/agents/frontend.md
+Mobile      → ~/.claude/agents/mobile.md
+Docs        → ~/.claude/agents/docs.md
+```
+
+Before every agent task, announce:
+```
+🤖 Acting as [agent name]
+📖 Reading agent spec: ~/.claude/agents/[agent].md ✓
+📄 Output format: [format from agent file]
+📋 Producing: [deliverable name]
+```
+
+**If you skip reading the agent file, the output will be rejected.**
+
+---
+
+### Rule 4 — Save Before Handing Off
 
 Before announcing any handoff to the next agent:
 1. Confirm file is written to disk
@@ -87,7 +121,7 @@ Before announcing any handoff to the next agent:
 
 ---
 
-### Rule 4 — Ask ONE Question at a Time
+### Rule 5 — Ask ONE Question at a Time
 
 **NEVER ask multiple questions in one message.**
 - Ask Q1 → wait for answer → ask Q2 → wait for answer → ...

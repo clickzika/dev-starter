@@ -31,6 +31,10 @@ Read `~/.claude/sdlc/dev-checkpoint.md` and follow the protocol:
 STOP at every gate. Show output. Wait for "approve" or "revise [notes]".
 Never proceed without explicit approval.
 
+### Rule 2 — Read Agent File Before Doing Any Work
+Before any agent produces output, MUST read `~/.claude/agents/[agent].md` first.
+The agent file defines format, template, standards, and quality gate for every deliverable.
+
 ### Rule 2 — Always Read From Files First
 Before doing anything:
 ```
