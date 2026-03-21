@@ -7,9 +7,12 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 ```
 ~/.claude/
 ├── dev-menu.md              ← Entry point: pick a workflow
-├── dev-starter.md           ← New project (Gate 1–5 full lifecycle)
-├── dev-change.md            ← Add/remove features, fix bugs
-├── dev-*.md (17 files)      ← Workflow runbooks for every scenario
+│
+├── sdlc/ (17 workflow runbooks)
+│   ├── dev-starter.md       ← New project (Gate 1–5 full lifecycle)
+│   ├── dev-change.md        ← Add/remove features, fix bugs
+│   ├── dev-audit.md         ← Audit & review
+│   └── ...                  ← 14 more runbooks
 │
 ├── agents/ (12 agents)
 │   ├── techlead.md          ← Architecture & code review

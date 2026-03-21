@@ -58,7 +58,7 @@ done
 echo ""
 echo "--- Workflows (17+) ---"
 for f in dev-menu dev-starter dev-change dev-audit dev-dependency dev-dod dev-env dev-existing dev-github dev-handover dev-hotfix dev-incident dev-migrate dev-monitor dev-notion dev-onboarding dev-release dev-retrospective dev-rollback dev-secrets dev-sprint; do
-  FILE="$HOME/.claude/$f.md"
+  FILE="$HOME/.claude/sdlc/$f.md"
   [ -f "$FILE" ] && echo "  ✅ $f.md" || echo "  ❌ MISSING: $f.md"
 done
 
@@ -103,8 +103,8 @@ Copy-Item "$src\agents\teams\*.md" "$tmpDir\.claude\agents\teams\" -ErrorAction 
 # Copy commands
 Copy-Item "$src\commands\*.md" "$tmpDir\.claude\commands\" -ErrorAction SilentlyContinue
 
-# Copy workflows (dev-*.md)
-Copy-Item "$src\dev-*.md" "$tmpDir\.claude\" -ErrorAction SilentlyContinue
+# Copy workflows (sdlc/)
+Copy-Item "$src\sdlc" "$tmpDir\.claude\sdlc" -Recurse -ErrorAction SilentlyContinue
 
 # Copy templates
 Copy-Item "$src\templates\*" "$tmpDir\.claude\templates\" -Recurse -ErrorAction SilentlyContinue
@@ -146,7 +146,7 @@ EXPORT COMPLETE ✅
 Contents:
   📁 agents/      — 12 specialist agents + 5 teams + shared guide
   📁 commands/    — 3 utility commands (context, export, import)
-  📁 dev-*.md     — 17+ workflow runbooks
+  📁 sdlc/        — 17+ workflow runbooks
   📁 templates/   — CLAUDE.md, project.env, doc portal
   📄 Root files   — USER.md, TEAM.md, setup.sh, README.md, LICENSE
 

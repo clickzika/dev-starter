@@ -37,7 +37,7 @@ powershell.exe -NoProfile -Command '
 $backup = "$env:USERPROFILE\.claude\backups\pre-import-$(Get-Date -Format yyyyMMdd-HHmmss)"
 New-Item -ItemType Directory -Path $backup -Force | Out-Null
 
-$dirs = @("agents", "commands", "templates")
+$dirs = @("agents", "commands", "templates", "sdlc")
 foreach ($d in $dirs) {
   $src = "$env:USERPROFILE\.claude\$d"
   if (Test-Path $src) {
@@ -45,9 +45,10 @@ foreach ($d in $dirs) {
   }
 }
 
-# Backup dev-*.md workflow files
-Get-ChildItem "$env:USERPROFILE\.claude\dev-*.md" -ErrorAction SilentlyContinue |
-  ForEach-Object { Copy-Item $_.FullName "$backup\" }
+# Backup sdlc/ workflow files
+if (Test-Path "$env:USERPROFILE\.claude\sdlc") {
+  Copy-Item "$env:USERPROFILE\.claude\sdlc" "$backup\sdlc" -Recurse -Force
+}
 
 # Backup root files
 foreach ($f in @("CLAUDE.md", "USER.md", "TEAM.md")) {
@@ -90,8 +91,8 @@ echo "--- Commands ---"
 count=$(ls "$HOME/.claude/commands/"*.md 2>/dev/null | wc -l)
 echo "  $count command files found (expected: 3)"
 
-echo "--- Workflows ---"
-count=$(ls "$HOME/.claude/dev-"*.md 2>/dev/null | wc -l)
+echo "--- Workflows (sdlc/) ---"
+count=$(ls "$HOME/.claude/sdlc/"*.md 2>/dev/null | wc -l)
 echo "  $count workflow files found (expected: 17+)"
 
 echo "--- Templates ---"

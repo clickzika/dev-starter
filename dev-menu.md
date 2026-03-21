@@ -55,20 +55,20 @@ Route to correct file:
 
 | # | File |
 |---|------|
-| 1 | `~/.claude/dev-starter.md` |
-| 2 | `~/.claude/dev-existing.md` |
-| 3 | `~/.claude/dev-migrate.md` |
-| 4 | `~/.claude/dev-audit.md` |
-| 5 | `~/.claude/dev-change.md` |
-| 6 | `~/.claude/dev-sprint.md` |
-| 7 | `~/.claude/dev-dependency.md` |
-| 8 | `~/.claude/dev-onboarding.md` |
-| 9 | `~/.claude/dev-handover.md` |
-| 10 | `~/.claude/dev-retrospective.md` |
-| 11 | `~/.claude/dev-release.md` |
-| 12 | `~/.claude/dev-hotfix.md` |
-| 13 | `~/.claude/dev-rollback.md` |
-| 14 | `~/.claude/dev-incident.md` |
-| 15 | `~/.claude/dev-env.md` |
-| 16 | `~/.claude/dev-secrets.md` |
-| 17 | `~/.claude/dev-monitor.md` |
+| 1 | `~/.claude/sdlc/dev-starter.md` |
+| 2 | `~/.claude/sdlc/dev-existing.md` |
+| 3 | `~/.claude/sdlc/dev-migrate.md` |
+| 4 | `~/.claude/sdlc/dev-audit.md` |
+| 5 | `~/.claude/sdlc/dev-change.md` |
+| 6 | `~/.claude/sdlc/dev-sprint.md` |
+| 7 | `~/.claude/sdlc/dev-dependency.md` |
+| 8 | `~/.claude/sdlc/dev-onboarding.md` |
+| 9 | `~/.claude/sdlc/dev-handover.md` |
+| 10 | `~/.claude/sdlc/dev-retrospective.md` |
+| 11 | `~/.claude/sdlc/dev-release.md` |
+| 12 | `~/.claude/sdlc/dev-hotfix.md` |
+| 13 | `~/.claude/sdlc/dev-rollback.md` |
+| 14 | `~/.claude/sdlc/dev-incident.md` |
+| 15 | `~/.claude/sdlc/dev-env.md` |
+| 16 | `~/.claude/sdlc/dev-secrets.md` |
+| 17 | `~/.claude/sdlc/dev-monitor.md` |
