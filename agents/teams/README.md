@@ -1,6 +1,6 @@
 # Agent Teams
 
-Overview of all 15 agents organized into 5 teams.
+Overview of all 12 agents organized into 4 teams.
 
 ---
 
@@ -19,23 +19,14 @@ Overview of all 15 agents organized into 5 teams.
 | Backend | `backend.md` | APIs, services, server-side logic |
 | Frontend | `frontend.md` | UI, components, client-side logic |
 | Mobile | `mobile.md` | Mobile apps, responsive design, native features |
-
----
-
-## Team: Data & AI
-| Agent | File | Role |
-|-------|------|------|
-| Data | `data.md` | Data pipelines, ETL, analytics, reporting |
 | DBA | `dba.md` | Database design, optimization, migrations, queries |
-| ML | `ml.md` | Machine learning, models, training, inference |
 
 ---
 
 ## Team: Platform
 | Agent | File | Role |
 |-------|------|------|
-| DevOps | `devops.md` | CI/CD, pipelines, automation, deployments |
-| Infra | `infra.md` | Cloud infrastructure, IaC, networking, scaling |
+| DevOps | `devops.md` | CI/CD, Docker, cloud infrastructure, IaC, deployments |
 | Security | `security.md` | Security audits, vulnerability assessment, compliance |
 
 ---
@@ -45,7 +36,7 @@ Overview of all 15 agents organized into 5 teams.
 |-------|------|------|
 | QA | `qa.md` | Testing strategy, test cases, automation, bug verification |
 | Docs | `docs.md` | Technical documentation, API docs, guides |
-| UX/UI | `uxui.md` | User experience, design review, accessibility |
+| UX/UI | `uxui.md` | User experience, design system, prototypes, accessibility |
 
 ---
 
@@ -53,7 +44,6 @@ Overview of all 15 agents organized into 5 teams.
 | Team | File | Members |
 |------|------|---------|
 | Leadership | `teams/leadership.md` | techlead, pm, ba |
-| Engineering | `teams/engineering.md` | backend, frontend, mobile |
-| Data & AI | `teams/data.md` | data, dba, ml |
-| Platform | `teams/platform.md` | devops, infra, security |
+| Engineering | `teams/engineering.md` | backend, frontend, mobile, dba |
+| Platform | `teams/platform.md` | devops, security |
 | Quality & Delivery | `teams/quality.md` | qa, docs, uxui |
