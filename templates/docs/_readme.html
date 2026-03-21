@@ -161,20 +161,19 @@
 <h2>1. Installation</h2>
 
 <h3>Option A — One Command (recommended)</h3>
-<p><strong>Mac / Linux / Git Bash:</strong></p>
 <pre><code>git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/install.sh</code></pre>
-<p><strong>Windows PowerShell:</strong></p>
-<pre><code>git clone https://github.com/clickzika/dev-starter.git; bash dev-starter/install.sh</code></pre>
+
+<div class="callout callout-warning">
+  <strong>Windows users: Use Git Bash (not PowerShell/CMD)</strong>
+  Right-click desktop &rarr; "Git Bash Here", or search "Git Bash" in Start menu.<br>
+  Git Bash is installed automatically with <a href="https://git-scm.com">Git for Windows</a>.
+</div>
+
 <p>This will: clone &rarr; backup existing files &rarr; copy to <code>~/.claude/</code> &rarr; run setup wizard.</p>
 
 <h3>Option B — Manual Install</h3>
-<p><strong>Mac / Linux / Git Bash:</strong></p>
 <pre><code>git clone https://github.com/clickzika/dev-starter.git
 cp -r dev-starter/* ~/.claude/
-bash ~/.claude/setup.sh</code></pre>
-<p><strong>Windows PowerShell:</strong></p>
-<pre><code>git clone https://github.com/clickzika/dev-starter.git
-Copy-Item -Recurse dev-starter\* $env:USERPROFILE\.claude\
 bash ~/.claude/setup.sh</code></pre>
 
 <!-- ═══════════════════════════════════════ -->
