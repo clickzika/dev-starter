@@ -161,17 +161,20 @@
 <h2>1. Installation</h2>
 
 <h3>Option A — One Command (recommended)</h3>
+<p><strong>Mac / Linux / Git Bash:</strong></p>
 <pre><code>git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/install.sh</code></pre>
-<p>This single command will: clone the repo, backup existing <code>~/.claude/</code> files, copy everything, and run the setup wizard.</p>
+<p><strong>Windows PowerShell:</strong></p>
+<pre><code>git clone https://github.com/clickzika/dev-starter.git; bash dev-starter/install.sh</code></pre>
+<p>This will: clone &rarr; backup existing files &rarr; copy to <code>~/.claude/</code> &rarr; run setup wizard.</p>
 
 <h3>Option B — Manual Install</h3>
-<pre><code># Clone
-git clone https://github.com/clickzika/dev-starter.git
-
-# Copy to Claude Code's config directory
+<p><strong>Mac / Linux / Git Bash:</strong></p>
+<pre><code>git clone https://github.com/clickzika/dev-starter.git
 cp -r dev-starter/* ~/.claude/
-
-# Run setup
+bash ~/.claude/setup.sh</code></pre>
+<p><strong>Windows PowerShell:</strong></p>
+<pre><code>git clone https://github.com/clickzika/dev-starter.git
+Copy-Item -Recurse dev-starter\* $env:USERPROFILE\.claude\
 bash ~/.claude/setup.sh</code></pre>
 
 <!-- ═══════════════════════════════════════ -->

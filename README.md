@@ -49,26 +49,31 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 
 ### Option A — One Command (recommended)
 
+**Mac / Linux / Git Bash:**
 ```bash
 git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/install.sh
 ```
 
-This single command will:
-1. Clone the repo
-2. Backup existing `~/.claude/` files (if any)
-3. Copy everything to `~/.claude/`
-4. Run setup wizard (GitHub, Notion, profile, permissions)
+**Windows PowerShell:**
+```powershell
+git clone https://github.com/clickzika/dev-starter.git; bash dev-starter/install.sh
+```
+
+This will: clone → backup existing files → copy to `~/.claude/` → run setup wizard.
 
 ### Option B — Manual Install
 
+**Mac / Linux / Git Bash:**
 ```bash
-# Clone
 git clone https://github.com/clickzika/dev-starter.git
-
-# Copy to Claude Code's config directory
 cp -r dev-starter/* ~/.claude/
+bash ~/.claude/setup.sh
+```
 
-# Run setup
+**Windows PowerShell:**
+```powershell
+git clone https://github.com/clickzika/dev-starter.git
+Copy-Item -Recurse dev-starter\* $env:USERPROFILE\.claude\
 bash ~/.claude/setup.sh
 ```
 
