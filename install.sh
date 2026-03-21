@@ -114,10 +114,8 @@ cp "$SOURCE_DIR/README.md" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/LICENSE" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/.gitignore" "$CLAUDE_DIR/" 2>/dev/null || true
 
-# Copy USER.md only if it doesn't exist (don't overwrite user's profile)
-if [ ! -f "$CLAUDE_DIR/USER.md" ]; then
-  cp "$SOURCE_DIR/USER.md" "$CLAUDE_DIR/" 2>/dev/null || true
-fi
+# Copy USER.md template (setup.sh will overwrite with wizard answers)
+cp "$SOURCE_DIR/USER.md" "$CLAUDE_DIR/" 2>/dev/null || true
 
 # Count installed files
 FILE_COUNT=$(find "$CLAUDE_DIR" -name "*.md" -o -name "*.html" -o -name "*.sh" -o -name "*.template" | wc -l | tr -d ' ')
