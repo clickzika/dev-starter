@@ -162,6 +162,9 @@ curl -s -X POST https://api.notion.com/v1/databases \
         {\"name\": \"M\", \"color\": \"yellow\"},
         {\"name\": \"L\", \"color\": \"red\"}
       ]}},
+      \"Epic\":           {\"select\": {\"options\": []}},
+      \"Start Date\":     {\"date\": {}},
+      \"Completed Date\": {\"date\": {}},
       \"GitHub Issue #\": {\"number\": {}},
       \"GitHub PR #\":    {\"number\": {}},
       \"Sprint\":         {\"select\": {\"options\": []}},
@@ -195,7 +198,7 @@ Save `DB_ID` and `DB_URL` to `.project.env`.
 ```bash
 # Variables required:
 # NOTION_DATABASE_ID, TASK_TITLE, TASK_GATE, TASK_ROLE,
-# TASK_PRIORITY, TASK_EFFORT, TASK_NOTES, GITHUB_ISSUE_NUMBER
+# TASK_PRIORITY, TASK_EFFORT, TASK_EPIC, TASK_NOTES, GITHUB_ISSUE_NUMBER
 
 curl -s -X POST https://api.notion.com/v1/pages \
   -H "Authorization: Bearer $NOTION_API_KEY" \
@@ -210,6 +213,7 @@ curl -s -X POST https://api.notion.com/v1/pages \
       \"Role\":           {\"select\": {\"name\": \"$TASK_ROLE\"}},
       \"Priority\":       {\"select\": {\"name\": \"$TASK_PRIORITY\"}},
       \"Effort\":         {\"select\": {\"name\": \"$TASK_EFFORT\"}},
+      \"Epic\":           {\"select\": {\"name\": \"$TASK_EPIC\"}},
       \"GitHub Issue #\": {\"number\": $GITHUB_ISSUE_NUMBER},
       \"Notes\":          {\"rich_text\": [{\"text\": {\"content\": \"$TASK_NOTES\"}}]}
     }
@@ -236,11 +240,22 @@ echo "✅ Notion task created: $TASK_TITLE (ID: $TASK_ID)"
 # Variables required: NOTION_TASK_ID, NEW_STATUS
 # NEW_STATUS options: "To Do" | "In Progress" | "In Review" | "Done" | "Blocked"
 
+# Build properties JSON — always include Status
+PROPS="{\"Status\": {\"select\": {\"name\": \"$NEW_STATUS\"}}"
+
+# Auto-set Start Date when moving to "In Progress" (first time only)
+if [ "$NEW_STATUS" = "In Progress" ]; then
+  TODAY=$(date -u +"%Y-%m-%d")
+  PROPS="$PROPS, \"Start Date\": {\"date\": {\"start\": \"$TODAY\"}}"
+fi
+
+PROPS="$PROPS}"
+
 curl -s -X PATCH "https://api.notion.com/v1/pages/$NOTION_TASK_ID" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
-  -d "{\"properties\": {\"Status\": {\"select\": {\"name\": \"$NEW_STATUS\"}}}}" \
+  -d "{\"properties\": $PROPS}" \
   -o /tmp/nt_update.json
 
 node -e "
@@ -278,20 +293,25 @@ echo "✅ Notion task updated: PR #$PR_NUMBER, Status → In Review"
 
 ## PROC-NT-06 — Mark Task Done
 
-**Used by:** Gate 5 after PR merged
+**Used by:** Gate 4 after PR merged
 
 ```bash
 # Variables required: NOTION_TASK_ID
+
+TODAY=$(date -u +"%Y-%m-%d")
 
 curl -s -X PATCH "https://api.notion.com/v1/pages/$NOTION_TASK_ID" \
   -H "Authorization: Bearer $NOTION_API_KEY" \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
-  -d "{\"properties\": {\"Status\": {\"select\": {\"name\": \"Done\"}}}}" \
+  -d "{\"properties\": {
+    \"Status\":         {\"select\": {\"name\": \"Done\"}},
+    \"Completed Date\": {\"date\": {\"start\": \"$TODAY\"}}
+  }}" \
   -o /tmp/nt_done.json
 
 rm -f /tmp/nt_done.json
-echo "✅ Notion task marked Done"
+echo "✅ Notion task marked Done (Completed: $TODAY)"
 ```
 
 ---
@@ -299,11 +319,316 @@ echo "✅ Notion task marked Done"
 ## Task Lifecycle Summary
 
 ```
-Created  → Status: "To Do"        (PROC-NT-03)
-Started  → Status: "In Progress"  (PROC-NT-04)
-PR made  → Status: "In Review"    (PROC-NT-05)
-Merged   → Status: "Done"         (PROC-NT-06)
-Blocked  → Status: "Blocked"      (PROC-NT-04 with "Blocked")
+Created  → Status: "To Do"                              (PROC-NT-03)
+Started  → Status: "In Progress" + Start Date set       (PROC-NT-04)
+PR made  → Status: "In Review"   + PR # set             (PROC-NT-05)
+Merged   → Status: "Done"        + Completed Date set   (PROC-NT-06)
+Blocked  → Status: "Blocked"                            (PROC-NT-04 with "Blocked")
+```
+
+---
+
+## PROC-NT-07 — Create Database Views
+
+**Used by:** dev-starter.md Gate 0 (after database created)
+
+After PROC-NT-02 creates the database, create these views so humans can monitor progress:
+
+### View 1 — Board by Status (default)
+```
+Use Notion MCP: notion-create-view
+  database_id: $NOTION_DATABASE_ID
+  data_source_id: [from fetch]
+  name: "Board"
+  type: board
+  configure: GROUP BY "Status"
+```
+
+### View 2 — Board by Epic
+```
+Use Notion MCP: notion-create-view
+  database_id: $NOTION_DATABASE_ID
+  data_source_id: [from fetch]
+  name: "By Epic"
+  type: board
+  configure: GROUP BY "Epic"; SHOW "Title", "Status", "Role", "GitHub Issue #"
+```
+
+### View 3 — Sprint Board
+```
+Use Notion MCP: notion-create-view
+  database_id: $NOTION_DATABASE_ID
+  data_source_id: [from fetch]
+  name: "Sprint"
+  type: board
+  configure: GROUP BY "Sprint"; SHOW "Title", "Status", "Role", "Effort"
+```
+
+### View 4 — All Tasks (table)
+```
+Use Notion MCP: notion-create-view
+  database_id: $NOTION_DATABASE_ID
+  data_source_id: [from fetch]
+  name: "All Tasks"
+  type: table
+  configure: SORT BY "Gate" ASC; SHOW "Title", "Status", "Epic", "Role", "Priority", "Effort", "Start Date", "Completed Date", "GitHub Issue #", "Sprint"
+```
+
+```
+✅ 4 views created:
+  📋 Board        — drag tasks across Status columns
+  📦 By Epic      — see progress per epic
+  🏃 Sprint       — current sprint board
+  📊 All Tasks    — full table with dates and details
+```
+
+---
+
+## PROC-NT-08 — Sprint Management
+
+**Used by:** dev-sprint.md at the start of each sprint
+
+### Step 1 — Create sprint option
+
+```bash
+# Add new sprint option to the Sprint property
+# Variables required: SPRINT_NAME (e.g. "Sprint 1", "Sprint 2")
+
+# Use Notion MCP: notion-update-data-source
+#   data_source_id: [from fetch]
+#   statements: ALTER COLUMN "Sprint" SET SELECT('Sprint 1', 'Sprint 2', ...)
+```
+
+### Step 2 — Assign tasks to sprint
+
+```bash
+# For each task assigned to this sprint:
+# Variables required: NOTION_TASK_ID, SPRINT_NAME
+
+curl -s -X PATCH "https://api.notion.com/v1/pages/$NOTION_TASK_ID" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2022-06-28" \
+  -d "{\"properties\": {\"Sprint\": {\"select\": {\"name\": \"$SPRINT_NAME\"}}}}" \
+  -o /tmp/nt_sprint.json
+
+rm -f /tmp/nt_sprint.json
+echo "✅ Task assigned to $SPRINT_NAME"
+```
+
+### Step 3 — Show sprint summary
+
+```
+SPRINT SETUP COMPLETE
+━━━━━━━━━━━━━━━━━━━━
+Sprint:     [SPRINT_NAME]
+Tasks:      [N] tasks assigned
+Breakdown:
+  📦 [epic1]: [n] tasks
+  📦 [epic2]: [n] tasks
+By Role:
+  @backend:  [n] tasks
+  @frontend: [n] tasks
+  @dba:      [n] tasks
+
+View sprint board: [NOTION_BOARD_URL]
+```
+
+---
+
+## PROC-NT-09 — Query Tasks
+
+**Used by:** any workflow that needs to check project status
+
+### Query by Status
+
+```bash
+# Variables required: NOTION_DATABASE_ID, QUERY_STATUS
+
+curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2022-06-28" \
+  -d "{\"filter\": {\"property\": \"Status\", \"select\": {\"equals\": \"$QUERY_STATUS\"}}}" \
+  -o /tmp/nt_query.json
+
+node -e "
+const fs = require('fs');
+const data = JSON.parse(fs.readFileSync('/tmp/nt_query.json', 'utf8'));
+const tasks = data.results || [];
+console.log('Found: ' + tasks.length + ' tasks with status: $QUERY_STATUS');
+tasks.forEach(t => {
+  const title = (t.properties.Title.title || []).map(x => x.plain_text).join('');
+  const role = t.properties.Role?.select?.name || '-';
+  const epic = t.properties.Epic?.select?.name || '-';
+  console.log('  - [' + role + '] ' + title + ' (' + epic + ')');
+});
+"
+rm -f /tmp/nt_query.json
+```
+
+### Query by Role
+
+```bash
+# Variables required: NOTION_DATABASE_ID, QUERY_ROLE (e.g. "@backend")
+
+curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2022-06-28" \
+  -d "{\"filter\": {\"property\": \"Role\", \"select\": {\"equals\": \"$QUERY_ROLE\"}}}" \
+  -o /tmp/nt_query_role.json
+
+node -e "
+const fs = require('fs');
+const data = JSON.parse(fs.readFileSync('/tmp/nt_query_role.json', 'utf8'));
+const tasks = data.results || [];
+console.log('Found: ' + tasks.length + ' tasks for role: $QUERY_ROLE');
+tasks.forEach(t => {
+  const title = (t.properties.Title.title || []).map(x => x.plain_text).join('');
+  const status = t.properties.Status?.select?.name || '-';
+  console.log('  - [' + status + '] ' + title);
+});
+"
+rm -f /tmp/nt_query_role.json
+```
+
+### Query Blocked Tasks
+
+```bash
+# Variables required: NOTION_DATABASE_ID
+
+curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2022-06-28" \
+  -d "{\"filter\": {\"property\": \"Status\", \"select\": {\"equals\": \"Blocked\"}}}" \
+  -o /tmp/nt_blocked.json
+
+node -e "
+const fs = require('fs');
+const data = JSON.parse(fs.readFileSync('/tmp/nt_blocked.json', 'utf8'));
+const tasks = data.results || [];
+if (tasks.length === 0) {
+  console.log('✅ No blocked tasks');
+} else {
+  console.log('⚠️  ' + tasks.length + ' BLOCKED tasks:');
+  tasks.forEach(t => {
+    const title = (t.properties.Title.title || []).map(x => x.plain_text).join('');
+    const notes = (t.properties.Notes?.rich_text || []).map(x => x.plain_text).join('');
+    console.log('  🔴 ' + title + (notes ? ' — ' + notes : ''));
+  });
+}
+"
+rm -f /tmp/nt_blocked.json
+```
+
+---
+
+## PROC-NT-10 — Project Dashboard
+
+**Used by:** dev-starter.md Gate 3 (after tasks created), or anytime for status check
+
+### Generate Progress Summary
+
+```bash
+# Variables required: NOTION_DATABASE_ID
+
+# Fetch all tasks
+curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" \
+  -H "Authorization: Bearer $NOTION_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "Notion-Version: 2022-06-28" \
+  -d "{}" \
+  -o /tmp/nt_all.json
+
+node -e "
+const fs = require('fs');
+const data = JSON.parse(fs.readFileSync('/tmp/nt_all.json', 'utf8'));
+const tasks = data.results || [];
+const total = tasks.length;
+
+// Count by status
+const byStatus = {};
+tasks.forEach(t => {
+  const s = t.properties.Status?.select?.name || 'Unknown';
+  byStatus[s] = (byStatus[s] || 0) + 1;
+});
+
+// Count by epic
+const byEpic = {};
+tasks.forEach(t => {
+  const e = t.properties.Epic?.select?.name || 'No Epic';
+  const s = t.properties.Status?.select?.name || 'Unknown';
+  if (!byEpic[e]) byEpic[e] = { total: 0, done: 0 };
+  byEpic[e].total++;
+  if (s === 'Done') byEpic[e].done++;
+});
+
+// Count by role
+const byRole = {};
+tasks.forEach(t => {
+  const r = t.properties.Role?.select?.name || 'Unknown';
+  const s = t.properties.Status?.select?.name || 'Unknown';
+  if (!byRole[r]) byRole[r] = { total: 0, done: 0 };
+  byRole[r].total++;
+  if (s === 'Done') byRole[r].done++;
+});
+
+const done = byStatus['Done'] || 0;
+const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+console.log('');
+console.log('PROJECT DASHBOARD');
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+console.log('Progress: ' + done + '/' + total + ' tasks (' + pct + '%)');
+console.log('');
+console.log('By Status:');
+Object.entries(byStatus).forEach(([k, v]) => {
+  const bar = '█'.repeat(Math.round((v / total) * 20));
+  console.log('  ' + k.padEnd(14) + bar + ' ' + v);
+});
+console.log('');
+console.log('By Epic:');
+Object.entries(byEpic).forEach(([k, v]) => {
+  const epct = Math.round((v.done / v.total) * 100);
+  console.log('  ' + k.padEnd(24) + v.done + '/' + v.total + ' (' + epct + '%)');
+});
+console.log('');
+console.log('By Role:');
+Object.entries(byRole).forEach(([k, v]) => {
+  console.log('  ' + k.padEnd(14) + v.done + '/' + v.total + ' done');
+});
+console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+"
+rm -f /tmp/nt_all.json
+```
+
+Output example:
+```
+PROJECT DASHBOARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Progress: 12/20 tasks (60%)
+
+By Status:
+  Done          ████████████ 12
+  In Progress   ████ 4
+  In Review     ██ 2
+  To Do         ██ 2
+
+By Epic:
+  Auth & Users            5/5 (100%)
+  Core Features           4/8 (50%)
+  Reports & Export        3/5 (60%)
+  Quality                 0/2 (0%)
+
+By Role:
+  @backend      4/6 done
+  @frontend     4/6 done
+  @dba          2/3 done
+  @qa           1/3 done
+  @devops       1/2 done
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 ---

@@ -487,6 +487,7 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
   PM     → read ~/.claude/sdlc/dev-notion.md
          → PROC-NT-01: find or create Notion parent page
          → PROC-NT-02: create project database (Task Board)
+         → PROC-NT-07: create views (Board, By Epic, Sprint, All Tasks)
   DevOps → save .project.env (NOTION_DATABASE_ID, GITHUB_REPO)
   ──────────────────────────────────────────────────
   Show:
@@ -494,6 +495,7 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
     ✅ Notion: [NOTION_BOARD_URL]
     ✅ Branch protection: main protected
     ✅ Templates: PR + Issue templates created
+    ✅ Notion views: Board, By Epic, Sprint, All Tasks
   No approval needed — proceed to Gate 1 automatically
 
 GATE 1 — Discovery                    ← HARD STOP: user must approve before Gate 2
@@ -555,7 +557,8 @@ GATE 3 — Foundation + Task Setup      ← HARD STOP: user must approve before 
 
   After approval:
   PM     → read ~/.claude/sdlc/dev-github.md → PROC-GH-05: create GitHub Issues (1 per task, assigned to milestone)
-  PM     → read ~/.claude/sdlc/dev-notion.md → PROC-NT-03: create Notion tasks (link GitHub #)
+  PM     → read ~/.claude/sdlc/dev-notion.md → PROC-NT-03: create Notion tasks (link GitHub #, Epic, Role)
+  PM     → PROC-NT-10: show project dashboard (progress summary)
   DevOps → scaffold Docker Compose, branch strategy
   Backend → scaffold project, DB connection, /health endpoint
   Frontend → scaffold project, API service, auth interceptor
