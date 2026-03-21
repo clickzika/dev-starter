@@ -51,7 +51,7 @@ if (Test-Path "$env:USERPROFILE\.claude\sdlc") {
 }
 
 # Backup root files
-foreach ($f in @("CLAUDE.md", "USER.md", "TEAM.md")) {
+foreach ($f in @("CLAUDE.md", "USER.md")) {
   if (Test-Path "$env:USERPROFILE\.claude\$f") {
     Copy-Item "$env:USERPROFILE\.claude\$f" "$backup\"
   }

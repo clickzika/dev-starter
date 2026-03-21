@@ -40,7 +40,6 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 │
 ├── .env.example             ← Global secrets template (GitHub, Notion)
 ├── USER.md                  ← Developer skill profile (agent calibration)
-├── TEAM.md                  ← Team structure & ownership map
 └── setup.sh                 ← First-time setup script
 ```
 

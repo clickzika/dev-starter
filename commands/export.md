@@ -72,7 +72,6 @@ echo ""
 echo "--- Root Files ---"
 [ -f "$HOME/.claude/CLAUDE.md" ] && echo "  ✅ CLAUDE.md" || echo "  ❌ MISSING: CLAUDE.md"
 [ -f "$HOME/.claude/USER.md" ] && echo "  ✅ USER.md" || echo "  ❌ MISSING: USER.md"
-[ -f "$HOME/.claude/TEAM.md" ] && echo "  ✅ TEAM.md" || echo "  ❌ MISSING: TEAM.md"
 [ -f "$HOME/.claude/.env.example" ] && echo "  ✅ .env.example" || echo "  ❌ MISSING: .env.example"
 [ -f "$HOME/.claude/setup.sh" ] && echo "  ✅ setup.sh" || echo "  ❌ MISSING: setup.sh"
 [ -f "$HOME/.claude/README.md" ] && echo "  ✅ README.md" || echo "  ❌ MISSING: README.md"
@@ -110,7 +109,7 @@ Copy-Item "$src\sdlc" "$tmpDir\.claude\sdlc" -Recurse -ErrorAction SilentlyConti
 Copy-Item "$src\templates\*" "$tmpDir\.claude\templates\" -Recurse -ErrorAction SilentlyContinue
 
 # Copy root files (NOT .env)
-foreach ($f in @("CLAUDE.md", "USER.md", "TEAM.md", ".env.example", "setup.sh", "README.md", "LICENSE", ".gitignore")) {
+foreach ($f in @("CLAUDE.md", "USER.md", ".env.example", "setup.sh", "README.md", "LICENSE", ".gitignore")) {
   if (Test-Path "$src\$f") { Copy-Item "$src\$f" "$tmpDir\.claude\" }
 }
 
@@ -148,7 +147,7 @@ Contents:
   📁 commands/    — 3 utility commands (context, export, import)
   📁 sdlc/        — 17+ workflow runbooks
   📁 templates/   — CLAUDE.md, project.env, doc portal
-  📄 Root files   — USER.md, TEAM.md, setup.sh, README.md, LICENSE
+  📄 Root files   — USER.md, setup.sh, README.md, LICENSE
 
 To import on new computer:
   1. Extract to ~/.claude/
