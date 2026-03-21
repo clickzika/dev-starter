@@ -87,6 +87,25 @@ Before announcing any handoff to the next agent:
 
 ---
 
+### Rule 4 — Ask ONE Question at a Time
+
+**NEVER ask multiple questions in one message.**
+- Ask Q1 → wait for answer → ask Q2 → wait for answer → ...
+- Show the question number, the question, and the options (if any)
+- After the user answers, confirm what you understood, then ask the next question
+- If a question is conditional (e.g. "ask only if Q4 includes 1"), skip it silently
+
+Format for each question:
+```
+📋 Q[N]/26 — [Question title]
+
+[Question text]
+
+[Options if any]
+```
+
+---
+
 ## PHASE 1 — Project Identity
 
 **Q1. What is the project name?**
