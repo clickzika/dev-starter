@@ -480,9 +480,11 @@ Before announcing any handoff to the next agent:
 
 ```
 GATE 0 — Project Setup                ← runs automatically before Gate 1
-  DevOps → read ~/.claude/dev-github.md
+  DevOps → read ~/.claude/sdlc/dev-github.md
          → PROC-GH-01: create GitHub repo + branch strategy
-  PM     → read ~/.claude/dev-notion.md
+         → PROC-GH-10: set branch protection rules on main
+         → PROC-GH-14: create PR + Issue templates (.github/)
+  PM     → read ~/.claude/sdlc/dev-notion.md
          → PROC-NT-01: find or create Notion parent page
          → PROC-NT-02: create project database (Task Board)
   DevOps → save .project.env (NOTION_DATABASE_ID, GITHUB_REPO)
@@ -490,6 +492,8 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
   Show:
     ✅ GitHub: github.com/[user]/[PROJECT_NAME]
     ✅ Notion: [NOTION_BOARD_URL]
+    ✅ Branch protection: main protected
+    ✅ Templates: PR + Issue templates created
   No approval needed — proceed to Gate 1 automatically
 
 GATE 1 — Discovery                    ← HARD STOP: user must approve before Gate 2
@@ -544,19 +548,20 @@ GATE 2 — Architecture & Design        ← HARD STOP: user must approve before 
           → wait for "approve" or "revise [doc]"
 
 GATE 3 — Foundation + Task Setup      ← HARD STOP: user must approve before Gate 4
-  PM     → read ~/.claude/dev-github.md → PROC-GH-04: create labels + milestones
+  PM     → read ~/.claude/sdlc/dev-github.md → PROC-GH-04: create labels
+  PM     → read ~/.claude/sdlc/dev-github.md → PROC-GH-11: create milestones (1 per epic)
   PM     → break tasks into Epic → Feature → Task list → show for approval
   ⛔ STOP: Show task list → wait for "task list approved"
 
   After approval:
-  PM     → read ~/.claude/dev-github.md → PROC-GH-05: create GitHub Issues (1 per task)
-  PM     → read ~/.claude/dev-notion.md → PROC-NT-03: create Notion tasks (link GitHub #)
+  PM     → read ~/.claude/sdlc/dev-github.md → PROC-GH-05: create GitHub Issues (1 per task, assigned to milestone)
+  PM     → read ~/.claude/sdlc/dev-notion.md → PROC-NT-03: create Notion tasks (link GitHub #)
   DevOps → scaffold Docker Compose, branch strategy
   Backend → scaffold project, DB connection, /health endpoint
   Frontend → scaffold project, API service, auth interceptor
   ──────────────────────────────────────────────────
   Show:
-    ✅ [N] GitHub issues created
+    ✅ [N] GitHub issues created (assigned to milestones)
     ✅ [N] Notion tasks created (Status: To Do)
     ✅ Scaffold complete
   ⛔ STOP → wait for "approve" or "revise [component]"
@@ -586,6 +591,7 @@ GATE 4 — Feature Development          ← HARD STOP per feature
 
     After approval:
     8. DevOps → PROC-GH-08: merge PR, close issue
+       ⚠️ If merge conflict → follow PROC-GH-13 (conflict resolution)
     9. PM     → PROC-NT-06: update Notion task → "Done"
     → proceed to next feature
 
@@ -599,11 +605,12 @@ GATE 5 — Quality & Delivery           ← HARD STOP: user must approve before 
   ⛔ STOP: Show test + security report → wait for "approve" to deploy
 
   After approval:
-  DevOps → PROC-GH-09: merge develop → main, tag release
+  DevOps → PROC-GH-15: determine semver (patch/minor/major)
+  DevOps → PROC-GH-09: merge develop → main, tag with semver
   Show:
     ✅ All [N] GitHub issues closed
     ✅ All [N] Notion tasks → Done
-    ✅ Merged to main, tagged v1.0.0
+    ✅ Merged to main, tagged [semver]
     🚀 Ready for production deployment
 ```
 

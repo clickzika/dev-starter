@@ -290,10 +290,432 @@ echo "✅ PR merged, issue #$ISSUE_NUMBER closed"
 ```bash
 git checkout main
 git pull origin main
-git merge develop --no-ff -m "release: $PROJECT_NAME v1.0.0"
-git tag "v1.0.0"
+
+# Determine version using PROC-GH-15 semver logic
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+# Default to minor bump — override with RELEASE_TYPE if set
+NEXT_VERSION=$(PROC-GH-15 logic — see below)
+
+git merge develop --no-ff -m "release: $PROJECT_NAME $NEXT_VERSION"
+git tag "$NEXT_VERSION"
 git push origin main --tags
 
-echo "✅ Merged to main — tagged v1.0.0"
+echo "✅ Merged to main — tagged $NEXT_VERSION"
 echo "🚀 Ready for production deployment"
+```
+
+---
+
+## PROC-GH-10 — Branch Protection Rules
+
+**Used by:** dev-starter.md Gate 0 (after repo creation)
+
+```bash
+cd "$PROJECT_DIR"
+
+# Protect main branch
+gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/main/protection \
+  --method PUT \
+  --input - << 'EOF'
+{
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true
+  },
+  "enforce_admins": false,
+  "required_status_checks": null,
+  "restrictions": null
+}
+EOF
+
+echo "✅ Branch protection set on main:"
+echo "   - Require 1 PR review"
+echo "   - Dismiss stale reviews on new push"
+echo "   - No direct push allowed"
+
+# Note: develop branch is NOT protected by default
+# (agents need to push directly during Gate 3 scaffold)
+# After Gate 3, optionally protect develop too:
+# gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/develop/protection ...
+```
+
+⚠️ **Requires GitHub Pro or public repo** — free private repos cannot set branch protection via API. If it fails, print warning and continue.
+
+---
+
+## PROC-GH-11 — Create Milestones (per Epic)
+
+**Used by:** dev-starter.md Gate 3 (after task breakdown approved)
+
+```bash
+cd "$PROJECT_DIR"
+
+# Create one milestone per epic
+# Variables required: EPIC_TITLE, EPIC_DESCRIPTION, EPIC_DUE_DATE (optional)
+
+MILESTONE_URL=$(gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/milestones \
+  --method POST \
+  --field title="$EPIC_TITLE" \
+  --field description="$EPIC_DESCRIPTION" \
+  --field state="open" \
+  --jq '.number')
+
+echo "✅ Milestone created: $EPIC_TITLE (#$MILESTONE_URL)"
+
+# When creating issues (PROC-GH-05), add milestone:
+# gh issue create --title "$TASK_TITLE" --body "$TASK_BODY" --milestone "$EPIC_TITLE"
+```
+
+**Example milestones for a typical project:**
+```
+Milestone 1: "Auth & User Management"    — issues #1-#5
+Milestone 2: "Core Features"             — issues #6-#12
+Milestone 3: "Reports & Export"           — issues #13-#16
+Milestone 4: "Quality & Polish"           — issues #17-#20
+```
+
+---
+
+## PROC-GH-12 — Hotfix Flow
+
+**Used by:** dev-hotfix.md (critical production bug)
+
+### Step 1 — Create hotfix branch from main
+
+```bash
+cd "$PROJECT_DIR"
+
+# Get latest main
+git checkout main
+git pull origin main
+
+# Create hotfix branch
+HOTFIX_BRANCH="hotfix/$ISSUE_NUMBER-$HOTFIX_SLUG"
+git checkout -b "$HOTFIX_BRANCH"
+
+echo "✅ Hotfix branch: $HOTFIX_BRANCH (from main)"
+echo "⚠️  Fix the bug, then run PROC-GH-12 Step 2"
+```
+
+### Step 2 — PR to main + backport to develop
+
+```bash
+cd "$PROJECT_DIR"
+
+# Push and create PR to main
+git push -u origin "$HOTFIX_BRANCH"
+
+PR_URL=$(gh pr create \
+  --title "hotfix: $HOTFIX_TITLE" \
+  --body "Closes #$ISSUE_NUMBER
+
+## Hotfix
+**Severity:** $SEVERITY
+**Impact:** $IMPACT
+
+## Root Cause
+[description]
+
+## Fix
+[what was changed]
+
+## Testing
+- [ ] Fix verified locally
+- [ ] No regression in related features
+- [ ] Rollback plan confirmed" \
+  --base main \
+  --label "priority:critical,status:in-review")
+
+echo "✅ Hotfix PR created: $PR_URL"
+echo "⛔ Wait for approval before merging"
+```
+
+### Step 3 — After PR approved: merge to main + backport to develop
+
+```bash
+cd "$PROJECT_DIR"
+
+# Merge to main
+gh pr merge "$PR_NUMBER" --squash --delete-branch
+
+# Tag with patch version
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v1.0.0")
+PATCH_VERSION=$(echo "$LATEST_TAG" | awk -F. '{print $1"."$2"."$3+1}')
+git checkout main && git pull
+git tag "$PATCH_VERSION"
+git push origin main --tags
+
+echo "✅ Hotfix merged to main — tagged $PATCH_VERSION"
+
+# Backport to develop
+git checkout develop
+git pull origin develop
+git merge main --no-ff -m "chore: backport hotfix $PATCH_VERSION to develop"
+git push origin develop
+
+echo "✅ Hotfix backported to develop"
+gh issue close "$ISSUE_NUMBER" --comment "✅ Hotfix $PATCH_VERSION deployed and backported."
+```
+
+---
+
+## PROC-GH-13 — Merge Conflict Resolution
+
+**Used by:** Any workflow when `git merge` or `gh pr merge` fails with conflicts
+
+### Step 1 — Detect conflict
+
+```bash
+# When merging develop into feature branch:
+git checkout "$FEATURE_BRANCH"
+git merge develop
+
+# If conflict detected, git will output:
+# CONFLICT (content): Merge conflict in [filename]
+# Automatic merge failed; fix conflicts and then commit the result.
+```
+
+### Step 2 — Resolve conflicts
+
+```
+⚠️ MERGE CONFLICT DETECTED
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+Branch: [feature branch]
+Merging from: develop
+Conflicting files:
+  - [file1]
+  - [file2]
+
+Resolution strategy:
+  1. Read both versions of each conflicting file
+  2. Understand the intent of BOTH changes
+  3. Merge manually — preserve both intentions where possible
+  4. If unclear → ask user which version to keep
+  5. NEVER blindly pick "ours" or "theirs"
+```
+
+### Step 3 — Complete merge
+
+```bash
+# After resolving all conflicts in the files:
+git add .
+git commit -m "chore: resolve merge conflict with develop
+
+Conflicts resolved:
+- [file1]: [what was kept/merged]
+- [file2]: [what was kept/merged]"
+
+git push origin "$FEATURE_BRANCH"
+echo "✅ Conflict resolved and pushed"
+```
+
+### Rules:
+- **NEVER** use `git checkout --ours .` or `git checkout --theirs .` without reading both sides
+- **ALWAYS** read the conflicting sections and understand what each side intended
+- **ASK** the user if intent is ambiguous
+- **TEST** after resolving — conflicts can introduce subtle bugs
+
+---
+
+## PROC-GH-14 — PR and Issue Templates
+
+**Used by:** dev-starter.md Gate 0 (after repo creation)
+
+Create `.github/` directory with templates:
+
+### Pull Request Template
+
+```bash
+mkdir -p "$PROJECT_DIR/.github"
+
+cat > "$PROJECT_DIR/.github/pull_request_template.md" << 'PREOF'
+## Summary
+<!-- Brief description of what this PR does -->
+
+## Related Issue
+Closes #
+
+## Changes
+-
+
+## Type of Change
+- [ ] Feature (new functionality)
+- [ ] Bug fix (fixes an issue)
+- [ ] Hotfix (critical production fix)
+- [ ] Refactor (no behavior change)
+- [ ] Docs (documentation only)
+- [ ] Chore (build, CI, dependencies)
+
+## Testing
+- [ ] Unit tests passing
+- [ ] Integration tests passing
+- [ ] Manual testing done
+- [ ] No regression in related features
+
+## Checklist
+- [ ] Code follows project standards (CLAUDE.md)
+- [ ] Self-reviewed my own code
+- [ ] Docs updated if needed
+- [ ] No secrets or credentials in code
+- [ ] Database migration included (if schema changed)
+PREOF
+
+echo "✅ PR template created: .github/pull_request_template.md"
+```
+
+### Issue Templates
+
+```bash
+mkdir -p "$PROJECT_DIR/.github/ISSUE_TEMPLATE"
+
+# Bug Report
+cat > "$PROJECT_DIR/.github/ISSUE_TEMPLATE/bug_report.md" << 'BUGEOF'
+---
+name: Bug Report
+about: Report a bug to help us improve
+title: "[BUG] "
+labels: bug
+---
+
+## Describe the Bug
+<!-- Clear description of what the bug is -->
+
+## Steps to Reproduce
+1.
+2.
+3.
+
+## Expected Behavior
+<!-- What should happen -->
+
+## Actual Behavior
+<!-- What actually happens -->
+
+## Screenshots
+<!-- If applicable -->
+
+## Environment
+- OS:
+- Browser:
+- Version:
+BUGEOF
+
+# Feature Request
+cat > "$PROJECT_DIR/.github/ISSUE_TEMPLATE/feature_request.md" << 'FEATEOF'
+---
+name: Feature Request
+about: Suggest a new feature
+title: "[FEATURE] "
+labels: enhancement
+---
+
+## Summary
+<!-- Brief description of the feature -->
+
+## Problem
+<!-- What problem does this solve? -->
+
+## Proposed Solution
+<!-- How should it work? -->
+
+## Acceptance Criteria
+- [ ]
+- [ ]
+
+## Priority
+<!-- Critical / High / Medium / Low -->
+FEATEOF
+
+echo "✅ Issue templates created: bug_report.md, feature_request.md"
+```
+
+---
+
+## PROC-GH-15 — Semantic Versioning
+
+**Used by:** PROC-GH-09 (release), PROC-GH-12 (hotfix)
+
+### Version Format: `vMAJOR.MINOR.PATCH`
+
+```bash
+cd "$PROJECT_DIR"
+
+# Get latest tag
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+MAJOR=$(echo "$LATEST_TAG" | sed 's/v//' | cut -d. -f1)
+MINOR=$(echo "$LATEST_TAG" | sed 's/v//' | cut -d. -f2)
+PATCH=$(echo "$LATEST_TAG" | sed 's/v//' | cut -d. -f3)
+
+echo "Current version: $LATEST_TAG"
+```
+
+### Determine bump type
+
+```
+VERSION BUMP RULES
+━━━━━━━━━━━━━━━━━━
+PATCH (v1.0.0 → v1.0.1):
+  - Bug fixes
+  - Hotfixes
+  - Typo/doc fixes
+  - No API or behavior changes
+
+MINOR (v1.0.0 → v1.1.0):
+  - New features (backward compatible)
+  - New API endpoints
+  - New UI screens/components
+  - Non-breaking database additions
+
+MAJOR (v1.0.0 → v2.0.0):
+  - Breaking API changes
+  - Database schema breaking changes
+  - Removed features
+  - Major architecture changes
+  - Incompatible with previous version
+```
+
+### Auto-increment
+
+```bash
+# Usage: bump_version [patch|minor|major]
+bump_version() {
+  case "$1" in
+    patch) PATCH=$((PATCH + 1)) ;;
+    minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
+    major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+  esac
+  echo "v${MAJOR}.${MINOR}.${PATCH}"
+}
+
+# Determine type from context:
+# - Called from PROC-GH-12 (hotfix) → patch
+# - Called from PROC-GH-09 (release with new features) → minor
+# - Called from PROC-GH-09 (breaking changes) → major
+# - If unsure → ask user
+
+NEXT_VERSION=$(bump_version "$RELEASE_TYPE")
+echo "Next version: $NEXT_VERSION"
+
+# Apply tag
+git tag "$NEXT_VERSION"
+git push origin --tags
+echo "✅ Tagged: $NEXT_VERSION"
+```
+
+### Decision flow for agents:
+
+```
+Is this a hotfix? (from PROC-GH-12)
+  └── YES → PATCH bump
+
+Is this a release? (from PROC-GH-09)
+  ├── Any breaking changes in this release?
+  │   └── YES → MAJOR bump
+  ├── Any new features?
+  │   └── YES → MINOR bump
+  └── Only fixes/refactors?
+      └── PATCH bump
+
+If unsure → ask user:
+  "This release includes [summary]. Should this be a patch, minor, or major version bump?"
 ```
