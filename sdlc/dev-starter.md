@@ -14,6 +14,18 @@ claude
 
 ## ⚠️ CRITICAL RULES — Read Before Doing Anything
 
+### Rule 0 — Checkpoint & Auto-Resume (ALWAYS active)
+
+This is a long workflow. You MUST follow the Checkpoint & Auto-Resume Protocol.
+Read `~/.claude/sdlc/dev-checkpoint.md` and:
+1. **At start** — Setup Cron auto-resume (every 10 minutes)
+2. **After every task** — Save checkpoint to `memory/progress.json`
+3. **At end** — Cleanup (update status to completed, delete Cron)
+
+This ensures work is never lost if rate limits are hit.
+
+---
+
 ### Rule 1 — Hard Approval Gates (NEVER skip)
 
 This project has 5 gates. Each gate has a HARD STOP.

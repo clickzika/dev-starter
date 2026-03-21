@@ -12,6 +12,15 @@ Follow all phases in order. Do NOT skip any phase.
 
 ## ⚠️ CRITICAL RULES
 
+### Rule 0 — Checkpoint & Auto-Resume (ALWAYS active)
+
+Read `~/.claude/sdlc/dev-checkpoint.md` and follow the protocol:
+1. **At start** — Setup Cron auto-resume (every 10 minutes)
+2. **After every task** — Save checkpoint to `memory/progress.json`
+3. **At end** — Cleanup (update status to completed, delete Cron)
+
+---
+
 ### Rule 1 — Read Only Until Gate 3
 During audit phases (Gates 1–2), agents READ ONLY.
 Do NOT modify any code or files until the user approves the audit report

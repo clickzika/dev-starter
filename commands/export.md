@@ -57,7 +57,7 @@ done
 
 echo ""
 echo "--- Workflows (17+) ---"
-for f in dev-menu dev-starter dev-change dev-audit dev-dependency dev-dod dev-env dev-existing dev-github dev-handover dev-hotfix dev-incident dev-migrate dev-monitor dev-notion dev-onboarding dev-release dev-retrospective dev-rollback dev-secrets dev-sprint; do
+for f in dev-checkpoint dev-starter dev-change dev-audit dev-dependency dev-dod dev-env dev-existing dev-github dev-handover dev-hotfix dev-incident dev-migrate dev-monitor dev-notion dev-onboarding dev-release dev-retrospective dev-rollback dev-secrets dev-sprint; do
   FILE="$HOME/.claude/sdlc/$f.md"
   [ -f "$FILE" ] && echo "  ✅ $f.md" || echo "  ❌ MISSING: $f.md"
 done

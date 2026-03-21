@@ -18,6 +18,15 @@ claude
 
 ## ⚠️ CRITICAL RULES
 
+### Rule 0 — Checkpoint & Auto-Resume (ALWAYS active)
+
+Read `~/.claude/sdlc/dev-checkpoint.md` and follow the protocol:
+1. **At start** — Setup Cron auto-resume (every 10 minutes)
+2. **After every task** — Save checkpoint to `memory/progress.json`
+3. **At end** — Cleanup (update status to completed, delete Cron)
+
+---
+
 ### Rule 1 — Hard Approval Gates
 STOP at every gate. Show output. Wait for "approve" or "revise [notes]".
 Never proceed without explicit approval.
