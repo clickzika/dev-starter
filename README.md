@@ -146,6 +146,32 @@ Gate 5: Delivery       → Deploy, monitoring, documentation, handover
 
 Each gate has a **Definition of Done** checklist. No shortcuts.
 
+## Deploying Project Docs
+
+Each project built with Dev Starter generates an HTML document portal (`docs/index.html`). You can host it for your team:
+
+### GitHub Pages (public repos)
+
+```bash
+# In your project repo settings:
+# Settings → Pages → Source: Deploy from branch → /docs → Save
+# Your docs will be at: https://username.github.io/project-name/
+```
+
+### Cloudflare Pages (private repos — free)
+
+If your repo is **private**, GitHub Pages requires a paid plan. Use Cloudflare Pages instead (free, unlimited bandwidth):
+
+1. Go to [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Pages**
+2. **Connect to Git** → select your repo
+3. Configure:
+   - Production branch: `develop` (or `main`)
+   - Build command: *(leave empty — static HTML)*
+   - Output directory: `docs`
+4. **Save and Deploy**
+
+Your docs will be at: `https://project-name.pages.dev` (auto-deploys on every push)
+
 ## Requirements
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI installed
