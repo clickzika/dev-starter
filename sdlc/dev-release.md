@@ -15,15 +15,16 @@ develop ──→ Local Test (Claude) ──→ uat ──→ User Test ──�
               Phase 5                  Phase 6               Phase 7
 
 PHASE 1: Release scope (version, environment)
-PHASE 2: Pre-release checklist
+PHASE 2: Pre-release checklist (code, docs, security, database)
+  ⛔ GATE 1: "DEV approved"  → proceed to SIT
 PHASE 3: Deploy preparation (env vars, strategy)
 PHASE 4: Deploy strategy selection (A-H)
-PHASE 5: Local staging test (Docker) — Claude runs automated tests
-  ⛔ GATE 2: Local test approval
+PHASE 5: SIT — Local Docker test — Claude runs automated tests
+  ⛔ GATE 2: "SIT approved"  → proceed to UAT
 PHASE 6: UAT — merge develop → uat — User tests manually
-  ⛔ GATE 3: UAT approval (user only)
+  ⛔ GATE 3: "UAT approved"  → proceed to production
 PHASE 7: Production — merge uat → main — deploy production
-  ⛔ GATE 4: Production deploy approval
+  ⛔ GATE 4: "DEPLOY v[X.Y.Z]"  → deploy
 PHASE 8: Post-deploy verification
 PHASE 9: Release notes
 ```
@@ -90,12 +91,12 @@ Agent verifies each item before allowing release:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⛔ GATE 1 — PRE-RELEASE APPROVAL
+⛔ GATE 1 — DEV APPROVAL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Checklist: [N]/[total] items passing
 Failed items: [list]
 
-  "approve"  → proceed to staging deploy
+  "DEV approved"  → proceed to SIT
   "fix [item]" → fix then re-check
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -396,7 +397,7 @@ npx gh-pages -d dist
 
 ---
 
-## PHASE 5 — Local Staging Test
+## PHASE 5 — SIT (System Integration Testing)
 
 Before deploying to production, run the full app locally in **production mode** to catch issues early.
 
@@ -555,11 +556,11 @@ Manual Smoke Test:  [✅/❌] (user verifies)
 ```
 
 ```
-⛔ GATE 2 — STAGING APPROVAL
+⛔ GATE 2 — SIT APPROVAL
 All automated tests passed.
 Manual smoke test: [status]
 
-  "approve"  → proceed to UAT
+  "SIT approved"  → proceed to UAT
   "fix [issue]" → fix then re-test
 ```
 
