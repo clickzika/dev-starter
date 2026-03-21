@@ -229,6 +229,188 @@ echo -e "${GREEN}✅ Permissions configured: $RESULT rules in settings.json${RES
 echo -e "  Existing settings preserved — only new permissions added"
 echo ""
 
+# ─── USER.md Profile Setup ────────────────────────────
+echo -e "${BOLD}━━━ Developer Profile ━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
+echo ""
+echo -e "${CYAN}3 quick questions to calibrate all agents to your level.${RESET}"
+echo ""
+
+# Q1 — Experience level
+echo -e "${BOLD}Q1. How long have you been coding?${RESET}"
+echo "  1) Just started (< 1 year)"
+echo "  2) 1-3 years"
+echo "  3) 3-10 years"
+echo "  4) 10+ years"
+echo -n "  > "
+read -r EXP_CHOICE
+echo ""
+
+case "$EXP_CHOICE" in
+  1) DEFAULT_LEVEL="Beginner" ;;
+  3) DEFAULT_LEVEL="Advanced" ;;
+  4) DEFAULT_LEVEL="Expert" ;;
+  *) DEFAULT_LEVEL="Intermediate" ;;
+esac
+
+# Q2 — Strong languages/frameworks
+echo -e "${BOLD}Q2. What are you strongest at? (comma-separated)${RESET}"
+echo -e "  ${YELLOW}Examples: JavaScript, Python, React, Docker, SQL, C#, Angular${RESET}"
+echo -e "  ${YELLOW}These will be set to Advanced/Expert. Leave empty to skip.${RESET}"
+echo -n "  > "
+read -r STRONG_SKILLS
+echo ""
+
+# Q3 — Response language
+echo -e "${BOLD}Q3. What language should agents respond in?${RESET}"
+echo "  1) English"
+echo "  2) Thai"
+echo "  3) Both (Thai explanation + English code)"
+echo -n "  > "
+read -r LANG_CHOICE
+echo ""
+
+case "$LANG_CHOICE" in
+  2) RESP_LANG="Thai"; CODE_LANG="English"; EXPLAIN_STYLE="Show full example"; ERROR_LANG="Translate to Thai"; STUCK_STYLE="Walk me through step by step" ;;
+  3) RESP_LANG="Thai + English"; CODE_LANG="English"; EXPLAIN_STYLE="Show full example"; ERROR_LANG="Translate to Thai"; STUCK_STYLE="Walk me through step by step" ;;
+  *) RESP_LANG="English"; CODE_LANG="English"; EXPLAIN_STYLE="Show full example"; ERROR_LANG="Keep in English"; STUCK_STYLE="Walk me through step by step" ;;
+esac
+
+# Determine strong skill level (one above default, capped at Expert)
+case "$DEFAULT_LEVEL" in
+  Beginner) STRONG_LEVEL="Intermediate" ;;
+  Intermediate) STRONG_LEVEL="Advanced" ;;
+  Advanced) STRONG_LEVEL="Expert" ;;
+  Expert) STRONG_LEVEL="Expert" ;;
+esac
+
+# Generate USER.md using Node.js for reliable string handling
+USER_FILE="$HOME/.claude/USER.md"
+
+node -e "
+const fs = require('fs');
+const defaultLevel = '$DEFAULT_LEVEL';
+const strongLevel = '$STRONG_LEVEL';
+const strongSkills = '$STRONG_SKILLS'.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+const respLang = '$RESP_LANG';
+const codeLang = '$CODE_LANG';
+const explainStyle = '$EXPLAIN_STYLE';
+const errorLang = '$ERROR_LANG';
+const stuckStyle = '$STUCK_STYLE';
+
+// Map skill names to table entries
+const langs = [
+  'JavaScript', 'TypeScript', 'Python', 'C#', 'Go', 'Java', 'SQL'
+];
+const frameworks = [
+  'React / Next.js', 'Angular', 'Vue', 'Node.js / Express',
+  'ASP.NET Core', 'Flutter', 'Docker', 'Git / GitHub', 'CI/CD',
+  'Cloud (Azure/AWS/GCP)'
+];
+const concepts = [
+  'REST API design', 'Database design', 'Security (OWASP)',
+  'Testing', 'System design'
+];
+
+function getLevel(name) {
+  const lower = name.toLowerCase();
+  for (const s of strongSkills) {
+    if (lower.includes(s) || s.includes(lower.replace(/ *\\/.*/,'').replace(/ *\\(.*/,''))) {
+      return strongLevel;
+    }
+  }
+  return defaultLevel;
+}
+
+function makeTable(items) {
+  const maxName = Math.max(...items.map(i => i.length), 10);
+  let rows = '';
+  items.forEach(item => {
+    rows += '| ' + item.padEnd(maxName+1) + '| ' + getLevel(item).padEnd(13) + '|\\n';
+  });
+  return rows;
+}
+
+const md = \`# USER.md — Developer Skill Profile
+
+## Purpose
+
+This file tells all agents how to calibrate their output depth.
+Place at \\\`~/.claude/USER.md\\\` for global use.
+All agents read this file at session start.
+
+**Quick setup:** Run \\\`bash ~/.claude/setup.sh\\\` — it asks 3 questions and fills this file automatically.
+**Manual setup:** Edit the levels below directly.
+
+---
+
+## Identity
+
+Name:         Dev
+Role:         Developer
+Time zone:    \${Intl.DateTimeFormat().resolvedOptions().timeZone}
+Language:     \${respLang}
+
+---
+
+## Overall Level
+
+overall: \${defaultLevel}
+
+---
+
+## Skill Levels
+
+### Programming Languages
+| Language    | Level         |
+|-------------|---------------|
+\${makeTable(langs)}
+### Frameworks & Tools
+| Tool                   | Level         |
+|------------------------|---------------|
+\${makeTable(frameworks)}
+### Concepts
+| Concept          | Level         |
+|------------------|---------------|
+\${makeTable(concepts)}
+---
+
+## Communication Preferences
+
+Response language:    \${respLang}
+Code comments:        \${codeLang}
+Explanation style:    \${explainStyle}
+Error messages:       \${errorLang}
+When I am stuck:      \${stuckStyle}
+
+---
+
+## Agent Calibration Rules
+
+When agents read this file, they MUST apply these rules:
+
+| Level        | Agent behavior                                                         |
+|--------------|------------------------------------------------------------------------|
+| Beginner     | Explain the why. Full working examples. Warnings. Define all jargon.   |
+| Intermediate | Brief explanation + code. Skip basics. Highlight non-obvious parts.    |
+| Advanced     | Code + trade-offs. No hand-holding. Flag edge cases only.              |
+| Expert       | Dense output. Assume full context. Focus on non-trivial only.          |
+
+If USER.md is missing → agent asks once: \"What is your experience level with [topic]?\"
+Then calibrates — never asks again in the same session.
+\`;
+
+fs.writeFileSync('$USER_FILE', md);
+console.log('OK');
+"
+
+echo -e "${GREEN}✅ Developer profile saved: ~/.claude/USER.md${RESET}"
+echo -e "  Overall level: ${CYAN}${DEFAULT_LEVEL}${RESET}"
+if [ -n "$STRONG_SKILLS" ]; then
+  echo -e "  Strong skills: ${CYAN}${STRONG_SKILLS}${RESET} → ${CYAN}${STRONG_LEVEL}${RESET}"
+fi
+echo -e "  Language:      ${CYAN}${RESP_LANG}${RESET}"
+echo ""
+
 # ─── Write .env ───────────────────────────────────────
 mkdir -p "$HOME/.claude"
 
@@ -253,6 +435,7 @@ echo -e "${GREEN}${BOLD}║            ✅ Setup Complete!             ║${RESE
 echo -e "${GREEN}${BOLD}╚══════════════════════════════════════════╝${RESET}"
 echo ""
 echo -e "  📄 Config saved to: ${CYAN}~/.claude/.env${RESET}"
+echo -e "  👤 Profile:         ${CYAN}~/.claude/USER.md (${DEFAULT_LEVEL})${RESET}"
 echo -e "  🔓 Permissions:     ${CYAN}~/.claude/settings.json${RESET}"
 echo -e "  📁 Projects folder: ${CYAN}${PROJECTS_ROOT}${RESET}"
 echo -e "  🐙 GitHub user:     ${CYAN}${GITHUB_USERNAME}${RESET}"

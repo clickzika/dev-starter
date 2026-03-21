@@ -3,93 +3,74 @@
 ## Purpose
 
 This file tells all agents how to calibrate their output depth.
-Place at project root or `~/.claude/USER.md` for global use.
+Place at `~/.claude/USER.md` for global use.
 All agents read this file at session start.
+
+**Quick setup:** Run `bash ~/.claude/setup.sh` — it asks 3 questions and fills this file automatically.
+**Manual setup:** Edit the levels below directly.
 
 ---
 
 ## Identity
 
-Name:         [Your name]
-Role:         [e.g. Solo developer / Tech Lead / Product Owner]
-Team size:    [e.g. 1 / 3 / 10+]
-Time zone:    [e.g. Asia/Bangkok]
-Language:     [e.g. Thai + English]
+Name:         Dev
+Role:         Developer
+Time zone:    UTC
+Language:     English
+
+---
+
+## Overall Level
+
+overall: Intermediate
 
 ---
 
 ## Skill Levels
 
-Rate yourself honestly. Agents adjust explanation depth based on this.
-
 ### Programming Languages
-| Language   | Level              | Notes                        |
-|------------|--------------------|------------------------------|
-| C#         | [Beginner/Intermediate/Advanced/Expert] | |
-| TypeScript | [Beginner/Intermediate/Advanced/Expert] | |
-| Python     | [Beginner/Intermediate/Advanced/Expert] | |
-| Go         | [Beginner/Intermediate/Advanced/Expert] | |
-| SQL        | [Beginner/Intermediate/Advanced/Expert] | |
-| Other:     | [Beginner/Intermediate/Advanced/Expert] | |
+| Language   | Level        |
+|------------|--------------|
+| JavaScript | Intermediate |
+| TypeScript | Intermediate |
+| Python     | Intermediate |
+| C#         | Intermediate |
+| Go         | Intermediate |
+| Java       | Intermediate |
+| SQL        | Intermediate |
 
 ### Frameworks & Tools
-| Tool            | Level              | Notes                        |
-|-----------------|--------------------|------------------------------|
-| Angular         | [Beginner/Intermediate/Advanced/Expert] | |
-| React           | [Beginner/Intermediate/Advanced/Expert] | |
-| ASP.NET Core    | [Beginner/Intermediate/Advanced/Expert] | |
-| Docker          | [Beginner/Intermediate/Advanced/Expert] | |
-| Git / GitHub    | [Beginner/Intermediate/Advanced/Expert] | |
-| CI/CD           | [Beginner/Intermediate/Advanced/Expert] | |
-| Cloud (Azure/AWS/GCP) | [Beginner/Intermediate/Advanced/Expert] | |
+| Tool                  | Level        |
+|-----------------------|--------------|
+| React / Next.js       | Intermediate |
+| Angular               | Intermediate |
+| Vue                   | Intermediate |
+| Node.js / Express     | Intermediate |
+| ASP.NET Core          | Intermediate |
+| Flutter               | Intermediate |
+| Docker                | Intermediate |
+| Git / GitHub          | Intermediate |
+| CI/CD                 | Intermediate |
+| Cloud (Azure/AWS/GCP) | Intermediate |
 
 ### Concepts
-| Concept         | Level              | Notes                        |
-|-----------------|--------------------|------------------------------|
-| REST API design | [Beginner/Intermediate/Advanced/Expert] | |
-| Database design | [Beginner/Intermediate/Advanced/Expert] | |
-| Security (OWASP)| [Beginner/Intermediate/Advanced/Expert] | |
-| Testing         | [Beginner/Intermediate/Advanced/Expert] | |
-| System design   | [Beginner/Intermediate/Advanced/Expert] | |
-
----
-
-## What I Struggle With
-
-List topics where you want extra explanation, more examples, step-by-step guidance:
-
-- [e.g. Docker networking]
-- [e.g. JWT refresh token flow]
-- [e.g. EF Core migrations]
-
----
-
-## What I Am Good At
-
-List topics where agents should skip basics and go straight to the answer:
-
-- [e.g. SQL queries]
-- [e.g. Angular component structure]
-- [e.g. Git branching]
+| Concept         | Level        |
+|-----------------|--------------|
+| REST API design | Intermediate |
+| Database design | Intermediate |
+| Security (OWASP)| Intermediate |
+| Testing         | Intermediate |
+| System design   | Intermediate |
 
 ---
 
 ## Communication Preferences
 
-Response language:    [Thai / English / Both]
-Code comments:        [Thai / English]
-Explanation style:    [Show full example / Explain concept only / Just the code]
-Error messages:       [Translate to Thai / Keep in English]
-When I am stuck:      [Walk me through step by step / Give me a hint only / Just fix it]
-
----
-
-## Working Style
-
-Daily hours:          [e.g. 09:00–18:00 BKK]
-Session length:       [e.g. 1–2 hours typical]
-Interruption style:   [Ask me questions as you go / Do your best and show me at the end]
-Preferred commit size: [Small + frequent / Larger batches]
+Response language:    English
+Code comments:        English
+Explanation style:    Show full example
+Error messages:       Keep in English
+When I am stuck:      Walk me through step by step
 
 ---
 
@@ -97,15 +78,12 @@ Preferred commit size: [Small + frequent / Larger batches]
 
 When agents read this file, they MUST apply these rules:
 
-| My Level    | Agent behavior                                                         |
-|-------------|------------------------------------------------------------------------|
-| Beginner    | Explain the why. Full working examples. Warnings. Define all jargon.   |
-| Intermediate| Brief explanation + code. Skip basics. Highlight non-obvious parts.    |
-| Advanced    | Code + trade-offs. No hand-holding. Flag edge cases only.              |
-| Expert      | Dense output. Assume full context. Focus on non-trivial only.          |
-
-For topics in "What I Struggle With" → always give extra detail regardless of level.
-For topics in "What I Am Good At" → skip fundamentals entirely.
+| Level        | Agent behavior                                                         |
+|--------------|------------------------------------------------------------------------|
+| Beginner     | Explain the why. Full working examples. Warnings. Define all jargon.   |
+| Intermediate | Brief explanation + code. Skip basics. Highlight non-obvious parts.    |
+| Advanced     | Code + trade-offs. No hand-holding. Flag edge cases only.              |
+| Expert       | Dense output. Assume full context. Focus on non-trivial only.          |
 
 If USER.md is missing → agent asks once: "What is your experience level with [topic]?"
 Then calibrates — never asks again in the same session.
