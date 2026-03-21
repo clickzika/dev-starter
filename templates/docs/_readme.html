@@ -85,18 +85,6 @@
     border-bottom: 1px solid #e2e8f0;
   }
   tr:nth-child(even) td { background: #f8fafc; }
-  .badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  .badge-blue { background: #dbeafe; color: #1d4ed8; }
-  .badge-green { background: #dcfce7; color: #15803d; }
-  .badge-red { background: #fef2f2; color: #dc2626; }
-  .badge-yellow { background: #fef9c3; color: #a16207; }
-  .badge-purple { background: #ede9fe; color: #6d28d9; }
   .callout {
     background: #eff6ff;
     border-left: 4px solid #3b82f6;
@@ -116,6 +104,17 @@
   .callout strong { display: block; margin-bottom: 4px; }
   ul, ol { margin: 12px 0 12px 24px; }
   li { margin-bottom: 6px; }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-blue { background: #dbeafe; color: #1d4ed8; }
+  .badge-green { background: #dcfce7; color: #15803d; }
+  .badge-red { background: #fef2f2; color: #dc2626; }
+  .badge-yellow { background: #fef9c3; color: #a16207; }
 
   .step-grid {
     display: grid;
@@ -141,7 +140,6 @@
     padding-left: 20px;
     margin-left: -25px;
   }
-  .step-content:last-child { border-left: none; }
   .step-title {
     font-weight: 700;
     font-size: 15px;
@@ -162,121 +160,181 @@
 <!-- ═══════════════════════════════════════ -->
 <h2>1. Installation</h2>
 
-<h3>Option A — Clone from GitHub</h3>
-<pre><code># Clone the repository
+<h3>Option A — One Command (recommended)</h3>
+<pre><code>git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/install.sh</code></pre>
+<p>This single command will: clone the repo, backup existing <code>~/.claude/</code> files, copy everything, and run the setup wizard.</p>
+
+<h3>Option B — Manual Install</h3>
+<pre><code># Clone
 git clone https://github.com/clickzika/dev-starter.git
 
-# Copy everything to Claude Code's config directory
+# Copy to Claude Code's config directory
 cp -r dev-starter/* ~/.claude/
 
-# Windows (PowerShell):
-# Copy-Item -Recurse dev-starter\* $env:USERPROFILE\.claude\</code></pre>
-
-<h3>Option B — Import from Backup</h3>
-<pre><code># If you have a dev-starter-v1.zip backup:
-claude
-> /import ~/Desktop/dev-starter-v1.zip</code></pre>
+# Run setup
+bash ~/.claude/setup.sh</code></pre>
 
 <!-- ═══════════════════════════════════════ -->
 <h2>2. First-Time Setup</h2>
 
+<p>The setup wizard (<code>setup.sh</code>) asks everything in one run:</p>
+
 <div class="step-grid">
   <div><span class="step-num">1</span></div>
   <div class="step-content">
-    <div class="step-title">Run Setup Script</div>
-    <div class="step-desc">Checks prerequisites (git, gh, node, docker) and configures your environment.</div>
-    <pre><code>bash ~/.claude/setup.sh</code></pre>
+    <div class="step-title">Prerequisites Check</div>
+    <div class="step-desc">Verifies: git, gh, node, curl. Docker is optional.</div>
   </div>
 
   <div><span class="step-num">2</span></div>
   <div class="step-content">
-    <div class="step-title">Configure Secrets</div>
-    <div class="step-desc">Copy the example file and fill in your tokens. Never commit <code>.env</code>.</div>
-    <pre><code>cp ~/.claude/.env.example ~/.claude/.env</code></pre>
+    <div class="step-title">GitHub + Notion Config</div>
+    <div class="step-desc">GitHub username, CLI auth, Notion API key (optional).</div>
     <table>
-      <tr><th>Variable</th><th>Where to Get</th><th>Required?</th></tr>
-      <tr><td><code>GITHUB_USERNAME</code></td><td>Your GitHub profile</td><td><span class="badge badge-red">Required</span></td></tr>
-      <tr><td><code>GITHUB_TOKEN</code></td><td><a href="https://github.com/settings/tokens">github.com/settings/tokens</a> (scope: repo)</td><td><span class="badge badge-yellow">Or use <code>gh auth login</code></span></td></tr>
-      <tr><td><code>NOTION_API_KEY</code></td><td><a href="https://www.notion.so/my-integrations">notion.so/my-integrations</a></td><td><span class="badge badge-blue">Optional</span></td></tr>
-      <tr><td><code>PROJECTS_ROOT</code></td><td>Where project folders are created</td><td><span class="badge badge-blue">Default: ~/Projects</span></td></tr>
+      <tr><th>Variable</th><th>Required?</th></tr>
+      <tr><td><code>GITHUB_USERNAME</code></td><td><span class="badge badge-red">Required</span></td></tr>
+      <tr><td><code>GITHUB_TOKEN</code></td><td><span class="badge badge-yellow">Or use <code>gh auth login</code></span></td></tr>
+      <tr><td><code>NOTION_API_KEY</code></td><td><span class="badge badge-blue">Optional</span></td></tr>
     </table>
   </div>
 
   <div><span class="step-num">3</span></div>
   <div class="step-content">
-    <div class="step-title">Fill Your Profile</div>
-    <div class="step-desc">Edit <code>~/.claude/USER.md</code> with your skill levels. Agents auto-calibrate based on this.</div>
+    <div class="step-title">Developer Profile (3 questions)</div>
+    <div class="step-desc">
+      Q1: How long have you been coding? (sets default skill level)<br>
+      Q2: What are you strongest at? (bumps those skills higher)<br>
+      Q3: Response language? (Thai / English / Both)
+    </div>
     <table>
       <tr><th>Your Level</th><th>How Agents Respond</th></tr>
-      <tr><td>Beginner</td><td>Full explanations, define all terms, warnings, step-by-step</td></tr>
-      <tr><td>Intermediate</td><td>Brief explanation + code, skip basics, highlight non-obvious</td></tr>
-      <tr><td>Advanced</td><td>Code + trade-offs only, no hand-holding, edge cases only</td></tr>
-      <tr><td>Expert</td><td>Dense output, assume full context, non-trivial only</td></tr>
+      <tr><td>Beginner</td><td>Full explanations, define all terms, step-by-step</td></tr>
+      <tr><td>Intermediate</td><td>Brief explanation + code, skip basics</td></tr>
+      <tr><td>Advanced</td><td>Code + trade-offs only, edge cases only</td></tr>
+      <tr><td>Expert</td><td>Dense output, assume full context</td></tr>
     </table>
   </div>
 
   <div><span class="step-num">4</span></div>
   <div class="step-content">
-    <div class="step-title">Configure Team (Optional)</div>
-    <div class="step-desc">Edit <code>~/.claude/TEAM.md</code> if you work with others. Defines ownership, PR rules, decision authority.</div>
+    <div class="step-title">Auto-Configure Permissions</div>
+    <div class="step-desc">Merges common command permissions into <code>settings.json</code>. Won't overwrite existing settings.</div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<h2>3. Starting a New Project</h2>
+<h2>3. Start Using — Slash Commands</h2>
 
-<pre><code># Open Claude Code
-claude
-
-# Launch the menu
-> Read ~/.claude/dev-menu.md and help me get started
-
-# Select option 1 (New Project)
-# The system walks you through 5 gates automatically</code></pre>
+<pre><code>claude
+> /menu          # show launcher menu
+> /new           # or go directly — start a new project</code></pre>
 
 <div class="callout callout-success">
-  <strong>What Happens Automatically</strong>
-  Gate 1 asks you 26 questions about your project. From your answers, agents create: CLAUDE.md, BRD, SRS, DB design, API reference, security design, infrastructure guide, test strategy, UI prototype with component library, and a project plan.
+  <strong>21 slash commands — no need to remember file paths</strong>
+  Every workflow has a shortcut. Type <code>/menu</code> to see all options, or use a command directly.
 </div>
 
-<!-- ═══════════════════════════════════════ -->
-<h2>4. Daily Usage — The Menu</h2>
-
-<p>Every time you start Claude Code, open the menu to pick what you need:</p>
-
-<pre><code>> Read ~/.claude/dev-menu.md and help me get started</code></pre>
-
 <table>
-  <tr><th>#</th><th>Option</th><th>When to Use</th></tr>
-  <tr><td>1</td><td>New Project</td><td>Starting from scratch</td></tr>
-  <tr><td>2</td><td>Existing Project</td><td>Already have code, want to add CLAUDE.md</td></tr>
-  <tr><td>3</td><td>Migration</td><td>Moving to a new tech stack</td></tr>
-  <tr><td>4</td><td>Audit & Review</td><td>Health check on existing project</td></tr>
-  <tr><td>5</td><td>Change</td><td>Add feature, remove feature, fix bug</td></tr>
-  <tr><td>6</td><td>Sprint Planning</td><td>Plan next sprint with tasks and estimates</td></tr>
-  <tr><td>7</td><td>Dependency Update</td><td>Update npm/NuGet/pip packages safely</td></tr>
-  <tr><td>8</td><td>Onboard</td><td>New team member joining</td></tr>
-  <tr><td>9</td><td>Handover</td><td>Transferring project to someone else</td></tr>
-  <tr><td>10</td><td>Retrospective</td><td>End-of-sprint review</td></tr>
-  <tr><td>11</td><td>Release</td><td>Deploy to production</td></tr>
-  <tr><td>12</td><td>Hotfix</td><td>Critical production bug</td></tr>
-  <tr><td>13</td><td>Rollback</td><td>Revert a bad deployment</td></tr>
-  <tr><td>14</td><td>Incident</td><td>Production is down</td></tr>
-  <tr><td>15</td><td>Local Environment</td><td>Setup dev machine</td></tr>
-  <tr><td>16</td><td>Secrets</td><td>Manage API keys and tokens</td></tr>
-  <tr><td>17</td><td>Monitoring</td><td>Setup alerts and dashboards</td></tr>
+  <tr><th>Category</th><th>Command</th><th>What it does</th></tr>
+  <tr><td><strong>Menu</strong></td><td><code>/menu</code></td><td>Show launcher menu</td></tr>
+  <tr><td rowspan="4"><strong>Setup</strong></td><td><code>/new</code></td><td>New project (full 5-gate lifecycle)</td></tr>
+  <tr><td><code>/existing</code></td><td>Setup existing project</td></tr>
+  <tr><td><code>/migrate</code></td><td>Migration to new tech stack</td></tr>
+  <tr><td><code>/audit</code></td><td>Audit & review project</td></tr>
+  <tr><td rowspan="3"><strong>Daily</strong></td><td><code>/change</code></td><td>Add/remove feature, fix bug</td></tr>
+  <tr><td><code>/sprint</code></td><td>Sprint planning</td></tr>
+  <tr><td><code>/dependency</code></td><td>Update dependencies</td></tr>
+  <tr><td rowspan="3"><strong>Team</strong></td><td><code>/onboard</code></td><td>Onboard new member</td></tr>
+  <tr><td><code>/handover</code></td><td>Handover project</td></tr>
+  <tr><td><code>/retro</code></td><td>Sprint retrospective</td></tr>
+  <tr><td rowspan="4"><strong>Production</strong></td><td><code>/release</code></td><td>Release + deploy (DEV &rarr; SIT &rarr; UAT &rarr; DEPLOY)</td></tr>
+  <tr><td><code>/hotfix</code></td><td>Critical production bug fix</td></tr>
+  <tr><td><code>/rollback</code></td><td>Rollback production</td></tr>
+  <tr><td><code>/incident</code></td><td>Incident response</td></tr>
+  <tr><td rowspan="3"><strong>Infra</strong></td><td><code>/env</code></td><td>Setup local environment</td></tr>
+  <tr><td><code>/secrets</code></td><td>Secrets management</td></tr>
+  <tr><td><code>/monitor</code></td><td>Setup monitoring</td></tr>
+  <tr><td rowspan="3"><strong>Utility</strong></td><td><code>/context</code></td><td>Refresh CLAUDE.md from codebase</td></tr>
+  <tr><td><code>/export</code></td><td>Backup everything to zip</td></tr>
+  <tr><td><code>/import</code></td><td>Restore from zip</td></tr>
 </table>
 
 <!-- ═══════════════════════════════════════ -->
-<h2>5. Using Agents Directly</h2>
+<h2>4. The 5-Gate Build Process</h2>
 
-<p>You can call any agent without going through the menu:</p>
+<p>When you type <code>/new</code>, the system walks you through 5 gates:</p>
 
-<pre><code># Read the agent file and give it a task
-> Read ~/.claude/agents/backend.md and help me design the API
+<table>
+  <tr><th>Gate</th><th>What Happens</th><th>Approval</th></tr>
+  <tr><td>Gate 0</td><td>GitHub repo, Notion board, branch strategy, templates</td><td>Auto (no approval needed)</td></tr>
+  <tr><td>Gate 1</td><td>26 questions &rarr; CLAUDE.md, BRD, SRS</td><td><code>"approve"</code></td></tr>
+  <tr><td>Gate 2</td><td>DB schema, API, security, infra, test strategy, UI prototype</td><td><code>"approve"</code></td></tr>
+  <tr><td>Gate 3</td><td>Task breakdown, GitHub Issues + milestones, Notion tasks, scaffold</td><td><code>"approve"</code></td></tr>
+  <tr><td>Gate 4</td><td>Feature-by-feature: branch &rarr; code &rarr; PR &rarr; review &rarr; merge</td><td><code>"approve"</code> per feature</td></tr>
+  <tr><td>Gate 5</td><td>Testing, security audit, performance review</td><td><code>"approve"</code></td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>5. Release Flow</h2>
+
+<p>After Gate 5, use <code>/release</code> for the full deployment pipeline:</p>
+
+<pre><code>develop ──→ Local Test ──→ uat ──→ User Test ──→ main ──→ Production
+              (SIT)                  (UAT)                 (PROD)</code></pre>
+
+<table>
+  <tr><th>Gate</th><th>User Types</th><th>What Happens</th></tr>
+  <tr><td>Gate 1</td><td><code>"DEV approved"</code></td><td>Pre-release checklist passed &rarr; proceed to SIT</td></tr>
+  <tr><td>Gate 2</td><td><code>"SIT approved"</code></td><td>Automated tests passed (local Docker) &rarr; proceed to UAT</td></tr>
+  <tr><td>Gate 3</td><td><code>"UAT approved"</code></td><td>User tested manually &rarr; proceed to Production</td></tr>
+  <tr><td>Gate 4</td><td><code>"DEPLOY v[X.Y.Z]"</code></td><td>Deploy to production</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>6. Usage Examples</h2>
+
+<h3>Example 1 — Build a new web app from scratch</h3>
+<pre><code>claude
+> /new
+# Answer 26 questions about your project
+# Claude creates: CLAUDE.md, BRD, SRS, DB design, API, prototype...
+# Approve each gate → Claude builds feature by feature
+# /release when done → DEV → SIT → UAT → Production</code></pre>
+
+<h3>Example 2 — Add a feature to existing project</h3>
+<pre><code>claude
+> /change
+# Claude reads CLAUDE.md, asks what to change
+# Creates feature branch → implements → PR → review → merge</code></pre>
+
+<h3>Example 3 — Critical bug in production</h3>
+<pre><code>claude
+> /hotfix
+# Claude branches from main → fixes → PR to main
+# After merge: backports to uat + develop automatically</code></pre>
+
+<h3>Example 4 — Plan next sprint</h3>
+<pre><code>claude
+> /sprint
+# Claude reads Notion backlog → proposes sprint tasks
+# Assigns to sprint → shows sprint board</code></pre>
+
+<h3>Example 5 — Release to production</h3>
+<pre><code>claude
+> /release
+# Gate 1: "DEV approved"     → checklist passed
+# Gate 2: "SIT approved"     → automated tests passed
+# Gate 3: "UAT approved"     → user tested and approved
+# Gate 4: "DEPLOY v1.2.0"    → deployed to production</code></pre>
+
+<!-- ═══════════════════════════════════════ -->
+<h2>7. 12 Specialist Agents</h2>
+
+<p>Call any agent directly for specific tasks:</p>
+
+<pre><code>> Read ~/.claude/agents/backend.md and help me design the API
 > Read ~/.claude/agents/qa.md and create a test plan
-> Read ~/.claude/agents/uxui.md and design the login screen
-> Read ~/.claude/agents/dba.md and optimize this slow query</code></pre>
+> Read ~/.claude/agents/uxui.md and design the login screen</code></pre>
 
 <table>
   <tr><th>Agent</th><th>Best For</th></tr>
@@ -295,9 +353,9 @@ claude
 </table>
 
 <!-- ═══════════════════════════════════════ -->
-<h2>6. Document Portal</h2>
+<h2>8. Document Portal</h2>
 
-<p>Every project gets an HTML document portal at <code>docs/index.html</code>. Open it in your browser — no server needed.</p>
+<p>Every project gets an HTML document portal at <code>docs/index.html</code>. Open it in your browser &mdash; no server needed.</p>
 
 <h3>Gate 2 Deliverables</h3>
 <table>
@@ -313,66 +371,54 @@ claude
   <tr><td>9</td><td>Project Plan</td><td>@pm</td><td><code>project-plan.html</code></td></tr>
 </table>
 
-<h3>For Agents — Registering New Documents</h3>
+<!-- ═══════════════════════════════════════ -->
+<h2>9. Deploying Project Docs</h2>
 
-<div class="callout">
-  <strong>Rule: Every new HTML doc in docs/ must also be added to docs/index.html</strong>
-  Add your document to the DOCUMENTS array in the &lt;script&gt; section, under the appropriate section.
-</div>
+<h3>GitHub Pages (public repos)</h3>
+<pre><code># In your project repo settings:
+# Settings → Pages → Source: Deploy from branch → /docs → Save
+# Your docs will be at: https://username.github.io/project-name/</code></pre>
 
-<pre><code>// In docs/index.html — find the DOCUMENTS array and add:
-{
-  section: "Technical Design",
-  docs: [
-    { name: "Your Document Title", file: "your-doc.html", color: "var(--cat-other)" },
-  ]
-}</code></pre>
+<h3>Cloudflare Pages (private repos — free)</h3>
+<ol>
+  <li>Go to <a href="https://dash.cloudflare.com">dash.cloudflare.com</a> &rarr; Workers & Pages &rarr; Create &rarr; Pages</li>
+  <li>Connect to Git &rarr; select your repo</li>
+  <li>Production branch: <code>develop</code> (or <code>main</code>), Build command: <em>(empty)</em>, Output: <code>docs</code></li>
+  <li>Save and Deploy &rarr; <code>https://project-name.pages.dev</code></li>
+</ol>
 
 <!-- ═══════════════════════════════════════ -->
-<h2>7. Backup & Transfer</h2>
+<h2>10. Backup & Transfer</h2>
 
-<h3>Export (backup)</h3>
-<pre><code># In Claude Code:
+<pre><code># Export (backup)
 > /export                    # saves to Desktop
-> /export C:\backup          # saves to specific folder</code></pre>
 
-<h3>Import (restore on new machine)</h3>
-<pre><code># In Claude Code:
-> /import                                  # from Desktop
-> /import C:\backup\dev-starter-v1.zip     # from specific file</code></pre>
+# Import (restore on new machine)
+> /import                    # from Desktop</code></pre>
 
 <div class="callout callout-warning">
   <strong>Secrets are NOT included in exports</strong>
-  After importing on a new machine, you must create <code>~/.claude/.env</code> again with your tokens. Run <code>gh auth login</code> to authenticate GitHub CLI.
+  After importing on a new machine, run <code>bash ~/.claude/setup.sh</code> to configure credentials.
 </div>
 
 <!-- ═══════════════════════════════════════ -->
-<h2>8. Keeping CLAUDE.md Fresh</h2>
-
-<p>As your project evolves, <code>CLAUDE.md</code> may become stale. Use the context command to refresh it:</p>
-
-<pre><code># In Claude Code:
-> /context</code></pre>
-
-<p>This scans the current codebase and proposes updates to <code>CLAUDE.md</code> to match the actual state of the project.</p>
-
-<!-- ═══════════════════════════════════════ -->
-<h2>9. Troubleshooting</h2>
+<h2>11. Troubleshooting</h2>
 
 <table>
   <tr><th>Problem</th><th>Solution</th></tr>
-  <tr><td>Agent doesn't know the project context</td><td>Check that <code>CLAUDE.md</code> exists at project root. Run <code>/context</code> to refresh.</td></tr>
-  <tr><td>GitHub integration not working</td><td>Run <code>gh auth status</code>. If not authenticated, run <code>gh auth login</code>.</td></tr>
-  <tr><td>Notion integration not working</td><td>Check <code>~/.claude/.env</code> has <code>NOTION_API_KEY</code>. Verify integration is connected to your workspace.</td></tr>
-  <tr><td>Agent explanations too basic / too advanced</td><td>Update your skill levels in <code>~/.claude/USER.md</code>.</td></tr>
-  <tr><td>Missing workflow files</td><td>Check <code>~/.claude/sdlc/</code> directory. Re-import if needed: <code>/import</code>.</td></tr>
-  <tr><td>Export/Import fails</td><td>Make sure you have write permission to the target directory.</td></tr>
+  <tr><td>Agent doesn't know project context</td><td>Check <code>CLAUDE.md</code> exists. Run <code>/context</code> to refresh.</td></tr>
+  <tr><td>GitHub integration not working</td><td>Run <code>gh auth status</code>. If not authenticated: <code>gh auth login</code>.</td></tr>
+  <tr><td>Notion integration not working</td><td>Check <code>~/.claude/.env</code> has <code>NOTION_API_KEY</code>.</td></tr>
+  <tr><td>Agent explanations too basic/advanced</td><td>Update skill levels in <code>~/.claude/USER.md</code> or re-run <code>setup.sh</code>.</td></tr>
+  <tr><td>Claude keeps asking permission</td><td>Run <code>setup.sh</code> again — it configures auto-permissions.</td></tr>
+  <tr><td>Rate limit interrupted work</td><td>Auto-resume via checkpoint. Or type <code>"ทำต่อ"</code> when Claude resets.</td></tr>
+  <tr><td>Missing workflow files</td><td>Check <code>~/.claude/sdlc/</code>. Re-import: <code>/import</code>.</td></tr>
 </table>
 
 <br>
 <p style="color:#94a3b8; font-size:13px; text-align:center; margin-top:40px; padding-top:20px; border-top:1px solid #e2e8f0;">
   Dev Starter V1 — Usage Guide<br>
-  12 agents · 17 workflows · 3 commands
+  12 agents &middot; 21 commands &middot; 17 workflows
 </p>
 
 </body>
