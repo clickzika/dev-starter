@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project README — {{PROJECT_NAME}}</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    line-height: 1.7;
+    padding: 48px 64px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #fff;
+    padding: 40px 48px;
+    border-radius: 16px;
+    margin-bottom: 40px;
+  }
+  .hero h1 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .hero .subtitle {
+    font-size: 16px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+  }
+  .hero .badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .hero .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-agents { background: #3b82f6; color: #fff; }
+  .badge-commands { background: #8b5cf6; color: #fff; }
+  .badge-gates { background: #10b981; color: #fff; }
+
+  /* Headings */
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #334155;
+    margin: 28px 0 10px;
+  }
+  p { margin-bottom: 14px; }
+
+  /* Code */
+  code {
+    background: #f1f5f9;
+    color: #e94560;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+  }
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px 24px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    background: #1e293b;
+    color: #fff;
+    padding: 10px 16px;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  tr:nth-child(even) td { background: #f8fafc; }
+  tr:hover td { background: #f1f5f9; }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+  }
+  .card p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+  }
+  .card code { font-size: 12px; }
+
+  /* Callout */
+  .callout {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  /* Quick Start Box */
+  .quickstart {
+    background: #f0fdf4;
+    border: 2px solid #86efac;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+  .quickstart h3 {
+    color: #15803d;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+  .quickstart ol {
+    margin: 0 0 0 20px;
+    font-size: 14px;
+  }
+  .quickstart li { margin-bottom: 8px; }
+
+  /* Gate Flow */
+  .gate-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+  }
+  .gate {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px 24px;
+    position: relative;
+  }
+  .gate + .gate { margin-top: -1px; }
+  .gate-num {
+    display: inline-block;
+    background: #1e293b;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-right: 8px;
+  }
+  .gate-title {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 15px;
+  }
+  .gate-desc {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 6px;
+  }
+  .gate-keyword {
+    display: inline-block;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-top: 8px;
+  }
+  .gate-arrow {
+    text-align: center;
+    font-size: 20px;
+    color: #94a3b8;
+    padding: 4px 0;
+  }
+
+  /* Agent Grid */
+  .agent-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .agent-icon { font-size: 22px; flex-shrink: 0; }
+  .agent-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: #0f172a;
+    min-width: 90px;
+  }
+  .agent-role {
+    font-size: 13px;
+    color: #64748b;
+    flex: 1;
+  }
+
+  /* Footer */
+  .footer {
+    color: #94a3b8;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  /* Lists */
+  ul, ol { margin: 12px 0 12px 24px; }
+  li { margin-bottom: 6px; }
+
+  /* Tagline */
+  .tagline {
+    font-style: italic;
+    color: #64748b;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Claude Code — Full Team Setup</h1>
+  <div class="subtitle">15-Agent World-Class Software Development Team</div>
+  <div class="badges">
+    <span class="badge badge-agents">15 Agents</span>
+    <span class="badge badge-commands">10 Commands</span>
+    <span class="badge badge-gates">5-Gate Workflow</span>
+  </div>
+</div>
+
+<p>A complete agent team for Claude Code covering every role in software development. Agents are self-improving, context-aware, and follow a structured approval workflow that connects automatically to Notion and GitHub.</p>
+
+<div class="quickstart">
+  <h3>Quick Start</h3>
+  <ol>
+    <li>One-time setup: run <code>~/.claude/setup.sh</code> and fill in <code>~/.claude/.env</code></li>
+    <li>Edit your profile: <code>~/.claude/templates/USER.md</code></li>
+    <li>Open Claude Code: <code>claude</code></li>
+    <li>Say: <code>/build ProjectName description of what to build</code></li>
+    <li>Everything is auto-created — folder, GitHub repo, Notion board, all docs</li>
+  </ol>
+</div>
+
+<h2>Folder Structure</h2>
+
+<h3>Global (installed once — shared across all projects)</h3>
+<pre><code>~/.claude/                         ← Global config (install once)
+├── .env                           ← GitHub + Notion tokens
+├── setup.sh                       ← First-time installer
+├── agents/                        ← 15 specialist agents
+│   ├── pm.md    ba.md    uxui.md    techlead.md
+│   ├── frontend.md  backend.md  dba.md  qa.md
+│   ├── devops.md    data.md     security.md
+│   ├── infra.md     mobile.md   ml.md   docs.md
+├── commands/                      ← 11 orchestrator commands
+│   ├── build.md   feature.md  fix.md   pair.md
+│   ├── review.md  plan.md     audit.md context.md
+│   └── continue.md postmortem.md onboard.md
+└── templates/                     ← Project templates
+    ├── CLAUDE.md.template         ← Auto-fills per project
+    ├── USER.md                    ← Your profile
+    └── docs/                      ← Portal templates</code></pre>
+
+<h3>Per Project (auto-created by /build)</h3>
+<pre><code>~/Projects/YourProject/            ← Auto-created by /build
+├── CLAUDE.md                      ← Auto-generated from template
+├── MEMORY.md                      ← Project memory (grows over time)
+├── .project.env                   ← Notion DB ID + GitHub repo link
+├── memory/                        ← Daily session logs
+├── docs/                          ← Document portal + all Gate 1 docs
+│   ├── index.html                 ← Document portal (sidebar + viewer)
+│   ├── brd.html                   ← Business Requirements
+│   ├── srs.html                   ← Software Requirements
+│   ├── database-design.html       ← Database Design
+│   ├── api-reference.html         ← API Reference
+│   ├── security-design.html       ← Security Design
+│   ├── infrastructure-guide.html  ← Infrastructure Guide
+│   ├── test-strategy.html         ← Test Strategy
+│   ├── project-plan.html          ← Project Plan
+│   └── prototype/                 ← Interactive prototype
+└── src/                           ← Source code (built in Gate 4)</code></pre>
+
+<h2>The 3 Ways to Use the Team</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Way 1 — Single Agent</h4>
+    <p>Call one specialist directly for a specific task.</p>
+    <pre style="font-size:12px; padding:12px;"><code>@frontend build the login screen
+@dba optimize this slow query
+@security review this auth code</code></pre>
+  </div>
+  <div class="card">
+    <h4>Way 2 — Orchestrator Command</h4>
+    <p>One prompt, the whole team works through it in sequence.</p>
+    <pre style="font-size:12px; padding:12px;"><code>/build Company internal website
+/feature Add dark mode toggle
+/fix Login fails after 30min idle</code></pre>
+  </div>
+  <div class="card">
+    <h4>Way 3 — Full Project Workflow</h4>
+    <p>New projects with BRD, SRS, prototype, Notion tasks, and GitHub — use the 5-Gate Workflow.</p>
+  </div>
+</div>
+
+<h2>The 5-Gate Approval Workflow</h2>
+
+<p>Nothing happens without your explicit approval at each gate.</p>
+
+<div class="gate-flow">
+  <div class="gate">
+    <span class="gate-num">GATE 1</span>
+    <span class="gate-title">Documents</span>
+    <div class="gate-desc">@ba → BRD &nbsp;|&nbsp; @ba + @techlead → SRS &nbsp;|&nbsp; @dba → DB Design &nbsp;|&nbsp; @backend → API Ref &nbsp;|&nbsp; @security → Security Design &nbsp;|&nbsp; @devops → Infra &nbsp;|&nbsp; @qa → Test Strategy &nbsp;|&nbsp; @uxui → Prototype &nbsp;|&nbsp; @pm → Project Plan</div>
+    <span class="gate-keyword">You say: "Approved"</span>
+  </div>
+  <div class="gate-arrow">↓</div>
+  <div class="gate">
+    <span class="gate-num">GATE 2</span>
+    <span class="gate-title">Task Breakdown</span>
+    <div class="gate-desc">@pm → Epic → Feature → Task list. Each task: title, AC, effort, role, dependencies</div>
+    <span class="gate-keyword">You say: "Task list approved"</span>
+  </div>
+  <div class="gate-arrow">↓</div>
+  <div class="gate">
+    <span class="gate-num">GATE 3</span>
+    <span class="gate-title">Notion + GitHub Setup</span>
+    <div class="gate-desc">Notion: database + all tasks &nbsp;|&nbsp; GitHub: repo + issues + milestones &nbsp;|&nbsp; Link: Notion ↔ GitHub</div>
+    <span class="gate-keyword">You say: "Confirmed. Start."</span>
+  </div>
+  <div class="gate-arrow">↓</div>
+  <div class="gate">
+    <span class="gate-num">GATE 4</span>
+    <span class="gate-title">Per-Task Development</span>
+    <div class="gate-desc">Agent states task + branch → You say "go" → Agent builds + opens PR → You approve PR</div>
+    <span class="gate-keyword">You say: "go" per task</span>
+  </div>
+  <div class="gate-arrow">↓</div>
+  <div class="gate">
+    <span class="gate-num">GATE 5</span>
+    <span class="gate-title">Completion</span>
+    <div class="gate-desc">Agent merges PR → Updates Notion → Done → Closes GitHub issue → Asks for next task</div>
+    <span class="gate-keyword">Automatic after PR approval</span>
+  </div>
+</div>
+
+<h2>Approval Keywords</h2>
+
+<table>
+  <tr><th>You Type</th><th>What Happens</th></tr>
+  <tr><td><code>Approved</code></td><td>Move from documents to task breakdown</td></tr>
+  <tr><td><code>Task list approved</code></td><td>Create in Notion + GitHub</td></tr>
+  <tr><td><code>Confirmed. Start the project.</code></td><td>Begin first task</td></tr>
+  <tr><td><code>go</code></td><td>Agent starts coding the current task</td></tr>
+  <tr><td><em>(approve PR on GitHub)</em></td><td>Agent merges, updates Notion, asks for next</td></tr>
+  <tr><td><code>next task</code></td><td>Move to next task after current is done</td></tr>
+  <tr><td><code>pause</code></td><td>Finish current task, then stop and wait</td></tr>
+  <tr><td><code>stop</code></td><td>Stop immediately, summarize what's done</td></tr>
+</table>
+
+<h2>All Commands</h2>
+
+<table>
+  <tr><th>Command</th><th>When to Use</th><th>What the Team Does</th></tr>
+  <tr><td><code>/build [what]</code></td><td>New project from scratch</td><td>PM → BA → UX → TL → FE → BE → QA → Docs</td></tr>
+  <tr><td><code>/feature [what]</code></td><td>Add to existing project</td><td>BA → TL → FE → BE → Security → QA → Docs</td></tr>
+  <tr><td><code>/fix [bug]</code></td><td>Bug in production</td><td>Diagnosis → Fix → Security → QA → Changelog</td></tr>
+  <tr><td><code>/pair [a] [b] [task]</code></td><td>Two roles need to agree</td><td>Both agents debate, resolve, combined output</td></tr>
+  <tr><td><code>/review [pr]</code></td><td>Before merging any PR</td><td>Architecture + Code + Security + Perf + Tests</td></tr>
+  <tr><td><code>/plan [epic]</code></td><td>Sprint planning</td><td>Epic → Stories → Tasks with estimates</td></tr>
+  <tr><td><code>/audit</code></td><td>System health check</td><td>Security + Performance + Cost + Quality + Docs</td></tr>
+  <tr><td><code>/context scan</code></td><td>CLAUDE.md feels outdated</td><td>Reads codebase, proposes updates</td></tr>
+  <tr><td><code>/postmortem [incident]</code></td><td>After production incident</td><td>Timeline + 5 Whys + Action items</td></tr>
+  <tr><td><code>/onboard [name] [role]</code></td><td>New engineer joining</td><td>Day 1 → Week 1 → Month 1 guide</td></tr>
+</table>
+
+<h2>All 15 Agents</h2>
+
+<div class="agent-row"><span class="agent-icon">🦞</span><span class="agent-name"><code>@pm</code></span><span class="agent-role">Project Manager — Sprint planning, risk, RACI, status reports</span></div>
+<div class="agent-row"><span class="agent-icon">🐙</span><span class="agent-name"><code>@ba</code></span><span class="agent-role">Business Analyst — BRD, SRS, requirements, user stories</span></div>
+<div class="agent-row"><span class="agent-icon">🦐</span><span class="agent-name"><code>@uxui</code></span><span class="agent-role">UX/UI Designer — Wireframes, prototype, design system, a11y</span></div>
+<div class="agent-row"><span class="agent-icon">🎣</span><span class="agent-name"><code>@techlead</code></span><span class="agent-role">Technical Lead — Architecture, ADR, system design, hard reviews</span></div>
+<div class="agent-row"><span class="agent-icon">🕷️</span><span class="agent-name"><code>@frontend</code></span><span class="agent-role">Frontend Dev — React/Next.js, components, perf, accessibility</span></div>
+<div class="agent-row"><span class="agent-icon">🐟</span><span class="agent-name"><code>@backend</code></span><span class="agent-role">Backend Dev — APIs, auth, events, database design</span></div>
+<div class="agent-row"><span class="agent-icon">🐚</span><span class="agent-name"><code>@dba</code></span><span class="agent-role">Database Admin — Schema, migrations, query tuning, backup</span></div>
+<div class="agent-row"><span class="agent-icon">🦟</span><span class="agent-name"><code>@qa</code></span><span class="agent-role">QA Engineer — Test strategy, Playwright E2E, accessibility</span></div>
+<div class="agent-row"><span class="agent-icon">🦀</span><span class="agent-name"><code>@devops</code></span><span class="agent-role">DevOps / SRE — CI/CD, Kubernetes, SLOs, incidents</span></div>
+<div class="agent-row"><span class="agent-icon">🪸</span><span class="agent-name"><code>@data</code></span><span class="agent-role">Data Engineer — dbt, Airflow, data quality, pipelines</span></div>
+<div class="agent-row"><span class="agent-icon">🦂</span><span class="agent-name"><code>@security</code></span><span class="agent-role">Security Engineer — Threat models, OWASP review, IAM</span></div>
+<div class="agent-row"><span class="agent-icon">🐢</span><span class="agent-name"><code>@infra</code></span><span class="agent-role">Infra / Cloud — Terraform, VPC, ECS/EKS, cost optimization</span></div>
+<div class="agent-row"><span class="agent-icon">🦋</span><span class="agent-name"><code>@mobile</code></span><span class="agent-role">Mobile Dev — iOS (Swift), Android (Kotlin), React Native</span></div>
+<div class="agent-row"><span class="agent-icon">🦑</span><span class="agent-name"><code>@ml</code></span><span class="agent-role">ML Engineer — Models, RAG, LLM integration, MLOps</span></div>
+<div class="agent-row"><span class="agent-icon">🐝</span><span class="agent-name"><code>@docs</code></span><span class="agent-role">Technical Writer — Quickstarts, API reference, runbooks, ADRs</span></div>
+
+<h2>Memory &amp; Learning System</h2>
+
+<p>Every agent reads these files at the start of each session:</p>
+
+<table>
+  <tr><th>File</th><th>Location</th><th>Purpose</th></tr>
+  <tr><td><code>CLAUDE.md</code></td><td>Project root</td><td>Project context, stack, conventions, workflow rules</td></tr>
+  <tr><td><code>USER.md</code></td><td><code>~/.claude/templates/</code></td><td>Your skill level, preferences, communication style</td></tr>
+  <tr><td><code>MEMORY.md</code></td><td>Project root</td><td>All past decisions, handoffs, failures</td></tr>
+  <tr><td><code>memory/today</code></td><td>Project root</td><td>What already happened today in this session</td></tr>
+</table>
+
+<div class="callout">
+  <strong>Self-Improving Agents</strong>
+  After each session, agents write what they learned. By session 20, each agent has project-specific knowledge built up over months — behaving like a real team member who has been on the project a long time.
+</div>
+
+<h3>Skill Calibration</h3>
+
+<p>Fill in <code>~/.claude/templates/USER.md</code> with your skill levels. Every agent adapts:</p>
+
+<table>
+  <tr><th>Your Level</th><th>How Agents Respond</th></tr>
+  <tr><td>Beginner</td><td>Full explanations, define all terms, warn about common mistakes</td></tr>
+  <tr><td>Intermediate</td><td>Code + brief explanation, skip basics, highlight non-obvious parts</td></tr>
+  <tr><td>Advanced</td><td>Dense output, trade-offs only, skip all fundamentals</td></tr>
+  <tr><td>Expert</td><td>Just the code and the edge cases — no hand-holding</td></tr>
+</table>
+
+<h2>Notion + GitHub Integration</h2>
+
+<p>Tokens are stored globally in <code>~/.claude/.env</code>. In Gate 3, the system automatically creates:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h4>Notion</h4>
+    <p>Database with fields: Title, Status, Role, Effort, Epic, GitHub Issue #. One page per Epic. One task per item — all set to "To Do".</p>
+  </div>
+  <div class="card">
+    <h4>GitHub</h4>
+    <p>Repository with protected main + develop branches. One Issue per task. One Milestone per Epic. Labels: epic names + role names + effort sizes.</p>
+  </div>
+</div>
+
+<p>During development, every status change syncs automatically:</p>
+
+<table>
+  <tr><th>Event</th><th>Notion Status</th><th>GitHub Action</th></tr>
+  <tr><td>Task starts</td><td>In Progress</td><td>Branch created, issue assigned</td></tr>
+  <tr><td>PR opened</td><td>In Review</td><td>PR linked to issue</td></tr>
+  <tr><td>PR approved</td><td>Done</td><td>Issue closed, branch deleted</td></tr>
+</table>
+
+<h2>Branch Naming</h2>
+
+<pre><code>feature/[issue-#]-[kebab-description]   → new features
+fix/[issue-#]-[kebab-description]       → bug fixes
+hotfix/[issue-#]-[kebab-description]    → urgent production fixes
+
+Examples:
+  feature/3-user-login-screen
+  feature/7-call-report-form
+  fix/15-login-redirect-bug
+  hotfix/23-session-crash</code></pre>
+
+<h2>Agent Taglines</h2>
+
+<div class="tagline">🦞 "Scope is a choice. Chaos is not."</div>
+<div class="tagline">🐙 "The real requirement is never the first one you hear."</div>
+<div class="tagline">🦐 "If users need to think about it, we're not done yet."</div>
+<div class="tagline">🎣 "The complexity you don't add is the incident you don't have."</div>
+<div class="tagline">🕷️ "TypeScript <code>any</code> is a lie."</div>
+<div class="tagline">🐟 "Correctness first."</div>
+<div class="tagline">🐚 "A backup no one has restored is not a backup."</div>
+<div class="tagline">🦟 "A flaky test is a lie you tell yourself at merge time."</div>
+<div class="tagline">🦀 "ClickOps is technical debt."</div>
+<div class="tagline">🪸 "A pipeline without tests is a rumor about data."</div>
+<div class="tagline">🦂 "The attacker only has to be right once."</div>
+<div class="tagline">🐢 "Every manual change is a reproducibility failure."</div>
+<div class="tagline">🦋 "The best interface is invisible."</div>
+<div class="tagline">🦑 "A model without monitoring is abandoned in production."</div>
+<div class="tagline">🐝 "If the developer needed to ask, the docs failed them first."</div>
+
+<p class="footer">
+  {{PROJECT_NAME}} — Claude Code Full Team Setup<br>
+  15 agents · 10 commands · 5-gate workflow
+</p>
+
+</body>
+</html>

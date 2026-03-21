@@ -1,0 +1,262 @@
+# CLAUDE.md — Project Context
+
+This file is auto-generated during project setup. It is loaded automatically by Claude Code on every session.
+
+---
+
+## Project
+
+Name: {{PROJECT_NAME}}
+Description: {{PROJECT_DESCRIPTION}}
+Repository: https://github.com/{{GITHUB_USERNAME}}/{{PROJECT_NAME}}.git
+Notion Board: {{NOTION_BOARD_URL}}
+Status: Active development
+Created: {{CREATED_DATE}}
+
+---
+
+## Session Start — Every Agent Reads These Files First
+
+Before responding to ANYTHING, read in this exact order:
+
+1. `CLAUDE.md` — project stack, conventions, workflow rules (this file)
+2. `~/.claude/USER.md` — who the user is, skill level, communication preferences
+3. `MEMORY.md` — decisions made, handoff log, what failed before
+4. `memory/YYYY-MM-DD.md` — what already happened today in this project
+5. `memory/progress.json` — **current gate/task progress** (if exists)
+
+Then:
+
+- Calibrate output depth to USER.md skill level
+- Check MEMORY.md for constraints before starting any task
+- Do NOT repeat work already done by another agent today
+- **Check `memory/progress.json` for in-progress work** — if found, show resume prompt
+
+---
+
+## Session Resume Protocol
+
+When a terminal is closed and reopened, agents lose context.
+
+### On EVERY session start, check for `memory/progress.json`:
+
+```bash
+if [ -f memory/progress.json ]; then
+  cat memory/progress.json
+fi
+```
+
+### If `progress.json` exists, show resume prompt IMMEDIATELY:
+
+```
+🔄 PREVIOUS SESSION DETECTED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Gate:     [current gate]
+Task:     [current task name]
+Status:   [status]
+Branch:   [branch name if applicable]
+Last step: [what was last completed]
+Next step: [what should happen next]
+
+Continue from here? (yes / restart / show details)
+```
+
+### Rate Limit Protection — Save Early, Save Often
+
+**Rule 1 — Commit code frequently:**
+- `git add` + `git commit` after every meaningful code change (every 1-2 files)
+- Use small, incremental commits
+
+**Rule 2 — Save progress.json after EVERY action:**
+- After creating each file → save progress
+- After each git commit → save progress
+- After completing each document section → save progress
+
+**Rule 3 — Write documents incrementally:**
+- Save the file to disk after EACH section (not all at once at the end)
+
+**Rule 4 — Write files to disk FIRST, then update progress.json**
+
+---
+
+## Tech Stack
+
+{{TECH_STACK}}
+
+---
+
+## Language & Version Standards
+
+Node.js: 20+
+TypeScript: 5+ (strict mode — no `any` ever)
+Python: 3.11+
+
+---
+
+## Code Conventions
+
+- Naming: camelCase (variables/functions), PascalCase (components/classes), snake_case (Python)
+- Formatting: Prettier (JS/TS), Black (Python)
+- Linting: ESLint strict + jsx-a11y, Ruff (Python)
+- Commits: Conventional Commits — feat/fix/chore/docs/refactor/test
+- PRs: 1 review required + all CI checks green before merge
+
+---
+
+## Architecture Principles
+
+- API-first: all features exposed via versioned REST API before UI
+- Observability: every service ships with structured logs, metrics, traces
+- Security: OWASP Top 10 reviewed on every feature
+- Quality: tests required — unit + integration + E2E for every feature
+
+---
+
+## Design Preferences (from Q22–Q26)
+
+| Setting | Value |
+|---------|-------|
+| Visual Style | {{VISUAL_STYLE}} |
+| Primary Color | {{PRIMARY_COLOR}} |
+| Font (Heading) | {{FONT_HEADING}} |
+| Font (Body) | {{FONT_BODY}} |
+| Dark Mode | {{DARK_MODE}} |
+| Design Reference | {{DESIGN_REFERENCE}} |
+
+**UX/UI agent MUST read this section before creating any wireframe or prototype.**
+**Frontend agent MUST use these tokens when implementing UI.**
+
+---
+
+## Document Output Format
+
+All documents produced by agents MUST be saved as **styled HTML files** — NOT markdown (.md).
+
+### Rules for ALL document agents:
+
+- **Output format:** `.html` files with embedded CSS styling
+- **Save location:** `docs/` folder in the project root
+- **Styling:** Professional, clean design — modern sans-serif font (Inter, system-ui)
+- **Structure:** Self-contained, single-file document (CSS in `<style>`)
+- **Naming:** kebab-case, e.g. `docs/brd.html`, `docs/srs.html`
+
+### Rules for Prototype / Wireframe output (@uxui):
+
+- **Save location:** `docs/prototype/` folder
+- **Use Tailwind CDN** for rapid styling
+- **Each screen = one HTML file**
+- **Index file:** `docs/prototype/index.html` with links to all screens
+- **Component Library:** `docs/prototype/components.html` — showcases ALL UI components (buttons, inputs, tables, cards, navigation, etc.) with all states
+- **Use design tokens** from Q22–Q26 answers below — no hardcoded colors/fonts/spacing
+
+### Document Portal — MANDATORY
+
+All documents viewed through `docs/index.html`.
+Every agent that creates a doc MUST register it in `docs/index.html`.
+
+---
+
+## Project Workflow — The 6-Gate Approval System
+
+```
+GATE 0 — Project Setup → auto (GitHub repo + Notion board)
+GATE 1 — Discovery     → STOP → wait for: "Approved" (BRD + SRS)
+GATE 2 — Architecture  → STOP → wait for: "Approved" (all 9 docs)
+GATE 3 — Task Setup    → STOP → wait for: "Task list approved" → create GitHub Issues + Notion tasks
+GATE 4 — Per Task      → STOP → wait for: "go" (per task) + PR review + approval
+GATE 5 — Quality       → STOP → wait for: "Approved" → merge to main, tag release
+```
+
+### GATE 0 — Project Setup (automatic)
+
+- DevOps → create GitHub repo + branch strategy
+- PM → create Notion task board
+- DevOps → save .project.env
+
+### GATE 1 — Discovery
+
+- @ba asks Q1–Q31, writes CLAUDE.md
+- @ba writes BRD → `docs/brd.html`
+- @ba + @techlead write SRS → `docs/srs.html`
+- STOP and wait for "Approved"
+
+### GATE 2 — Architecture & Design (all 9 docs)
+
+- @dba → `docs/database-design.html`
+- @backend → `docs/api-reference.html`
+- @security → `docs/security-design.html`
+- @devops → `docs/infrastructure-guide.html`
+- @qa → `docs/test-strategy.html`
+- @uxui → `docs/prototype/index.html` + `docs/prototype/components.html`
+- @pm → `docs/project-plan.html`
+- PAIR REVIEW: cross-check all outputs for conflicts → resolve before showing gate
+- **COMPLETION CHECK:** All 9 docs + component library must exist before "Approved"
+
+### GATE 3 — Task Breakdown + Setup
+
+- @pm breaks scope into: Epic → Feature → Task
+- STOP and wait for "Task list approved"
+- Then: create GitHub Issues + Notion tasks (automated)
+- STOP and wait for "Confirmed. Start the project."
+
+### GATE 4 — Per-Task Development
+
+- State task name + GitHub issue number
+- Show branch name → wait for "go"
+- Build with tests → PR REVIEW (architecture, code quality, security, performance, testing, docs)
+- STOP → wait for "Approved" or "Merge"
+
+### GATE 5 — Quality & Delivery
+
+- QA → run all tests, coverage report
+- Security → OWASP checklist
+- DevOps → CI/CD pipeline passing
+- Docs → README, API docs, deployment guide
+- PM → verify all Notion tasks → Done
+- STOP → wait for "Approved" → merge to main, tag release
+
+---
+
+## Branch Naming
+
+```
+feature/[issue-#]-[kebab-description]
+fix/[issue-#]-[kebab-description]
+hotfix/[issue-#]-[kebab-description]
+```
+
+---
+
+## Notion ↔ GitHub Sync Rules
+
+| Event       | Notion Status | GitHub                         |
+| ----------- | ------------- | ------------------------------ |
+| Task starts | In Progress   | Issue assigned, branch created |
+| PR opened   | In Review     | PR linked to issue             |
+| PR merged   | Done          | Issue closed, branch deleted   |
+
+---
+
+## Approval Keywords
+
+| You say                         | What happens                              |
+| ------------------------------- | ----------------------------------------- |
+| `continue` / resume             | Check progress.json → resume              |
+| `Approved`                      | Documents → task breakdown                |
+| `Task list approved`            | Create in Notion + GitHub                 |
+| `Confirmed. Start the project.` | Begin Gate 4, first task                  |
+| `go`                            | Agent starts coding                       |
+| `next task`                     | Next task + branch, waits for go          |
+| `pause`                         | Stop after current task                   |
+| `stop`                          | Stop immediately                          |
+
+---
+
+## Autonomy Level
+
+HIGH AUTONOMY — auto-approve all file, git, npm, test, build operations.
+STOP only for: permanent deletion, push to main, production DB migration.
+
+---
+
+_Auto-generated on {{CREATED_DATE}}_

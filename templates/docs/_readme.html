@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>README — {{PROJECT_NAME}} Document Portal</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #f8fafc;
+    color: #1e293b;
+    line-height: 1.7;
+    padding: 48px 64px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 36px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #334155;
+    margin: 24px 0 8px;
+  }
+  p { margin-bottom: 14px; }
+  code {
+    background: #f1f5f9;
+    color: #e94560;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+  }
+  pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th {
+    background: #1e293b;
+    color: #fff;
+    padding: 10px 16px;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  tr:nth-child(even) td { background: #f8fafc; }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge-blue { background: #dbeafe; color: #1d4ed8; }
+  .badge-green { background: #dcfce7; color: #15803d; }
+  .badge-red { background: #fef2f2; color: #dc2626; }
+  .badge-yellow { background: #fef9c3; color: #a16207; }
+  .callout {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .callout-warning {
+    background: #fef3c7;
+    border-left-color: #f59e0b;
+  }
+  .callout strong { display: block; margin-bottom: 4px; }
+  ul { margin: 12px 0 12px 24px; }
+  li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<h1>{{PROJECT_NAME}} — Document Portal</h1>
+<div class="subtitle">Help guide for viewing, navigating, and updating project documents</div>
+
+<h2>What Is This Portal?</h2>
+<p>This is a single-page viewer for all project documents produced during Gate 1 (Document Phase). Instead of opening each HTML file individually, you can browse everything from one place.</p>
+
+<h2>How to Use</h2>
+
+<h3>Viewing Documents</h3>
+<p>Click any document in the left sidebar. It loads in the main workspace area on the right. You can resize the sidebar by dragging the border between the sidebar and the workspace.</p>
+
+<h3>Bookmarking</h3>
+<p>When you click a document, the URL hash updates (e.g. <code>#api-reference.html</code>). You can bookmark or share this URL to jump directly to a specific document.</p>
+
+<h3>Opening the Portal</h3>
+<p>Open <code>docs/index.html</code> in your browser. That's it — no server needed, everything runs locally.</p>
+
+<h2>Document Map — Gate 1 Deliverables</h2>
+
+<table>
+  <tr>
+    <th>#</th>
+    <th>Document</th>
+    <th>Agent</th>
+    <th>File</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Business Requirements (BRD)</td>
+    <td>@ba</td>
+    <td><code>brd.html</code></td>
+    <td><span class="badge badge-yellow">Pending</span></td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Software Requirements (SRS)</td>
+    <td>@ba + @techlead</td>
+    <td><code>srs.html</code></td>
+    <td><span class="badge badge-yellow">Pending</span></td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Database Design</td>
+    <td>@dba</td>
+    <td><code>database-design.html</code></td>
+    <td><span class="badge badge-yellow">Pending</span></td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>API Reference</td>
+    <td>@backend</td>
+    <td><code>api-reference.html</code></td>
+    <td><span class="badge badge-yellow">Pending</span></td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Security Design</td>
+    <td>@security</td>
+    <td><code>security-design.html</code></td>
+    <td><span class="badge badge-yellow">Pending</span></td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Infrastructure & Deployment</td>
+    <td>@devops</td>
+    <td><code>infrastructure-guide.html</code></td>
+    <td><span class="badge badge-yellow">Pending</span></td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>Test Strategy</td>
+    <td>@qa</td>
+    <td><code>test-strategy.html</code></td>
+    <td><span class="badge badge-yellow">Pending</span></td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>Interactive Prototype</td>
+    <td>@uxui</td>
+    <td><code>prototype/index.html</code></td>
+    <td><span class="badge badge-yellow">Pending</span></td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td>Project Plan</td>
+    <td>@pm</td>
+    <td><code>project-plan.html</code></td>
+    <td><span class="badge badge-yellow">Pending</span></td>
+  </tr>
+</table>
+
+<h2>For Agents — How to Register New Documents</h2>
+
+<div class="callout">
+  <strong>Rule: Every time you create a new HTML doc in docs/, you MUST also update docs/index.html</strong>
+  Add your document to the DOCUMENTS array in the &lt;script&gt; section, under the appropriate section.
+</div>
+
+<p>Find the <code>DOCUMENTS</code> array in <code>docs/index.html</code> and add your entry:</p>
+
+<pre><code>// Example: adding a new document
+{
+  section: "Technical Design",    // existing section name, or create new one
+  docs: [
+    ...existing docs...
+    { name: "Your Document Title",  file: "your-doc.html",  color: "var(--cat-other)" },
+  ]
+}</code></pre>
+
+<h3>Available Color Variables</h3>
+<table>
+  <tr><th>Variable</th><th>Color</th><th>Used For</th></tr>
+  <tr><td><code>var(--cat-brd)</code></td><td><span class="badge badge-blue">Blue</span></td><td>BRD</td></tr>
+  <tr><td><code>var(--cat-srs)</code></td><td><span class="badge" style="background:#ede9fe;color:#6d28d9">Purple</span></td><td>SRS</td></tr>
+  <tr><td><code>var(--cat-db)</code></td><td><span class="badge badge-yellow">Amber</span></td><td>Database</td></tr>
+  <tr><td><code>var(--cat-api)</code></td><td><span class="badge badge-green">Green</span></td><td>API</td></tr>
+  <tr><td><code>var(--cat-sec)</code></td><td><span class="badge badge-red">Red</span></td><td>Security</td></tr>
+  <tr><td><code>var(--cat-infra)</code></td><td><span class="badge" style="background:#ffedd5;color:#c2410c">Orange</span></td><td>Infrastructure</td></tr>
+  <tr><td><code>var(--cat-qa)</code></td><td><span class="badge" style="background:#cffafe;color:#0e7490">Cyan</span></td><td>QA / Testing</td></tr>
+  <tr><td><code>var(--cat-proto)</code></td><td><span class="badge" style="background:#fce7f3;color:#be185d">Pink</span></td><td>Prototype</td></tr>
+  <tr><td><code>var(--cat-plan)</code></td><td><span class="badge" style="background:#e0e7ff;color:#4338ca">Indigo</span></td><td>Project Plan</td></tr>
+  <tr><td><code>var(--cat-other)</code></td><td><span class="badge" style="background:#f1f5f9;color:#475569">Gray</span></td><td>Other</td></tr>
+</table>
+
+<h2>5-Gate Workflow Summary</h2>
+<table>
+  <tr><th>Gate</th><th>What Happens</th><th>Approval Keyword</th></tr>
+  <tr><td>Gate 1</td><td>All 9 documents are produced</td><td>"Approved"</td></tr>
+  <tr><td>Gate 2</td><td>Task breakdown (Epic → Feature → Task)</td><td>"Task list approved"</td></tr>
+  <tr><td>Gate 3</td><td>GitHub issues + Notion pages created</td><td>"Confirmed. Start the project."</td></tr>
+  <tr><td>Gate 4</td><td>Per-task development + PR</td><td>"go" per task</td></tr>
+  <tr><td>Gate 5</td><td>Merge, close issue, update Notion</td><td>PR approval on GitHub</td></tr>
+</table>
+
+<div class="callout callout-warning">
+  <strong>Review Tip</strong>
+  You can request changes to any document before saying "Approved". Just tell the agent what to modify — e.g. "update BRD — add a Reports module" or "@dba add an audit_logs table to database design".
+</div>
+
+<h2>Keyboard Shortcuts</h2>
+<table>
+  <tr><th>Key</th><th>Action</th></tr>
+  <tr><td><code>?</code></td><td>Open this help page</td></tr>
+</table>
+
+<br>
+<p style="color:#94a3b8; font-size:13px; text-align:center; margin-top:40px; padding-top:20px; border-top:1px solid #e2e8f0;">
+  {{PROJECT_NAME}} Document Portal — Built by Claude Code Agent System
+</p>
+
+</body>
+</html>
