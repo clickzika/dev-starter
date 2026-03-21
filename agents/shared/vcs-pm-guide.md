@@ -1,6 +1,6 @@
 # Shared Guide — Version Control & Project Management
 
-All commands (`/build`, `/feature`, `/fix`, `/review`) MUST read this guide
+All SDLC workflows (`dev-starter`, `dev-change`, `dev-release`, `dev-hotfix`, etc.) MUST read this guide
 before running any VCS or PM operations.
 
 ---
