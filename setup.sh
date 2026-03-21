@@ -12,6 +12,7 @@ RED='\033[0;31m'
 RESET='\033[0m'
 
 ENV_FILE="$HOME/.claude/.env"
+TMP_D="${TMPDIR:-${TEMP:-/tmp}}"
 
 echo ""
 echo -e "${BOLD}╔══════════════════════════════════════════╗${RESET}"
@@ -122,11 +123,11 @@ curl -s -X POST https://api.notion.com/v1/search \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
   -d "{\"page_size\": 1}" \
-  -o /tmp/notion_test.json
+  -o $TMP_D/notion_test.json
 
 NOTION_STATUS=$(node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/notion_test.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/notion_test.json', 'utf8'));
 console.log(data.status || 'ok');
 ")
 
@@ -138,7 +139,7 @@ elif [ "$NOTION_STATUS" = "ok" ]; then
 else
   echo -e "${YELLOW}⚠️  Could not verify Notion key (status: $NOTION_STATUS) — saved anyway${RESET}"
 fi
-rm -f /tmp/notion_test.json
+rm -f $TMP_D/notion_test.json
 echo ""
 
 # ─── Notion Parent Page ───────────────────────────────

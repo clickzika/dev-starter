@@ -11,6 +11,7 @@ Agents read this file when Notion operations are needed.
 - curl JSON body: use double quotes with escaped inner quotes
 - Temp files: write curl output to files (`-o file.json`) then parse with Node.js
 - Always clean up temp files after use
+- **Temp directory:** Always use `TMP_D="${TMPDIR:-${TEMP:-/tmp}}"` — Windows has no `/tmp/`
 
 ---
 
@@ -25,15 +26,15 @@ curl -s -X POST https://api.notion.com/v1/search \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
   -d "{\"page_size\": 1}" \
-  -o /tmp/notion_check.json
+  -o $TMP_D/notion_check.json
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/notion_check.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/notion_check.json', 'utf8'));
 if (data.status === 401) { console.log('ERROR:401'); process.exit(1); }
 console.log('OK');
 "
-rm -f /tmp/notion_check.json
+rm -f $TMP_D/notion_check.json
 ```
 
 If ERROR:401 → STOP: "Invalid NOTION_API_KEY. Run bash ~/.claude/setup.sh"
@@ -54,11 +55,11 @@ curl -s -X POST https://api.notion.com/v1/search \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
   -d "{\"query\": \"$PARENT_PAGE_NAME\", \"filter\": {\"property\": \"object\", \"value\": \"page\"}, \"page_size\": 5}" \
-  -o /tmp/nt_search.json
+  -o $TMP_D/nt_search.json
 
 PARENT_PAGE_ID=$(node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/nt_search.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/nt_search.json', 'utf8'));
 const pages = (data.results || []).filter(p => {
   const title = ((p.properties && p.properties.title && p.properties.title.title) || [])
     .map(t => t.plain_text).join('');
@@ -66,7 +67,7 @@ const pages = (data.results || []).filter(p => {
 });
 console.log(pages.length > 0 ? pages[0].id : 'NOT_FOUND');
 ")
-rm -f /tmp/nt_search.json
+rm -f $TMP_D/nt_search.json
 
 if [ "$PARENT_PAGE_ID" = "NOT_FOUND" ]; then
   # Find any accessible page to create under
@@ -75,14 +76,14 @@ if [ "$PARENT_PAGE_ID" = "NOT_FOUND" ]; then
     -H "Content-Type: application/json" \
     -H "Notion-Version: 2022-06-28" \
     -d "{\"filter\": {\"property\": \"object\", \"value\": \"page\"}, \"page_size\": 1}" \
-    -o /tmp/nt_any.json
+    -o $TMP_D/nt_any.json
 
   ANY_PAGE_ID=$(node -e "
   const fs = require('fs');
-  const data = JSON.parse(fs.readFileSync('/tmp/nt_any.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync('$TMP_D/nt_any.json', 'utf8'));
   console.log(data.results && data.results.length > 0 ? data.results[0].id : 'NO_PAGES');
   ")
-  rm -f /tmp/nt_any.json
+  rm -f $TMP_D/nt_any.json
 
   if [ "$ANY_PAGE_ID" = "NO_PAGES" ]; then
     echo "ERROR: No Notion pages accessible."
@@ -97,14 +98,14 @@ if [ "$PARENT_PAGE_ID" = "NOT_FOUND" ]; then
     -H "Content-Type: application/json" \
     -H "Notion-Version: 2022-06-28" \
     -d "{\"parent\": {\"page_id\": \"$ANY_PAGE_ID\"}, \"properties\": {\"title\": {\"title\": [{\"text\": {\"content\": \"$PARENT_PAGE_NAME\"}}]}}, \"icon\": {\"emoji\": \"🚀\"}}" \
-    -o /tmp/nt_new_parent.json
+    -o $TMP_D/nt_new_parent.json
 
   PARENT_PAGE_ID=$(node -e "
   const fs = require('fs');
-  const data = JSON.parse(fs.readFileSync('/tmp/nt_new_parent.json', 'utf8'));
+  const data = JSON.parse(fs.readFileSync('$TMP_D/nt_new_parent.json', 'utf8'));
   console.log(data.id || 'ERROR');
   ")
-  rm -f /tmp/nt_new_parent.json
+  rm -f $TMP_D/nt_new_parent.json
 fi
 
 echo "✅ Parent page ID: $PARENT_PAGE_ID"
@@ -172,11 +173,11 @@ curl -s -X POST https://api.notion.com/v1/databases \
       \"Notes\":          {\"rich_text\": {}}
     }
   }" \
-  -o /tmp/nt_db.json
+  -o $TMP_D/nt_db.json
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/nt_db.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/nt_db.json', 'utf8'));
 if (data.id) {
   console.log('DB_ID=' + data.id);
   console.log('DB_URL=' + (data.url || ''));
@@ -184,7 +185,7 @@ if (data.id) {
   console.log('ERROR=' + JSON.stringify(data).substring(0, 200));
 }
 "
-rm -f /tmp/nt_db.json
+rm -f $TMP_D/nt_db.json
 ```
 
 Save `DB_ID` and `DB_URL` to `.project.env`.
@@ -218,14 +219,14 @@ curl -s -X POST https://api.notion.com/v1/pages \
       \"Notes\":          {\"rich_text\": [{\"text\": {\"content\": \"$TASK_NOTES\"}}]}
     }
   }" \
-  -o /tmp/nt_task.json
+  -o $TMP_D/nt_task.json
 
 TASK_ID=$(node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/nt_task.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/nt_task.json', 'utf8'));
 console.log(data.id || 'ERROR');
 ")
-rm -f /tmp/nt_task.json
+rm -f $TMP_D/nt_task.json
 
 echo "✅ Notion task created: $TASK_TITLE (ID: $TASK_ID)"
 ```
@@ -256,14 +257,14 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/$NOTION_TASK_ID" \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
   -d "{\"properties\": $PROPS}" \
-  -o /tmp/nt_update.json
+  -o $TMP_D/nt_update.json
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/nt_update.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/nt_update.json', 'utf8'));
 console.log(data.id ? '✅ Status updated to: $NEW_STATUS' : 'ERROR: ' + JSON.stringify(data).substring(0, 100));
 "
-rm -f /tmp/nt_update.json
+rm -f $TMP_D/nt_update.json
 ```
 
 ---
@@ -283,9 +284,9 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/$NOTION_TASK_ID" \
     \"Status\":      {\"select\": {\"name\": \"In Review\"}},
     \"GitHub PR #\": {\"number\": $PR_NUMBER}
   }}" \
-  -o /tmp/nt_pr.json
+  -o $TMP_D/nt_pr.json
 
-rm -f /tmp/nt_pr.json
+rm -f $TMP_D/nt_pr.json
 echo "✅ Notion task updated: PR #$PR_NUMBER, Status → In Review"
 ```
 
@@ -308,9 +309,9 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/$NOTION_TASK_ID" \
     \"Status\":         {\"select\": {\"name\": \"Done\"}},
     \"Completed Date\": {\"date\": {\"start\": \"$TODAY\"}}
   }}" \
-  -o /tmp/nt_done.json
+  -o $TMP_D/nt_done.json
 
-rm -f /tmp/nt_done.json
+rm -f $TMP_D/nt_done.json
 echo "✅ Notion task marked Done (Completed: $TODAY)"
 ```
 
@@ -410,9 +411,9 @@ curl -s -X PATCH "https://api.notion.com/v1/pages/$NOTION_TASK_ID" \
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
   -d "{\"properties\": {\"Sprint\": {\"select\": {\"name\": \"$SPRINT_NAME\"}}}}" \
-  -o /tmp/nt_sprint.json
+  -o $TMP_D/nt_sprint.json
 
-rm -f /tmp/nt_sprint.json
+rm -f $TMP_D/nt_sprint.json
 echo "✅ Task assigned to $SPRINT_NAME"
 ```
 
@@ -450,11 +451,11 @@ curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" 
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
   -d "{\"filter\": {\"property\": \"Status\", \"select\": {\"equals\": \"$QUERY_STATUS\"}}}" \
-  -o /tmp/nt_query.json
+  -o $TMP_D/nt_query.json
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/nt_query.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/nt_query.json', 'utf8'));
 const tasks = data.results || [];
 console.log('Found: ' + tasks.length + ' tasks with status: $QUERY_STATUS');
 tasks.forEach(t => {
@@ -464,7 +465,7 @@ tasks.forEach(t => {
   console.log('  - [' + role + '] ' + title + ' (' + epic + ')');
 });
 "
-rm -f /tmp/nt_query.json
+rm -f $TMP_D/nt_query.json
 ```
 
 ### Query by Role
@@ -477,11 +478,11 @@ curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" 
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
   -d "{\"filter\": {\"property\": \"Role\", \"select\": {\"equals\": \"$QUERY_ROLE\"}}}" \
-  -o /tmp/nt_query_role.json
+  -o $TMP_D/nt_query_role.json
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/nt_query_role.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/nt_query_role.json', 'utf8'));
 const tasks = data.results || [];
 console.log('Found: ' + tasks.length + ' tasks for role: $QUERY_ROLE');
 tasks.forEach(t => {
@@ -490,7 +491,7 @@ tasks.forEach(t => {
   console.log('  - [' + status + '] ' + title);
 });
 "
-rm -f /tmp/nt_query_role.json
+rm -f $TMP_D/nt_query_role.json
 ```
 
 ### Query Blocked Tasks
@@ -503,11 +504,11 @@ curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" 
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
   -d "{\"filter\": {\"property\": \"Status\", \"select\": {\"equals\": \"Blocked\"}}}" \
-  -o /tmp/nt_blocked.json
+  -o $TMP_D/nt_blocked.json
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/nt_blocked.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/nt_blocked.json', 'utf8'));
 const tasks = data.results || [];
 if (tasks.length === 0) {
   console.log('✅ No blocked tasks');
@@ -520,7 +521,7 @@ if (tasks.length === 0) {
   });
 }
 "
-rm -f /tmp/nt_blocked.json
+rm -f $TMP_D/nt_blocked.json
 ```
 
 ---
@@ -540,11 +541,11 @@ curl -s -X POST "https://api.notion.com/v1/databases/$NOTION_DATABASE_ID/query" 
   -H "Content-Type: application/json" \
   -H "Notion-Version: 2022-06-28" \
   -d "{}" \
-  -o /tmp/nt_all.json
+  -o $TMP_D/nt_all.json
 
 node -e "
 const fs = require('fs');
-const data = JSON.parse(fs.readFileSync('/tmp/nt_all.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('$TMP_D/nt_all.json', 'utf8'));
 const tasks = data.results || [];
 const total = tasks.length;
 
@@ -601,7 +602,7 @@ Object.entries(byRole).forEach(([k, v]) => {
 });
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 "
-rm -f /tmp/nt_all.json
+rm -f $TMP_D/nt_all.json
 ```
 
 Output example:
