@@ -52,6 +52,33 @@ Write file → git commit → update memory/progress.json → announce handoff.
 Always update documents before writing any code.
 Order: CLAUDE.md → BRD → Schema → API → UX → Security → Code
 
+### Rule 5 — Notion Task Status MUST Be Updated
+**Before starting any task:** PROC-NT-04 → Status: "In Progress"
+**After creating PR:** PROC-NT-05 → Status: "In Review"
+**After PR merged:** PROC-NT-06 → Status: "Done"
+Never skip status updates. Each task MUST go through: To Do → In Progress → In Review → Done.
+
+### Rule 6 — Continuous Development After Doc Approval
+After all documents are approved (Gate A2/B2/C1), develop ALL tasks continuously without stopping for per-task approval. Only show the final approval gate (Gate A4/B3/C2) after ALL tasks are complete.
+
+### Rule 7 — Parallel Tracks When Possible
+Group tasks into parallel tracks by independence:
+- **Track A (Backend):** DB + API tasks → @dba, @backend
+- **Track B (Frontend):** UI + component tasks → @frontend, @uxui
+- **Track C (Infra):** DevOps + security tasks → @devops, @security
+Tasks within a track run in dependency order.
+Tracks run in parallel when they have no cross-dependencies.
+If Track B depends on Track A output (e.g. API response shape), complete Track A first.
+
+### Rule 8 — Document Standards (MANDATORY)
+- **docs/index.html** — MUST be copied from `~/.claude/templates/docs/index.html` template.
+  Do NOT create from scratch. Replace `{{PROJECT_NAME}}` with actual project name.
+- **docs/prototype/components.html** — MUST be real rendered HTML with Tailwind CSS.
+  Must include ALL 8 sections (Typography, Colors, Buttons, Forms, Data Display, Navigation, Feedback, Layout).
+  Follow the MANDATORY HTML examples in `~/.claude/agents/uxui.md`.
+  NEVER output text descriptions — always output actual rendered HTML components.
+- All docs MUST use `~/.claude/templates/docs/document-template.html` as the base template.
+
 ---
 
 ## PHASE 1 — Identify Change Type
@@ -310,19 +337,58 @@ Show summary:
 
 ---
 
-## A-PHASE 5 — Development
+## A-PHASE 5 — Development (Continuous + Parallel)
 
-For each task (in dependency order):
+### Step A5.1 — Organize Parallel Tracks
 
-1. Read `~/.claude/dev-github.md` → PROC-GH-06: create feature branch
-2. Read `~/.claude/dev-notion.md` → PROC-NT-04: status → In Progress
+Group tasks into tracks based on dependencies:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 DEVELOPMENT TRACKS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Track A (Backend):  [list backend/dba tasks in order]
+Track B (Frontend): [list frontend/uxui tasks in order]
+Track C (Infra):    [list devops/security tasks — if any]
+
+Parallel plan:
+  [Track A] ──────────→  (if no cross-dependency)
+  [Track B] ──────────→  (runs at same time)
+  — OR —
+  [Track A] ────→ then [Track B] (if B depends on A)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### Step A5.2 — Develop ALL Tasks Continuously
+
+For **each track** (parallel when independent, sequential when dependent):
+
+For **each task** within a track:
+
+1. **NOTION → In Progress:** Read `~/.claude/dev-notion.md` → PROC-NT-04: status → In Progress ⚠️ MANDATORY
+2. Read `~/.claude/dev-github.md` → PROC-GH-06: create feature branch
 3. Agent reads relevant docs from disk before coding:
    - @backend → docs/api-reference.html + docs/database-design.html
    - @frontend → docs/prototype/index.html + docs/brd.html
    - @dba → docs/database-design.html
 4. Implement code
 5. Read `~/.claude/dev-github.md` → PROC-GH-07: create PR
-6. PR REVIEW — multi-dimensional review before approval:
+6. **NOTION → In Review:** Read `~/.claude/dev-notion.md` → PROC-NT-05: status → In Review ⚠️ MANDATORY
+7. Announce progress and **continue to next task immediately** — do NOT wait for approval:
+   ```
+   ✅ Task [N/total]: [task name]
+      Branch: [branch]  |  PR: #[N]
+      Notion: In Review ✓
+   → Continuing to next task...
+   ```
+
+**⚠️ DO NOT stop between tasks.** Continue developing until ALL tasks are complete.
+
+### Step A5.3 — Final Review (all tasks complete)
+
+After ALL tasks are developed:
+
+PR REVIEW — review ALL PRs together:
    - Architecture (@techlead): fits existing design? over-engineered?
    - Code Quality (@backend/@frontend): error handling, all states?
    - Security (@security): input validation, auth, OWASP?
@@ -332,28 +398,33 @@ For each task (in dependency order):
    Severity: 🔴 BLOCKER | 🟡 MAJOR | 🟢 MINOR
    → If 🔴 BLOCKER → fix before showing approval gate
    → If 🟡 MAJOR → list in summary, recommend fix
-7. Read `~/.claude/dev-notion.md` → PROC-NT-05: status → In Review
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⛔ GATE A4 — FEATURE APPROVAL
+⛔ GATE A4 — FEATURE APPROVAL (ALL TASKS)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Feature: [feature name]
-PR: #[N] — [PR URL]
+Tasks completed: [N/N]
+
+PRs:
+  #[N] — [task 1 name] — [branch]
+  #[N] — [task 2 name] — [branch]
+  #[N] — [task 3 name] — [branch]
 
 Review findings:
   🔴 Blockers: [N — all fixed before this gate]
   🟡 Major:    [N — listed below with recommendations]
   🟢 Minor:    [N — non-blocking suggestions]
 
-  "approve"        → merge PR + mark Done in Notion
-  "revise [notes]" → fix issues and re-submit PR
+  "approve"        → merge ALL PRs + mark ALL Done in Notion
+  "revise [notes]" → fix issues and re-submit
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 After approval:
-- PROC-GH-08: merge PR + close issue
-- PROC-NT-06: mark task → Done
+- For EACH task:
+  - PROC-GH-08: merge PR + close issue
+  - PROC-NT-06: mark task → Done ⚠️ MANDATORY
 - Update CLAUDE.md: tick feature checkbox ✅
 
 ---
@@ -675,9 +746,9 @@ Show:
 
 ## C-PHASE 4 — Fix Development
 
-1. Read `~/.claude/dev-github.md` → PROC-GH-06: create fix branch
+1. **NOTION → In Progress:** Read `~/.claude/dev-notion.md` → PROC-NT-04: status → In Progress ⚠️ MANDATORY
+2. Read `~/.claude/dev-github.md` → PROC-GH-06: create fix branch
    Branch name: `fix/[issue-number]-[short-slug]`
-2. Read `~/.claude/dev-notion.md` → PROC-NT-04: status → In Progress
 3. Agent reads relevant code and docs from disk
 4. Implement fix
 5. Write or update tests to cover the bug scenario

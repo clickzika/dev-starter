@@ -65,7 +65,34 @@ Before every agent task, announce:
 ### Rule 4 — Save Before Handing Off
 Write file → git commit → update memory/progress.json → then announce handoff.
 
-### Rule 5 — Ask ONE Question at a Time
+### Rule 5 — Notion Task Status MUST Be Updated
+**Before starting any task:** PROC-NT-04 → Status: "In Progress"
+**After creating PR:** PROC-NT-05 → Status: "In Review"
+**After PR merged:** PROC-NT-06 → Status: "Done"
+Never skip status updates. Each task MUST go through: To Do → In Progress → In Review → Done.
+
+### Rule 6 — Continuous Development After Doc Approval
+After all documents are approved, develop ALL tasks continuously without stopping for per-task approval. Only show the final approval gate after ALL tasks are complete.
+
+### Rule 7 — Parallel Tracks When Possible
+Group tasks into parallel tracks by independence:
+- **Track A (Backend):** DB + API tasks → @dba, @backend
+- **Track B (Frontend):** UI + component tasks → @frontend, @uxui
+- **Track C (Infra):** DevOps + security tasks → @devops, @security
+Tasks within a track run in dependency order.
+Tracks run in parallel when they have no cross-dependencies.
+If Track B depends on Track A output (e.g. API response shape), complete Track A first.
+
+### Rule 8 — Document Standards (MANDATORY)
+- **docs/index.html** — MUST be copied from `~/.claude/templates/docs/index.html` template.
+  Do NOT create from scratch. Replace `{{PROJECT_NAME}}` with actual project name.
+- **docs/prototype/components.html** — MUST be real rendered HTML with Tailwind CSS.
+  Must include ALL 8 sections (Typography, Colors, Buttons, Forms, Data Display, Navigation, Feedback, Layout).
+  Follow the MANDATORY HTML examples in `~/.claude/agents/uxui.md`.
+  NEVER output text descriptions — always output actual rendered HTML components.
+- All docs MUST use `~/.claude/templates/docs/document-template.html` as the base template.
+
+### Rule 9 — Ask ONE Question at a Time
 **NEVER ask multiple questions in one message.**
 Ask Q1 → wait for answer → ask Q2 → wait for answer → ...
 

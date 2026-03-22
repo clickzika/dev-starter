@@ -1,5 +1,31 @@
 # Changelog
 
+## v1.0.1 (2026-03-22)
+
+### Agent Identity — Sanrio Theme
+- All 12 agents now have unique Sanrio character names and emoji
+- Progress reporting shows character name + role (e.g. "🐧 Badtz-Maru (Backend) starting: ...")
+- Characters: Hello Kitty (PM), Tuxedo Sam (Tech Lead), My Melody (BA), Badtz-Maru (Backend), Cinnamoroll (Frontend), Pochacco (DBA), Keroppi (QA), Kuromi (Security), Pompompurin (DevOps), Kiki (UX/UI), Gudetama (Docs), Aggretsuko (Mobile)
+
+### Workflow Improvements
+- **Notion task status**: Added Rule 5 — tasks MUST update through To Do → In Progress → In Review → Done (all 3 workflows)
+- **Continuous development**: Added Rule 6 — after doc approval, develop ALL tasks without per-task stops (all 3 workflows)
+- **Parallel execution**: Added Rule 7 — backend + frontend + infra run in parallel when independent (all 3 workflows)
+- **Gate 4 rewritten** in dev-starter.md — removed per-feature HARD STOP, added parallel track diagram
+
+### Document Standards
+- **Document Portal**: Added Rule 8 — docs/index.html MUST be copied from template, never created from scratch
+- **Component Library**: docs/prototype/components.html now mandatory in completion check (11 files full-stack / 10 files client-only)
+- **UX/UI agent**: Added mandatory HTML skeleton, concrete Tailwind code examples for Typography, Colors, Buttons, Forms, Data Display, Feedback sections
+- **Critical reminders**: Agent explicitly told "NEVER output text descriptions" + "NEVER use ASCII art"
+
+### Bug Fixes
+- Fixed: docs/index.html was being generated from scratch instead of using template
+- Fixed: UX/UI prototype produced text descriptions instead of rendered HTML components
+- Fixed: Component Library (components.html) was not being created
+- Fixed: Notion tasks not updated during development phase
+- Fixed: Development stopped after each task for approval instead of continuous flow
+
 ## v1.0.0 (2026-03-22)
 
 ### Initial Release

@@ -121,7 +121,27 @@ Before announcing any handoff to the next agent:
 
 ---
 
-### Rule 5 — Ask ONE Question at a Time
+### Rule 5 — Notion Task Status MUST Be Updated
+**Before starting any task:** PROC-NT-04 → Status: "In Progress"
+**After creating PR:** PROC-NT-05 → Status: "In Review"
+**After PR merged:** PROC-NT-06 → Status: "Done"
+Never skip status updates. Each task MUST go through: To Do → In Progress → In Review → Done.
+
+### Rule 6 — Continuous Development After Doc Approval
+After all Gate 2 documents are approved, develop ALL tasks continuously without stopping for per-task approval.
+Only show the final approval gate (Gate 5) after ALL tasks are complete.
+Exception: Only stop if a 🔴 BLOCKER is found during PR review.
+
+### Rule 7 — Parallel Tracks When Possible
+Group tasks into parallel tracks by independence:
+- **Track A (Backend):** DB + API tasks → @dba, @backend
+- **Track B (Frontend):** UI + component tasks → @frontend, @uxui
+- **Track C (Infra):** DevOps + security tasks → @devops, @security
+Tasks within a track run in dependency order.
+Tracks run in parallel when they have no cross-dependencies.
+If Track B depends on Track A output (e.g. API response shape), complete Track A first.
+
+### Rule 8 — Ask ONE Question at a Time
 
 **NEVER ask multiple questions in one message.**
 - Ask Q1 → wait for answer → ask Q2 → wait for answer → ...
@@ -1081,18 +1101,32 @@ GATE 2 — Architecture & Design        ← HARD STOP: user must approve before 
   │  Claude will read the spec and create all endpoints.        │
   └─────────────────────────────────────────────────────────────┘
 
+  DOCUMENT PORTAL SETUP (MANDATORY):
+  After all Gate 2 documents are generated:
+  1. Copy `~/.claude/templates/docs/index.html` to `docs/index.html`
+     → Replace all `{{PROJECT_NAME}}` with actual project name
+     → Replace logo initials in `<div class="topbar-logo">` with project initials
+     → Do NOT create index.html from scratch — MUST use the template file
+  2. Verify `docs/prototype/components.html` exists (Component Library)
+     → Must be real rendered HTML with Tailwind CSS — NOT text descriptions
+     → Must include ALL 8 sections as specified in @uxui agent file
+     → Follow the MANDATORY HTML examples in agents/uxui.md
+
   COMPLETION CHECK:
-  If Q3.1 = 1: All 9 documents must exist:
+  If Q3.1 = 1: All 11 files must exist:
+    docs/index.html (Document Portal — from template),
     docs/brd.html, docs/srs.html, docs/database-design.html,
     docs/api-reference.html, docs/security-design.html,
     docs/infrastructure-guide.html, docs/test-strategy.html,
-    docs/prototype/index.html, docs/project-plan.html
+    docs/prototype/index.html, docs/prototype/components.html,
+    docs/project-plan.html
 
-  If Q3.1 = 2: All 8 documents must exist:
+  If Q3.1 = 2: All 10 files must exist:
+    docs/index.html (Document Portal — from template),
     docs/brd.html, docs/srs.html, docs/api-request.html,
     docs/security-design.html, docs/infrastructure-guide.html,
     docs/test-strategy.html, docs/prototype/index.html,
-    docs/project-plan.html
+    docs/prototype/components.html, docs/project-plan.html
 
   PAIR REVIEW — cross-check between agents:
   ┌─────────────────────────────────────────────┐
@@ -1139,14 +1173,35 @@ GATE 3 — Foundation + Task Setup      ← HARD STOP: user must approve before 
     ✅ Scaffold complete
   ⛔ STOP → wait for "approve" or "revise [component]"
 
-GATE 4 — Feature Development          ← HARD STOP per feature
-  For EACH feature in Progress Tracker:
+GATE 4 — Feature Development          ← Continuous Development (Rule 6 + Rule 7)
+
+  ⚠️ IMPORTANT: After Gate 3 approval, develop ALL tasks continuously.
+  Do NOT stop for per-task approval. Only stop at Gate 5 when ALL tasks are done.
+
+  PARALLEL TRACKS (Rule 7):
+  ┌─────────────────────────────────────────────────────────────┐
+  │ Track A (Backend): @dba + @backend                          │
+  │   DB migrations → API endpoints → unit tests                │
+  │                                                             │
+  │ Track B (Frontend): @frontend + @uxui                       │
+  │   Components → Pages → integration with API                 │
+  │                                                             │
+  │ Track C (Infra): @devops + @security                        │
+  │   CI/CD pipeline → Docker → security hardening              │
+  │                                                             │
+  │ ⚡ Tracks A+B+C run in parallel when independent            │
+  │ ⚡ If Track B needs Track A output → complete A first        │
+  └─────────────────────────────────────────────────────────────┘
+
+  For EACH task:
     1. PM     → PROC-NT-04: update Notion task → "In Progress"
     2. DevOps → PROC-GH-06: create feature branch (feature/[issue#]-[slug])
-    3. Backend  → read docs/api-reference.html + docs/database-design.html → implement API
-    4. Frontend → read docs/prototype/index.html + docs/srs.html           → implement UI
-    5. DevOps → PROC-GH-07: create PR
-    6. PR REVIEW — multi-dimensional review before approval:
+    3. Develop:
+       - Backend  → read docs/api-reference.html + docs/database-design.html → implement API
+       - Frontend → read docs/prototype/index.html + docs/srs.html           → implement UI
+       - (run in parallel when tasks are independent)
+    4. DevOps → PROC-GH-07: create PR
+    5. PR REVIEW — multi-dimensional review:
        ┌─────────────────────────────────────────────┐
        │ Architecture (@techlead): fits existing design? over-engineered? │
        │ Code Quality (@backend/@frontend): error handling, all states?   │
@@ -1156,17 +1211,14 @@ GATE 4 — Feature Development          ← HARD STOP per feature
        │ Docs (@docs): new endpoints documented? changelog?              │
        └─────────────────────────────────────────────┘
        Severity: 🔴 BLOCKER (must fix) | 🟡 MAJOR (should fix) | 🟢 MINOR (suggestion)
-       → If 🔴 BLOCKER found → agent fixes before showing approval gate
-       → If 🟡 MAJOR found → list in approval summary, recommend fix
-       → If only 🟢 MINOR → proceed to approval gate
-    7. PM     → PROC-NT-05: update Notion task → "In Review", add PR #
-    ⛔ STOP: show output + review findings → wait for "approve" or "revise [notes]"
-
-    After approval:
-    8. DevOps → PROC-GH-08: merge PR, close issue
+       → If 🔴 BLOCKER found → agent fixes immediately, then continue
+       → If 🟡 MAJOR found → fix now or note for later
+       → If only 🟢 MINOR → continue to next task
+    6. PM     → PROC-NT-05: update Notion task → "In Review", add PR #
+    7. DevOps → PROC-GH-08: merge PR, close issue
        ⚠️ If merge conflict → follow PROC-GH-13 (conflict resolution)
-    9. PM     → PROC-NT-06: update Notion task → "Done"
-    → proceed to next feature
+    8. PM     → PROC-NT-06: update Notion task → "Done"
+    → proceed to next task (NO STOP between tasks)
 
 GATE 5 — Quality & Delivery           ← HARD STOP: user must approve before deploy
   QA       → read docs/brd.html → write + run tests → coverage report
