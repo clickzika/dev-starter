@@ -185,6 +185,7 @@ Example: `login, product catalog, cart, checkout, payment`
 5. ⚡ API only (no UI)
 6. 💻 Console / CLI Tool
 7. ⚙️ Background Service / Worker
+8. 🔗 Frontend only (connect to existing API)
 
 ---
 
@@ -298,6 +299,58 @@ Show ONLY the stacks that match Q3. Each stack is a complete bundle (frontend + 
 
 🎯 0. Let Claude recommend
 ```
+
+### If Q3 = 🔗 Frontend only (connect to existing API):
+```
+🟢 Starter
+  1. React + Tailwind CSS
+  2. Vue + Tailwind CSS
+  3. Svelte + Tailwind CSS
+
+🟡 Standard
+  4. Next.js + Tailwind CSS
+  5. Angular + Angular Material
+  6. Nuxt.js + Tailwind CSS
+
+🔵 Professional
+  7. Next.js + Tailwind CSS + Zustand + React Query
+  8. Angular + PrimeNG + NgRx
+
+🎯 0. Let Claude recommend
+```
+
+**Additional questions for Q3 = 8 (Frontend only):**
+
+After Q4/Q5, ask these extra questions:
+
+**Q-API-1. What is the existing API base URL?**
+(e.g. https://api.company.com/v1, http://localhost:3000/api)
+
+---
+
+**Q-API-2. How does the API authenticate?**
+1. JWT (Bearer token)
+2. API Key (header or query param)
+3. OAuth2 / SSO
+4. Session / Cookie
+5. No auth required
+6. Not sure — I'll provide docs
+
+---
+
+**Q-API-3. Do you have API documentation?**
+1. Yes — Swagger/OpenAPI URL (provide URL)
+2. Yes — Postman collection (provide file)
+3. Yes — other format (describe)
+4. No — I'll describe the endpoints manually
+
+---
+
+Then skip all backend/database questions. Auto-decide:
+- No backend code — frontend only
+- No database — data comes from existing API
+- HTTP client: auto-select based on framework (axios/fetch/Angular HttpClient)
+- Folder structure: Template A (frontend only) with `src/services/api/` for API integration
 
 ---
 
@@ -1192,6 +1245,32 @@ Use the matching template below, then adjust for the specific frameworks chosen.
 ├── .github/
 ├── docker-compose.yml
 ├── CLAUDE.md
+└── README.md
+```
+
+### Template H — Frontend Only (Q3 = 8, connect to existing API)
+```
+[PROJECT_NAME]/
+├── src/
+│   ├── components/          ← UI components
+│   ├── pages/               ← route pages
+│   ├── services/
+│   │   └── api/             ← API client + endpoints
+│   │       ├── client.ts    ← axios/fetch instance + base URL + auth
+│   │       ├── endpoints/   ← one file per API domain (auth, orders, products...)
+│   │       └── types/       ← request/response types from API
+│   ├── stores/              ← state management
+│   ├── hooks/               ← custom hooks (React) or composables (Vue)
+│   ├── assets/
+│   └── utils/
+│
+├── public/
+├── docs/
+├── .github/
+├── .env                     ← API_BASE_URL, API_KEY (gitignored)
+├── .env.example             ← template without secrets
+├── CLAUDE.md
+├── package.json
 └── README.md
 ```
 
