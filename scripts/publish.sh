@@ -120,7 +120,15 @@ $DESCRIPTION
 See [CHANGELOG.md](CHANGELOG.md) for details."
 fi
 
+# Use release remote URL to determine the repo for gh release
+RELEASE_REPO=$(git remote get-url release 2>/dev/null | sed 's|.*github.com[:/]||;s|\.git$||')
+if [ -z "$RELEASE_REPO" ]; then
+  echo -e "${RED}Error: 'release' remote not found${NC}"
+  exit 1
+fi
+
 gh release create "v$NEW_VERSION" \
+  --repo "$RELEASE_REPO" \
   --title "v$NEW_VERSION — $DESCRIPTION" \
   --notes "$CHANGELOG_SECTION
 
