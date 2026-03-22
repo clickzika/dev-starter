@@ -2,7 +2,7 @@
 # install.sh — One-command installer for Dev Starter V1
 #
 # Usage (run from anywhere):
-#   curl -sL https://raw.githubusercontent.com/clickzika/dev-starter/develop/install.sh | bash
+#   curl -sL https://raw.githubusercontent.com/clickzika/dev-starter/main/install.sh | bash
 #
 # Or if you already cloned:
 #   bash install.sh
@@ -19,7 +19,7 @@ RED='\033[0;31m'
 RESET='\033[0m'
 
 REPO_URL="https://github.com/clickzika/dev-starter.git"
-BRANCH="develop"
+BRANCH="main"
 CLAUDE_DIR="$HOME/.claude"
 TMP_DIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'devstarter')"
 
@@ -110,9 +110,12 @@ cp -r "$SOURCE_DIR/templates/"* "$CLAUDE_DIR/templates/" 2>/dev/null || true
 cp "$SOURCE_DIR/dev-menu.md" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/.env.example" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/setup.sh" "$CLAUDE_DIR/" 2>/dev/null || true
+cp "$SOURCE_DIR/update.sh" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/README.md" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/LICENSE" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/.gitignore" "$CLAUDE_DIR/" 2>/dev/null || true
+cp "$SOURCE_DIR/VERSION" "$CLAUDE_DIR/" 2>/dev/null || true
+cp "$SOURCE_DIR/CHANGELOG.md" "$CLAUDE_DIR/" 2>/dev/null || true
 
 # Copy USER.md template (setup.sh will overwrite with wizard answers)
 cp "$SOURCE_DIR/USER.md" "$CLAUDE_DIR/" 2>/dev/null || true
