@@ -39,7 +39,7 @@ fi
 
 # Pull latest
 echo -e "${CYAN}Pulling latest develop...${NC}"
-git pull origin develop
+git pull origin develop 2>/dev/null || true
 
 # ─── Get version ─────────────────────────────────────
 CURRENT_VERSION="unknown"
@@ -94,14 +94,14 @@ git push origin develop
 # ─── Step 2: Merge develop → main ────────────────────
 echo -e "${CYAN}[2/6] Merging develop → main...${NC}"
 git checkout main
-git pull origin main
+git pull release main
 git merge develop -m "Release v$NEW_VERSION — $DESCRIPTION"
-git push origin main
+git push release main
 
 # ─── Step 3: Create tag ──────────────────────────────
 echo -e "${CYAN}[3/6] Creating tag v$NEW_VERSION...${NC}"
 git tag -a "v$NEW_VERSION" -m "v$NEW_VERSION — $DESCRIPTION"
-git push origin "v$NEW_VERSION"
+git push release "v$NEW_VERSION"
 
 # ─── Step 4: Create GitHub Release ───────────────────
 echo -e "${CYAN}[4/6] Creating GitHub Release...${NC}"
