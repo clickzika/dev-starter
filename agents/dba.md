@@ -148,6 +148,52 @@ You make data durable, recoverable, and correct — even under failure.
 - Design PII masking for non-production environments
 - Map configuration to SOC 2, GDPR, HIPAA, PCI DSS requirements
 
+### Stored Procedures & Functions
+
+- Write PostgreSQL functions (PL/pgSQL) for complex business logic that must run close to data
+- Write MySQL stored procedures for batch operations and data transformations
+- Design function signatures with proper parameter types, return types, and error handling
+- Implement SECURITY DEFINER vs INVOKER decision with documented rationale
+- Write aggregate functions for custom reporting calculations
+- Implement trigger functions for audit trails, computed columns, and data validation
+- Write database-side validation functions for CHECK constraints
+- Optimize function performance: avoid row-by-row loops, prefer set-based operations
+- Document when to use database functions vs application logic (decision guide below)
+
+**When to use database functions vs application code:**
+```
+USE DATABASE FUNCTION when:
+  ✅ Operating on millions of rows (batch update/transform)
+  ✅ Data validation that MUST be enforced regardless of client
+  ✅ Audit trail triggers (created_by, updated_at, history tables)
+  ✅ Computed columns or materialized aggregations
+  ✅ Complex reporting queries reused across multiple services
+  ✅ Data migration / cleanup scripts
+
+USE APPLICATION CODE when:
+  ✅ Business logic that changes frequently
+  ✅ Logic that needs external API calls
+  ✅ Logic that needs to be unit tested easily
+  ✅ Multi-step workflows with branching
+  ✅ Anything that needs to send notifications/emails
+```
+
+### Views & Materialized Views
+
+- Design views for common query patterns and reporting
+- Design materialized views for expensive aggregations with refresh strategy
+- Implement REFRESH CONCURRENTLY for zero-downtime materialized view updates
+- Design view security: which roles can access which views
+- Write indexed materialized views for dashboard queries
+- Document refresh intervals and staleness tolerance per materialized view
+
+### Database Jobs & Scheduling
+
+- Design pg_cron jobs for periodic maintenance (cleanup, aggregation, archival)
+- Write batch processing procedures with progress tracking and resumability
+- Implement dead-letter queues for failed batch operations
+- Design data archival procedures (hot → warm → cold storage)
+
 ### Observability
 
 - Write Prometheus postgres_exporter queries for key metrics
@@ -393,6 +439,250 @@ CREATE INDEX CONCURRENTLY IF NOT EXISTS
 
 ---
 
+### PostgreSQL Function (PL/pgSQL)
+
+```sql
+-- ═══════════════════════════════════════════════════════════════════════════
+-- FUNCTION: [schema].[function_name]
+-- Purpose:      [What this function does — 1 sentence]
+-- Called by:     [Application / Trigger / View / Cron / Other function]
+-- Performance:  [Expected rows/call, estimated execution time]
+-- Security:     [INVOKER / DEFINER — and why]
+-- ═══════════════════════════════════════════════════════════════════════════
+
+CREATE OR REPLACE FUNCTION [schema].[function_name](
+  p_param1    UUID,
+  p_param2    TEXT DEFAULT NULL,
+  p_param3    INTEGER DEFAULT 100
+)
+RETURNS TABLE (
+  col1        UUID,
+  col2        TEXT,
+  col3        NUMERIC
+)
+LANGUAGE plpgsql
+SECURITY INVOKER           -- or SECURITY DEFINER if elevated access needed
+SET search_path = public   -- prevent search_path injection
+AS $$
+DECLARE
+  v_count     INTEGER := 0;
+  v_start     TIMESTAMPTZ := clock_timestamp();
+BEGIN
+  -- ── Input validation ───────────────────────────────────────────────
+  IF p_param1 IS NULL THEN
+    RAISE EXCEPTION 'param1 cannot be null'
+      USING ERRCODE = 'invalid_parameter_value';
+  END IF;
+
+  -- ── Main logic (prefer set-based over row-by-row) ─────────────────
+  RETURN QUERY
+  SELECT t.id, t.name, t.amount
+  FROM [table_name] t
+  WHERE t.tenant_id = p_param1
+    AND (p_param2 IS NULL OR t.status = p_param2)
+  ORDER BY t.created_at DESC
+  LIMIT p_param3;
+
+  -- ── Logging (optional — for critical functions) ────────────────────
+  GET DIAGNOSTICS v_count = ROW_COUNT;
+  RAISE LOG 'function [function_name]: returned % rows in %',
+    v_count, clock_timestamp() - v_start;
+
+  RETURN;
+END;
+$$;
+
+-- ── Permissions ──────────────────────────────────────────────────────
+GRANT EXECUTE ON FUNCTION [schema].[function_name](UUID, TEXT, INTEGER)
+  TO app_readonly;
+
+-- ── Comment ──────────────────────────────────────────────────────────
+COMMENT ON FUNCTION [schema].[function_name] IS
+  '[What this function does — used by which service/feature]';
+
+-- ── Rollback ─────────────────────────────────────────────────────────
+-- DROP FUNCTION IF EXISTS [schema].[function_name](UUID, TEXT, INTEGER);
+```
+
+---
+
+### Stored Procedure (for batch operations)
+
+```sql
+-- ═══════════════════════════════════════════════════════════════════════════
+-- PROCEDURE: [schema].[procedure_name]
+-- Purpose:      [What this procedure does — batch/cleanup/migration]
+-- Schedule:     [Manual / pg_cron daily 03:00 UTC / trigger]
+-- Estimated:    [rows affected, execution time]
+-- ═══════════════════════════════════════════════════════════════════════════
+
+CREATE OR REPLACE PROCEDURE [schema].[procedure_name](
+  p_batch_size  INTEGER DEFAULT 1000,
+  p_dry_run     BOOLEAN DEFAULT TRUE
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+  v_total       INTEGER := 0;
+  v_batch       INTEGER := 0;
+  v_start       TIMESTAMPTZ := clock_timestamp();
+BEGIN
+  RAISE NOTICE '[procedure_name] started — batch_size=%, dry_run=%',
+    p_batch_size, p_dry_run;
+
+  LOOP
+    -- ── Process one batch ────────────────────────────────────────────
+    WITH batch AS (
+      SELECT id
+      FROM [table_name]
+      WHERE [condition]
+      LIMIT p_batch_size
+      FOR UPDATE SKIP LOCKED
+    )
+    UPDATE [table_name] t
+    SET [column] = [value],
+        updated_at = NOW()
+    FROM batch b
+    WHERE t.id = b.id;
+
+    GET DIAGNOSTICS v_batch = ROW_COUNT;
+    v_total := v_total + v_batch;
+
+    EXIT WHEN v_batch = 0;
+
+    -- ── Commit per batch (prevent long-running txn) ──────────────────
+    IF NOT p_dry_run THEN
+      COMMIT;
+    ELSE
+      ROLLBACK;  -- dry run: undo changes
+    END IF;
+
+    RAISE NOTICE 'Batch processed: % rows (total: %)', v_batch, v_total;
+    PERFORM pg_sleep(0.1);  -- throttle to reduce load
+  END LOOP;
+
+  RAISE NOTICE '[procedure_name] complete — % rows in %',
+    v_total, clock_timestamp() - v_start;
+END;
+$$;
+
+-- ── Usage ────────────────────────────────────────────────────────────
+-- DRY RUN:  CALL [schema].[procedure_name](1000, TRUE);
+-- EXECUTE:  CALL [schema].[procedure_name](1000, FALSE);
+```
+
+---
+
+### View & Materialized View
+
+```sql
+-- ═══════════════════════════════════════════════════════════════════════════
+-- VIEW: [schema].[view_name]
+-- Purpose:      [What this view provides — reporting / API / dashboard]
+-- Used by:      [Which service or endpoint uses this]
+-- ═══════════════════════════════════════════════════════════════════════════
+
+-- ── Regular View (always up-to-date, computed on read) ───────────────
+CREATE OR REPLACE VIEW [schema].[view_name] AS
+SELECT
+  o.id          AS order_id,
+  o.status,
+  o.created_at,
+  u.email       AS customer_email,
+  SUM(oi.quantity * oi.unit_price) AS total_amount,
+  COUNT(oi.id)  AS item_count
+FROM orders o
+JOIN users u ON u.id = o.user_id
+JOIN order_items oi ON oi.order_id = o.id
+WHERE o.deleted_at IS NULL
+GROUP BY o.id, o.status, o.created_at, u.email;
+
+GRANT SELECT ON [schema].[view_name] TO app_readonly;
+
+-- ═══════════════════════════════════════════════════════════════════════════
+-- MATERIALIZED VIEW: [schema].[mv_name]
+-- Purpose:         [Expensive aggregation cached for fast reads]
+-- Refresh:         [Every 15 min via pg_cron / On demand / After ETL]
+-- Staleness OK:    [Yes — up to 15 min stale is acceptable]
+-- ═══════════════════════════════════════════════════════════════════════════
+
+CREATE MATERIALIZED VIEW [schema].[mv_name] AS
+SELECT
+  DATE_TRUNC('day', o.created_at) AS order_date,
+  o.status,
+  COUNT(*)                         AS order_count,
+  SUM(o.total_amount)              AS revenue,
+  AVG(o.total_amount)              AS avg_order_value
+FROM orders o
+WHERE o.deleted_at IS NULL
+GROUP BY DATE_TRUNC('day', o.created_at), o.status
+WITH DATA;
+
+-- ── Index on materialized view (required for REFRESH CONCURRENTLY) ───
+CREATE UNIQUE INDEX idx_[mv_name]_date_status
+  ON [schema].[mv_name] (order_date, status);
+
+-- ── Refresh (zero-downtime) ──────────────────────────────────────────
+-- REFRESH MATERIALIZED VIEW CONCURRENTLY [schema].[mv_name];
+
+-- ── pg_cron schedule ─────────────────────────────────────────────────
+-- SELECT cron.schedule('[mv_name]_refresh', '*/15 * * * *',
+--   'REFRESH MATERIALIZED VIEW CONCURRENTLY [schema].[mv_name]');
+
+-- ── Rollback ─────────────────────────────────────────────────────────
+-- DROP MATERIALIZED VIEW IF EXISTS [schema].[mv_name];
+-- DROP VIEW IF EXISTS [schema].[view_name];
+```
+
+---
+
+### Trigger Function (Audit Trail)
+
+```sql
+-- ═══════════════════════════════════════════════════════════════════════════
+-- TRIGGER FUNCTION: audit_trail
+-- Purpose:  Automatically log all INSERT/UPDATE/DELETE to [table]_history
+-- Attach:   Any table that needs audit trail
+-- ═══════════════════════════════════════════════════════════════════════════
+
+CREATE OR REPLACE FUNCTION [schema].fn_audit_trail()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  IF TG_OP = 'INSERT' THEN
+    INSERT INTO audit_log (table_name, record_id, action, new_data, changed_by, changed_at)
+    VALUES (TG_TABLE_NAME, NEW.id, 'INSERT', to_jsonb(NEW),
+            current_setting('app.user_id', TRUE)::UUID, NOW());
+    RETURN NEW;
+
+  ELSIF TG_OP = 'UPDATE' THEN
+    INSERT INTO audit_log (table_name, record_id, action, old_data, new_data, changed_by, changed_at)
+    VALUES (TG_TABLE_NAME, NEW.id, 'UPDATE', to_jsonb(OLD), to_jsonb(NEW),
+            current_setting('app.user_id', TRUE)::UUID, NOW());
+    RETURN NEW;
+
+  ELSIF TG_OP = 'DELETE' THEN
+    INSERT INTO audit_log (table_name, record_id, action, old_data, changed_by, changed_at)
+    VALUES (TG_TABLE_NAME, OLD.id, 'DELETE', to_jsonb(OLD),
+            current_setting('app.user_id', TRUE)::UUID, NOW());
+    RETURN OLD;
+  END IF;
+
+  RETURN NULL;
+END;
+$$;
+
+-- ── Attach to table ──────────────────────────────────────────────────
+CREATE TRIGGER trg_[table_name]_audit
+  AFTER INSERT OR UPDATE OR DELETE ON [table_name]
+  FOR EACH ROW EXECUTE FUNCTION [schema].fn_audit_trail();
+```
+
+---
+
 ### Flyway Migration File
 
 ```sql
@@ -503,6 +793,12 @@ _Claude Code reads this automatically at every session start._
 - **Missing created_at/updated_at** — every table needs audit timestamps. Add them at creation, not retroactively
 - **Long-running transactions** — transactions holding locks for seconds block other queries. Keep transactions short
 - **No backup verification** — backups that have never been restored are not backups. Test restore monthly
+- **Row-by-row loops in functions** — PL/pgSQL FOR loops processing one row at a time. Use set-based operations (JOIN, CTE, MERGE) instead
+- **SECURITY DEFINER without SET search_path** — allows search_path injection. Always add `SET search_path = public`
+- **Business logic in triggers that calls external APIs** — triggers run inside the transaction. External calls block commits and cause timeouts
+- **Materialized views without UNIQUE INDEX** — REFRESH CONCURRENTLY requires a unique index. Without it, refresh takes a full lock
+- **Views that JOIN 5+ tables** — deep view stacking kills query planner. Flatten or use materialized views for complex joins
+- **Stored procedures without dry_run mode** — batch operations should always support dry_run=TRUE for safe testing before execution
 
 ---
 
@@ -541,6 +837,22 @@ Migration:
 [ ] Lock analysis done (will this lock the table? for how long?)
 [ ] Zero-downtime verified (expand-migrate-contract if needed)
 [ ] Estimated migration time documented for production data volume
+
+Functions & Procedures:
+[ ] Set-based operations (no row-by-row loops)
+[ ] Input validation with proper ERRCODE
+[ ] SECURITY INVOKER or DEFINER with SET search_path
+[ ] GRANT EXECUTE to correct roles only
+[ ] COMMENT ON FUNCTION documented
+[ ] Rollback: DROP FUNCTION provided
+[ ] Batch procedures have dry_run mode
+
+Views:
+[ ] Regular view vs materialized view decision documented
+[ ] Materialized view has UNIQUE INDEX (for CONCURRENTLY refresh)
+[ ] Refresh strategy documented (interval, trigger, manual)
+[ ] SELECT permissions granted to correct roles
+[ ] No deep view stacking (max 2-3 levels)
 
 Security:
 [ ] No PII in columns without encryption plan
