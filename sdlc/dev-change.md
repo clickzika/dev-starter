@@ -78,6 +78,16 @@ Ask these questions ONE AT A TIME:
 
 ---
 
+**Q4. Is there an API Request Spec from another project?** (ask only if Q1 = 1)
+1. Yes — provide file path (e.g. `/path/to/other-project/docs/api-request.html`)
+2. No — I'll describe the requirements myself
+
+If user picks **1**: read the api-request.html file → use it as the feature spec.
+Skip A-Q1 to A-Q5 (the spec already defines endpoints, request/response, auth).
+Go directly to A-PHASE 2 (Impact Analysis) with the spec as input.
+
+---
+
 Then route to the correct operation below.
 
 ---

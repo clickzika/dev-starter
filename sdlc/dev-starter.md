@@ -1020,6 +1020,7 @@ GATE 1 — Discovery                    ← HARD STOP: user must approve before 
 GATE 2 — Architecture & Design        ← HARD STOP: user must approve before Gate 3
   All agents read docs/brd.html + docs/srs.html first, then produce:
 
+  **If Q3.1 = 1 (new backend) — Full Stack docs:**
   Tech Lead → architecture + task breakdown (no separate doc — feeds into all below)
   DBA       → docs/database-design.html (schema, ERD, migrations, indexes)
   Backend   → docs/api-reference.html (endpoints, request/response, auth, errors)
@@ -1030,11 +1031,68 @@ GATE 2 — Architecture & Design        ← HARD STOP: user must approve before 
               (read CLAUDE.md Q22-Q26 design prefs → design tokens → wireframes → component library)
   PM        → docs/project-plan.html (epics, milestones, timeline, risks, RACI)
 
-  COMPLETION CHECK: All 9 documents must exist:
+  **If Q3.1 = 2 (existing API) — Client-Only docs + API Request Spec:**
+  Tech Lead → architecture + task breakdown
+  Backend   → docs/api-request.html ← NEW: spec ที่ต้องส่งให้ backend project เดิม
+  Security  → docs/security-design.html (frontend security: XSS, CSRF, token storage)
+  DevOps    → docs/infrastructure-guide.html (frontend deploy only)
+  QA        → docs/test-strategy.html (frontend tests + API integration tests)
+  UX/UI     → docs/prototype/index.html + docs/prototype/components.html
+  PM        → docs/project-plan.html
+
+  Skip: DBA (no database), docs/database-design.html (no schema)
+  Skip: docs/api-reference.html (API is in the existing backend project)
+
+  ┌─────────────────────────────────────────────────────────────┐
+  │ docs/api-request.html — API REQUEST SPECIFICATION           │
+  │                                                             │
+  │ This document lists ALL endpoints this project needs        │
+  │ from the existing backend API. It serves as:                │
+  │  1. Contract between frontend project and backend project   │
+  │  2. Input for `/change` on the backend project              │
+  │  3. Integration test reference                              │
+  │                                                             │
+  │ Format per endpoint:                                        │
+  │  ─────────────────────────────────────────                  │
+  │  Endpoint:     [METHOD] [path]                              │
+  │  Purpose:      [what it does — 1 sentence]                  │
+  │  Request:                                                   │
+  │    Headers:    [auth, content-type]                         │
+  │    Params:     [path params, query params]                  │
+  │    Body:       [JSON schema with types + required fields]   │
+  │    Example:    [sample request body]                        │
+  │  Response:                                                  │
+  │    Success:    [status code + JSON schema]                  │
+  │    Example:    [sample response body]                       │
+  │    Errors:     [possible error codes + messages]            │
+  │  Auth:         [required role/scope or "public"]            │
+  │  Notes:        [pagination, rate limit, etc.]               │
+  │  ─────────────────────────────────────────                  │
+  │                                                             │
+  │ Also includes:                                              │
+  │  • Summary table (all endpoints at a glance)                │
+  │  • Data models used in request/response                     │
+  │  • Auth flow (how this project obtains tokens)              │
+  │  • Error handling strategy                                  │
+  │                                                             │
+  │ HOW TO USE THIS DOCUMENT:                                   │
+  │  At the existing backend project, run:                      │
+  │  > /change เพิ่ม API ตาม [path]/docs/api-request.html      │
+  │  Claude will read the spec and create all endpoints.        │
+  └─────────────────────────────────────────────────────────────┘
+
+  COMPLETION CHECK:
+  If Q3.1 = 1: All 9 documents must exist:
     docs/brd.html, docs/srs.html, docs/database-design.html,
     docs/api-reference.html, docs/security-design.html,
     docs/infrastructure-guide.html, docs/test-strategy.html,
     docs/prototype/index.html, docs/project-plan.html
+
+  If Q3.1 = 2: All 8 documents must exist:
+    docs/brd.html, docs/srs.html, docs/api-request.html,
+    docs/security-design.html, docs/infrastructure-guide.html,
+    docs/test-strategy.html, docs/prototype/index.html,
+    docs/project-plan.html
 
   PAIR REVIEW — cross-check between agents:
   ┌─────────────────────────────────────────────┐
@@ -1708,14 +1766,14 @@ Code (backend)       ← new endpoint if required
 
 ### Gate 2 — Architecture & Design ⛔ requires approval
 - [ ] Tech Lead: read docs/brd.html + docs/srs.html → architecture decision
-- [ ] DBA: → docs/database-design.html
-- [ ] Backend: → docs/api-reference.html
+- [ ] DBA: → docs/database-design.html (skip if Q3.1=2)
+- [ ] Backend: → docs/api-reference.html (if Q3.1=1) OR docs/api-request.html (if Q3.1=2)
 - [ ] Security: → docs/security-design.html
 - [ ] DevOps: → docs/infrastructure-guide.html
 - [ ] QA: → docs/test-strategy.html
 - [ ] UX/UI: → docs/prototype/index.html + docs/prototype/components.html
 - [ ] PM: → docs/project-plan.html
-- [ ] **GATE 2 APPROVAL** — all 9 docs ready, waiting for user
+- [ ] **GATE 2 APPROVAL** — all docs ready, waiting for user
 
 ### Gate 3 — Foundation ⛔ requires approval
 - [ ] DevOps: git init, branch strategy, Docker Compose
