@@ -9,6 +9,13 @@ Follow these phases in order. Do NOT skip any phase.
 
 ## ⚠️ CRITICAL RULES (same as all workflows)
 
+### Rule 0 — Checkpoint & Auto-Resume (ALWAYS active)
+
+Read `~/.claude/sdlc/dev-checkpoint.md` and follow the protocol:
+1. **At start** — Setup Cron auto-resume (every 10 minutes)
+2. **After every task** — Save checkpoint to `memory/progress.json`
+3. **At end** — Cleanup (update status to completed, delete Cron)
+
 ### Rule 1 — Hard Approval Gates
 STOP at every gate. Show output. Wait for explicit "approve" or "revise [notes]".
 Do NOT continue until user approves.
@@ -23,8 +30,44 @@ Announce what you read before doing any work:
 - docs/[relevant].html ✓ (or "not found")
 ```
 
-### Rule 3 — Save Before Handing Off
+### Rule 3 — Read Agent File Before Doing Any Work
+
+Before any agent produces output, you MUST read that agent's file first.
+The agent file defines the format, template, standards, and quality gate for every deliverable.
+
+```
+Agent          File to read first
+──────         ─────────────────────────────
+BA          → ~/.claude/agents/ba.md
+Tech Lead   → ~/.claude/agents/techlead.md
+DBA         → ~/.claude/agents/dba.md
+Backend     → ~/.claude/agents/backend.md
+Security    → ~/.claude/agents/security.md
+DevOps      → ~/.claude/agents/devops.md
+QA          → ~/.claude/agents/qa.md
+UX/UI       → ~/.claude/agents/uxui.md
+PM          → ~/.claude/agents/pm.md
+Frontend    → ~/.claude/agents/frontend.md
+Mobile      → ~/.claude/agents/mobile.md
+Docs        → ~/.claude/agents/docs.md
+```
+
+Before every agent task, announce:
+```
+🤖 Acting as [agent name]
+📖 Reading agent spec: ~/.claude/agents/[agent].md ✓
+📄 Output format: [format from agent file]
+📋 Producing: [deliverable name]
+```
+
+**If you skip reading the agent file, the output will be rejected.**
+
+### Rule 4 — Save Before Handing Off
 Write file → git commit → update memory/progress.json → then announce handoff.
+
+### Rule 5 — Ask ONE Question at a Time
+**NEVER ask multiple questions in one message.**
+Ask Q1 → wait for answer → ask Q2 → wait for answer → ...
 
 ---
 
@@ -95,11 +138,27 @@ Resume from last checkpoint if progress.json exists.
 ### If CLAUDE.md does NOT exist
 Tech Lead performs codebase scan:
 
+**Step 2.1 — Project Structure**
 1. Read folder structure (max 3 levels deep)
 2. Read key config files (package.json, *.csproj, pyproject.toml, go.mod, etc.)
 3. Read entry points (Program.cs, main.ts, app.py, main.go, etc.)
 4. Read existing README if present
-5. Identify: language, framework, database, auth method, main features
+
+**Step 2.2 — Stack Detection**
+5. Identify: language, framework, database, ORM, auth method
+6. Detect package manager (npm, yarn, pnpm, pip, dotnet, go mod)
+7. Detect test framework (jest, pytest, xunit, go test, etc.)
+
+**Step 2.3 — API & Route Scan** (if backend/API project)
+8. Scan all route definitions — list every endpoint (method + path)
+9. Scan middleware (auth, validation, logging, CORS, rate limit)
+10. Scan database models/entities — list all tables/collections
+11. Scan existing migrations
+12. Read Swagger/OpenAPI spec if exists
+
+**Step 2.4 — Feature Detection**
+13. Group endpoints into feature domains (e.g. auth, users, products, orders)
+14. Identify shared services, utilities, and common patterns
 
 Then write a discovery report and show it:
 
@@ -110,13 +169,36 @@ Then write a discovery report and show it:
 Language:    [detected]
 Framework:   [detected]
 Database:    [detected]
+ORM:         [detected]
 Auth:        [detected]
-Main features found:
-  - [feature 1]
-  - [feature 2]
+Test:        [detected framework + estimated coverage]
+
+API Endpoints found: [N] total
+  📁 auth/
+    POST /api/auth/login
+    POST /api/auth/register
+    POST /api/auth/refresh
+  📁 users/
+    GET  /api/users
+    GET  /api/users/:id
+    PUT  /api/users/:id
+  📁 [domain]/
+    [method] [path]
+    ...
+
+Middleware:
+  ✅ Auth middleware — [JWT / session / API key]
+  ✅ CORS — [configured / not found]
+  ✅ Rate limiting — [yes / no]
+  ✅ Validation — [library or "manual"]
+  ✅ Error handling — [centralized / per-route]
+
+Database Models: [N] tables
+  - users (id, email, password, role, created_at, ...)
+  - [table] ([key columns])
+  - ...
 
 Existing docs:  [list or "none"]
-Test coverage:  [estimated or "unknown"]
 Known issues:   [from Q6 or "none reported"]
 
 Is this analysis correct?
