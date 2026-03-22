@@ -185,15 +185,49 @@ Example: `login, product catalog, cart, checkout, payment`
 5. ⚡ API only (no UI)
 6. 💻 Console / CLI Tool
 7. ⚙️ Background Service / Worker
-8. 🔗 Frontend only (connect to existing API)
+
+---
+
+**Q3.1 Backend?** (skip if Q3 = 5, 6, 7 — those always include their own backend/service)
+1. 🆕 Build new backend (full stack)
+2. 🔗 Connect to existing backend/API
+
+If user picks **2 (Connect to existing API)**, ask these follow-up questions:
+
+**Q-API-1. What is the existing API base URL?**
+(e.g. https://api.company.com/v1, http://localhost:3000/api)
+
+---
+
+**Q-API-2. How does the API authenticate?**
+1. JWT (Bearer token)
+2. API Key (header or query param)
+3. OAuth2 / SSO
+4. Session / Cookie
+5. No auth required
+6. Not sure — I'll provide docs
+
+---
+
+**Q-API-3. Do you have API documentation?**
+1. Yes — Swagger/OpenAPI URL (provide URL)
+2. Yes — Postman collection (provide file)
+3. Yes — other format (describe)
+4. No — I'll describe the endpoints manually
+
+---
+
+Then in Q4, show **frontend/client-only stacks** (no backend/database).
 
 ---
 
 **Q4. Choose a Solution Stack:**
 
-Show ONLY the stacks that match Q3. Each stack is a complete bundle (frontend + backend + database).
+Show ONLY the stacks that match Q3 + Q3.1. If Q3.1 = 1 (new backend), show full stack bundles. If Q3.1 = 2 (existing API), show client-only stacks.
 
-### If Q3 = 🌐 Web Application:
+### ── Q3.1 = 1 (Build new backend) — Full Stack Bundles ──
+
+### If Q3 = 🌐 Web Application + new backend:
 ```
 🟢 Starter (เริ่มต้น — เรียนรู้ง่าย, เหมาะกับ prototype)
   1. React + Express + SQLite
@@ -214,7 +248,7 @@ Show ONLY the stacks that match Q3. Each stack is a complete bundle (frontend + 
 🎯 0. Let Claude recommend based on Q2
 ```
 
-### If Q3 = 📱 Mobile App:
+### If Q3 = 📱 Mobile App + new backend:
 ```
 🟢 Starter
   1. Flutter + Firebase (serverless)
@@ -231,7 +265,7 @@ Show ONLY the stacks that match Q3. Each stack is a complete bundle (frontend + 
 🎯 0. Let Claude recommend
 ```
 
-### If Q3 = 🌐📱 Web + Mobile:
+### If Q3 = 🌐📱 Web + Mobile + new backend:
 ```
 🟡 Standard
   1. React + Flutter + Express + PostgreSQL
@@ -244,7 +278,7 @@ Show ONLY the stacks that match Q3. Each stack is a complete bundle (frontend + 
 🎯 0. Let Claude recommend
 ```
 
-### If Q3 = 🖥️ Desktop App:
+### If Q3 = 🖥️ Desktop App + new backend:
 ```
 🟢 Starter
   1. Electron + SQLite
@@ -261,7 +295,7 @@ Show ONLY the stacks that match Q3. Each stack is a complete bundle (frontend + 
 🎯 0. Let Claude recommend
 ```
 
-### If Q3 = ⚡ API only:
+### If Q3 = ⚡ API only (always new backend):
 ```
 🟢 Starter
   1. Express (Node.js) + SQLite
@@ -300,7 +334,13 @@ Show ONLY the stacks that match Q3. Each stack is a complete bundle (frontend + 
 🎯 0. Let Claude recommend
 ```
 
-### If Q3 = 🔗 Frontend only (connect to existing API):
+### ── Q3.1 = 2 (Connect to existing API) — Client-Only Stacks ──
+
+When Q3.1 = 2, show client-only stacks (no backend, no database).
+Auto-decide: HTTP client (axios/fetch/HttpClient), no ORM, no database.
+Folder structure: Template H with `src/services/api/`.
+
+### If Q3 = 🌐 Web + existing API:
 ```
 🟢 Starter
   1. React + Tailwind CSS
@@ -313,44 +353,58 @@ Show ONLY the stacks that match Q3. Each stack is a complete bundle (frontend + 
   6. Nuxt.js + Tailwind CSS
 
 🔵 Professional
-  7. Next.js + Tailwind CSS + Zustand + React Query
+  7. Next.js + Zustand + React Query
   8. Angular + PrimeNG + NgRx
 
 🎯 0. Let Claude recommend
 ```
 
-**Additional questions for Q3 = 8 (Frontend only):**
+### If Q3 = 📱 Mobile + existing API:
+```
+🟢 Starter
+  1. Flutter
+  2. React Native
 
-After Q4/Q5, ask these extra questions:
+🟡 Standard
+  3. Flutter + Riverpod
+  4. React Native + Zustand
 
-**Q-API-1. What is the existing API base URL?**
-(e.g. https://api.company.com/v1, http://localhost:3000/api)
+🔵 Professional
+  5. Flutter + Riverpod + Dio
+  6. React Native + Redux Toolkit + React Query
 
----
+🎯 0. Let Claude recommend
+```
 
-**Q-API-2. How does the API authenticate?**
-1. JWT (Bearer token)
-2. API Key (header or query param)
-3. OAuth2 / SSO
-4. Session / Cookie
-5. No auth required
-6. Not sure — I'll provide docs
+### If Q3 = 🌐📱 Web + Mobile + existing API:
+```
+🟡 Standard
+  1. React + Flutter
+  2. Next.js + React Native
 
----
+🔵 Professional
+  3. Next.js + React Query + Flutter + Riverpod
+  4. Angular + NgRx + Flutter + Riverpod
 
-**Q-API-3. Do you have API documentation?**
-1. Yes — Swagger/OpenAPI URL (provide URL)
-2. Yes — Postman collection (provide file)
-3. Yes — other format (describe)
-4. No — I'll describe the endpoints manually
+🎯 0. Let Claude recommend
+```
 
----
+### If Q3 = 🖥️ Desktop + existing API:
+```
+🟢 Starter
+  1. Electron
+  2. Tauri (Rust)
 
-Then skip all backend/database questions. Auto-decide:
-- No backend code — frontend only
-- No database — data comes from existing API
-- HTTP client: auto-select based on framework (axios/fetch/Angular HttpClient)
-- Folder structure: Template A (frontend only) with `src/services/api/` for API integration
+🟡 Standard
+  3. Electron + React
+  4. .NET WPF
+
+🔵 Professional
+  5. .NET MAUI (cross-platform)
+  6. Tauri + React + React Query
+
+🎯 0. Let Claude recommend
+```
 
 ---
 
@@ -366,6 +420,8 @@ Your stack: [Frontend] + [Backend] + [Database]
 ```
 
 If user picks 2 (Customize):
+
+If Q3.1 = 1 (new backend):
 ```
 Change which part? (Enter to keep)
   Frontend:  [current] → ?
@@ -373,10 +429,26 @@ Change which part? (Enter to keep)
   Database:  [current] → ?
 ```
 
+If Q3.1 = 2 (existing API):
+```
+Change which part? (Enter to keep)
+  Frontend:  [current] → ?
+  (Backend and Database are from existing API — not changeable)
+```
+
 Show only compatible options for each change. After customizing, confirm:
 ```
 Final stack: [Frontend] + [Backend] + [Database]
 ORM: [auto-selected based on backend + database]
+OK? (yes / change again)
+```
+
+If Q3.1 = 2, show instead:
+```
+Final stack: [Frontend only]
+API:  [Q-API-1 base URL]
+Auth: [Q-API-2 method]
+HTTP client: [auto — axios/fetch/Dio/HttpClient]
 OK? (yes / change again)
 ```
 
@@ -413,18 +485,22 @@ Type 0 for Claude to suggest based on Q6.
 Claude automatically selects (based on stack + features + best practices):
 - Auth method (JWT recommended for API, session for SSO)
 - Security level (OWASP Top 10 always applied)
-- ORM (auto from backend + database)
+- ORM (auto from backend + database) — skip if Q3.1 = 2
 - CI/CD (GitHub Actions default)
 - Deploy target (suggest based on stack level)
 - Rate limiting (yes)
+- HTTP client (auto from framework) — only if Q3.1 = 2
 
 Show summary for approval:
+
+**If Q3.1 = 1 (new backend):**
 ```
 📋 PROJECT SUMMARY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Project:    [Q1]
 Purpose:    [Q2]
 Platform:   [Q3]
+Backend:    🆕 New backend
 Stack:      [Q4/Q5 — Frontend + Backend + Database]
 ORM:        [auto]
 Auth:       [auto — JWT / Session / OAuth]
@@ -434,6 +510,31 @@ Roles:      [Q7]
 Design:     [Q8]
 CI/CD:      GitHub Actions
 Deploy:     [suggested based on stack]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  "approve"           → proceed to Gate 1 documents
+  "change [item]"     → modify specific item
+```
+
+**If Q3.1 = 2 (existing API):**
+```
+📋 PROJECT SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Project:    [Q1]
+Purpose:    [Q2]
+Platform:   [Q3]
+Backend:    🔗 Existing API → [Q-API-1 base URL]
+API Auth:   [Q-API-2]
+API Docs:   [Q-API-3]
+Stack:      [Q4/Q5 — client only]
+HTTP Client:[auto — axios/fetch/Dio/HttpClient]
+Security:   OWASP Top 10 applied (frontend)
+Features:   [Q6]
+Roles:      [Q7]
+Design:     [Q8]
+CI/CD:      GitHub Actions
+Deploy:     [suggested based on stack]
+Folder:     Template H
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   "approve"           → proceed to Gate 1 documents
@@ -1248,7 +1349,11 @@ Use the matching template below, then adjust for the specific frameworks chosen.
 └── README.md
 ```
 
-### Template H — Frontend Only (Q3 = 8, connect to existing API)
+### Template H — Client Only (Q3.1 = 2, connect to existing API)
+
+Use when Q3.1 = 2 for any platform. No backend/ or database/ folders.
+
+**H1 — Web client only:**
 ```
 [PROJECT_NAME]/
 ├── src/
@@ -1274,9 +1379,73 @@ Use the matching template below, then adjust for the specific frameworks chosen.
 └── README.md
 ```
 
+**H2 — Mobile client only:**
+```
+[PROJECT_NAME]/
+├── lib/ (Flutter) or src/ (React Native)
+│   ├── screens/
+│   ├── components/
+│   ├── services/
+│   │   └── api/             ← API client + endpoints
+│   │       ├── client.dart/.ts  ← HTTP instance + base URL + auth
+│   │       ├── endpoints/
+│   │       └── models/      ← request/response models from API
+│   ├── stores/              ← state management (Riverpod/Redux/Zustand)
+│   └── utils/
+│
+├── assets/
+├── docs/
+├── .github/
+├── .env
+├── .env.example
+├── CLAUDE.md
+├── pubspec.yaml (or package.json)
+└── README.md
+```
+
+**H3 — Web + Mobile client only:**
+```
+[PROJECT_NAME]/
+├── frontend/                ← web client (same as H1)
+│   └── src/...
+│
+├── mobile/                  ← mobile client (same as H2)
+│   └── lib/ or src/...
+│
+├── shared/                  ← shared types, API models
+│   ├── types/
+│   └── constants/
+│
+├── docs/
+├── .github/
+├── CLAUDE.md
+└── README.md
+```
+
+**H4 — Desktop client only:**
+```
+[PROJECT_NAME]/
+├── app/                     ← Electron, Tauri, .NET, etc.
+│   ├── src/
+│   │   ├── main/            ← main process
+│   │   ├── renderer/        ← UI
+│   │   ├── services/
+│   │   │   └── api/         ← API client + endpoints
+│   │   └── utils/
+│   └── package.json
+│
+├── docs/
+├── .github/
+├── .env
+├── .env.example
+├── CLAUDE.md
+└── README.md
+```
+
 ### Selection Rules for Agents:
-1. Match Q4 → pick the closest template (A-G)
-2. If Q4 has multiple types → use Template D (multi-platform) or combine
+1. If Q3.1 = 1 (new backend) → pick Template A-G based on Q3
+2. If Q3.1 = 2 (existing API) → pick Template H (H1/H2/H3/H4 based on Q3)
+3. If Q3 has multiple types → use Template D or H3 (multi-platform)
 3. Adjust folder names for framework conventions:
    - Flutter: `lib/` not `src/`
    - .NET: project folders match `.csproj` names
