@@ -232,6 +232,33 @@ Update documents in this order. After each update, announce:
    Next: [next document]
 ```
 
+**⚠️ REVISION HISTORY RULE (MANDATORY):**
+Every Gate 1 document that is modified MUST have a Revision History table appended/updated at the bottom of the document. Add a row for each change:
+
+```html
+<!-- Revision History — append at bottom of document, before </main> -->
+<div class="section-header" id="revision-history">
+  <span class="section-number s10">R</span>
+  <h2 class="section-title">Revision History</h2>
+</div>
+<table>
+  <thead>
+    <tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CR-[YYYY-MM-DD]-[NNN]</td>
+      <td>[YYYY-MM-DD]</td>
+      <td>ADD / REMOVE / UPDATE</td>
+      <td>[what was added, changed, or removed in this document]</td>
+      <td>@[agent]</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+If the document already has a Revision History section, append the new row to the existing table (newest first). If not, create the section.
+
 ### Step A3.1 — Update CLAUDE.md
 - Add feature to Features list: `- [ ] [Feature Name]`
 - Add tasks to Progress Tracker under Gate 4
@@ -241,27 +268,32 @@ Read current file from disk, then add:
 - New user story with Given-When-Then acceptance criteria
 - New business rules if applicable
 - Update scope section
+- **Add Revision History row:** CR ID, date, type=ADD, description of stories added
 
 ### Step A3.3 — Update docs/database-design.html (if A-Q4 = 1 or 2)
 Read current file from disk, then add:
 - New table definition with columns, types, constraints
 - Updated ERD diagram
 - Migration script outline
+- **Add Revision History row:** CR ID, date, type=ADD, description of schema changes
 
 ### Step A3.4 — Update docs/api-reference.html (if A-Q5 = 1 or 2)
 Read current file from disk, then add:
 - New endpoint definitions (method, path, request, response, errors)
 - Updated authentication requirements
+- **Add Revision History row:** CR ID, date, type=ADD, description of endpoints added
 
 ### Step A3.5 — Update docs/prototype/index.html (if A-Q6 = 1 or 2)
 Read current file from disk, then add:
 - New screen wireframes or component specs
 - Updated navigation flow
+- **Add Revision History row:** CR ID, date, type=ADD, description of screens added
 
 ### Step A3.6 — Update docs/security-design.html (if new data or auth scope)
 Read current file from disk, then add:
 - Security considerations for new feature
 - Updated OWASP checklist items if applicable
+- **Add Revision History row:** CR ID, date, type=ADD, description of security rules added
 
 After all docs updated, show:
 
@@ -287,6 +319,51 @@ Please review all updated documents.
 ```
 
 ⛔ GATE A2 — wait for approval before creating tasks or writing code.
+
+### Step A3.7 — Update docs/changerequest-log.html
+
+After Gate A2 approved, Docs agent writes/updates `docs/changerequest-log.html`:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 CHANGE REQUEST LOG ENTRY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ID:          CR-[YYYY-MM-DD]-[NNN]
+Date:        [YYYY-MM-DD]
+Type:        ADD FEATURE
+Priority:    [Critical / High / Medium / Low]
+Effort:      [S / M / L / XL]
+Requester:   [user or "internal"]
+Context:     [New / Existing / Live / Migration]
+
+Feature Name:
+  [feature name]
+
+Problem / Business Need:
+  [from A-Q2 — why this feature is needed]
+
+Target Users:
+  [from A-Q3 — who uses this feature]
+
+Impact Summary:
+  Database:    [new tables/fields or "no change"]
+  API:         [new/modified endpoints or "no change"]
+  UI:          [new/modified screens or "no change"]
+  Security:    [new rules or "no change"]
+
+Documents Updated:
+  - [doc 1] — [what changed]
+  - [doc 2] — [what changed]
+
+Status:      [In Progress / Completed / Rolled Back]
+GitHub Issue: #[N]
+GitHub PR:    #[N]
+Notion Task:  [task URL]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+If `docs/changerequest-log.html` does not exist yet, create it with this entry using `~/.claude/templates/docs/document-template.html` as the base template.
+If it exists, append the new entry at the top (newest first).
 
 ---
 
@@ -501,7 +578,10 @@ Open Notion tasks linked to this feature:
 
 ## B-PHASE 3 — Document Removal (upstream → downstream)
 
-Update documents in this order:
+Update documents in this order.
+
+**⚠️ REVISION HISTORY RULE (MANDATORY):**
+Same rule as Operation A — every Gate 1 document modified MUST have a Revision History row appended with the CR ID, date, type=REMOVE, and description of what was removed. See A-PHASE 3 for the HTML template.
 
 ### Step B3.1 — Update CLAUDE.md
 - Remove feature from Features list
@@ -512,21 +592,26 @@ Update documents in this order:
 - Remove related user stories
 - Remove related acceptance criteria
 - Add removed section note with date and reason
+- **Add Revision History row:** CR ID, date, type=REMOVE, description of stories removed
 
 ### Step B3.3 — Update docs/database-design.html (if applicable)
 - Mark tables/fields as deprecated or remove
 - Note: if data exists in production, add migration note before removing
+- **Add Revision History row:** CR ID, date, type=REMOVE, description of schema changes
 
 ### Step B3.4 — Update docs/api-reference.html (if applicable)
 - Remove endpoint definitions
 - Add deprecation notice with date
+- **Add Revision History row:** CR ID, date, type=REMOVE, description of endpoints removed
 
 ### Step B3.5 — Update docs/prototype/index.html (if applicable)
 - Remove screen wireframes or components
 - Update navigation flow
+- **Add Revision History row:** CR ID, date, type=REMOVE, description of screens removed
 
 ### Step B3.6 — Update docs/security-design.html (if applicable)
 - Remove related security rules
+- **Add Revision History row:** CR ID, date, type=REMOVE, description of security rules removed
 
 After all docs updated:
 
@@ -547,6 +632,55 @@ Documents updated:
 ```
 
 ⛔ GATE B2 — wait for approval before touching code.
+
+### Step B3.7 — Update docs/changerequest-log.html
+
+After Gate B2 approved, Docs agent writes/updates `docs/changerequest-log.html`:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 CHANGE REQUEST LOG ENTRY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ID:          CR-[YYYY-MM-DD]-[NNN]
+Date:        [YYYY-MM-DD]
+Type:        REMOVE FEATURE
+Priority:    —
+Effort:      [S / M / L]
+Requester:   [user or "internal"]
+Context:     [New / Existing / Live / Migration]
+
+Feature Name:
+  [feature name being removed]
+
+Reason for Removal:
+  [from B-Q2 — why this feature is being removed]
+
+Code Existed:
+  [from B-Q3 — Yes (deployed) / Yes (not deployed) / Partial / No]
+
+Impact Summary:
+  Database:    [tables/fields removed or "no change"]
+  API:         [endpoints removed or "no change"]
+  UI:          [screens removed or "no change"]
+  Security:    [rules removed or "no change"]
+
+Dependencies Affected:
+  - [dependent feature] — [how affected]
+  (or "None")
+
+Documents Updated:
+  - [doc 1] — [what changed]
+  - [doc 2] — [what changed]
+
+Status:      [In Progress / Completed]
+GitHub Issue: #[N] (closed as won't do)
+GitHub PR:    #[N]
+Notion Task:  [task URL] (Cancelled)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+If `docs/changerequest-log.html` does not exist yet, create it with this entry using `~/.claude/templates/docs/document-template.html` as the base template.
+If it exists, append the new entry at the top (newest first).
 
 ---
 

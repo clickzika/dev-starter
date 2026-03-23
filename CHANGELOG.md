@@ -1,5 +1,29 @@
 # Changelog
 
+## v1.0.2 (2026-03-23)
+
+### Light Mode Default + Dark Mode Toggle
+- **Document Portal** (`templates/docs/index.html`): Redesigned with light mode as default
+- **Document Template** (`templates/docs/document-template.html`): Redesigned with light mode as default
+- Both templates now include a dark mode toggle (sun/moon icon) in the topbar
+- Theme preference persisted via `localStorage` and shared between portal and documents
+- Mermaid diagrams auto-select light/dark theme based on saved preference
+
+### Change Request Log
+- New document: `docs/changerequest-log.html` — tracks all feature additions and removals
+- `/change` Operation A (Add Feature): now creates a CR entry with ID `CR-[YYYY-MM-DD]-[NNN]`
+- `/change` Operation B (Remove Feature): now creates a CR entry with removal reason and impact
+- **Revision History rule**: every Gate 1 document modified by Operation A or B MUST append a Revision History table row linking back to the CR ID
+
+### Document Portal Registry
+- Added Audit & Review section: Audit Report (`audit-report.html`), Fix Plan (`fix-plan.html`)
+- Added Change Log section: Change Request Log (`changerequest-log.html`), Bugfix Log (`bugfix-log.html`)
+- Total documents: 10 required (Gate 1) + 4 optional (on-demand) = 14 documents
+
+### Removed
+- Removed Help button and dropdown from Document Portal (no longer needed)
+- Deleted `_readme.html` and `_project-readme.html` template files (unused)
+
 ## v1.0.1 (2026-03-22)
 
 ### Agent Identity — Sanrio Theme

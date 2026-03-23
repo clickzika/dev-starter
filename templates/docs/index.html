@@ -10,39 +10,87 @@
   :root {
     --topbar-h: 56px;
     --sidebar-w: 280px;
-    --bg-dark: #1a1a2e;
-    --bg-sidebar: #16213e;
-    --bg-hover: #0f3460;
-    --accent: #e94560;
-    --accent-light: #ff6b81;
-    --text: #eee;
-    --text-dim: #94a3b8;
-    --border: #1e3a5f;
-    --cat-brd: #3b82f6;
-    --cat-srs: #8b5cf6;
-    --cat-db: #f59e0b;
-    --cat-api: #10b981;
-    --cat-sec: #ef4444;
+
+    /* ─── Light Mode (default) ─── */
+    --bg-page:    #f5f7fa;
+    --bg-topbar:  #ffffff;
+    --bg-sidebar: #f0f2f5;
+    --bg-hover:   #e2e6eb;
+    --accent:     #e94560;
+    --accent-light: #d63851;
+    --text:       #1a1a2e;
+    --text-dim:   #5a6578;
+    --border:     #d8dde4;
+    --workspace-bg: #ffffff;
+    --progress-bg: rgba(0,0,0,0.06);
+    --banner-ready-bg:   rgba(16,185,129,0.08);
+    --banner-ready-brd:  rgba(16,185,129,0.2);
+    --banner-warn-bg:    rgba(245,158,11,0.08);
+    --banner-warn-brd:   rgba(245,158,11,0.2);
+    --shadow:     0 1px 3px rgba(0,0,0,0.06);
+    --toggle-bg:  #e2e6eb;
+    --toggle-knob: #ffffff;
+    --toggle-icon: "&#9788;";
+    --missing-code-bg: #f1f5f9;
+    --missing-tag-bg:  #eff6ff;
+    --missing-tag-color: #2563eb;
+    --empty-heading: #334155;
+    --empty-text:    #94a3b8;
+
+    /* ─── Category colors (same in both modes) ─── */
+    --cat-brd:   #3b82f6;
+    --cat-srs:   #8b5cf6;
+    --cat-db:    #f59e0b;
+    --cat-api:   #10b981;
+    --cat-sec:   #ef4444;
     --cat-infra: #f97316;
-    --cat-qa: #06b6d4;
+    --cat-qa:    #06b6d4;
     --cat-proto: #ec4899;
-    --cat-plan: #6366f1;
+    --cat-plan:  #6366f1;
     --cat-other: #64748b;
+  }
+
+  [data-theme="dark"] {
+    --bg-page:    #0f0f23;
+    --bg-topbar:  #1a1a2e;
+    --bg-sidebar: #16213e;
+    --bg-hover:   #0f3460;
+    --accent:     #e94560;
+    --accent-light: #ff6b81;
+    --text:       #eeeeee;
+    --text-dim:   #94a3b8;
+    --border:     #1e3a5f;
+    --workspace-bg: #1e1e3a;
+    --progress-bg: rgba(255,255,255,0.08);
+    --banner-ready-bg:   rgba(16,185,129,0.15);
+    --banner-ready-brd:  rgba(16,185,129,0.2);
+    --banner-warn-bg:    rgba(245,158,11,0.15);
+    --banner-warn-brd:   rgba(245,158,11,0.2);
+    --shadow:     0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:  #1e3a5f;
+    --toggle-knob: #e94560;
+    --missing-code-bg: #252547;
+    --missing-tag-bg:  rgba(37,99,235,0.15);
+    --missing-tag-color: #60a5fa;
+    --empty-heading: #e2e8f0;
+    --empty-text:    #94a3b8;
   }
 
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: #0f0f23;
+    background: var(--bg-page);
     color: var(--text);
     height: 100vh;
     overflow: hidden;
+    transition: background 0.3s, color 0.3s;
   }
 
   /* ─── Top Bar ─────────────────────────────────────────── */
   .topbar {
     height: var(--topbar-h);
-    background: var(--bg-dark);
+    background: var(--bg-topbar);
     border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -50,6 +98,7 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
+    transition: background 0.3s, border-color 0.3s;
   }
   .topbar-left { display: flex; align-items: center; gap: 12px; }
   .topbar-logo {
@@ -61,7 +110,7 @@
   .topbar-title { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
   .topbar-subtitle {
     font-size: 12px; color: var(--text-dim); margin-left: 8px;
-    padding: 2px 8px; background: rgba(255,255,255,0.06); border-radius: 4px;
+    padding: 2px 8px; background: var(--progress-bg); border-radius: 4px;
   }
   .topbar-center { display: flex; align-items: center; gap: 12px; }
   .topbar-right { display: flex; align-items: center; gap: 12px; }
@@ -72,7 +121,7 @@
   }
   .progress-bar-wrap {
     width: 180px; height: 8px;
-    background: rgba(255,255,255,0.08); border-radius: 4px;
+    background: var(--progress-bg); border-radius: 4px;
     overflow: hidden;
   }
   .progress-bar-fill {
@@ -90,14 +139,15 @@
     display: flex; align-items: center; gap: 10px;
     position: fixed; top: var(--topbar-h); left: 0; right: 0;
     z-index: 99;
+    transition: background 0.3s, border-color 0.3s;
   }
   .gate-banner.ready {
-    background: linear-gradient(90deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05));
-    color: #10b981; border-bottom: 1px solid rgba(16,185,129,0.2);
+    background: var(--banner-ready-bg);
+    color: #10b981; border-bottom: 1px solid var(--banner-ready-brd);
   }
   .gate-banner.not-ready {
-    background: linear-gradient(90deg, rgba(245,158,11,0.15), rgba(245,158,11,0.05));
-    color: #f59e0b; border-bottom: 1px solid rgba(245,158,11,0.2);
+    background: var(--banner-warn-bg);
+    color: #f59e0b; border-bottom: 1px solid var(--banner-warn-brd);
   }
   .gate-banner-icon { font-size: 16px; }
   .gate-banner .missing-list {
@@ -105,45 +155,50 @@
   }
   .gate-banner.hidden { display: none; }
 
-  /* ─── Help Dropdown ─────────────────────────────────────── */
-  .help-wrap { position: relative; }
-  .topbar-help {
-    font-size: 13px; color: var(--accent-light); text-decoration: none;
-    padding: 6px 12px; border: 1px solid var(--accent); border-radius: 6px;
-    transition: all 0.2s; cursor: pointer;
-  }
-  .topbar-help:hover { background: var(--accent); color: #fff; }
-  .help-dropdown {
-    display: none; position: absolute; top: calc(100% + 8px); right: 0;
-    background: var(--bg-sidebar); border: 1px solid var(--border);
-    border-radius: 8px; min-width: 260px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-    z-index: 200; overflow: hidden;
-  }
-  .help-dropdown.open { display: block; }
-  .help-dropdown-title {
-    font-size: 10px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 1px; color: var(--text-dim); padding: 12px 16px 6px;
-  }
-  .help-dropdown-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 16px; cursor: pointer; transition: background 0.15s;
-    color: var(--text); text-decoration: none;
-  }
-  .help-dropdown-item:hover { background: var(--bg-hover); }
-  .help-dropdown-item .help-icon {
-    width: 28px; height: 28px; border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; flex-shrink: 0;
-  }
-  .help-dropdown-item .help-label { font-size: 13px; font-weight: 500; }
-  .help-dropdown-item .help-desc { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-  .help-divider { height: 1px; background: var(--border); margin: 4px 0; }
+  /* ─── Topbar Buttons ─────────────────────────────────── */
   .topbar-refresh {
     font-size: 13px; color: var(--text-dim); text-decoration: none;
     padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px;
-    transition: all 0.2s; cursor: pointer;
+    transition: all 0.2s; cursor: pointer; background: transparent;
   }
   .topbar-refresh:hover { background: var(--bg-hover); color: var(--text); }
+
+  /* ─── Dark Mode Toggle ───────────────────────────────── */
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .theme-toggle-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 500;
+  }
+  .theme-toggle-track {
+    width: 44px; height: 24px;
+    background: var(--toggle-bg);
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.3s;
+    border: 1px solid var(--border);
+  }
+  .theme-toggle-knob {
+    width: 18px; height: 18px;
+    background: var(--toggle-knob);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px; left: 3px;
+    transition: transform 0.3s, background 0.3s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; line-height: 1;
+  }
+  [data-theme="dark"] .theme-toggle-knob {
+    transform: translateX(20px);
+  }
+  .theme-toggle-icon { font-size: 14px; }
 
   /* ─── Layout ──────────────────────────────────────────── */
   .layout {
@@ -158,6 +213,7 @@
     background: var(--bg-sidebar);
     border-right: 1px solid var(--border);
     overflow-y: auto; padding: 16px 0;
+    transition: background 0.3s, border-color 0.3s;
   }
   .sidebar::-webkit-scrollbar { width: 4px; }
   .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
@@ -189,16 +245,16 @@
   .status-missing { background: rgba(245,158,11,0.15); color: #f59e0b; }
 
   /* ─── Workspace ───────────────────────────────────────── */
-  .workspace { flex: 1; background: #fff; position: relative; }
+  .workspace { flex: 1; background: var(--workspace-bg); position: relative; transition: background 0.3s; }
   .workspace iframe { width: 100%; height: 100%; border: none; }
   .workspace-empty {
     display: flex; flex-direction: column; align-items: center;
-    justify-content: center; height: 100%; color: #94a3b8;
+    justify-content: center; height: 100%; color: var(--empty-text);
     text-align: center; padding: 40px;
   }
   .workspace-empty-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.3; }
-  .workspace-empty h2 { font-size: 22px; font-weight: 600; color: #475569; margin-bottom: 8px; }
-  .workspace-empty p { font-size: 14px; color: #94a3b8; max-width: 400px; line-height: 1.6; }
+  .workspace-empty h2 { font-size: 22px; font-weight: 600; color: var(--empty-heading); margin-bottom: 8px; }
+  .workspace-empty p { font-size: 14px; color: var(--empty-text); max-width: 400px; line-height: 1.6; }
 
   /* ─── Missing doc workspace ───────────────────────────── */
   .workspace-missing {
@@ -206,12 +262,16 @@
     justify-content: center; height: 100%; text-align: center; padding: 40px;
   }
   .workspace-missing-icon { font-size: 48px; margin-bottom: 16px; }
-  .workspace-missing h2 { font-size: 20px; font-weight: 600; color: #475569; margin-bottom: 8px; }
-  .workspace-missing p { font-size: 14px; color: #94a3b8; max-width: 450px; line-height: 1.6; }
+  .workspace-missing h2 { font-size: 20px; font-weight: 600; color: var(--empty-heading); margin-bottom: 8px; }
+  .workspace-missing p { font-size: 14px; color: var(--empty-text); max-width: 450px; line-height: 1.6; }
   .workspace-missing .agent-tag {
-    display: inline-block; background: #eff6ff; color: #2563eb;
+    display: inline-block; background: var(--missing-tag-bg); color: var(--missing-tag-color);
     padding: 2px 10px; border-radius: 12px; font-weight: 600;
     font-size: 13px; margin-top: 12px;
+  }
+  .workspace-missing code {
+    background: var(--missing-code-bg); padding: 2px 6px; border-radius: 4px;
+    color: var(--accent); font-size: 12px;
   }
 
   /* ─── Resize handle ───────────────────────────────────── */
@@ -247,25 +307,10 @@
   </div>
   <div class="topbar-right">
     <span class="topbar-refresh" onclick="checkAllFiles()" title="Re-check all document files">Refresh</span>
-    <div class="help-wrap">
-      <span class="topbar-help" onclick="toggleHelpMenu()" title="Help & README">? Help</span>
-      <div class="help-dropdown" id="helpDropdown">
-        <div class="help-dropdown-title">Help & Documentation</div>
-        <div class="help-dropdown-item" onclick="loadHelpDoc('_readme.html', 'Document Portal Guide')">
-          <div class="help-icon" style="background:rgba(99,102,241,0.15); color:#6366f1;">&#128203;</div>
-          <div>
-            <div class="help-label">Document Portal Guide</div>
-            <div class="help-desc">How to use this portal, document map, agent rules</div>
-          </div>
-        </div>
-        <div class="help-divider"></div>
-        <div class="help-dropdown-item" onclick="loadHelpDoc('_project-readme.html', 'Project README')">
-          <div class="help-icon" style="background:rgba(16,185,129,0.15); color:#10b981;">&#128214;</div>
-          <div>
-            <div class="help-label">Project README</div>
-            <div class="help-desc">Project overview, setup instructions, getting started</div>
-          </div>
-        </div>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track">
+        <div class="theme-toggle-knob"></div>
       </div>
     </div>
   </div>
@@ -288,6 +333,33 @@
 </div>
 
 <script>
+// ═══════════════════════════════════════════════════════════
+// DARK MODE TOGGLE
+// ═══════════════════════════════════════════════════════════
+
+function toggleTheme() {
+  var html = document.documentElement;
+  var isDark = html.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    html.removeAttribute('data-theme');
+    localStorage.setItem('docportal-theme', 'light');
+    document.getElementById('themeIcon').innerHTML = '&#9788;';
+  } else {
+    html.setAttribute('data-theme', 'dark');
+    localStorage.setItem('docportal-theme', 'dark');
+    document.getElementById('themeIcon').innerHTML = '&#9790;';
+  }
+}
+
+// Restore saved theme on load
+(function() {
+  var saved = localStorage.getItem('docportal-theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.getElementById('themeIcon').innerHTML = '&#9790;';
+  }
+})();
+
 // ═══════════════════════════════════════════════════════════
 // DOCUMENT REGISTRY
 // ═══════════════════════════════════════════════════════════
@@ -339,7 +411,24 @@ const DOCUMENTS = [
   {
     section: "Project Management",
     docs: [
-      { name: "Project Plan",                       file: "project-plan.html",       color: "var(--cat-plan)",  required: true,  agent: "@pm" }    ]
+      { name: "Project Plan",                       file: "project-plan.html",       color: "var(--cat-plan)",  required: true,  agent: "@pm" },
+    ]
+  },
+  // ─── Audit & Review (on-demand via /audit) ────────────
+  {
+    section: "Audit & Review",
+    docs: [
+      { name: "Audit Report",                       file: "audit-report.html",       color: "var(--cat-sec)",   required: false, agent: "/audit" },
+      { name: "Fix Plan",                            file: "fix-plan.html",           color: "var(--cat-other)", required: false, agent: "/audit" },
+    ]
+  },
+  // ─── Change Log (on-demand via /change) ───────────────
+  {
+    section: "Change Log",
+    docs: [
+      { name: "Change Request Log",                   file: "changerequest-log.html",  color: "var(--cat-plan)",  required: false, agent: "/change" },
+      { name: "Bugfix Log",                           file: "bugfix-log.html",         color: "var(--cat-qa)",    required: false, agent: "/change" },
+    ]
   },
 ];
 
@@ -351,13 +440,9 @@ const fileStatus = {}; // file -> true/false/null
 const isLocal = window.location.protocol === 'file:';
 
 // ─── File existence check ────────────────────────────────
-// Uses XHR for file:// (fetch doesn't work locally), fetch for http://
 function checkFileExists(file) {
   return new Promise(function(resolve) {
     if (isLocal) {
-      // file:// protocol: XHR/fetch are blocked by CORS.
-      // Use a hidden <script> tag trick — works for .html files too:
-      // We load the file as a <link rel="prefetch"> or an <object> and listen for load/error.
       try {
         var obj = document.createElement('object');
         obj.data = file;
@@ -395,7 +480,6 @@ function checkFileExists(file) {
         resolve(false);
       }
     } else {
-      // HTTP server — use fetch HEAD
       fetch(file, { method: 'HEAD' })
         .then(function(resp) { resolve(resp.ok); })
         .catch(function() { resolve(false); });
@@ -411,7 +495,6 @@ async function checkAllFiles() {
   progressText.textContent = 'Checking...';
   progressText.className = 'progress-text';
 
-  // Check all files in parallel
   var allDocs = DOCUMENTS.flatMap(function(s) { return s.docs; });
   var results = await Promise.all(
     allDocs.map(async function(doc) {
@@ -421,14 +504,12 @@ async function checkAllFiles() {
     })
   );
 
-  // Calculate required doc progress
   var requiredDocs = results.filter(function(d) { return d.required; });
   var readyCount = requiredDocs.filter(function(d) { return d.exists; }).length;
   var totalRequired = requiredDocs.length;
   var percentage = Math.round((readyCount / totalRequired) * 100);
   var allReady = readyCount === totalRequired;
 
-  // Update progress bar
   progressBarFill.style.width = percentage + '%';
   progressBarFill.style.background = allReady
     ? 'linear-gradient(90deg, #10b981, #34d399)'
@@ -439,7 +520,6 @@ async function checkAllFiles() {
     : readyCount + '/' + totalRequired + ' Complete';
   progressText.className = 'progress-text ' + (allReady ? 'complete' : 'incomplete');
 
-  // Update gate banner
   gateBanner.classList.remove('hidden');
   if (allReady) {
     gateBanner.className = 'gate-banner ready';
@@ -456,7 +536,6 @@ async function checkAllFiles() {
       '<span class="missing-list">' + missingNames + '</span>';
   }
 
-  // Re-render sidebar with status badges
   renderSidebar();
 }
 
@@ -470,7 +549,6 @@ const emptyState = document.getElementById('emptyState');
 let activeItem = null;
 
 function renderSidebar() {
-  // Save currently active file
   const activeFile = activeItem ? activeItem.dataset.file : null;
   sidebar.innerHTML = '';
   activeItem = null;
@@ -520,7 +598,6 @@ function renderSidebar() {
         }
       });
 
-      // Restore active state
       if (activeFile && doc.file === activeFile) {
         item.classList.add('active');
         activeItem = item;
@@ -532,7 +609,6 @@ function renderSidebar() {
     sidebar.appendChild(sectionEl);
   });
 
-  // Footer
   const footer = document.createElement('div');
   footer.className = 'sidebar-footer';
   footer.innerHTML = `
@@ -581,8 +657,8 @@ function showMissingDoc(doc, itemEl) {
     <p>This document has not been created yet.<br>
     It will be generated during Gate 1 by the responsible agent.</p>
     <div class="agent-tag">${doc.agent}</div>
-    <p style="margin-top:20px; font-size:13px; color:#94a3b8;">
-      File: <code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; color:#e94560; font-size:12px;">${doc.file}</code>
+    <p style="margin-top:20px; font-size:13px; color:var(--empty-text);">
+      File: <code>${doc.file}</code>
     </p>
   `;
   workspace.appendChild(missing);
@@ -595,40 +671,6 @@ function clearWorkspace() {
   if (iframe) iframe.remove();
   const missing = workspace.querySelector('.workspace-missing');
   if (missing) missing.remove();
-}
-
-// ─── Help menu ───────────────────────────────────────────
-
-function toggleHelpMenu() {
-  var dd = document.getElementById('helpDropdown');
-  dd.classList.toggle('open');
-}
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function(e) {
-  var dd = document.getElementById('helpDropdown');
-  var wrap = e.target.closest('.help-wrap');
-  if (!wrap && dd.classList.contains('open')) {
-    dd.classList.remove('open');
-  }
-});
-
-function loadHelpDoc(file, title) {
-  // Close dropdown
-  document.getElementById('helpDropdown').classList.remove('open');
-
-  // Deselect sidebar active item
-  if (activeItem) { activeItem.classList.remove('active'); activeItem = null; }
-
-  // Hide empty state
-  var es = document.getElementById('emptyState');
-  if (es) es.style.display = 'none';
-  clearWorkspace();
-
-  var iframe = document.createElement('iframe');
-  iframe.src = file;
-  iframe.title = title;
-  workspace.appendChild(iframe);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -661,12 +703,9 @@ document.addEventListener('mouseup', () => {
 // INIT
 // ═══════════════════════════════════════════════════════════
 
-// Initial render (no status yet)
 renderSidebar();
 
-// Check all files on load
 checkAllFiles().then(() => {
-  // Load from URL hash if present
   if (window.location.hash) {
     const file = window.location.hash.slice(1);
     const item = sidebar.querySelector(`[data-file="${file}"]`);
@@ -680,32 +719,22 @@ checkAllFiles().then(() => {
 let autoRefreshTimer = null;
 
 function startAutoRefresh() {
-  // Clear any existing timer
   if (autoRefreshTimer) clearInterval(autoRefreshTimer);
 
   autoRefreshTimer = setInterval(async () => {
     await checkAllFiles();
 
-    // Check if all required docs are ready
     const allDocs = DOCUMENTS.flatMap(s => s.docs);
     const requiredDocs = allDocs.filter(d => d.required);
     const allReady = requiredDocs.every(d => fileStatus[d.file] === true);
 
     if (allReady) {
-      // All documents ready — stop auto-refresh
       clearInterval(autoRefreshTimer);
       autoRefreshTimer = null;
-      console.log('✅ All documents ready — auto-refresh stopped.');
-    } else {
-      const readyCount = requiredDocs.filter(d => fileStatus[d.file] === true).length;
-      console.log(`🔄 Auto-refresh: ${readyCount}/${requiredDocs.length} documents ready. Next check in 60s...`);
     }
-  }, 60000); // 60 seconds
-
-  console.log('🔄 Auto-refresh started — checking every 60 seconds until all documents are ready.');
+  }, 60000);
 }
 
-// Start auto-refresh on page load
 startAutoRefresh();
 </script>
 

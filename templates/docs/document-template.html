@@ -8,25 +8,26 @@
   /* ═══════════════════════════════════════════════════════════
      STANDARD DOCUMENT TEMPLATE — System Dev Team
      All 9 Gate 1 documents MUST use this exact layout & theme.
+     Light mode default + dark mode toggle.
      ═══════════════════════════════════════════════════════════ */
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    /* ─── Colors (matches portal theme) ─── */
-    --bg-page:      #0f0f23;
-    --bg-header:    #1a1a2e;
-    --bg-sidebar:   #16213e;
-    --bg-content:   #1e1e3a;
-    --bg-card:      #252547;
-    --bg-hover:     #0f3460;
+    /* ─── Light Mode (default) ─── */
+    --bg-page:      #f5f7fa;
+    --bg-header:    #ffffff;
+    --bg-sidebar:   #f0f2f5;
+    --bg-content:   #ffffff;
+    --bg-card:      #f8f9fb;
+    --bg-hover:     #e8ebf0;
     --accent:       #e94560;
-    --accent-light: #ff6b81;
-    --text:         #eeeeee;
-    --text-dim:     #94a3b8;
-    --text-muted:   #64748b;
-    --border:       #1e3a5f;
-    --border-light: #2d4a6f;
+    --accent-light: #d63851;
+    --text:         #1a1a2e;
+    --text-dim:     #5a6578;
+    --text-muted:   #8493a8;
+    --border:       #d8dde4;
+    --border-light: #e2e7ed;
 
     /* ─── Status colors ─── */
     --status-draft:    #f59e0b;
@@ -48,6 +49,46 @@
     /* ─── Layout ─── */
     --header-h:   64px;
     --sidebar-w:  280px;
+
+    /* ─── Code / Cards ─── */
+    --code-bg:       #f1f5f9;
+    --code-inline-bg: rgba(233,69,96,0.08);
+    --code-inline-color: #d63851;
+    --table-even-bg: rgba(0,0,0,0.02);
+    --table-hover-bg: rgba(233,69,96,0.04);
+    --shadow:        0 1px 3px rgba(0,0,0,0.06);
+
+    /* ─── Toggle ─── */
+    --toggle-bg:   #e2e6eb;
+    --toggle-knob: #ffffff;
+
+    /* ─── Mermaid ─── */
+    --mermaid-bg: rgba(0,0,0,0.02);
+  }
+
+  [data-theme="dark"] {
+    --bg-page:      #0f0f23;
+    --bg-header:    #1a1a2e;
+    --bg-sidebar:   #16213e;
+    --bg-content:   #1e1e3a;
+    --bg-card:      #252547;
+    --bg-hover:     #0f3460;
+    --accent:       #e94560;
+    --accent-light: #ff6b81;
+    --text:         #eeeeee;
+    --text-dim:     #94a3b8;
+    --text-muted:   #64748b;
+    --border:       #1e3a5f;
+    --border-light: #2d4a6f;
+    --code-bg:       #0d0d1a;
+    --code-inline-bg: rgba(233,69,96,0.1);
+    --code-inline-color: #ff6b81;
+    --table-even-bg: rgba(255,255,255,0.02);
+    --table-hover-bg: rgba(233,69,96,0.05);
+    --shadow:        0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:   #1e3a5f;
+    --toggle-knob: #e94560;
+    --mermaid-bg: rgba(255,255,255,0.03);
   }
 
   body {
@@ -57,6 +98,7 @@
     line-height: 1.6;
     height: 100vh;
     overflow: hidden;
+    transition: background 0.3s, color 0.3s;
   }
 
   /* ═══════════════════════════════════════════════════════════
@@ -68,11 +110,13 @@
     height: var(--header-h);
     background: var(--bg-header);
     border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 32px;
     z-index: 100;
+    transition: background 0.3s, border-color 0.3s;
   }
 
   .doc-header-left {
@@ -146,6 +190,36 @@
     border: 1px solid rgba(16,185,129,0.3);
   }
 
+  /* ─── Dark Mode Toggle ───────────────────────────────── */
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .theme-toggle-icon { font-size: 14px; color: var(--text-dim); }
+  .theme-toggle-track {
+    width: 44px; height: 24px;
+    background: var(--toggle-bg);
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.3s;
+    border: 1px solid var(--border);
+  }
+  .theme-toggle-knob {
+    width: 18px; height: 18px;
+    background: var(--toggle-knob);
+    border-radius: 50%;
+    position: absolute;
+    top: 2px; left: 3px;
+    transition: transform 0.3s, background 0.3s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  [data-theme="dark"] .theme-toggle-knob {
+    transform: translateX(20px);
+  }
+
   /* ═══════════════════════════════════════════════════════════
      SIDEBAR — Table of Contents (left side)
      ═══════════════════════════════════════════════════════════ */
@@ -160,6 +234,7 @@
     overflow-y: auto;
     padding: 20px 0;
     z-index: 50;
+    transition: background 0.3s, border-color 0.3s;
   }
 
   .doc-sidebar::-webkit-scrollbar { width: 4px; }
@@ -225,7 +300,6 @@
     color: #fff;
   }
 
-  /* Section number colors — matches portal category colors */
   .toc-number.s1  { background: var(--section-1); }
   .toc-number.s2  { background: var(--section-2); }
   .toc-number.s3  { background: var(--section-3); }
@@ -251,10 +325,11 @@
   .doc-info-card {
     margin: 16px 12px 0;
     padding: 14px 16px;
-    background: rgba(255,255,255,0.03);
+    background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 10px;
     font-size: 12px;
+    transition: background 0.3s, border-color 0.3s;
   }
 
   .doc-info-row {
@@ -277,6 +352,8 @@
     height: calc(100vh - var(--header-h));
     overflow-y: auto;
     padding: 40px 48px 80px;
+    background: var(--bg-content);
+    transition: background 0.3s;
   }
 
   .doc-content::-webkit-scrollbar { width: 6px; }
@@ -311,7 +388,6 @@
     flex-shrink: 0;
   }
 
-  /* Section number colors */
   .section-number.s1  { background: var(--section-1); }
   .section-number.s2  { background: var(--section-2); }
   .section-number.s3  { background: var(--section-3); }
@@ -335,7 +411,6 @@
     font-weight: 600;
     color: var(--text);
     margin: 28px 0 12px;
-    padding-left: 4px;
     border-left: 3px solid var(--accent);
     padding-left: 12px;
   }
@@ -367,7 +442,7 @@
   }
 
   thead th {
-    background: var(--bg-header);
+    background: var(--bg-sidebar);
     color: var(--text);
     font-weight: 600;
     text-align: left;
@@ -376,6 +451,7 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 2px solid var(--accent);
+    transition: background 0.3s;
   }
 
   tbody tr {
@@ -384,11 +460,11 @@
   }
 
   tbody tr:nth-child(even) {
-    background: rgba(255,255,255,0.02);
+    background: var(--table-even-bg);
   }
 
   tbody tr:hover {
-    background: rgba(233,69,96,0.05);
+    background: var(--table-hover-bg);
   }
 
   td {
@@ -399,7 +475,7 @@
 
   /* ─── Code Blocks ─── */
   pre {
-    background: #0d0d1a;
+    background: var(--code-bg);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 16px 20px;
@@ -407,6 +483,7 @@
     margin: 12px 0 20px;
     font-size: 13px;
     line-height: 1.5;
+    transition: background 0.3s, border-color 0.3s;
   }
 
   code {
@@ -415,8 +492,8 @@
   }
 
   :not(pre) > code {
-    background: rgba(233,69,96,0.1);
-    color: var(--accent-light);
+    background: var(--code-inline-bg);
+    color: var(--code-inline-color);
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 12px;
@@ -441,6 +518,7 @@
     border-radius: 10px;
     padding: 20px 24px;
     margin: 16px 0 24px;
+    transition: background 0.3s, border-color 0.3s;
   }
 
   .card-title {
@@ -487,12 +565,13 @@
 
   /* ─── Mermaid Diagrams ─── */
   .mermaid {
-    background: rgba(255,255,255,0.03);
+    background: var(--mermaid-bg);
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 24px;
     margin: 16px 0 24px;
     text-align: center;
+    transition: background 0.3s, border-color 0.3s;
   }
 
   /* ─── Dividers ─── */
@@ -510,7 +589,7 @@
 
   /* ─── Print Styles ─── */
   @media print {
-    .doc-header { position: static; border-bottom: 2px solid #000; }
+    .doc-header { position: static; border-bottom: 2px solid #000; box-shadow: none; }
     .doc-sidebar { display: none; }
     .doc-content {
       margin-left: 0;
@@ -527,11 +606,16 @@
     h3 { border-left-color: #000; }
     pre { background: #f5f5f5; border-color: #ccc; }
     .card { background: #f9f9f9; border-color: #ccc; }
+    .theme-toggle { display: none; }
   }
 </style>
 <!-- Mermaid.js for diagrams -->
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-<script>mermaid.initialize({ theme: 'dark', startOnLoad: true });</script>
+<script>
+  // Initialize mermaid based on current theme
+  var savedTheme = localStorage.getItem('docportal-theme');
+  mermaid.initialize({ theme: savedTheme === 'dark' ? 'dark' : 'default', startOnLoad: true });
+</script>
 </head>
 <body>
 
@@ -550,6 +634,12 @@
       <div>Author: {{AUTHOR}}</div>
     </div>
     <span class="doc-status-badge {{STATUS_CLASS}}">● {{STATUS}}</span>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track">
+        <div class="theme-toggle-knob"></div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -623,9 +713,33 @@
 
 </main>
 
-<!-- ═══════════════ TOC Active Scroll Tracking ═══════════════ -->
+<!-- ═══════════════ DARK MODE TOGGLE + TOC Scroll Tracking ═══════════════ -->
 <script>
-  // Highlight active TOC item based on scroll position
+  // ─── Dark Mode Toggle ──────────────────────────────────
+  function toggleTheme() {
+    var html = document.documentElement;
+    var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      html.removeAttribute('data-theme');
+      localStorage.setItem('docportal-theme', 'light');
+      document.getElementById('themeIcon').innerHTML = '&#9788;';
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem('docportal-theme', 'dark');
+      document.getElementById('themeIcon').innerHTML = '&#9790;';
+    }
+  }
+
+  // Restore saved theme on load
+  (function() {
+    var saved = localStorage.getItem('docportal-theme');
+    if (saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.getElementById('themeIcon').innerHTML = '&#9790;';
+    }
+  })();
+
+  // ─── TOC Active Scroll Tracking ────────────────────────
   const sections = document.querySelectorAll('.section-header[id]');
   const tocLinks = document.querySelectorAll('.toc-link');
   const content = document.querySelector('.doc-content');
