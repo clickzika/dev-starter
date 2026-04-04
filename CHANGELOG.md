@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.0.3 (2026-04-05)
+
+### Namespace Prefixing — `devstarter-` Identity
+- All 12 agent files prefixed: `techlead.md` → `devstarter-techlead.md`, etc.
+- All 23 command files prefixed: `menu.md` → `devstarter-menu.md`, etc.
+- All 22 SDLC workflow files prefixed: `dev-starter.md` → `devstarter-starter.md`, etc.
+- Team agent files prefixed: `engineering.md` → `devstarter-engineering.md`, etc.
+- Shared agent files prefixed: `vcs-pm-guide.md` → `devstarter-vcs-pm-guide.md`
+- Root file renamed: `dev-menu.md` → `devstarter-menu.md`
+- All internal `@agent` references updated: `@techlead` → `@devstarter-techlead`, etc.
+- All slash command references updated: `/menu` → `/devstarter-menu`, etc.
+- All file path cross-references updated across agents, commands, sdlc, scripts, templates
+- **Why:** Establishes clear identity/ownership — makes it immediately obvious which agents, commands, and workflows belong to Dev Starter vs. other Claude Code extensions
+
 ## v1.0.2 (2026-03-23)
 
 ### Light Mode Default + Dark Mode Toggle
@@ -11,8 +25,8 @@
 
 ### Change Request Log
 - New document: `docs/changerequest-log.html` — tracks all feature additions and removals
-- `/change` Operation A (Add Feature): now creates a CR entry with ID `CR-[YYYY-MM-DD]-[NNN]`
-- `/change` Operation B (Remove Feature): now creates a CR entry with removal reason and impact
+- `/devstarter-change` Operation A (Add Feature): now creates a CR entry with ID `CR-[YYYY-MM-DD]-[NNN]`
+- `/devstarter-change` Operation B (Remove Feature): now creates a CR entry with removal reason and impact
 - **Revision History rule**: every Gate 1 document modified by Operation A or B MUST append a Revision History table row linking back to the CR ID
 
 ### Document Portal Registry
@@ -59,28 +73,28 @@
 - All agents upgraded with Anti-patterns, Standards Reference, Quality Gate Checklist
 
 **Commands (22):**
-- `/new` — Start new project (3 intake modes: Quick Start, Custom, Describe)
-- `/change` — Add feature / Remove feature / Fix bug
-- `/consult` — Consultation & solution advice (no code changes)
-- `/existing` — Setup existing project with codebase scan
-- `/release` — Release + deploy (8 deploy strategies)
-- `/hotfix` — Critical production bug fix
-- `/rollback` — Rollback production
-- `/incident` — Incident response
-- `/sprint` — Sprint planning
-- `/audit` — Audit & review project
-- `/migrate` — Migration to new tech stack
-- `/onboard` — Onboard new team member
-- `/handover` — Handover project
-- `/retro` — Sprint retrospective
-- `/env` — Setup local environment
-- `/secrets` — Secrets management
-- `/monitor` — Setup monitoring
-- `/dependency` — Update dependencies
-- `/menu` — Show project launcher menu
-- `/context` — Keep project context fresh
-- `/export` / `/import` — Backup and restore Dev Starter
-- `/update` — Update to latest version
+- `/devstarter-new` — Start new project (3 intake modes: Quick Start, Custom, Describe)
+- `/devstarter-change` — Add feature / Remove feature / Fix bug
+- `/devstarter-consult` — Consultation & solution advice (no code changes)
+- `/devstarter-existing` — Setup existing project with codebase scan
+- `/devstarter-release` — Release + deploy (8 deploy strategies)
+- `/devstarter-hotfix` — Critical production bug fix
+- `/devstarter-rollback` — Rollback production
+- `/devstarter-incident` — Incident response
+- `/devstarter-sprint` — Sprint planning
+- `/devstarter-audit` — Audit & review project
+- `/devstarter-migrate` — Migration to new tech stack
+- `/devstarter-onboard` — Onboard new team member
+- `/devstarter-handover` — Handover project
+- `/devstarter-retro` — Sprint retrospective
+- `/devstarter-env` — Setup local environment
+- `/devstarter-secrets` — Secrets management
+- `/devstarter-monitor` — Setup monitoring
+- `/devstarter-dependency` — Update dependencies
+- `/devstarter-menu` — Show project launcher menu
+- `/devstarter-context` — Keep project context fresh
+- `/devstarter-export` / `/devstarter-import` — Backup and restore Dev Starter
+- `/devstarter-update` — Update to latest version
 
 **SDLC Workflows:**
 - 5-gate workflow with hard approval gates

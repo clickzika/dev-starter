@@ -59,7 +59,7 @@ for d in agents commands sdlc templates; do
   fi
 done
 
-for f in dev-menu.md update.sh install.sh setup.sh VERSION CHANGELOG.md README.md LICENSE .gitignore .env.example; do
+for f in devstarter-menu.md update.sh install.sh setup.sh VERSION CHANGELOG.md README.md LICENSE .gitignore .env.example; do
   if [ -f "$CLAUDE_DIR/$f" ] && [ ! -L "$CLAUDE_DIR/$f" ]; then
     cp "$CLAUDE_DIR/$f" "$BACKUP_DIR/$f" 2>/dev/null || true
     BACKED_UP=1
@@ -87,7 +87,7 @@ echo ""
 
 # ─── Step 3: Create file symlinks ───────────────────
 echo -e "${CYAN}[3/4] Symlinking files...${NC}"
-for f in dev-menu.md update.sh install.sh setup.sh VERSION CHANGELOG.md README.md LICENSE .gitignore .env.example; do
+for f in devstarter-menu.md update.sh install.sh setup.sh VERSION CHANGELOG.md README.md LICENSE .gitignore .env.example; do
   if [ -f "$REPO_DIR/$f" ]; then
     rm -f "$CLAUDE_DIR/$f" 2>/dev/null || true
     ln -s "$REPO_DIR/$f" "$CLAUDE_DIR/$f"

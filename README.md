@@ -6,34 +6,34 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 
 ```
 ~/.claude/
-├── dev-menu.md              ← Entry point: pick a workflow
+├── devstarter-menu.md              ← Entry point: pick a workflow
 │
 ├── sdlc/ (17 workflow runbooks)
-│   ├── dev-starter.md       ← New project (Gate 1–5 full lifecycle)
-│   ├── dev-change.md        ← Add/remove features, fix bugs
-│   ├── dev-audit.md         ← Audit & review
-│   └── ...                  ← 14 more runbooks
+│   ├── devstarter-starter.md       ← New project (Gate 1–5 full lifecycle)
+│   ├── devstarter-change.md        ← Add/remove features, fix bugs
+│   ├── devstarter-audit.md         ← Audit & review
+│   └── ...                         ← 14 more runbooks
 │
 ├── agents/ (12 agents)
-│   ├── techlead.md          ← Architecture & code review
-│   ├── backend.md           ← API, services, server-side
-│   ├── frontend.md          ← UI components, state, responsive
-│   ├── mobile.md            ← Flutter, React Native, Swift, Kotlin
-│   ├── dba.md               ← Schema design, queries, migrations
-│   ├── devops.md            ← CI/CD, infra, Docker, cloud
-│   ├── qa.md                ← Testing strategy & automation
-│   ├── security.md          ← OWASP, auth, vulnerability scanning
-│   ├── pm.md                ← Sprint planning, tracking, stakeholders
-│   ├── ba.md                ← Requirements, user stories, BRD
-│   ├── uxui.md              ← Design system, prototypes, wireframes
-│   └── docs.md              ← Technical writing, API docs, runbooks
+│   ├── devstarter-techlead.md      ← Architecture & code review
+│   ├── devstarter-backend.md       ← API, services, server-side
+│   ├── devstarter-frontend.md      ← UI components, state, responsive
+│   ├── devstarter-mobile.md        ← Flutter, React Native, Swift, Kotlin
+│   ├── devstarter-dba.md           ← Schema design, queries, migrations
+│   ├── devstarter-devops.md        ← CI/CD, infra, Docker, cloud
+│   ├── devstarter-qa.md            ← Testing strategy & automation
+│   ├── devstarter-security.md      ← OWASP, auth, vulnerability scanning
+│   ├── devstarter-pm.md            ← Sprint planning, tracking, stakeholders
+│   ├── devstarter-ba.md            ← Requirements, user stories, BRD
+│   ├── devstarter-uxui.md          ← Design system, prototypes, wireframes
+│   └── devstarter-docs.md          ← Technical writing, API docs, runbooks
 │
 ├── commands/ (21 slash commands)
-│   ├── new.md               ← /new — start new project
-│   ├── change.md            ← /change — add feature / fix bug
-│   ├── release.md           ← /release — deploy pipeline
-│   ├── context.md           ← /context — refresh CLAUDE.md
-│   └── ...                  ← 17 more shortcuts
+│   ├── devstarter-new.md           ← /devstarter-new — start new project
+│   ├── devstarter-change.md        ← /devstarter-change — add feature / fix bug
+│   ├── devstarter-release.md       ← /devstarter-release — deploy pipeline
+│   ├── devstarter-context.md       ← /devstarter-context — refresh CLAUDE.md
+│   └── ...                         ← 17 more shortcuts
 │
 ├── templates/
 │   ├── CLAUDE.md.template   ← Project context file template
@@ -77,8 +77,8 @@ The setup wizard asks:
 
 ```bash
 claude
-> /menu          # show launcher menu
-> /new           # or go directly — start a new project
+> /devstarter-menu          # show launcher menu
+> /devstarter-new           # or go directly — start a new project
 ```
 
 ## Slash Commands (21)
@@ -87,27 +87,27 @@ Every workflow has a shortcut — no need to remember file paths:
 
 | Category | Command | What it does |
 |----------|---------|-------------|
-| **Menu** | `/menu` | Show launcher menu |
-| **Setup** | `/new` | New project (full 5-gate lifecycle) |
-| | `/existing` | Setup existing project |
-| | `/migrate` | Migration to new tech stack |
-| | `/audit` | Audit & review project |
-| **Daily** | `/change` | Add/remove feature, fix bug |
-| | `/sprint` | Sprint planning |
-| | `/dependency` | Update dependencies |
-| **Team** | `/onboard` | Onboard new member |
-| | `/handover` | Handover project |
-| | `/retro` | Sprint retrospective |
-| **Production** | `/release` | Release + deploy (DEV → SIT → UAT → DEPLOY) |
-| | `/hotfix` | Critical production bug fix |
-| | `/rollback` | Rollback production |
-| | `/incident` | Incident response |
-| **Infra** | `/env` | Setup local environment |
-| | `/secrets` | Secrets management |
-| | `/monitor` | Setup monitoring |
-| **Utility** | `/context` | Refresh CLAUDE.md from codebase |
-| | `/export` | Backup everything to zip |
-| | `/import` | Restore from zip |
+| **Menu** | `/devstarter-menu` | Show launcher menu |
+| **Setup** | `/devstarter-new` | New project (full 5-gate lifecycle) |
+| | `/devstarter-existing` | Setup existing project |
+| | `/devstarter-migrate` | Migration to new tech stack |
+| | `/devstarter-audit` | Audit & review project |
+| **Daily** | `/devstarter-change` | Add/remove feature, fix bug |
+| | `/devstarter-sprint` | Sprint planning |
+| | `/devstarter-dependency` | Update dependencies |
+| **Team** | `/devstarter-onboard` | Onboard new member |
+| | `/devstarter-handover` | Handover project |
+| | `/devstarter-retro` | Sprint retrospective |
+| **Production** | `/devstarter-release` | Release + deploy (DEV → SIT → UAT → DEPLOY) |
+| | `/devstarter-hotfix` | Critical production bug fix |
+| | `/devstarter-rollback` | Rollback production |
+| | `/devstarter-incident` | Incident response |
+| **Infra** | `/devstarter-env` | Setup local environment |
+| | `/devstarter-secrets` | Secrets management |
+| | `/devstarter-monitor` | Setup monitoring |
+| **Utility** | `/devstarter-context` | Refresh CLAUDE.md from codebase |
+| | `/devstarter-export` | Backup everything to zip |
+| | `/devstarter-import` | Restore from zip |
 
 ## Agents (12 Specialists)
 
@@ -121,16 +121,16 @@ Each agent has:
 Invoke any agent directly:
 
 ```
-> Read ~/.claude/agents/backend.md and help me design the API
-> Read ~/.claude/agents/qa.md and create a test plan
-> Read ~/.claude/agents/uxui.md and design the UI
+> Read ~/.claude/agents/devstarter-backend.md and help me design the API
+> Read ~/.claude/agents/devstarter-qa.md and create a test plan
+> Read ~/.claude/agents/devstarter-uxui.md and design the UI
 ```
 
-Or use `/new` and the system orchestrates all agents automatically through the 5-gate build process.
+Or use `/devstarter-new` and the system orchestrates all agents automatically through the 5-gate build process.
 
 ## The 5-Gate Build Process
 
-When you start a new project with `/new`:
+When you start a new project with `/devstarter-new`:
 
 ```
 Gate 0: Setup          → GitHub repo, Notion board, branch strategy (auto)
@@ -143,7 +143,7 @@ Gate 5: Quality        → Testing, security audit, performance
 
 ## Release Flow
 
-After Gate 5, use `/release` for the full deployment pipeline:
+After Gate 5, use `/devstarter-release` for the full deployment pipeline:
 
 ```
 develop ──→ Local Test ──→ uat ──→ User Test ──→ main ──→ Production
@@ -159,17 +159,17 @@ develop ──→ Local Test ──→ uat ──→ User Test ──→ main �
 ### Example 1 — Build a new web app from scratch
 ```
 claude
-> /new
+> /devstarter-new
 # Answer 26 questions about your project
 # Claude creates: CLAUDE.md, BRD, SRS, DB design, API, prototype...
 # Approve each gate → Claude builds feature by feature
-# /release when done → DEV → SIT → UAT → Production
+# /devstarter-release when done → DEV → SIT → UAT → Production
 ```
 
 ### Example 2 — Add a feature to existing project
 ```
 claude
-> /change
+> /devstarter-change
 # Claude reads CLAUDE.md, asks what to change
 # Creates feature branch → implements → PR → review → merge
 ```
@@ -177,7 +177,7 @@ claude
 ### Example 3 — Critical bug in production
 ```
 claude
-> /hotfix
+> /devstarter-hotfix
 # Claude branches from main → fixes → PR to main
 # After merge: backports to uat + develop automatically
 ```
@@ -185,7 +185,7 @@ claude
 ### Example 4 — Plan next sprint
 ```
 claude
-> /sprint
+> /devstarter-sprint
 # Claude reads Notion backlog → proposes sprint tasks
 # Assigns to sprint → shows sprint board
 ```
@@ -193,7 +193,7 @@ claude
 ### Example 5 — Release to production
 ```
 claude
-> /release
+> /devstarter-release
 # Gate 1: "DEV approved"     → checklist passed
 # Gate 2: "SIT approved"     → automated tests passed
 # Gate 3: "UAT approved"     → user tested and approved

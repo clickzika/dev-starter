@@ -40,7 +40,7 @@ echo -e "${CYAN}${BOLD}Step 1/4 — Downloading Dev Starter...${RESET}"
 
 # Check if we're running from inside the cloned repo already
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null || echo ".")" && pwd)"
-if [ -f "$SCRIPT_DIR/dev-menu.md" ] && [ -d "$SCRIPT_DIR/agents" ]; then
+if [ -f "$SCRIPT_DIR/devstarter-menu.md" ] && [ -d "$SCRIPT_DIR/agents" ]; then
   echo -e "  ${GREEN}✅ Running from cloned repo: $SCRIPT_DIR${RESET}"
   SOURCE_DIR="$SCRIPT_DIR"
 else
@@ -58,7 +58,7 @@ mkdir -p "$CLAUDE_DIR"
 
 # Check if there are existing files that would be overwritten
 EXISTING_FILES=0
-for check in agents commands sdlc templates dev-menu.md USER.md setup.sh; do
+for check in agents commands sdlc templates devstarter-menu.md USER.md setup.sh; do
   if [ -e "$CLAUDE_DIR/$check" ]; then
     EXISTING_FILES=1
     break
@@ -71,7 +71,7 @@ if [ "$EXISTING_FILES" = "1" ]; then
   echo -e "  ${YELLOW}$BACKUP_DIR${RESET}"
   mkdir -p "$BACKUP_DIR"
 
-  for item in agents commands sdlc templates dev-menu.md USER.md TEAM.md setup.sh .env.example; do
+  for item in agents commands sdlc templates devstarter-menu.md USER.md TEAM.md setup.sh .env.example; do
     if [ -e "$CLAUDE_DIR/$item" ]; then
       cp -r "$CLAUDE_DIR/$item" "$BACKUP_DIR/" 2>/dev/null || true
     fi
@@ -107,7 +107,7 @@ cp -r "$SOURCE_DIR/sdlc/"*.md "$CLAUDE_DIR/sdlc/" 2>/dev/null || true
 cp -r "$SOURCE_DIR/templates/"* "$CLAUDE_DIR/templates/" 2>/dev/null || true
 
 # Copy root files (never overwrite .env if exists)
-cp "$SOURCE_DIR/dev-menu.md" "$CLAUDE_DIR/" 2>/dev/null || true
+cp "$SOURCE_DIR/devstarter-menu.md" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/.env.example" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/setup.sh" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/update.sh" "$CLAUDE_DIR/" 2>/dev/null || true
@@ -147,5 +147,5 @@ echo -e "${GREEN}${BOLD}╚═════════════════�
 echo ""
 echo -e "  To start:"
 echo -e "  ${CYAN}claude${RESET}"
-echo -e "  ${CYAN}> Read ~/.claude/dev-menu.md and help me get started${RESET}"
+echo -e "  ${CYAN}> Read ~/.claude/devstarter-menu.md and help me get started${RESET}"
 echo ""
