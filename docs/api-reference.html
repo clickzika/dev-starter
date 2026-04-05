@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Command API Reference — DevStarter</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--bg-page:#f5f7fa;--bg-header:#ffffff;--bg-sidebar:#f0f2f5;--bg-content:#ffffff;--bg-card:#f8f9fb;--bg-hover:#e8ebf0;--accent:#e94560;--accent-light:#d63851;--text:#1a1a2e;--text-dim:#5a6578;--text-muted:#8493a8;--border:#d8dde4;--border-light:#e2e7ed;--status-approved:#10b981;--section-1:#3b82f6;--section-2:#8b5cf6;--section-3:#f59e0b;--section-4:#10b981;--section-5:#ef4444;--section-6:#f97316;--section-7:#06b6d4;--section-8:#ec4899;--header-h:64px;--sidebar-w:280px;--code-bg:#f1f5f9;--code-inline-bg:rgba(233,69,96,0.08);--code-inline-color:#d63851;--table-even-bg:rgba(0,0,0,0.02);--table-hover-bg:rgba(233,69,96,0.04);--shadow:0 1px 3px rgba(0,0,0,0.06);--toggle-bg:#e2e6eb;--toggle-knob:#ffffff;--mermaid-bg:rgba(0,0,0,0.02);}
+  [data-theme="dark"]{--bg-page:#0f0f23;--bg-header:#1a1a2e;--bg-sidebar:#16213e;--bg-content:#1e1e3a;--bg-card:#252547;--bg-hover:#0f3460;--accent:#e94560;--accent-light:#ff6b81;--text:#eeeeee;--text-dim:#94a3b8;--text-muted:#64748b;--border:#1e3a5f;--border-light:#2d4a6f;--code-bg:#0d0d1a;--code-inline-bg:rgba(233,69,96,0.1);--code-inline-color:#ff6b81;--table-even-bg:rgba(255,255,255,0.02);--table-hover-bg:rgba(233,69,96,0.05);--shadow:0 1px 3px rgba(0,0,0,0.3);--toggle-bg:#1e3a5f;--toggle-knob:#e94560;--mermaid-bg:rgba(255,255,255,0.03);}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-page);color:var(--text);line-height:1.6;height:100vh;overflow:hidden;transition:background 0.3s,color 0.3s;}
+  .doc-header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--bg-header);border-bottom:1px solid var(--border);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:100;}
+  .doc-header-left{display:flex;align-items:center;gap:16px;}
+  .doc-header-logo{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;}
+  .doc-header-title{display:flex;flex-direction:column;}
+  .doc-header-project{font-size:18px;font-weight:700;letter-spacing:-0.3px;color:var(--text);}
+  .doc-header-docname{font-size:12px;color:var(--text-dim);font-weight:500;}
+  .doc-header-right{display:flex;align-items:center;gap:16px;}
+  .doc-header-meta{text-align:right;font-size:12px;color:var(--text-dim);}
+  .doc-status-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+  .doc-status-badge.approved{background:rgba(16,185,129,0.15);color:var(--status-approved);border:1px solid rgba(16,185,129,0.3);}
+  .theme-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;}
+  .theme-toggle-icon{font-size:14px;color:var(--text-dim);}
+  .theme-toggle-track{width:44px;height:24px;background:var(--toggle-bg);border-radius:12px;position:relative;transition:background 0.3s;border:1px solid var(--border);}
+  .theme-toggle-knob{width:18px;height:18px;background:var(--toggle-knob);border-radius:50%;position:absolute;top:2px;left:3px;transition:transform 0.3s,background 0.3s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+  [data-theme="dark"] .theme-toggle-knob{transform:translateX(20px);}
+  .doc-sidebar{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:var(--bg-sidebar);border-right:1px solid var(--border);overflow-y:auto;padding:20px 0;z-index:50;}
+  .doc-sidebar::-webkit-scrollbar{width:4px;}.doc-sidebar::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:4px;}
+  .doc-sidebar-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-muted);padding:0 20px 12px;border-bottom:1px solid var(--border);margin-bottom:8px;}
+  .toc-list{list-style:none;padding:0;}.toc-item{display:block;}
+  .toc-link{display:flex;align-items:center;gap:10px;padding:8px 20px;color:var(--text-dim);text-decoration:none;font-size:13px;font-weight:500;transition:all 0.15s ease;border-left:3px solid transparent;}
+  .toc-link:hover{background:var(--bg-hover);color:var(--text);border-left-color:var(--accent);}
+  .toc-link.active{background:rgba(233,69,96,0.1);color:var(--accent-light);border-left-color:var(--accent);}
+  .toc-number{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:700;flex-shrink:0;color:#fff;}
+  .toc-number.s1{background:var(--section-1);}.toc-number.s2{background:var(--section-2);}.toc-number.s3{background:var(--section-3);}.toc-number.s4{background:var(--section-4);}.toc-number.s5{background:var(--section-5);}.toc-number.s6{background:var(--section-6);}.toc-number.s7{background:var(--section-7);}.toc-number.s8{background:var(--section-8);}
+  .doc-info-card{margin:16px 12px 0;padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;font-size:12px;}
+  .doc-info-row{display:flex;justify-content:space-between;padding:4px 0;color:var(--text-dim);}
+  .doc-info-row span:first-child{color:var(--text-muted);}
+  .doc-content{margin-left:var(--sidebar-w);margin-top:var(--header-h);height:calc(100vh - var(--header-h));overflow-y:auto;padding:40px 48px 80px;background:var(--bg-content);transition:background 0.3s;}
+  .doc-content::-webkit-scrollbar{width:6px;}.doc-content::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:6px;}
+  .section-header{display:flex;align-items:center;gap:14px;margin:48px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  .section-header:first-child{margin-top:0;}
+  .section-number{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+  .section-number.s1{background:var(--section-1);}.section-number.s2{background:var(--section-2);}.section-number.s3{background:var(--section-3);}.section-number.s4{background:var(--section-4);}.section-number.s5{background:var(--section-5);}.section-number.s6{background:var(--section-6);}.section-number.s7{background:var(--section-7);}.section-number.s8{background:var(--section-8);}
+  .section-title{font-size:22px;font-weight:700;letter-spacing:-0.3px;}
+  h3{font-size:16px;font-weight:600;color:var(--text);margin:28px 0 12px;border-left:3px solid var(--accent);padding-left:12px;}
+  h4{font-size:14px;font-weight:600;color:var(--text-dim);margin:20px 0 8px;}
+  p{color:var(--text-dim);margin-bottom:16px;font-size:14px;line-height:1.7;}
+  table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13px;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+  thead th{background:var(--bg-sidebar);color:var(--text);font-weight:600;text-align:left;padding:12px 16px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--accent);}
+  tbody tr{border-bottom:1px solid var(--border);}
+  tbody tr:nth-child(even){background:var(--table-even-bg);}
+  tbody tr:hover{background:var(--table-hover-bg);}
+  td{padding:10px 16px;color:var(--text-dim);vertical-align:top;}
+  pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:16px 20px;overflow-x:auto;margin:12px 0 20px;font-size:13px;line-height:1.5;}
+  code{font-family:'JetBrains Mono','Fira Code','Consolas',monospace;font-size:13px;}
+  :not(pre)>code{background:var(--code-inline-bg);color:var(--code-inline-color);padding:2px 6px;border-radius:4px;font-size:12px;}
+  ul,ol{margin:8px 0 16px 24px;color:var(--text-dim);font-size:14px;}
+  li{margin-bottom:6px;line-height:1.6;}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0 24px;}
+  .card-title{font-size:14px;font-weight:600;margin-bottom:8px;color:var(--text);}
+  .note{border-left:4px solid var(--section-1);background:rgba(59,130,246,0.05);}
+  .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;}
+  .badge-green{background:rgba(16,185,129,0.15);color:#10b981;}.badge-blue{background:rgba(59,130,246,0.15);color:#3b82f6;}.badge-yellow{background:rgba(245,158,11,0.15);color:#f59e0b;}.badge-purple{background:rgba(139,92,246,0.15);color:#8b5cf6;}.badge-gray{background:rgba(100,116,139,0.15);color:#94a3b8;}.badge-red{background:rgba(239,68,68,0.15);color:#ef4444;}
+  .cmd-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0 20px;}
+  .cmd-name{font-size:16px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-bottom:8px;}
+  .cmd-desc{font-size:13px;color:var(--text-dim);margin-bottom:12px;}
+  .cmd-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+  @media print{.doc-sidebar{display:none;}.doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;}body{background:#fff;color:#000;}.theme-toggle{display:none;}}
+</style>
+</head>
+<body>
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Command API Reference</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta"><div>Version 1.0 · 2026-04-05</div><div>Author: @devstarter-backend</div></div>
+    <span class="doc-status-badge approved">● Approved</span>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Table of Contents</div>
+  <ul class="toc-list">
+    <li class="toc-item"><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> Overview</a></li>
+    <li class="toc-item"><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> Project Setup</a></li>
+    <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> Daily Work</a></li>
+    <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> Production</a></li>
+    <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> Team</a></li>
+    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> Setup & Infra</a></li>
+    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> AI / ML</a></li>
+    <li class="toc-item"><a href="#section-8" class="toc-link"><span class="toc-number s8">8</span> Inline Args</a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Commands</span><span>24 total</span></div>
+    <div class="doc-info-row"><span>Version</span><span>1.0</span></div>
+    <div class="doc-info-row"><span>Date</span><span>2026-04-05</span></div>
+    <div class="doc-info-row"><span>Agent</span><span>@devstarter-backend</span></div>
+  </div>
+</nav>
+<main class="doc-content">
+
+  <div class="section-header" id="section-1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title">Overview</h2>
+  </div>
+  <p>DevStarter exposes 24 slash commands as its "API". Each command is a plain-text Markdown file in <code>commands/</code> that Claude Code loads when the user types <code>/devstarter-X</code>. The command file routes to the matching SDLC runbook in <code>sdlc/</code> which contains the full workflow logic.</p>
+
+  <div class="card note">
+    <div class="card-title">Architecture</div>
+    <p>commands/devstarter-X.md &nbsp;→&nbsp; sdlc/devstarter-X.md &nbsp;→&nbsp; agents/devstarter-Y.md</p>
+  </div>
+
+  <h3>Command Summary</h3>
+  <table>
+    <thead><tr><th>#</th><th>Command</th><th>Category</th><th>Runbook</th><th>Inline Args</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>/devstarter-menu</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-menu.md</td><td>No</td></tr>
+      <tr><td>2</td><td><code>/devstarter-new</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-starter.md</td><td>Yes — description</td></tr>
+      <tr><td>3</td><td><code>/devstarter-existing</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-existing.md</td><td>Yes — intent</td></tr>
+      <tr><td>4</td><td><code>/devstarter-migrate</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-migrate.md</td><td>No</td></tr>
+      <tr><td>5</td><td><code>/devstarter-audit</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-audit.md</td><td>Yes — audit type</td></tr>
+      <tr><td>6</td><td><code>/devstarter-change</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-change.md</td><td>Yes — add/fix/remove + description</td></tr>
+      <tr><td>7</td><td><code>/devstarter-document</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-document.md</td><td>Yes — doc type</td></tr>
+      <tr><td>8</td><td><code>/devstarter-sprint</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-sprint.md</td><td>No</td></tr>
+      <tr><td>9</td><td><code>/devstarter-dependency</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-dependency.md</td><td>No</td></tr>
+      <tr><td>10</td><td><code>/devstarter-context</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-context.md</td><td>No</td></tr>
+      <tr><td>11</td><td><code>/devstarter-consult</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-consult.md</td><td>Yes — topic</td></tr>
+      <tr><td>12</td><td><code>/devstarter-release</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-release.md</td><td>No</td></tr>
+      <tr><td>13</td><td><code>/devstarter-hotfix</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-hotfix.md</td><td>No</td></tr>
+      <tr><td>14</td><td><code>/devstarter-rollback</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-rollback.md</td><td>No</td></tr>
+      <tr><td>15</td><td><code>/devstarter-incident</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-incident.md</td><td>No</td></tr>
+      <tr><td>16</td><td><code>/devstarter-onboard</code></td><td><span class="badge badge-purple">Team</span></td><td>devstarter-onboarding.md</td><td>No</td></tr>
+      <tr><td>17</td><td><code>/devstarter-handover</code></td><td><span class="badge badge-purple">Team</span></td><td>devstarter-handover.md</td><td>No</td></tr>
+      <tr><td>18</td><td><code>/devstarter-retro</code></td><td><span class="badge badge-purple">Team</span></td><td>devstarter-retrospective.md</td><td>No</td></tr>
+      <tr><td>19</td><td><code>/devstarter-env</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-env.md</td><td>No</td></tr>
+      <tr><td>20</td><td><code>/devstarter-secrets</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-secrets.md</td><td>No</td></tr>
+      <tr><td>21</td><td><code>/devstarter-monitor</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-monitor.md</td><td>No</td></tr>
+      <tr><td>22</td><td><code>/devstarter-export</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-export.md</td><td>No</td></tr>
+      <tr><td>23</td><td><code>/devstarter-import</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-import.md</td><td>No</td></tr>
+      <tr><td>24</td><td><code>/devstarter-update</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-update.md</td><td>No</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title">Project Setup Commands</h2>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-new [description?]</div>
+    <div class="cmd-desc">Start a new project from scratch. Runs a 5-gate lifecycle: Discovery → Architecture → Task Setup → Development → Quality & Delivery.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-green">Inline args: yes</span>
+      <span class="badge badge-blue">Gates: 5</span>
+      <span class="badge badge-purple">Checkpoint: yes</span>
+    </div>
+    <table>
+      <thead><tr><th>Mode</th><th>Trigger</th><th>Questions</th></tr></thead>
+      <tbody>
+        <tr><td>Quick Start</td><td>Pick "1" from picker</td><td>8 questions</td></tr>
+        <tr><td>Custom</td><td>Pick "2" from picker</td><td>Up to 31 questions</td></tr>
+        <tr><td>Describe</td><td>Pick "3" or inline arg</td><td>1 — just describe the project</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Example:</strong> <code>/devstarter-new React SaaS dashboard with Stripe billing</code></p>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-existing [intent?]</div>
+    <div class="cmd-desc">Onboard an existing codebase. Performs a codebase discovery scan, generates CLAUDE.md, and optionally creates missing documents.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-green">Inline args: yes</span>
+      <span class="badge badge-blue">Gates: 1+</span>
+      <span class="badge badge-purple">Checkpoint: yes</span>
+    </div>
+    <table>
+      <thead><tr><th>Option</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>1 — Onboard</td><td>Scan codebase, generate CLAUDE.md, produce discovery report</td></tr>
+        <tr><td>2 — Add / fix</td><td>Scan + route to /devstarter-change</td></tr>
+        <tr><td>3 — Refactor</td><td>Scan + plan refactor tasks</td></tr>
+        <tr><td>4 — Security</td><td>Scan + run security audit</td></tr>
+        <tr><td>5 — Full setup</td><td>Scan + generate all docs + GitHub + Notion</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-audit [type?]</div>
+    <div class="cmd-desc">Audit and review the project across 7 audit types. Produces an audit report and optionally a fix plan.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-green">Inline args: yes</span>
+      <span class="badge badge-yellow">Output: docs/audit-report.html</span>
+    </div>
+    <p><strong>Types:</strong> security, performance, code-quality, dependencies, test-coverage, architecture, full</p>
+    <p><strong>Example:</strong> <code>/devstarter-audit security fix</code> → runs security audit and generates a fix plan</p>
+  </div>
+
+  <div class="section-header" id="section-3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title">Daily Work Commands</h2>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-change [add|fix|remove description?]</div>
+    <div class="cmd-desc">Add a feature, fix a bug, or remove a feature. Routes to a dedicated sub-workflow based on operation type.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-green">Inline args: yes</span>
+      <span class="badge badge-blue">Sub-workflows: 3</span>
+      <span class="badge badge-purple">Checkpoint: yes</span>
+    </div>
+    <table>
+      <thead><tr><th>Operation</th><th>Runbook</th><th>Produces</th></tr></thead>
+      <tbody>
+        <tr><td>add</td><td>devstarter-change-add.md</td><td>Feature branch + PR + CR log entry</td></tr>
+        <tr><td>fix</td><td>devstarter-change-bug.md</td><td>Fix branch + PR + bugfix log entry</td></tr>
+        <tr><td>remove</td><td>devstarter-change-remove.md</td><td>Removal branch + PR + CR log entry</td></tr>
+      </tbody>
+    </table>
+    <p><strong>Examples:</strong><br>
+      <code>/devstarter-change add dark mode toggle</code><br>
+      <code>/devstarter-change fix login page crash on mobile</code><br>
+      <code>/devstarter-change remove legacy v1 API endpoints</code>
+    </p>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-document [type?]</div>
+    <div class="cmd-desc">Generate or regenerate any single project document independently — without re-running a full gate workflow.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-green">Inline args: yes</span>
+      <span class="badge badge-yellow">Output: docs/[type].html</span>
+    </div>
+    <table>
+      <thead><tr><th>Type Arg</th><th>Output File</th><th>Agent</th></tr></thead>
+      <tbody>
+        <tr><td>brd</td><td>docs/brd.html</td><td>@devstarter-ba</td></tr>
+        <tr><td>srs</td><td>docs/srs.html</td><td>@devstarter-ba</td></tr>
+        <tr><td>api</td><td>docs/api-reference.html</td><td>@devstarter-backend</td></tr>
+        <tr><td>schema</td><td>docs/database-design.html</td><td>@devstarter-dba</td></tr>
+        <tr><td>test</td><td>docs/test-strategy.html</td><td>@devstarter-qa</td></tr>
+        <tr><td>security</td><td>docs/security-design.html</td><td>@devstarter-security</td></tr>
+        <tr><td>infra</td><td>docs/infrastructure-guide.html</td><td>@devstarter-devops</td></tr>
+        <tr><td>prototype</td><td>docs/prototype/</td><td>@devstarter-uxui</td></tr>
+        <tr><td>plan</td><td>docs/project-plan.html</td><td>@devstarter-pm</td></tr>
+        <tr><td>all</td><td>All of the above</td><td>All agents</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-header" id="section-4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title">Production Commands</h2>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-release</div>
+    <div class="cmd-desc">Full release + deploy pipeline. Auto-detects release model (dual-remote vs single-repo) and deploy strategy.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-red">Production</span>
+      <span class="badge badge-blue">Strategies: 8</span>
+    </div>
+    <table>
+      <thead><tr><th>Strategy</th><th>Deploy Target</th></tr></thead>
+      <tbody>
+        <tr><td>A — Docker</td><td>Container registry + server</td></tr>
+        <tr><td>B — Kubernetes</td><td>K8s cluster</td></tr>
+        <tr><td>C — Azure App Service</td><td>Azure</td></tr>
+        <tr><td>D — AWS</td><td>ECS / Lambda / Elastic Beanstalk</td></tr>
+        <tr><td>E — Cloud Run</td><td>Google Cloud Run</td></tr>
+        <tr><td>F — Static</td><td>Vercel / Netlify / Cloudflare Pages</td></tr>
+        <tr><td>G — Railway</td><td>Railway.app</td></tr>
+        <tr><td>H — GitHub Pages</td><td>GitHub Pages</td></tr>
+        <tr><td>I — Git auto-detect</td><td>Toolkit/library — dual-remote or single-repo</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-hotfix</div>
+    <div class="cmd-desc">Critical production bug fix. Creates a hotfix branch from main, fixes, and fast-tracks to production without going through develop.</div>
+    <div class="cmd-meta"><span class="badge badge-red">Production</span><span class="badge badge-purple">Checkpoint: yes</span></div>
+    <p>Flow: <code>main</code> → <code>hotfix/[issue]</code> → fix → PR → merge to <code>main</code> + <code>develop</code> → tag patch version</p>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-rollback</div>
+    <div class="cmd-desc">Rollback production to a previous version. Supports git revert, image tag rollback, and database rollback.</div>
+    <div class="cmd-meta"><span class="badge badge-red">Production</span></div>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-incident</div>
+    <div class="cmd-desc">Structured incident response. Covers detection, triage, mitigation, resolution, and post-mortem.</div>
+    <div class="cmd-meta"><span class="badge badge-red">Production</span></div>
+  </div>
+
+  <div class="section-header" id="section-5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title">Team Commands</h2>
+  </div>
+  <table>
+    <thead><tr><th>Command</th><th>Purpose</th><th>Key Output</th></tr></thead>
+    <tbody>
+      <tr><td><code>/devstarter-onboard</code></td><td>Onboard a new team member to the project</td><td>Personalised onboarding guide</td></tr>
+      <tr><td><code>/devstarter-handover</code></td><td>Hand a project over to a new owner</td><td>Handover document + knowledge transfer</td></tr>
+      <tr><td><code>/devstarter-retro</code></td><td>Facilitate a sprint retrospective</td><td>Retro report with action items</td></tr>
+      <tr><td><code>/devstarter-sprint</code></td><td>Plan a sprint — epics, features, tasks, estimates</td><td>Sprint plan in Notion/Jira</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title">Setup & Infra Commands</h2>
+  </div>
+  <table>
+    <thead><tr><th>Command</th><th>Purpose</th><th>Runbook</th></tr></thead>
+    <tbody>
+      <tr><td><code>/devstarter-env</code></td><td>Setup local development environment</td><td>devstarter-env.md</td></tr>
+      <tr><td><code>/devstarter-secrets</code></td><td>Secrets management — env-file, Vault, AWS, Azure, GCP</td><td>devstarter-secrets.md</td></tr>
+      <tr><td><code>/devstarter-monitor</code></td><td>Setup monitoring, alerting, dashboards</td><td>devstarter-monitor.md</td></tr>
+      <tr><td><code>/devstarter-dependency</code></td><td>Update and audit project dependencies</td><td>devstarter-dependency.md</td></tr>
+      <tr><td><code>/devstarter-export</code></td><td>Export DevStarter config for backup or transfer</td><td>devstarter-export.md</td></tr>
+      <tr><td><code>/devstarter-import</code></td><td>Import DevStarter from a backup</td><td>devstarter-import.md</td></tr>
+      <tr><td><code>/devstarter-update</code></td><td>Update DevStarter to the latest version</td><td>devstarter-update.md</td></tr>
+      <tr><td><code>/devstarter-context</code></td><td>Refresh CLAUDE.md without re-running full onboarding</td><td>devstarter-context.md</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-7">
+    <span class="section-number s7">7</span>
+    <h2 class="section-title">AI / ML Commands</h2>
+  </div>
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-new [ML stack]</div>
+    <div class="cmd-desc">When a new project is AI/ML, /devstarter-new routes to the ML workflow runbook and presents ML-specific stack templates.</div>
+    <div class="cmd-meta"><span class="badge badge-purple">ML</span></div>
+    <table>
+      <thead><tr><th>Template</th><th>Stack</th><th>Use Case</th></tr></thead>
+      <tbody>
+        <tr><td>ml-starter</td><td>scikit-learn + MLflow local + FastAPI</td><td>Experiments, prototyping</td></tr>
+        <tr><td>ml-standard</td><td>PyTorch + BentoML + Evidently + CI/CD auto-training</td><td>Production ML systems</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-header" id="section-8">
+    <span class="section-number s8">8</span>
+    <h2 class="section-title">Inline Args Convention</h2>
+  </div>
+  <p>Commands that support inline args allow users to bypass the question flow by providing a description directly after the command name. The system extracts intent from the first word(s) and skips all questions that can be inferred.</p>
+  <table>
+    <thead><tr><th>Command</th><th>Inline Arg Format</th><th>What is skipped</th></tr></thead>
+    <tbody>
+      <tr><td>/devstarter-new</td><td><code>/devstarter-new [project description]</code></td><td>All 8–31 intake questions</td></tr>
+      <tr><td>/devstarter-existing</td><td><code>/devstarter-existing [intent]</code></td><td>Quick-picker + Q3–Q5 (auto-detected)</td></tr>
+      <tr><td>/devstarter-change</td><td><code>/devstarter-change add [feature]</code></td><td>Q1 (operation type) + Q2 (description)</td></tr>
+      <tr><td>/devstarter-audit</td><td><code>/devstarter-audit [type] [outcome]</code></td><td>Picker + Q1 + Q5</td></tr>
+      <tr><td>/devstarter-document</td><td><code>/devstarter-document [type]</code></td><td>Quick-picker</td></tr>
+      <tr><td>/devstarter-consult</td><td><code>/devstarter-consult [topic]</code></td><td>Topic question</td></tr>
+    </tbody>
+  </table>
+</main>
+<script>
+  function toggleTheme(){var h=document.documentElement;var d=h.getAttribute('data-theme')==='dark';if(d){h.removeAttribute('data-theme');localStorage.setItem('docportal-theme','light');document.getElementById('themeIcon').innerHTML='&#9788;';}else{h.setAttribute('data-theme','dark');localStorage.setItem('docportal-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';}}
+  (function(){var s=localStorage.getItem('docportal-theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';}})();
+  const sections=document.querySelectorAll('.section-header[id]');const tocLinks=document.querySelectorAll('.toc-link');const content=document.querySelector('.doc-content');
+  content.addEventListener('scroll',()=>{let c='';sections.forEach(s=>{if(content.scrollTop>=s.offsetTop-content.offsetTop-100)c=s.id;});tocLinks.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+c)l.classList.add('active');});});
+  tocLinks.forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)content.scrollTo({top:t.offsetTop-content.offsetTop-20,behavior:'smooth'});});});
+</script>
+</body>
+</html>
