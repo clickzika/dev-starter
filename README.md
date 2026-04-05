@@ -37,7 +37,7 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 │   ├── devstarter-docs.md          ← Technical writing, API docs, runbooks
 │   └── devstarter-mlops.md         ← ML pipelines, model serving, drift monitoring
 │
-├── commands/ (23 slash commands)
+├── commands/ (24 slash commands)
 │   ├── devstarter-new.md           ← /devstarter-new — start new project
 │   ├── devstarter-change.md        ← /devstarter-change — add feature / fix bug
 │   ├── devstarter-release.md       ← /devstarter-release — deploy pipeline
@@ -108,7 +108,7 @@ claude
 > /devstarter-new           # or go directly — start a new project
 ```
 
-## Slash Commands (23)
+## Slash Commands (24)
 
 Every workflow has a shortcut — no need to remember file paths:
 
@@ -120,6 +120,7 @@ Every workflow has a shortcut — no need to remember file paths:
 | | `/devstarter-migrate` | Migration to new tech stack |
 | | `/devstarter-audit` | Audit & review project |
 | **Daily** | `/devstarter-change` | Add/remove feature, fix bug |
+| | `/devstarter-document` | Generate or regenerate docs (brd, api, schema, test, security, infra, prototype, all) |
 | | `/devstarter-sprint` | Sprint planning |
 | | `/devstarter-dependency` | Update dependencies |
 | **Team** | `/devstarter-onboard` | Onboard new member |
