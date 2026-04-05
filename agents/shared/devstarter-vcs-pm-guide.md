@@ -98,27 +98,48 @@ If `.project.env` does not exist, assume defaults:
 
 | PM_TYPE | Method |
 |---------|--------|
-| `notion` | Use Notion MCP tools → `notion-create-pages` with NOTION_DATABASE_ID |
+| `notion` | Read `~/.claude/sdlc/devstarter-notion.md` → PROC-NT-03 |
 | `github-issues` | Same as VCS issue (already created above — skip duplicate) |
 | `gitlab-issues` | Same as VCS issue (already created above — skip duplicate) |
-| `jira` | `curl -X POST "$JIRA_URL/rest/api/3/issue" -H "Authorization: Basic $JIRA_API_TOKEN" ...` |
-| `azure-boards` | `az boards work-item create ...` |
+| `jira` | Read `~/.claude/sdlc/devstarter-jira.md` → PROC-JR-03 (`create_jira_issue`) |
+| `azure-boards` | `az boards work-item create --type "User Story" --title "$TITLE"` |
 | `linear` | Use Linear API or MCP if available |
-| `trello` | Use Trello API: `curl -X POST "https://api.trello.com/1/cards" ...` |
+| `trello` | `curl -X POST "https://api.trello.com/1/cards?idList=$LIST_ID&name=$TITLE&key=$KEY&token=$TOKEN"` |
 | `none` | Skip — print task summary to console only |
 
-### Updating task to Done
+### Creating a sprint
 
 | PM_TYPE | Method |
 |---------|--------|
-| `notion` | Use Notion MCP tools → `notion-update-page` → Status = "Done" |
-| `github-issues` | Closed via VCS step above |
-| `gitlab-issues` | Closed via VCS step above |
-| `jira` | `curl -X POST "$JIRA_URL/rest/api/3/issue/$KEY/transitions" ...` → "Done" |
-| `azure-boards` | `az boards work-item update --id $ID --state "Done"` |
-| `linear` | Use Linear API → update state to "Done" |
-| `trello` | Move card to "Done" list |
+| `notion` | Read `~/.claude/sdlc/devstarter-notion.md` → PROC-NT-05 (sprint view) |
+| `jira` | Read `~/.claude/sdlc/devstarter-jira.md` → PROC-JR-02 (`create sprint`) + PROC-JR-05 (`start sprint`) |
+| `github-issues` | Use milestones: `gh api repos/{owner}/{repo}/milestones -f title="Sprint N"` |
+| `azure-boards` | `az boards iteration create --name "Sprint N" --path "\project\iteration"` |
+| `linear` | Use Linear cycles API |
 | `none` | Skip |
+
+### Updating task status
+
+| PM_TYPE | To In Progress | To In Review | To Done |
+|---------|---------------|--------------|---------|
+| `notion` | PROC-NT-04 | PROC-NT-05 | PROC-NT-06 |
+| `jira` | `transition_issue $KEY "In Progress"` (PROC-JR-04) | `transition_issue $KEY "In Review"` | `transition_issue $KEY "Done"` |
+| `github-issues` | Add label `in-progress` | Add label `in-review` | `gh issue close $NUM` |
+| `gitlab-issues` | Add label `in-progress` | Add label `in-review` | `glab issue close $NUM` |
+| `azure-boards` | `az boards work-item update --id $ID --state "Active"` | `az boards work-item update --id $ID --state "Resolved"` | `az boards work-item update --id $ID --state "Done"` |
+| `linear` | Linear API state transition | Linear API | Linear API |
+| `trello` | Move card to "In Progress" list | Move card to "In Review" list | Move card to "Done" list |
+| `none` | Skip | Skip | Skip |
+
+### Closing sprint / velocity report
+
+| PM_TYPE | Method |
+|---------|--------|
+| `notion` | Update sprint database view — mark sprint complete |
+| `jira` | Read `~/.claude/sdlc/devstarter-jira.md` → PROC-JR-06 (`close_sprint` — includes velocity) |
+| `github-issues` | `gh api repos/{owner}/{repo}/milestones/$ID -X PATCH -f state=closed` |
+| `azure-boards` | `az boards iteration update --path "\project\iteration\Sprint N" --finish-date $DATE` |
+| `none` | Print velocity summary to console |
 
 ---
 
