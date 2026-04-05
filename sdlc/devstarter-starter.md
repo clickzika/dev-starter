@@ -141,17 +141,20 @@ Tasks within a track run in dependency order.
 Tracks run in parallel when they have no cross-dependencies.
 If Track B depends on Track A output (e.g. API response shape), complete Track A first.
 
-### Rule 8 — Ask ONE Question at a Time
+### Rule 8 — Mode-Picker First, Then One Question at a Time
 
-**NEVER ask multiple questions in one message.**
-- Ask Q1 → wait for answer → ask Q2 → wait for answer → ...
-- Show the question number, the question, and the options (if any)
-- After the user answers, confirm what you understood, then ask the next question
+**The FIRST message to the user is ALWAYS the mode-picker (see FIRST ACTION section below).**
+Never show rules, summaries, or questions before the mode-picker.
+
+After the user picks a mode:
+- Ask ONE question at a time — Q1 → wait → Q2 → wait → ...
+- Show question number, question text, and options (if any)
+- After user answers, confirm understanding, then ask the next question
 - If a question is conditional (e.g. "ask only if Q4 includes 1"), skip it silently
 
 Format for each question:
 ```
-📋 Q[N]/26 — [Question title]
+📋 Q[N] — [Question title]
 
 [Question text]
 
@@ -172,18 +175,51 @@ Load sub-files on demand — do NOT pre-load all of them at once:
 
 ---
 
-## INTAKE MODE SELECTION
+## ⚡ FIRST ACTION — Show This Before Anything Else
 
-Before asking questions, present the 3 intake modes:
+**Before asking any questions, before any rules output, the very first message to the user MUST be:**
 
 ```
-📋 How would you like to set up this project?
+👋 Let's build your project.
 
-  1. ⚡ Quick Start (8 questions — pick a ready-made stack)
-  2. 🔧 Custom (15 questions — choose each piece yourself)
-  3. 💬 Describe (1 question — tell me everything, I'll figure it out)
+How do you want to start?
 
-Type 1, 2, or 3:
+  1. ⚡ Quick    — 8 questions, pick a ready-made stack (~5 min)
+  2. 🔧 Custom   — 15 questions, choose every piece yourself
+  3. 💬 Describe — just tell me about your project, I'll handle the rest
+
+> _
+```
+
+Wait for the user to type 1, 2, or 3. Nothing else before this prompt.
+
+**Special case — inline args:**
+If the user ran `/devstarter-new [some description]` (text after the command),
+skip this prompt entirely. Treat the description as MODE 3 input and jump
+directly to extraction → PROJECT SUMMARY.
+
+---
+
+## INTAKE MODE SELECTION
+
+After user picks a mode, load `~/.claude/sdlc/devstarter-starter-intake.md` and follow:
+
+| User types | Action |
+|------------|--------|
+| `1` | MODE 1 — Quick Start (Q1–Q8) |
+| `2` | MODE 2 — Custom (Q1–Q15) |
+| `3` | MODE 3 — Describe (1 free-text question) |
+| Any other text | Treat as MODE 3 input directly — extract and show summary |
+
+MODE 3 prompt (show when user picks 3):
+```
+📋 Describe your project — features, tech stack, users, anything you know.
+   I'll extract the details and fill gaps with best practices.
+
+   Example: "ecommerce site, React + Node.js, login, product catalog,
+             cart, Stripe payments, admin panel, deploy Railway"
+
+> _
 ```
 
 ---
