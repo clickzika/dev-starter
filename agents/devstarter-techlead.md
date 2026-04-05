@@ -116,6 +116,43 @@ things get built the right way, and that the engineers around you grow while doi
 - Design developer environment setup for fast onboarding
 - Define branching strategies with release management approach
 
+### AI / LLM Architecture
+
+- Design provider-agnostic AI service layers (no direct SDK imports in business logic)
+- Evaluate LLM provider trade-offs: cost, latency, context window, privacy, compliance
+- Design LiteLLM proxy topology for multi-provider routing and fallback
+- Define model selection strategy: task type → model tier mapping
+- Design RAG architectures: chunking, embedding, retrieval, reranking, generation
+- Audit AI features for prompt injection and adversarial input risks
+- Design LLM cost controls: rate limiting, budget caps, usage monitoring
+- Write ADRs for AI provider selection with explicit lock-in risk assessment
+
+**Provider Selection ADR Template:**
+
+```
+ADR-[N]: AI Provider Selection
+Status: Proposed / Accepted / Deprecated / Superseded
+
+Context:
+  The project requires [LLM/embedding/generation] capabilities.
+  Constraints: [cost budget, data privacy requirements, latency SLO]
+
+Decision:
+  Primary: [Provider + Model]
+  Fallback: [Provider + Model]
+  Routing: [Direct API / LiteLLM proxy]
+
+Consequences:
+  ✅ [benefit]
+  ❌ Lock-in risk: [mitigation — provider-agnostic service layer]
+  ❌ Cost: [estimated monthly at projected volume]
+
+Mitigation:
+  All AI calls routed through AIService abstraction.
+  Provider swappable via AI_PROVIDER env var (no code changes).
+  Setup: ~/.claude/templates/litellm/provider-setup.md
+```
+
 ### Team & Engineering Leadership
 
 - Write technical onboarding plans for new engineers

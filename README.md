@@ -1,6 +1,6 @@
 # Dev Starter V1
 
-A complete development workflow system for **Claude Code**. Drop it into `~/.claude/` and get a full software team — 12 specialized AI agents, 17 workflow runbooks, and battle-tested templates — ready to build any project from scratch.
+A complete development workflow system for **Claude Code**. Drop it into `~/.claude/` and get a full software team — 13 specialized AI agents, 21 workflow runbooks, and battle-tested templates — ready to build any project from scratch.
 
 ## What's Inside
 
@@ -8,25 +8,29 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 ~/.claude/
 ├── devstarter-menu.md              ← Entry point: pick a workflow
 │
-├── sdlc/ (17 workflow runbooks)
+├── sdlc/ (21 workflow runbooks)
 │   ├── devstarter-starter.md       ← New project (Gate 1–5 full lifecycle)
 │   ├── devstarter-change.md        ← Add/remove features, fix bugs
+│   ├── devstarter-ml-workflow.md   ← AI/ML project workflow (NEW)
+│   ├── devstarter-ai-providers.md  ← Multi-provider AI routing (NEW)
+│   ├── devstarter-autopr.md        ← Autonomous PR review setup (NEW)
 │   ├── devstarter-audit.md         ← Audit & review
-│   └── ...                         ← 14 more runbooks
+│   └── ...                         ← 15 more runbooks
 │
-├── agents/ (12 agents)
-│   ├── devstarter-techlead.md      ← Architecture & code review
+├── agents/ (13 agents)
+│   ├── devstarter-techlead.md      ← Architecture, AI/LLM design decisions
 │   ├── devstarter-backend.md       ← API, services, server-side
 │   ├── devstarter-frontend.md      ← UI components, state, responsive
 │   ├── devstarter-mobile.md        ← Flutter, React Native, Swift, Kotlin
 │   ├── devstarter-dba.md           ← Schema design, queries, migrations
-│   ├── devstarter-devops.md        ← CI/CD, infra, Docker, cloud
+│   ├── devstarter-devops.md        ← CI/CD, infra, Docker, cloud, OIDC secrets
 │   ├── devstarter-qa.md            ← Testing strategy & automation
-│   ├── devstarter-security.md      ← OWASP, auth, vulnerability scanning
+│   ├── devstarter-security.md      ← OWASP, auth, enterprise secrets compliance
 │   ├── devstarter-pm.md            ← Sprint planning, tracking, stakeholders
 │   ├── devstarter-ba.md            ← Requirements, user stories, BRD
 │   ├── devstarter-uxui.md          ← Design system, prototypes, wireframes
-│   └── devstarter-docs.md          ← Technical writing, API docs, runbooks
+│   ├── devstarter-docs.md          ← Technical writing, API docs, runbooks
+│   └── devstarter-mlops.md         ← ML pipelines, model serving, drift monitoring (NEW)
 │
 ├── commands/ (21 slash commands)
 │   ├── devstarter-new.md           ← /devstarter-new — start new project
@@ -36,11 +40,26 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 │   └── ...                         ← 17 more shortcuts
 │
 ├── templates/
-│   ├── CLAUDE.md.template   ← Project context file template
-│   ├── project.env.template ← Per-project environment variables
-│   └── docs/                ← HTML documentation templates
+│   ├── CLAUDE.md.template          ← Project context file template
+│   ├── project.env.template        ← Per-project config (AI_PROVIDER, SECRETS_BACKEND)
+│   ├── stacks/                     ← ML project stack templates (NEW)
+│   │   ├── ml-starter.md           ← ML starter (scikit-learn + MLflow)
+│   │   └── ml-standard.md          ← ML production (PyTorch + BentoML + monitoring)
+│   ├── secrets/                    ← Enterprise secrets templates (NEW)
+│   │   ├── vault-setup.md          ← HashiCorp Vault setup + app integration
+│   │   ├── vault-config.hcl        ← Vault config template
+│   │   ├── aws-secrets-setup.md    ← AWS Secrets Manager + rotation + Terraform
+│   │   ├── azure-keyvault-setup.md ← Azure Key Vault + Managed Identity
+│   │   └── gcp-secretmanager.md    ← GCP Secret Manager + Workload Identity
+│   ├── litellm/                    ← Multi-provider AI templates (NEW)
+│   │   ├── litellm-config.yaml     ← LiteLLM proxy config (Claude+OpenAI+Gemini)
+│   │   └── provider-setup.md       ← Provider selection + app integration guide
+│   ├── github/                     ← GitHub automation templates (NEW)
+│   │   ├── claude-pr-review.yml    ← GitHub Actions: auto AI PR review
+│   │   └── claude-pr-review-setup.md ← Setup guide + customization
+│   └── docs/                       ← HTML documentation templates
 │
-├── .env.example             ← Global secrets template (GitHub, Notion)
+├── .env.example             ← Global secrets template (GitHub, Notion, AI providers)
 ├── USER.md                  ← Developer skill profile (agent calibration)
 └── setup.sh                 ← First-time setup script
 ```
@@ -109,21 +128,32 @@ Every workflow has a shortcut — no need to remember file paths:
 | | `/devstarter-export` | Backup everything to zip |
 | | `/devstarter-import` | Restore from zip |
 
-## Agents (12 Specialists)
+## Agents (13 Specialists)
 
-Each agent has:
-- Domain-specific behavior rules
-- Output templates with real code examples
-- Standards reference tables
-- Quality gate checklists
-- Anti-pattern warnings
+Each agent has domain-specific behavior rules, output templates, standards reference tables, quality gate checklists, and anti-pattern warnings.
+
+| Agent | Character | Specialty |
+|-------|-----------|-----------|
+| `@devstarter-techlead` | 🐧 Tuxedo Sam | Architecture, ADRs, AI/LLM design |
+| `@devstarter-backend` | 🐧 Badtz-Maru | APIs, services, server-side |
+| `@devstarter-frontend` | ☁️ Cinnamoroll | React/Vue/Svelte, TypeScript |
+| `@devstarter-mobile` | 🐭 Aggretsuko | Flutter, React Native, Swift |
+| `@devstarter-dba` | 🐶 Pochacco | Schema, queries, migrations |
+| `@devstarter-devops` | 🐶 Pompompurin | CI/CD, Docker, cloud, OIDC |
+| `@devstarter-qa` | 🐸 Keroppi | Testing, Playwright, k6 |
+| `@devstarter-security` | 💜 Kuromi | OWASP, enterprise secrets |
+| `@devstarter-pm` | 🎀 Hello Kitty | Sprints, GitHub+Notion |
+| `@devstarter-ba` | 🎀 My Melody | Requirements, BRD, SRS |
+| `@devstarter-uxui` | ⭐ Kiki | Design system, prototypes |
+| `@devstarter-docs` | 🥚 Gudetama | Technical writing, API docs |
+| `@devstarter-mlops` | 🤖 MLOps | ML pipelines, serving, drift (**NEW**) |
 
 Invoke any agent directly:
 
 ```
-> Read ~/.claude/agents/devstarter-backend.md and help me design the API
-> Read ~/.claude/agents/devstarter-qa.md and create a test plan
-> Read ~/.claude/agents/devstarter-uxui.md and design the UI
+> Read ~/.claude/agents/devstarter-mlops.md and help me set up a training pipeline
+> Read ~/.claude/agents/devstarter-security.md and review my secrets setup
+> Read ~/.claude/agents/devstarter-techlead.md and write an AI provider ADR
 ```
 
 Or use `/devstarter-new` and the system orchestrates all agents automatically through the 5-gate build process.
@@ -153,6 +183,51 @@ develop ──→ Local Test ──→ uat ──→ User Test ──→ main �
 ⛔ "UAT approved"    → proceed to Production
 ⛔ "DEPLOY v[X.Y.Z]" → deploy
 ```
+
+## New in v1.1.0
+
+### MLOps Agent + AI/ML Project Templates
+Build production ML systems with the new `@devstarter-mlops` agent:
+- Experiment tracking (MLflow/W&B), DVC data versioning, model registry
+- FastAPI serving endpoints, BentoML deployment, Triton inference
+- Data drift detection, Prometheus metrics, automated retraining pipelines
+- LLM/RAG pipeline setup with vector databases (Qdrant, Pinecone)
+
+```
+> /devstarter-menu → option 18 (AI/ML project)
+> /devstarter-menu → option 19 (ML workflow)
+```
+
+### GitHub Actions Autonomous PR Review
+Every PR automatically reviewed by Claude — no human prompting needed:
+
+```bash
+cp ~/.claude/templates/github/claude-pr-review.yml .github/workflows/
+gh secret set ANTHROPIC_API_KEY --body "sk-ant-..."
+# Done — Claude reviews every PR in ~30 seconds (~$0.003/review)
+```
+
+### Multi-Provider AI Support via LiteLLM
+Remove provider lock-in with a single proxy that routes to Claude, GPT-4, Gemini, or local Ollama:
+
+```bash
+cp ~/.claude/templates/litellm/litellm-config.yaml ./
+litellm --config litellm-config.yaml --port 4000
+# Your app calls localhost:4000 — switch providers by changing one env var
+```
+
+### Enterprise Secrets Management
+SOC 2 / ISO 27001 ready — templates for every major cloud:
+- AWS Secrets Manager — auto-rotation, ECS/EKS injection, Terraform
+- Azure Key Vault — Managed Identity, Container Apps, federated OIDC
+- GCP Secret Manager — Workload Identity, Cloud Run, per-version tracking
+- HashiCorp Vault — dynamic DB credentials, multi-auth, full audit log
+
+```
+> /devstarter-secrets → choose Phase 6 (enterprise backend)
+```
+
+---
 
 ## Usage Examples
 

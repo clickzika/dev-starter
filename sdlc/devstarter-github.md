@@ -768,3 +768,57 @@ Is this a release? (from PROC-GH-09)
 If unsure → ask user:
   "This release includes [summary]. Should this be a patch, minor, or major version bump?"
 ```
+
+
+---
+
+## PROC-GH-16 — Setup Autonomous PR Review (Claude AI)
+
+**When:** Setting up a new project OR adding AI review to an existing project.
+**Who:** @devstarter-devops
+**See:** `~/.claude/templates/github/claude-pr-review.yml` + `~/.claude/sdlc/devstarter-autopr.md`
+
+```bash
+# Step 1: Add workflow file
+cp ~/.claude/templates/github/claude-pr-review.yml \
+   .github/workflows/claude-pr-review.yml
+
+# Step 2: Add Anthropic API key secret
+gh secret set ANTHROPIC_API_KEY --body "sk-ant-..."
+gh secret list   # verify
+
+# Step 3: Customize (optional)
+# Edit .github/workflows/claude-pr-review.yml:
+#   - model: haiku (cheap) or sonnet (thorough)
+#   - paths: restrict to specific directories
+#   - if condition: skip draft PRs (default: true)
+
+# Step 4: Commit and push
+git add .github/workflows/claude-pr-review.yml
+git commit -m "ci: add Claude AI autonomous PR review"
+git push
+
+# Step 5: Open test PR to verify
+gh pr create --title "test: verify AI review" --body "Testing autonomous PR review" --draft
+```
+
+**Verify:** After pushing a PR, check GitHub Actions tab.
+The "Claude AI PR Review" job should run and post a comment within 60 seconds.
+
+## PROC-GH-17 — AI Provider Update in GitHub Actions
+
+When rotating or changing the AI provider used by GitHub Actions workflows:
+
+```bash
+# Update the API key secret
+gh secret set ANTHROPIC_API_KEY --body "new-key"
+# or for LiteLLM proxy:
+gh secret set LITELLM_API_KEY --body "new-proxy-key"
+gh secret set LITELLM_BASE_URL --body "https://your-litellm-proxy.com/v1"
+
+# Verify secrets are set
+gh secret list
+
+# Test by re-running the last review workflow
+gh run rerun $(gh run list --workflow=claude-pr-review.yml --limit=1 --json databaseId -q '.[0].databaseId')
+```

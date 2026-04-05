@@ -309,11 +309,29 @@ Use when Q3.1 = 2 for any platform. No backend/ or database/ folders.
 └── README.md
 ```
 
+### Template I — AI/ML Project
+
+For ML projects, use the dedicated ML stack templates and workflow runbook:
+
+```
+Stack selection → read ~/.claude/templates/stacks/ml-starter.md   (learning / prototype)
+                → read ~/.claude/templates/stacks/ml-standard.md  (production)
+ML workflow    → read ~/.claude/sdlc/devstarter-ml-workflow.md
+MLOps agent   → @devstarter-mlops
+```
+
+Folder structure is defined in the selected ML stack template.
+Gate 1 adds ML-specific intake questions from `devstarter-ml-workflow.md` PHASE 1.
+Gate 2 adds `docs/ml-system-design.html` and `docs/data-validation.html`.
+
+---
+
 ### Selection Rules for Agents:
 1. If Q3.1 = 1 (new backend) → pick Template A-G based on Q3
 2. If Q3.1 = 2 (existing API) → pick Template H (H1/H2/H3/H4 based on Q3)
 3. If Q3 has multiple types → use Template D or H3 (multi-platform)
-3. Adjust folder names for framework conventions:
+4. If Q4 is ML/AI project → use Template I + devstarter-ml-workflow.md
+5. Adjust folder names for framework conventions:
    - Flutter: `lib/` not `src/`
    - .NET: project folders match `.csproj` names
    - Go: `cmd/`, `internal/`, `pkg/`

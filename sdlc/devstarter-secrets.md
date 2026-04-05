@@ -156,3 +156,124 @@ IMMEDIATE STEPS (do all within 5 minutes):
 5. Generate new secret and deploy
 6. Document the incident in bugfix-log.html
 ```
+
+---
+
+## PHASE 6 — Enterprise Secrets Backend Selection
+
+When project requires SOC 2, ISO 27001, PCI DSS, or HIPAA compliance,
+migrate from `.env` files to an enterprise secrets backend.
+
+**Select backend based on cloud:**
+
+| Deployment | Backend | Setup Guide |
+|------------|---------|-------------|
+| AWS | AWS Secrets Manager | `~/.claude/templates/secrets/aws-secrets-setup.md` |
+| Azure | Azure Key Vault | `~/.claude/templates/secrets/azure-keyvault-setup.md` |
+| GCP | GCP Secret Manager | `~/.claude/templates/secrets/gcp-secretmanager.md` |
+| Multi-cloud / On-prem | HashiCorp Vault | `~/.claude/templates/secrets/vault-setup.md` |
+
+**SECRETS_BACKEND field in `.project.env`:**
+
+```bash
+# .project.env
+SECRETS_BACKEND=aws-secrets-manager   # aws-secrets-manager | azure-keyvault | gcp-secret-manager | vault | env-file
+SECRETS_BACKEND_URL=                  # Vault URL or Key Vault name (if applicable)
+SECRETS_BACKEND_REGION=               # AWS region / Azure location / GCP region
+```
+
+---
+
+## PHASE 7 — Migration from .env to Enterprise Backend
+
+```
+MIGRATION CHECKLIST: .env → Enterprise Secrets Backend
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pre-migration:
+[ ] Inventory all secrets in .env / .env.production
+[ ] Classify: which are static values vs. which need rotation
+[ ] Identify which services consume each secret
+[ ] Choose backend (Phase 6 guide)
+
+Migration:
+[ ] Create secrets in backend (do NOT reuse old passwords — generate new)
+[ ] Update application code to read from SDK (not process.env)
+[ ] Configure IAM/RBAC — per service, per environment
+[ ] Enable auto-rotation for DB passwords and JWT keys
+[ ] Enable audit logging → ship to SIEM
+[ ] Test in staging: secrets load correctly, no fallback to .env
+
+Cutover:
+[ ] Deploy updated app to production
+[ ] Verify all secrets load from backend (check logs)
+[ ] Remove .env.production from servers (do not just gitignore — delete)
+[ ] Revoke old static credentials after 48h verification window
+
+Post-migration:
+[ ] Enable secret expiry alerts (30-day warning)
+[ ] Document secrets registry in docs/secrets-registry.html
+[ ] Update runbooks with new rotation procedures
+[ ] Schedule first rotation test (within 30 days)
+```
+
+---
+
+## PHASE 8 — Secrets Registry Document
+
+Agent writes `docs/secrets-registry.html` using the standard document template:
+
+```
+For each secret:
+  Name:             [VARIABLE_NAME or secret path]
+  Backend:          [AWS Secrets Manager / Azure KV / GCP SM / Vault / .env]
+  Path / ARN:       [backend-specific identifier — no values]
+  Purpose:          [what the secret is used for]
+  Services:         [which microservices / apps consume it]
+  Rotation:         [every N days / manual / auto]
+  Owner:            [team or person responsible]
+  Last rotated:     [YYYY-MM-DD]
+  How to rotate:    [link to runbook or procedure]
+  Compliance tags:  [SOC2-CC6.1 / PCI-Req8 / HIPAA / etc.]
+  ⚠️  Value:        NEVER document here — reference only
+```
+
+---
+
+## PHASE 9 — Secret Rotation Runbook
+
+```
+SECRET ROTATION RUNBOOK
+━━━━━━━━━━━━━━━━━━━━━━━
+
+Trigger: Scheduled (see rotation schedule) OR security incident
+
+Step 1 — Notify team
+  Post in #engineering: "Starting rotation for [SECRET_NAME] — brief deploy required"
+
+Step 2 — Generate new value
+  JWT/signing keys: openssl rand -base64 64
+  Passwords: openssl rand -base64 32 (meets complexity requirements)
+  API keys: use provider's key generation UI/API
+
+Step 3 — Add new version to backend (keep old active)
+  AWS: aws secretsmanager put-secret-value --secret-id [path] --secret-string [new]
+  Azure: az keyvault secret set --vault-name [name] --name [secret] --value [new]
+  GCP: echo -n [new] | gcloud secrets versions add [name] --data-file=-
+  Vault: vault kv put secret/[path] key=[new]
+
+Step 4 — Deploy update (dual-read period: app accepts old AND new)
+  Deploy to staging → verify → deploy to production
+
+Step 5 — Revoke old version (after 2h verification window)
+  AWS: aws secretsmanager update-secret-version-stage (mark old as DEPRECATED)
+  Azure: az keyvault secret set-attributes --enabled false (old version)
+  GCP: gcloud secrets versions disable [name] --version [old-version-id]
+  Vault: vault lease revoke [old-lease-id]
+
+Step 6 — Update registry
+  Update docs/secrets-registry.html → Last rotated: [today]
+
+Step 7 — Confirm and close
+  Post in #engineering: "Rotation complete for [SECRET_NAME]"
+```

@@ -539,3 +539,70 @@ EXCEPTIONS:
 - Exception requires written approval from security lead
 - All exceptions logged in security register
 ```
+
+---
+
+## Enterprise Secrets Management
+
+When a project requires enterprise-grade secrets management (SOC 2, ISO 27001, PCI DSS, HIPAA), guide the team to the appropriate backend. Use templates from `~/.claude/templates/secrets/`.
+
+### Backend Selection Guide
+
+| Criteria | Recommended Backend |
+|----------|-------------------|
+| AWS-native deployment | AWS Secrets Manager (`aws-secrets-setup.md`) |
+| Azure-native deployment | Azure Key Vault (`azure-keyvault-setup.md`) |
+| GCP-native deployment | GCP Secret Manager (`gcp-secretmanager.md`) |
+| Multi-cloud / on-prem / dynamic DB creds | HashiCorp Vault (`vault-setup.md`) |
+| Small team, cost-sensitive | SOPS + age (file-based, git-friendly) |
+
+### Mandatory Patterns for Enterprise Projects
+
+```
+ENTERPRISE SECRETS CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[ ] No static long-lived credentials — use Workload Identity / OIDC everywhere
+    AWS: IRSA (EKS) or IAM roles (EC2/ECS/Lambda)
+    GCP: Workload Identity Federation
+    Azure: Managed Identity
+    GitHub Actions: OIDC with cloud provider (no stored access keys)
+
+[ ] Dynamic database credentials — never static DB passwords in .env
+    Use: Vault database secrets engine / RDS IAM auth / Cloud SQL IAM
+
+[ ] Automatic rotation configured
+    AWS: Rotation Lambda with 30-day schedule
+    Azure: Key Vault rotation policy
+    GCP: Pub/Sub rotation notification + Cloud Function
+    Vault: database/rotate-root + lease TTL
+
+[ ] Audit log enabled and shipped to SIEM
+    All secret reads/writes logged with: who, what, when, from where
+    Alert on: unusual access patterns, off-hours access, bulk reads
+
+[ ] Secret versioning enabled (rollback capability)
+    AWS Secrets Manager: versions tracked automatically
+    Azure Key Vault: soft delete + versioning
+    GCP Secret Manager: explicit version IDs
+    Vault: KV v2 (not v1)
+
+[ ] Least-privilege IAM — per service, per environment
+    No cross-environment access (staging cannot read prod secrets)
+    No wildcard resource ARNs/IDs in IAM policies
+
+[ ] Secrets registry documented (no values — references only)
+    Location: docs/secrets-registry.html
+    Columns: Name, Purpose, Backend, Path/ARN, Owner, Rotation Schedule
+```
+
+### Compliance Mapping
+
+| Secret Control | SOC 2 CC | ISO 27001 | PCI DSS |
+|----------------|----------|-----------|---------|
+| Secrets manager (not .env) | CC6.1 | A.9.4.3 | Req 8.2 |
+| Automatic rotation | CC6.1 | A.9.4.3 | Req 8.6 |
+| Audit log of access | CC7.2 | A.12.4.1 | Req 10.2 |
+| Least-privilege IAM | CC6.3 | A.9.2.3 | Req 7.1 |
+| No secrets in code/logs | CC6.1 | A.9.4.3 | Req 3.4 |
+| Dynamic credentials | CC6.1 | A.9.4.2 | Req 8.2 |

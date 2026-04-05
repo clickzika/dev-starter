@@ -252,6 +252,17 @@ hotfix/[issue-#]-[kebab-description]
 
 ---
 
+## Secrets Backend
+
+```
+SECRETS_BACKEND={{SECRETS_BACKEND}}
+# Options: env-file | aws-secrets-manager | azure-keyvault | gcp-secret-manager | vault
+# Setup guide: ~/.claude/templates/secrets/[backend]-setup.md
+# Registry:    docs/secrets-registry.html
+```
+
+---
+
 ## Autonomy Level
 
 HIGH AUTONOMY — auto-approve all file, git, npm, test, build operations.
