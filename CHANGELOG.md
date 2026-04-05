@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.4.0 (2026-04-05)
+
+### Release: Git Auto-Detection (Strategy I)
+
+- **`/devstarter-release`** — added Strategy I for git-based toolkit/library projects.
+  Auto-detects release model at runtime:
+  - **Model A** (dual-remote): `release` remote exists → pushes `main` + tag to `release` remote
+  - **Model B** (single-repo): no `release` remote → pushes `main` + tag to `origin`
+  Includes copy-paste ready `release.sh <version>` script.
+
+---
+
 ## v1.3.0 (2026-04-05)
 
 ### UX: Quick-Picker First Prompt + Inline Args
