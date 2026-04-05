@@ -184,6 +184,43 @@ develop ──→ Local Test ──→ uat ──→ User Test ──→ main �
 ⛔ "DEPLOY v[X.Y.Z]" → deploy
 ```
 
+## New in v1.2.0
+
+### Multi-VCS Support (GitHub + GitLab + SVN simultaneously)
+One project, multiple VCS systems — primary does all the work, secondaries get mirrored automatically:
+
+```bash
+# .project.env
+VCS_TYPE=github          # primary — PRs, issues, CI all here
+VCS_SECONDARY_1=gitlab   # mirror — pushed after every merge
+VCS_SECONDARY_2=svn      # archive — git-svn dcommit after every merge
+VCS_SYNC_BRANCHES=main develop
+```
+
+After every `devstarter-change` merge, agents run the mirror automatically.
+Manual on-demand sync: `/devstarter-vcs-sync`
+
+### Jira Full Sprint Management (on par with Notion)
+Full Jira parity — 9 procedures covering the complete sprint lifecycle:
+
+```bash
+# .project.env
+PM_TYPE=jira
+JIRA_URL=https://company.atlassian.net
+JIRA_PROJECT=PROJ
+JIRA_BOARD_ID=1
+
+# Sprint planning → sprint close, all automated:
+# PROC-JR-01: Create project + board
+# PROC-JR-02: Create sprint    PROC-JR-05: Start sprint
+# PROC-JR-03: Create issues    PROC-JR-06: Close sprint + velocity
+# PROC-JR-04: Status transitions (To Do → In Progress → In Review → Done)
+# PROC-JR-07: Link PRs to issues
+# PROC-JR-08: Create Epics     PROC-JR-09: Bulk create issues
+```
+
+---
+
 ## New in v1.1.0
 
 ### MLOps Agent + AI/ML Project Templates

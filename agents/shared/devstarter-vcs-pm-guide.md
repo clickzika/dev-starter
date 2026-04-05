@@ -98,27 +98,48 @@ If `.project.env` does not exist, assume defaults:
 
 | PM_TYPE | Method |
 |---------|--------|
-| `notion` | Use Notion MCP tools → `notion-create-pages` with NOTION_DATABASE_ID |
+| `notion` | Read `~/.claude/sdlc/devstarter-notion.md` → PROC-NT-03 |
 | `github-issues` | Same as VCS issue (already created above — skip duplicate) |
 | `gitlab-issues` | Same as VCS issue (already created above — skip duplicate) |
-| `jira` | `curl -X POST "$JIRA_URL/rest/api/3/issue" -H "Authorization: Basic $JIRA_API_TOKEN" ...` |
-| `azure-boards` | `az boards work-item create ...` |
+| `jira` | Read `~/.claude/sdlc/devstarter-jira.md` → PROC-JR-03 (`create_jira_issue`) |
+| `azure-boards` | `az boards work-item create --type "User Story" --title "$TITLE"` |
 | `linear` | Use Linear API or MCP if available |
-| `trello` | Use Trello API: `curl -X POST "https://api.trello.com/1/cards" ...` |
+| `trello` | `curl -X POST "https://api.trello.com/1/cards?idList=$LIST_ID&name=$TITLE&key=$KEY&token=$TOKEN"` |
 | `none` | Skip — print task summary to console only |
 
-### Updating task to Done
+### Creating a sprint
 
 | PM_TYPE | Method |
 |---------|--------|
-| `notion` | Use Notion MCP tools → `notion-update-page` → Status = "Done" |
-| `github-issues` | Closed via VCS step above |
-| `gitlab-issues` | Closed via VCS step above |
-| `jira` | `curl -X POST "$JIRA_URL/rest/api/3/issue/$KEY/transitions" ...` → "Done" |
-| `azure-boards` | `az boards work-item update --id $ID --state "Done"` |
-| `linear` | Use Linear API → update state to "Done" |
-| `trello` | Move card to "Done" list |
+| `notion` | Read `~/.claude/sdlc/devstarter-notion.md` → PROC-NT-05 (sprint view) |
+| `jira` | Read `~/.claude/sdlc/devstarter-jira.md` → PROC-JR-02 (`create sprint`) + PROC-JR-05 (`start sprint`) |
+| `github-issues` | Use milestones: `gh api repos/{owner}/{repo}/milestones -f title="Sprint N"` |
+| `azure-boards` | `az boards iteration create --name "Sprint N" --path "\project\iteration"` |
+| `linear` | Use Linear cycles API |
 | `none` | Skip |
+
+### Updating task status
+
+| PM_TYPE | To In Progress | To In Review | To Done |
+|---------|---------------|--------------|---------|
+| `notion` | PROC-NT-04 | PROC-NT-05 | PROC-NT-06 |
+| `jira` | `transition_issue $KEY "In Progress"` (PROC-JR-04) | `transition_issue $KEY "In Review"` | `transition_issue $KEY "Done"` |
+| `github-issues` | Add label `in-progress` | Add label `in-review` | `gh issue close $NUM` |
+| `gitlab-issues` | Add label `in-progress` | Add label `in-review` | `glab issue close $NUM` |
+| `azure-boards` | `az boards work-item update --id $ID --state "Active"` | `az boards work-item update --id $ID --state "Resolved"` | `az boards work-item update --id $ID --state "Done"` |
+| `linear` | Linear API state transition | Linear API | Linear API |
+| `trello` | Move card to "In Progress" list | Move card to "In Review" list | Move card to "Done" list |
+| `none` | Skip | Skip | Skip |
+
+### Closing sprint / velocity report
+
+| PM_TYPE | Method |
+|---------|--------|
+| `notion` | Update sprint database view — mark sprint complete |
+| `jira` | Read `~/.claude/sdlc/devstarter-jira.md` → PROC-JR-06 (`close_sprint` — includes velocity) |
+| `github-issues` | `gh api repos/{owner}/{repo}/milestones/$ID -X PATCH -f state=closed` |
+| `azure-boards` | `az boards iteration update --path "\project\iteration\Sprint N" --finish-date $DATE` |
+| `none` | Print velocity summary to console |
 
 ---
 
@@ -141,6 +162,83 @@ If `.project.env` does not exist, assume defaults:
 | `trunk` | `main` | `main` |
 | `simple` | `main` | `main` (direct commit) |
 | `svn-standard` | `trunk` | `trunk` |
+
+---
+
+---
+
+## Step 5 — Secondary VCS Mirror (run after primary merge)
+
+Check if secondary VCS is configured, then mirror:
+
+```bash
+source .project.env 2>/dev/null || true
+
+mirror_to_secondary() {
+  local SECONDARY=$1
+  local REMOTE_VAR="${SECONDARY^^}_REMOTE_URL"
+  echo "⏳ Mirroring to secondary VCS: $SECONDARY"
+
+  case "$SECONDARY" in
+    gitlab)
+      if ! git remote | grep -q "^gitlab$"; then
+        git remote add gitlab "$GITLAB_REMOTE_URL"
+      fi
+      for B in ${VCS_SYNC_BRANCHES:-main develop}; do
+        git show-ref --verify --quiet refs/heads/$B && git push gitlab $B
+      done
+      git push gitlab --tags
+      echo "✅ Mirrored → GitLab"
+      ;;
+    github)
+      if ! git remote | grep -q "^github-mirror$"; then
+        git remote add github-mirror "https://github.com/$GITHUB_USERNAME/$GITHUB_MIRROR_REPO.git"
+      fi
+      for B in ${VCS_SYNC_BRANCHES:-main develop}; do
+        git show-ref --verify --quiet refs/heads/$B && git push github-mirror $B
+      done
+      git push github-mirror --tags
+      echo "✅ Mirrored → GitHub"
+      ;;
+    bitbucket)
+      if ! git remote | grep -q "^bitbucket$"; then
+        git remote add bitbucket "https://bitbucket.org/$BITBUCKET_WORKSPACE/$BITBUCKET_REPO.git"
+      fi
+      for B in ${VCS_SYNC_BRANCHES:-main develop}; do
+        git show-ref --verify --quiet refs/heads/$B && git push bitbucket $B
+      done
+      git push bitbucket --tags
+      echo "✅ Mirrored → Bitbucket"
+      ;;
+    svn)
+      git svn dcommit
+      echo "✅ Committed → SVN (git-svn)"
+      ;;
+    azure-devops)
+      if ! git remote | grep -q "^azure$"; then
+        git remote add azure "$AZURE_ORG/$AZURE_PROJECT/_git/$AZURE_REPO"
+      fi
+      for B in ${VCS_SYNC_BRANCHES:-main develop}; do
+        git show-ref --verify --quiet refs/heads/$B && git push azure $B
+      done
+      git push azure --tags
+      echo "✅ Mirrored → Azure DevOps"
+      ;;
+    none|"")
+      echo "⏭ No secondary VCS configured — skipping"
+      ;;
+    *)
+      echo "⚠️ Unknown VCS_SECONDARY: $SECONDARY — skipping"
+      ;;
+  esac
+}
+
+[ -n "$VCS_SECONDARY_1" ] && [ "$VCS_SECONDARY_1" != "none" ] && mirror_to_secondary "$VCS_SECONDARY_1"
+[ -n "$VCS_SECONDARY_2" ] && [ "$VCS_SECONDARY_2" != "none" ] && mirror_to_secondary "$VCS_SECONDARY_2"
+```
+
+For detailed sync operations and conflict resolution:
+→ Read `~/.claude/sdlc/devstarter-vcs-sync.md`
 
 ---
 
@@ -171,3 +269,22 @@ Some teams use:
 - No VCS + Trello for tasks → `VCS_TYPE=none` + `PM_TYPE=trello`
 
 All combinations are valid.
+
+### Multi-VCS (primary + mirrors)
+
+When a team uses multiple VCS simultaneously (e.g. GitHub primary + GitLab mirror + SVN archive):
+
+```bash
+# .project.env
+VCS_TYPE=github          # primary — full PR/issue/branch workflow runs here
+VCS_SECONDARY_1=gitlab   # mirror — pushed after every primary merge
+VCS_SECONDARY_2=svn      # archive — committed after every primary merge
+VCS_SYNC_BRANCHES=main develop
+```
+
+**Rule:** All SDLC operations (branching, PRs, issues, CI) run against `VCS_TYPE` only.
+Secondary VCS receive pushes at the END of each workflow (Step 5).
+Secondary VCS are never the source of truth — they receive, never initiate.
+
+After any merge, agents MUST call Step 5 mirror function above.
+For on-demand sync or conflict resolution: read `~/.claude/sdlc/devstarter-vcs-sync.md`.

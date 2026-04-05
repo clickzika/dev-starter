@@ -56,9 +56,34 @@ to ask the right questions, estimate effort, identify dependencies, and manage s
 
 ---
 
+## PM Tool Selection
+
+Before any task/sprint operation, read `.project.env` to determine `PM_TYPE`:
+
+```bash
+source .project.env 2>/dev/null || true
+echo "PM tool: ${PM_TYPE:-notion}"
+```
+
+| PM_TYPE | Procedures file | Key operations |
+|---------|----------------|----------------|
+| `notion` | `~/.claude/sdlc/devstarter-notion.md` | PROC-NT-01 to NT-06 |
+| `jira` | `~/.claude/sdlc/devstarter-jira.md` | PROC-JR-01 to JR-09 |
+| `github-issues` | Built into VCS workflow | gh issue create/close |
+| `gitlab-issues` | Built into VCS workflow | glab issue create/close |
+| `linear` | vcs-pm-guide.md Step 3 | Linear API |
+| `trello` | vcs-pm-guide.md Step 3 | Trello API |
+| `azure-boards` | vcs-pm-guide.md Step 3 | az boards |
+| `none` | — | Print summary to console |
+
+**When `PM_TYPE=jira`:** Read `~/.claude/sdlc/devstarter-jira.md` before any operation.
+All task creation, status updates, sprint management, and velocity reporting go through Jira.
+
+---
+
 ## GitHub + Notion Automation (Gate 3, 4, 5)
 
-You are responsible for fully automating all GitHub and Notion operations. NO manual steps — everything runs via CLI and API.
+You are responsible for fully automating all GitHub and PM tool operations. NO manual steps — everything runs via CLI and API.
 
 ### Step 0 — PREFLIGHT CHECK (ALWAYS run first)
 
@@ -583,4 +608,78 @@ COMMUNICATION RULES:
 - No surprises at demos — stakeholders should know the status before the meeting
 - Written > verbal — decisions in Slack/email, not hallway conversations
 - Action items have owners and dates — or they don't exist
+```
+
+
+---
+
+## Jira Sprint Management (when PM_TYPE=jira)
+
+Read `~/.claude/sdlc/devstarter-jira.md` before any operation below.
+
+### Sprint Planning with Jira
+
+```
+JIRA SPRINT PLANNING WORKFLOW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Step 1: Create sprint (PROC-JR-02)
+  → SPRINT_NAME = "Sprint [N] — [date range]"
+  → SPRINT_GOAL = one-sentence objective
+  → Duration: 2 weeks (default)
+
+Step 2: Create or move backlog items into sprint
+  → New items: PROC-JR-03 (create with sprint ID)
+  → Existing backlog: move via PROC-JR-03 add_issue_to_sprint
+
+Step 3: Capacity check
+  → Team capacity = [N developers] × [8 SP/dev/sprint] = [total SP]
+  → Sprint total SP ≤ 80% of capacity (buffer for unknowns)
+
+Step 4: Start sprint (PROC-JR-05)
+  → Sets sprint state = active
+  → Board becomes the team's source of truth
+
+Step 5: Sync sprint goal to CLAUDE.md
+  → Update memory/progress.json with sprint ID and goal
+```
+
+### Issue Status Rules (mirrors Notion PROC-NT-04/05/06)
+
+```bash
+# Before starting any task:
+transition_issue "$JIRA_ISSUE_KEY" "In Progress"
+
+# When PR is opened:
+transition_issue "$JIRA_ISSUE_KEY" "In Review"
+link_pr_to_issue "$JIRA_ISSUE_KEY" "$PR_URL" "$PR_TITLE"
+
+# When PR is merged:
+transition_issue "$JIRA_ISSUE_KEY" "Done"
+```
+
+### Sprint Close + Retro (PROC-JR-06)
+
+```bash
+# At sprint retro — call close_sprint for velocity report
+close_sprint "$JIRA_SPRINT_ID"
+
+# Retro output:
+# - Velocity: X SP completed / Y SP planned
+# - Carry-over: list of incomplete issues → move to next sprint backlog
+# - Next sprint capacity: adjust based on this sprint's velocity
+```
+
+### Jira Field Reference Quick Look
+
+```bash
+# Discover your instance's custom field IDs (run once per project):
+curl -s "$JIRA_URL/rest/api/3/field" \
+  -H "Authorization: Basic $(echo -n "$JIRA_EMAIL:$JIRA_API_TOKEN" | base64)" \
+  -H "Accept: application/json" | \
+  node -e "
+const f = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
+f.filter(x=>x.custom).forEach(x=>console.log(x.id.padEnd(30), x.name));
+"
+# Copy the story points and epic link field IDs into .project.env
 ```

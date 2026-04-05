@@ -294,6 +294,28 @@ Commit: `docs: release notes v[X.Y.Z]`
 
 ---
 
+## PHASE 10 — Secondary VCS Mirror (if configured)
+
+After successful production deploy, mirror main + tags to secondary VCS:
+
+```bash
+source .project.env 2>/dev/null || true
+
+if [ -n "$VCS_SECONDARY_1" ] && [ "$VCS_SECONDARY_1" != "none" ]; then
+  echo "⏳ Mirroring release to secondary VCS: $VCS_SECONDARY_1"
+  # Run Step 5 from ~/.claude/agents/shared/devstarter-vcs-pm-guide.md
+fi
+
+if [ -n "$VCS_SECONDARY_2" ] && [ "$VCS_SECONDARY_2" != "none" ]; then
+  echo "⏳ Mirroring release to secondary VCS: $VCS_SECONDARY_2"
+fi
+```
+
+For full mirror commands per VCS type:
+→ Read `~/.claude/sdlc/devstarter-vcs-sync.md`
+
+---
+
 ## Rollback Trigger
 
 If anything goes wrong after production deploy:

@@ -1,5 +1,32 @@
 # Changelog
 
+## v1.2.0 (2026-04-05)
+
+### VCS_SECONDARY — Multi-VCS Project Support
+
+- **New SDLC runbook:** `sdlc/devstarter-vcs-sync.md` — Mirror/sync runbook for pushing to secondary VCS after every primary merge. Covers GitLab, GitHub, Bitbucket, SVN (git-svn bridge), and Azure DevOps. Includes CI auto-sync via GitHub Actions and conflict resolution guide
+- **Updated template:** `templates/project.env.template` — Added `VCS_SECONDARY_1`, `VCS_SECONDARY_2`, `VCS_SYNC_BRANCHES` fields with full connection options for all VCS types
+- **Updated shared guide:** `agents/shared/devstarter-vcs-pm-guide.md` — Added Step 5 (Secondary VCS mirror function) and Multi-VCS special case documentation with "primary = source of truth" rule
+- **Updated SDLC:** `sdlc/devstarter-change.md` — Rule 3b: mirror after every primary merge
+- **Updated SDLC:** `sdlc/devstarter-release-verify.md` — Phase 10: mirror on release
+- **Updated SDLC:** `sdlc/devstarter-hotfix.md` — Mirror step after hotfix merge
+
+### Jira Full Sprint Management
+
+- **New SDLC runbook:** `sdlc/devstarter-jira.md` — Full Jira procedures (equivalent depth to `devstarter-notion.md`):
+  - `PROC-JR-01` — Create Jira project + board (Scrum template)
+  - `PROC-JR-02` — Create sprint with start/end date and goal
+  - `PROC-JR-03` — Create issue (Story/Task/Bug/Epic) with story points, epic link, sprint assignment
+  - `PROC-JR-04` — Update issue status via transition auto-discovery (To Do → In Progress → In Review → Done)
+  - `PROC-JR-05` — Start sprint (set state = active)
+  - `PROC-JR-06` — Close sprint + velocity report (SP completed, carry-over list)
+  - `PROC-JR-07` — Link PR/commit to issue + add comment
+  - `PROC-JR-08` — Create Epic with epic name field
+  - `PROC-JR-09` — Bulk create issues from task list with sprint assignment
+- **Updated agent:** `agents/devstarter-pm.md` — Added PM Tool Selection routing table and Jira Sprint Management section (planning, status rules, retro, field discovery)
+- **Updated shared guide:** `agents/shared/devstarter-vcs-pm-guide.md` — Expanded PM operations table (create task, create sprint, update status, close sprint) for all PM_TYPE values
+- **Updated template:** `templates/project.env.template` — Added full Jira fields: `JIRA_BOARD_ID`, `JIRA_SPRINT_ID`, `JIRA_DEFAULT_ISSUE_TYPE`, `JIRA_STORY_POINTS_FIELD`, `JIRA_EMAIL`
+
 ## v1.1.0 (2026-04-05)
 
 ### MLOps Agent + AI/ML Project Templates
