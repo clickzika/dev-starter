@@ -1,6 +1,6 @@
 # Dev Starter V1
 
-A complete development workflow system for **Claude Code**. Drop it into `~/.claude/` and get a full software team — 13 specialized AI agents, 21 workflow runbooks, and battle-tested templates — ready to build any project from scratch.
+A complete development workflow system for **Claude Code**. Drop it into `~/.claude/` and get a full software team — 13 specialized AI agents, 28 workflow runbooks, and battle-tested templates — ready to build any project from scratch.
 
 ## What's Inside
 
@@ -8,14 +8,19 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 ~/.claude/
 ├── devstarter-menu.md              ← Entry point: pick a workflow
 │
-├── sdlc/ (21 workflow runbooks)
+├── sdlc/ (28 workflow runbooks)
 │   ├── devstarter-starter.md       ← New project (Gate 1–5 full lifecycle)
 │   ├── devstarter-change.md        ← Add/remove features, fix bugs
-│   ├── devstarter-ml-workflow.md   ← AI/ML project workflow (NEW)
-│   ├── devstarter-ai-providers.md  ← Multi-provider AI routing (NEW)
-│   ├── devstarter-autopr.md        ← Autonomous PR review setup (NEW)
+│   ├── devstarter-ml-workflow.md   ← AI/ML project workflow
+│   ├── devstarter-ai-providers.md  ← Multi-provider AI routing
+│   ├── devstarter-autopr.md        ← Autonomous PR review setup
+│   ├── devstarter-github.md        ← GitHub procedures (PROC-GH-01 to GH-17)
+│   ├── devstarter-gitlab.md        ← GitLab procedures (PROC-GL-01 to GL-17)
+│   ├── devstarter-svn.md           ← SVN procedures + git-svn bridge (PROC-SV-01 to SV-13)
+│   ├── devstarter-jira.md          ← Full Jira sprint management (PROC-JR-01 to JR-09)
+│   ├── devstarter-vcs-sync.md      ← Multi-VCS mirror & sync
 │   ├── devstarter-audit.md         ← Audit & review
-│   └── ...                         ← 15 more runbooks
+│   └── ...                         ← 17 more runbooks
 │
 ├── agents/ (13 agents)
 │   ├── devstarter-techlead.md      ← Architecture, AI/LLM design decisions
@@ -30,31 +35,33 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 │   ├── devstarter-ba.md            ← Requirements, user stories, BRD
 │   ├── devstarter-uxui.md          ← Design system, prototypes, wireframes
 │   ├── devstarter-docs.md          ← Technical writing, API docs, runbooks
-│   └── devstarter-mlops.md         ← ML pipelines, model serving, drift monitoring (NEW)
+│   └── devstarter-mlops.md         ← ML pipelines, model serving, drift monitoring
 │
-├── commands/ (21 slash commands)
+├── commands/ (23 slash commands)
 │   ├── devstarter-new.md           ← /devstarter-new — start new project
 │   ├── devstarter-change.md        ← /devstarter-change — add feature / fix bug
 │   ├── devstarter-release.md       ← /devstarter-release — deploy pipeline
+│   ├── devstarter-vcs-sync.md      ← /devstarter-vcs-sync — mirror to secondary VCS
+│   ├── devstarter-jira.md          ← /devstarter-jira — Jira sprint management
 │   ├── devstarter-context.md       ← /devstarter-context — refresh CLAUDE.md
 │   └── ...                         ← 17 more shortcuts
 │
 ├── templates/
 │   ├── CLAUDE.md.template          ← Project context file template
 │   ├── project.env.template        ← Per-project config (AI_PROVIDER, SECRETS_BACKEND)
-│   ├── stacks/                     ← ML project stack templates (NEW)
+│   ├── stacks/                     ← ML project stack templates
 │   │   ├── ml-starter.md           ← ML starter (scikit-learn + MLflow)
 │   │   └── ml-standard.md          ← ML production (PyTorch + BentoML + monitoring)
-│   ├── secrets/                    ← Enterprise secrets templates (NEW)
+│   ├── secrets/                    ← Enterprise secrets templates
 │   │   ├── vault-setup.md          ← HashiCorp Vault setup + app integration
 │   │   ├── vault-config.hcl        ← Vault config template
 │   │   ├── aws-secrets-setup.md    ← AWS Secrets Manager + rotation + Terraform
 │   │   ├── azure-keyvault-setup.md ← Azure Key Vault + Managed Identity
 │   │   └── gcp-secretmanager.md    ← GCP Secret Manager + Workload Identity
-│   ├── litellm/                    ← Multi-provider AI templates (NEW)
+│   ├── litellm/                    ← Multi-provider AI templates
 │   │   ├── litellm-config.yaml     ← LiteLLM proxy config (Claude+OpenAI+Gemini)
 │   │   └── provider-setup.md       ← Provider selection + app integration guide
-│   ├── github/                     ← GitHub automation templates (NEW)
+│   ├── github/                     ← GitHub automation templates
 │   │   ├── claude-pr-review.yml    ← GitHub Actions: auto AI PR review
 │   │   └── claude-pr-review-setup.md ← Setup guide + customization
 │   └── docs/                       ← HTML documentation templates
@@ -88,7 +95,8 @@ bash ~/.claude/setup.sh
 
 The setup wizard asks:
 - GitHub username + CLI auth
-- Notion API key (optional)
+- PM tool: Notion API key or Jira URL + token (both optional)
+- Secondary VCS: GitLab / Bitbucket / SVN / Azure DevOps (optional)
 - 3 profile questions (experience, skills, language)
 - Auto-configures permissions in `settings.json` (merges, won't overwrite)
 
@@ -100,7 +108,7 @@ claude
 > /devstarter-new           # or go directly — start a new project
 ```
 
-## Slash Commands (21)
+## Slash Commands (23)
 
 Every workflow has a shortcut — no need to remember file paths:
 
@@ -124,6 +132,8 @@ Every workflow has a shortcut — no need to remember file paths:
 | **Infra** | `/devstarter-env` | Setup local environment |
 | | `/devstarter-secrets` | Secrets management |
 | | `/devstarter-monitor` | Setup monitoring |
+| | `/devstarter-vcs-sync` | Mirror to secondary VCS (GitLab/Bitbucket/SVN/Azure) |
+| **PM** | `/devstarter-jira` | Jira full sprint management (PROC-JR-01 to JR-09) |
 | **Utility** | `/devstarter-context` | Refresh CLAUDE.md from codebase |
 | | `/devstarter-export` | Backup everything to zip |
 | | `/devstarter-import` | Restore from zip |
@@ -142,11 +152,11 @@ Each agent has domain-specific behavior rules, output templates, standards refer
 | `@devstarter-devops` | 🐶 Pompompurin | CI/CD, Docker, cloud, OIDC |
 | `@devstarter-qa` | 🐸 Keroppi | Testing, Playwright, k6 |
 | `@devstarter-security` | 💜 Kuromi | OWASP, enterprise secrets |
-| `@devstarter-pm` | 🎀 Hello Kitty | Sprints, GitHub+Notion |
+| `@devstarter-pm` | 🎀 Hello Kitty | Sprints, GitHub+Notion+Jira |
 | `@devstarter-ba` | 🎀 My Melody | Requirements, BRD, SRS |
 | `@devstarter-uxui` | ⭐ Kiki | Design system, prototypes |
 | `@devstarter-docs` | 🥚 Gudetama | Technical writing, API docs |
-| `@devstarter-mlops` | 🤖 MLOps | ML pipelines, serving, drift (**NEW**) |
+| `@devstarter-mlops` | 🤖 MLOps | ML pipelines, serving, drift |
 
 Invoke any agent directly:
 
@@ -298,7 +308,7 @@ claude
 ```
 claude
 > /devstarter-sprint
-# Claude reads Notion backlog → proposes sprint tasks
+# Claude reads Notion or Jira backlog → proposes sprint tasks
 # Assigns to sprint → shows sprint board
 ```
 

@@ -244,13 +244,24 @@ For detailed sync operations and conflict resolution:
 
 ## Special Cases
 
+### GitLab Projects
+
+When `VCS_TYPE=gitlab` or `VCS_SECONDARY_*=gitlab`:
+- Full GitLab procedure runbook: `~/.claude/sdlc/devstarter-gitlab.md`
+- Use `glab` CLI (equivalent of `gh` for GitHub)
+- PRs are called Merge Requests (MR) in GitLab
+- CI/CD via `.gitlab-ci.yml` — see PROC-GL-16
+- For quick operations, use the table above; for full setup use the runbook
+
 ### SVN Projects (legacy C#, Java, etc.)
 
-When `VCS_TYPE=svn`:
+When `VCS_TYPE=svn` or `VCS_SECONDARY_*=svn`:
+- Full SVN procedure runbook: `~/.claude/sdlc/devstarter-svn.md`
 - No PR workflow — use "ready for review" message instead
 - Commit = push (SVN is centralized)
 - Branch = `svn copy` (lightweight in SVN)
-- Use PM_TYPE for task tracking (GitHub Issues not available)
+- For git-svn bridge (secondary mode): PROC-SV-09 to SV-13
+- Use PM_TYPE for task tracking (SVN has no built-in issue tracker)
 - If `PM_TYPE=none` → just print summary to console
 
 ### No VCS / No PM Projects
