@@ -1,0 +1,138 @@
+# Claude AI — Automated PR Review
+# DevStarter — GitHub Actions Auto-Review Template
+#
+# Setup guide: ~/.claude/templates/github/claude-pr-review-setup.md
+#
+# What this does:
+#   1. Triggers on every PR opened or updated
+#   2. Calls Claude API with the PR diff and project context
+#   3. Posts a structured review comment with findings
+#   4. Optionally adds labels: security-review-needed, performance-issue, etc.
+#
+# Required GitHub Secrets:
+#   ANTHROPIC_API_KEY     — your Anthropic API key
+#   GITHUB_TOKEN          — automatically available, no setup needed
+
+name: Claude AI PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    # Optional: only trigger on specific paths
+    # paths:
+    #   - 'src/**'
+    #   - 'backend/**'
+
+permissions:
+  contents: read
+  pull-requests: write   # Required to post review comments
+  issues: write          # Required to add labels
+
+jobs:
+  claude-review:
+    name: AI Code Review
+    runs-on: ubuntu-latest
+    # Skip review for draft PRs (optional — remove to review drafts too)
+    if: github.event.pull_request.draft == false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Full history for better context
+
+      - name: Get PR diff
+        id: diff
+        run: |
+          git diff origin/${{ github.base_ref }}...HEAD > pr_diff.txt
+          echo "diff_size=$(wc -c < pr_diff.txt)" >> $GITHUB_OUTPUT
+
+      - name: Skip if diff too large
+        if: steps.diff.outputs.diff_size > 50000
+        run: |
+          echo "PR diff too large for full review (>50KB). Reviewing changed files list only."
+          git diff --name-only origin/${{ github.base_ref }}...HEAD > pr_files.txt
+
+      - name: Get PR context
+        id: context
+        run: |
+          echo "PR_TITLE=${{ github.event.pull_request.title }}" >> $GITHUB_OUTPUT
+          echo "PR_AUTHOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_OUTPUT
+          echo "BASE_BRANCH=${{ github.base_ref }}" >> $GITHUB_OUTPUT
+          echo "HEAD_BRANCH=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+
+      - name: Call Claude API for review
+        id: review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          DIFF=$(cat pr_diff.txt | head -c 30000)  # Truncate at 30KB
+
+          # Read CLAUDE.md for project context (if exists)
+          CONTEXT=""
+          if [ -f "CLAUDE.md" ]; then
+            CONTEXT=$(cat CLAUDE.md | head -c 3000)
+          fi
+
+          RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -H "content-type: application/json" \
+            -d "$(jq -n \
+              --arg diff "$DIFF" \
+              --arg context "$CONTEXT" \
+              --arg title "${{ steps.context.outputs.PR_TITLE }}" \
+              --arg author "${{ steps.context.outputs.PR_AUTHOR }}" \
+              '{
+                model: "claude-haiku-4-5-20251001",
+                max_tokens: 2048,
+                system: "You are a senior code reviewer. Review pull requests for: security vulnerabilities (OWASP Top 10), performance issues (N+1 queries, missing indexes), code quality (error handling, logging, tests), and architectural concerns. Be constructive and specific. Use the project context (CLAUDE.md) to understand conventions. Format your review in Markdown with sections: Summary, Security, Performance, Code Quality, Tests, and Suggestions. Each finding must include the file and line reference. End with an overall verdict: APPROVE / REQUEST_CHANGES / COMMENT.",
+                messages: [{
+                  role: "user",
+                  content: ("PR Title: " + $title + "\nAuthor: " + $author + "\n\nProject Context (CLAUDE.md):\n" + $context + "\n\nDiff:\n```diff\n" + $diff + "\n```\n\nPlease review this pull request.")
+                }]
+              }')")
+
+          REVIEW_TEXT=$(echo "$RESPONSE" | jq -r '.content[0].text // "Review failed — API error"')
+          echo "review_text<<EOF" >> $GITHUB_OUTPUT
+          echo "$REVIEW_TEXT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Post review comment
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const reviewText = `${{ steps.review.outputs.review_text }}`;
+            const body = `## 🤖 Claude AI Code Review\n\n${reviewText}\n\n---\n_Automated review by [DevStarter](https://github.com/clickzika/DevStarter) · [Claude ${process.env.REVIEW_MODEL || 'Haiku'}](https://anthropic.com)_`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+
+      - name: Add security label if needed
+        uses: actions/github-script@v7
+        if: contains(steps.review.outputs.review_text, 'SECURITY') || contains(steps.review.outputs.review_text, 'vulnerability')
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Create label if it doesn't exist, then add it
+            try {
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'security-review-needed',
+                color: 'e11d48',
+                description: 'AI review flagged potential security issue'
+              });
+            } catch (e) { /* label already exists */ }
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['security-review-needed']
+            });

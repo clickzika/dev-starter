@@ -378,56 +378,56 @@ const DOCUMENTS = [
   {
     section: "Requirements",
     docs: [
-      { name: "Business Requirements (BRD)",       file: "brd.html",               color: "var(--cat-brd)",   required: true,  agent: "@ba" },
-      { name: "Software Requirements (SRS)",        file: "srs.html",               color: "var(--cat-srs)",   required: true,  agent: "@ba + @techlead" },
+      { name: "Business Requirements (BRD)",       file: "brd.html",               color: "var(--cat-brd)",   required: true,  agent: "@devstarter-ba" },
+      { name: "Software Requirements (SRS)",        file: "srs.html",               color: "var(--cat-srs)",   required: true,  agent: "@devstarter-ba + @devstarter-techlead" },
     ]
   },
   // ─── Gate 1: Technical Design ───────────────────────────
   {
     section: "Technical Design",
     docs: [
-      { name: "Database Design",                    file: "database-design.html",    color: "var(--cat-db)",    required: true,  agent: "@dba" },
-      { name: "API Reference",                      file: "api-reference.html",      color: "var(--cat-api)",   required: true,  agent: "@backend" },
-      { name: "Security Design",                    file: "security-design.html",    color: "var(--cat-sec)",   required: true,  agent: "@security" },
-      { name: "Infrastructure & Deployment",        file: "infrastructure-guide.html", color: "var(--cat-infra)", required: true,  agent: "@devops" },
+      { name: "Database Design",                    file: "database-design.html",    color: "var(--cat-db)",    required: true,  agent: "@devstarter-dba" },
+      { name: "API Reference",                      file: "api-reference.html",      color: "var(--cat-api)",   required: true,  agent: "@devstarter-backend" },
+      { name: "Security Design",                    file: "security-design.html",    color: "var(--cat-sec)",   required: true,  agent: "@devstarter-security" },
+      { name: "Infrastructure & Deployment",        file: "infrastructure-guide.html", color: "var(--cat-infra)", required: true,  agent: "@devstarter-devops" },
     ]
   },
   // ─── Gate 1: Quality & Testing ──────────────────────────
   {
     section: "Quality & Testing",
     docs: [
-      { name: "Test Strategy",                      file: "test-strategy.html",      color: "var(--cat-qa)",    required: true,  agent: "@qa" },
+      { name: "Test Strategy",                      file: "test-strategy.html",      color: "var(--cat-qa)",    required: true,  agent: "@devstarter-qa" },
     ]
   },
   // ─── Gate 1: UX/UI ─────────────────────────────────────
   {
     section: "UX / UI Prototype",
     docs: [
-      { name: "Prototype — All Screens",            file: "prototype/index.html",       color: "var(--cat-proto)", required: true,  agent: "@uxui" },
-      { name: "Component Library",                   file: "prototype/components.html",  color: "var(--cat-proto)", required: true,  agent: "@uxui" },
+      { name: "Prototype — All Screens",            file: "prototype/index.html",       color: "var(--cat-proto)", required: true,  agent: "@devstarter-uxui" },
+      { name: "Component Library",                   file: "prototype/components.html",  color: "var(--cat-proto)", required: true,  agent: "@devstarter-uxui" },
     ]
   },
   // ─── Gate 1: Project Management ─────────────────────────
   {
     section: "Project Management",
     docs: [
-      { name: "Project Plan",                       file: "project-plan.html",       color: "var(--cat-plan)",  required: true,  agent: "@pm" },
+      { name: "Project Plan",                       file: "project-plan.html",       color: "var(--cat-plan)",  required: true,  agent: "@devstarter-pm" },
     ]
   },
-  // ─── Audit & Review (on-demand via /audit) ────────────
+  // ─── Audit & Review (on-demand via /devstarter-audit) ────────────
   {
     section: "Audit & Review",
     docs: [
-      { name: "Audit Report",                       file: "audit-report.html",       color: "var(--cat-sec)",   required: false, agent: "/audit" },
-      { name: "Fix Plan",                            file: "fix-plan.html",           color: "var(--cat-other)", required: false, agent: "/audit" },
+      { name: "Audit Report",                       file: "audit-report.html",       color: "var(--cat-sec)",   required: false, agent: "/devstarter-audit" },
+      { name: "Fix Plan",                            file: "fix-plan.html",           color: "var(--cat-other)", required: false, agent: "/devstarter-audit" },
     ]
   },
-  // ─── Change Log (on-demand via /change) ───────────────
+  // ─── Change Log (on-demand via /devstarter-change) ───────────────
   {
     section: "Change Log",
     docs: [
-      { name: "Change Request Log",                   file: "changerequest-log.html",  color: "var(--cat-plan)",  required: false, agent: "/change" },
-      { name: "Bugfix Log",                           file: "bugfix-log.html",         color: "var(--cat-qa)",    required: false, agent: "/change" },
+      { name: "Change Request Log",                   file: "changerequest-log.html",  color: "var(--cat-plan)",  required: false, agent: "/devstarter-change" },
+      { name: "Bugfix Log",                           file: "bugfix-log.html",         color: "var(--cat-qa)",    required: false, agent: "/devstarter-change" },
     ]
   },
 ];

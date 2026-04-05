@@ -91,7 +91,7 @@ for folder in agents commands sdlc templates; do
 done
 
 # Root files to update (toolkit files only, not user files)
-for f in update.sh install.sh setup.sh dev-menu.md VERSION CHANGELOG.md; do
+for f in update.sh install.sh setup.sh devstarter-menu.md VERSION CHANGELOG.md; do
   if [ -f "$TMP_DIR/$f" ]; then
     cp "$TMP_DIR/$f" "$CLAUDE_DIR/$f"
     echo "  Updated: $f"
