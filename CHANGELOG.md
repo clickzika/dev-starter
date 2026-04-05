@@ -1,5 +1,42 @@
 # Changelog
 
+## v1.3.0 (2026-04-05)
+
+### UX: Quick-Picker First Prompt + Inline Args
+
+Dramatically reduced friction for all intake commands — users no longer
+need to answer questions they didn't ask for.
+
+- **`/devstarter-new`** — 3-mode picker shown before any questions:
+  Quick (8Q) / Custom (15Q) / Describe (1Q).
+  Inline args bypass all questions: `/devstarter-new React todo app` → direct to summary.
+
+- **`/devstarter-change`** — Quick-picker: Add / Remove / Fix.
+  Inline args extract type from first word: `/devstarter-change add dark mode` → skip Q1+Q2.
+
+- **`/devstarter-existing`** — Quick-picker: Onboard / Add+Fix / Refactor / Security / Full setup.
+  Q3–Q5 (CLAUDE.md, docs/, tech stack) now auto-detected from disk — never asked.
+  Inline args set intent directly: `/devstarter-existing onboard me` → scan runs immediately.
+
+- **`/devstarter-audit`** — Quick-picker: 7 audit types + report/plan/fix outcome in one prompt.
+  Q1 (project name) and Q5 (environment) auto-detected — never asked.
+  Inline args: `/devstarter-audit security` or `/devstarter-audit full audit fix`.
+
+### New VCS Runbooks
+
+- **`sdlc/devstarter-gitlab.md`** — Full GitLab procedure runbook (PROC-GL-01 to GL-17),
+  matching `devstarter-github.md` depth. Covers: create repo, MR workflow, branch
+  protection, labels, milestones, hotfix, CI/CD pipeline, autonomous MR review via Claude AI.
+  Uses `glab` CLI throughout.
+
+- **`sdlc/devstarter-svn.md`** — Full SVN procedure runbook (PROC-SV-01 to SV-13).
+  Mode A (SVN as primary): create repo, checkout, branch, commit, merge, tag, revert.
+  Mode B (git-svn bridge/secondary): first-time setup, push commits to SVN, pull SVN changes,
+  tag releases, mirror hotfixes.
+
+- **`agents/shared/devstarter-vcs-pm-guide.md`** — Added GitLab and SVN routing sections
+  with references to the new runbooks.
+
 ## v1.2.0 (2026-04-05)
 
 ### VCS_SECONDARY — Multi-VCS Project Support
