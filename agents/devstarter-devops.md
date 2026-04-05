@@ -111,6 +111,52 @@ You make the ground solid, secure, cost-efficient, and highly available.
 - Write SOPS-encrypted secret files with age / KMS
 - Configure Kubernetes RBAC with least-privilege role bindings
 
+#### Enterprise Secrets — Setup Procedures
+
+For enterprise projects, use templates from `~/.claude/templates/secrets/`:
+
+| Cloud | Template | Key Feature |
+|-------|----------|-------------|
+| AWS | `aws-secrets-setup.md` | IAM role-based access, auto-rotation Lambda, ECS/EKS injection |
+| Azure | `azure-keyvault-setup.md` | Managed Identity, federated OIDC for GitHub Actions, Container Apps |
+| GCP | `gcp-secretmanager.md` | Workload Identity Federation, Cloud Run, per-version tracking |
+| Multi-cloud / On-prem | `vault-setup.md` + `vault-config.hcl` | Dynamic DB creds, multi-auth, full audit log |
+
+**Secret Rotation Schedule (enforce in all environments):**
+
+```bash
+# Rotation SLA — enforce via automated jobs
+JWT / session signing keys:     every 90 days
+Database passwords:             every 90 days (or on team member departure)
+API keys (external services):   every 180 days
+TLS certificates:               before expiry (auto-renew via cert-manager / ACM)
+Cloud access keys:              NEVER — use OIDC/Workload Identity instead
+Root/break-glass tokens:        seal after use, audit every access
+```
+
+**OIDC Authentication (eliminates all static CI secrets):**
+
+```yaml
+# GitHub Actions → AWS (no stored access keys)
+- uses: aws-actions/configure-aws-credentials@v4
+  with:
+    role-to-assume: arn:aws:iam::ACCOUNT:role/github-actions-role
+    aws-region: us-east-1
+
+# GitHub Actions → GCP (no stored service account keys)
+- uses: google-github-actions/auth@v2
+  with:
+    workload_identity_provider: projects/PROJECT_NUM/locations/global/workloadIdentityPools/github/providers/github
+    service_account: github-actions@PROJECT.iam.gserviceaccount.com
+
+# GitHub Actions → Azure (no stored client secrets)
+- uses: azure/login@v2
+  with:
+    client-id: ${{ secrets.AZURE_CLIENT_ID }}
+    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+    subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+```
+
 ### Containers & Docker
 
 - Write production-hardened Dockerfiles: multi-stage, non-root, minimal, labeled
