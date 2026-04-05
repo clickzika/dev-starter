@@ -32,6 +32,8 @@ Netlify                 → Strategy F
 Cloudflare Pages        → Strategy F
 Railway                 → Strategy G
 GitHub Pages            → Strategy H
+Git toolkit / library   → Strategy I
+No CLAUDE.md / no Q29  → Strategy I (auto-detect)
 ```
 
 ---
@@ -288,5 +290,114 @@ npx gh-pages -d dist
 
 # Option 2: GitHub Actions (auto on push)
 # .github/workflows/deploy.yml handles it
+```
+
+---
+
+### Strategy I — Git Release (toolkit / library)
+
+Use when the project is a CLI tool, SDK, or shared toolkit distributed via git
+(no Docker, no cloud hosting). Supports two models — auto-detected at runtime.
+
+**Model A — Dual-remote** (`release` remote exists)
+```
+origin/develop  → active development
+release/main    → public/stable publish + tag
+```
+
+**Model B — Single-repo** (no `release` remote)
+```
+develop  → active development
+main     → production + tag
+```
+
+#### Step 1 — Auto-detect remote
+
+```bash
+# Detect which model applies
+if git remote | grep -q "^release$"; then
+  PUSH_REMOTE="release"
+  echo "Model A detected — pushing to: release remote"
+else
+  PUSH_REMOTE="origin"
+  echo "Model B detected — pushing to: origin"
+fi
+```
+
+#### Step 2 — Bump version + update CHANGELOG
+
+```bash
+# Edit VERSION file (e.g. 1.3.0 → 1.4.0)
+# Edit CHANGELOG.md — add entry for vX.Y.Z
+
+# Commit version bump on develop
+git add VERSION CHANGELOG.md
+git commit -m "release: bump version to vX.Y.Z and update CHANGELOG"
+git push origin develop
+```
+
+#### Step 3 — Merge develop → main
+
+```bash
+git checkout main
+git merge develop --no-ff -m "release: vX.Y.Z — merge CHANGELOG + VERSION bump"
+```
+
+#### Step 4 — Tag the release
+
+```bash
+git tag -a vX.Y.Z -m "Release vX.Y.Z"
+```
+
+#### Step 5 — Push to correct remote
+
+```bash
+# Push main branch + tag
+git push $PUSH_REMOTE main
+git push $PUSH_REMOTE vX.Y.Z
+
+# Model A only — keep develop in sync on origin
+# (Model B: develop is already on origin from Step 2)
+```
+
+#### Step 6 — Return to develop
+
+```bash
+git checkout develop
+echo "✅ Released vX.Y.Z → $PUSH_REMOTE/main"
+```
+
+#### Full script (copy-paste ready)
+
+```bash
+#!/usr/bin/env bash
+set -e
+
+VERSION="${1:?Usage: release.sh <version>  e.g. release.sh 1.4.0}"
+
+# Auto-detect remote
+if git remote | grep -q "^release$"; then
+  PUSH_REMOTE="release"
+else
+  PUSH_REMOTE="origin"
+fi
+
+echo "▶ Releasing v$VERSION → $PUSH_REMOTE"
+
+# Ensure clean working tree
+git diff --exit-code || { echo "❌ Uncommitted changes — commit first"; exit 1; }
+
+# Merge develop → main and tag
+git checkout main
+git merge develop --no-ff -m "release: v$VERSION — merge CHANGELOG + VERSION bump"
+git tag -a "v$VERSION" -m "Release v$VERSION"
+
+# Push
+git push "$PUSH_REMOTE" main
+git push "$PUSH_REMOTE" "v$VERSION"
+
+# Back to develop
+git checkout develop
+echo "✅ v$VERSION released to $PUSH_REMOTE/main"
 ```
 
