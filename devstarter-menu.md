@@ -28,28 +28,29 @@ Show this menu and ask ONE question:
 
 ── DAILY WORK ─────────────────────────────────
   5. ✏️  Change (add / remove feature / fix bug)
-  6. 🏃 Sprint Planning
-  7. 📦 Dependency Update
+  6. 📄 Document (generate / regenerate a doc)
+  7. 🏃 Sprint Planning
+  8. 📦 Dependency Update
 
 ── TEAM ───────────────────────────────────────
-  8. 👤 Onboard New Member
-  9. 🔁 Handover Project
-  10. 📊 Sprint Retrospective
+  9. 👤 Onboard New Member
+  10. 🔁 Handover Project
+  11. 📊 Sprint Retrospective
 
 ── PRODUCTION ─────────────────────────────────
-  11. 🚀 Release + Deploy
-  12. 🔥 Hotfix (critical production bug)
-  13. ⏪ Rollback Production
-  14. 🚨 Incident Response
+  12. 🚀 Release + Deploy
+  13. 🔥 Hotfix (critical production bug)
+  14. ⏪ Rollback Production
+  15. 🚨 Incident Response
 
 ── SETUP & INFRA ──────────────────────────────
-  15. 💻 Setup Local Environment
-  16. 🔐 Secrets Management
-  17. 📡 Setup Monitoring
+  16. 💻 Setup Local Environment
+  17. 🔐 Secrets Management
+  18. 📡 Setup Monitoring
 
 ── AI / ML ────────────────────────────────────
-  18. 🤖 New AI/ML Project
-  19. 🔬 ML Workflow (train / evaluate / deploy)
+  19. 🤖 New AI/ML Project
+  20. 🔬 ML Workflow (train / evaluate / deploy)
 
 Type the number of your choice:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -64,17 +65,18 @@ Route to correct file:
 | 3 | `~/.claude/sdlc/devstarter-migrate.md` |
 | 4 | `~/.claude/sdlc/devstarter-audit.md` |
 | 5 | `~/.claude/sdlc/devstarter-change.md` |
-| 6 | `~/.claude/sdlc/devstarter-sprint.md` |
-| 7 | `~/.claude/sdlc/devstarter-dependency.md` |
-| 8 | `~/.claude/sdlc/devstarter-onboarding.md` |
-| 9 | `~/.claude/sdlc/devstarter-handover.md` |
-| 10 | `~/.claude/sdlc/devstarter-retrospective.md` |
-| 11 | `~/.claude/sdlc/devstarter-release.md` |
-| 12 | `~/.claude/sdlc/devstarter-hotfix.md` |
-| 13 | `~/.claude/sdlc/devstarter-rollback.md` |
-| 14 | `~/.claude/sdlc/devstarter-incident.md` |
-| 15 | `~/.claude/sdlc/devstarter-env.md` |
-| 16 | `~/.claude/sdlc/devstarter-secrets.md` |
-| 17 | `~/.claude/sdlc/devstarter-monitor.md` |
-| 18 | `~/.claude/sdlc/devstarter-starter.md` (select ML stack) |
-| 19 | `~/.claude/sdlc/devstarter-ml-workflow.md` |
+| 6 | `~/.claude/sdlc/devstarter-document.md` |
+| 7 | `~/.claude/sdlc/devstarter-sprint.md` |
+| 8 | `~/.claude/sdlc/devstarter-dependency.md` |
+| 9 | `~/.claude/sdlc/devstarter-onboarding.md` |
+| 10 | `~/.claude/sdlc/devstarter-handover.md` |
+| 11 | `~/.claude/sdlc/devstarter-retrospective.md` |
+| 12 | `~/.claude/sdlc/devstarter-release.md` |
+| 13 | `~/.claude/sdlc/devstarter-hotfix.md` |
+| 14 | `~/.claude/sdlc/devstarter-rollback.md` |
+| 15 | `~/.claude/sdlc/devstarter-incident.md` |
+| 16 | `~/.claude/sdlc/devstarter-env.md` |
+| 17 | `~/.claude/sdlc/devstarter-secrets.md` |
+| 18 | `~/.claude/sdlc/devstarter-monitor.md` |
+| 19 | `~/.claude/sdlc/devstarter-starter.md` (select ML stack) |
+| 20 | `~/.claude/sdlc/devstarter-ml-workflow.md` |

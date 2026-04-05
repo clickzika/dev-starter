@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.4.1 (2026-04-05)
+
+### New Command: /devstarter-document
+
+Add a standalone document generator command — the 24th slash command.
+
+- **`/devstarter-document`** — generate or regenerate any project document independently,
+  without re-running a full gate workflow. Supports 10 doc types:
+  `brd`, `srs`, `api`, `schema`, `test`, `security`, `infra`, `prototype`, `plan`, `all`
+- Each doc type routes to the correct specialist agent (@devstarter-ba, @devstarter-backend,
+  @devstarter-dba, @devstarter-qa, @devstarter-security, @devstarter-devops, @devstarter-uxui, @devstarter-pm)
+- Inline args supported: `/devstarter-document api` skips the picker, generates immediately
+- Auto-generation during `/devstarter-new` Gate 2 is **unchanged** — this command is additive
+- Registered in `devstarter-menu.md` as item 6 under Daily Work (menu renumbered 7–20)
+
+---
+
 ## v1.4.0 (2026-04-05)
 
 ### Release: Git Auto-Detection (Strategy I)
