@@ -199,6 +199,23 @@ Version:   v[version]-hotfix.[N]
 
 ---
 
+## Secondary VCS Mirror (if configured)
+
+After tagging and merging hotfix to main + develop, mirror to secondary VCS:
+
+```bash
+source .project.env 2>/dev/null || true
+
+[ -n "$VCS_SECONDARY_1" ] && [ "$VCS_SECONDARY_1" != "none" ] && \
+  echo "⏳ Mirror hotfix to $VCS_SECONDARY_1 — run Step 5 from devstarter-vcs-pm-guide.md"
+[ -n "$VCS_SECONDARY_2" ] && [ "$VCS_SECONDARY_2" != "none" ] && \
+  echo "⏳ Mirror hotfix to $VCS_SECONDARY_2 — run Step 5 from devstarter-vcs-pm-guide.md"
+```
+
+→ Full sync commands: `~/.claude/sdlc/devstarter-vcs-sync.md`
+
+---
+
 ## Post-Hotfix Action Items
 
 Within 24 hours after hotfix:

@@ -48,6 +48,11 @@ Never rely on chat history.
 ### Rule 3 — Save Before Handing Off
 Write file → git commit → update memory/progress.json → announce handoff.
 
+### Rule 3b — Mirror to Secondary VCS After Every Merge
+After merging to primary VCS (`VCS_TYPE`), always run Step 5 from
+`~/.claude/agents/shared/devstarter-vcs-pm-guide.md` to push to secondary VCS.
+Skip if `VCS_SECONDARY_1` and `VCS_SECONDARY_2` are both `none` or unset.
+
 ### Rule 4 — Docs Before Code
 Always update documents before writing any code.
 Order: CLAUDE.md → BRD → Schema → API → UX → Security → Code

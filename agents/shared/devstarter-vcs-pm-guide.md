@@ -144,6 +144,83 @@ If `.project.env` does not exist, assume defaults:
 
 ---
 
+---
+
+## Step 5 — Secondary VCS Mirror (run after primary merge)
+
+Check if secondary VCS is configured, then mirror:
+
+```bash
+source .project.env 2>/dev/null || true
+
+mirror_to_secondary() {
+  local SECONDARY=$1
+  local REMOTE_VAR="${SECONDARY^^}_REMOTE_URL"
+  echo "⏳ Mirroring to secondary VCS: $SECONDARY"
+
+  case "$SECONDARY" in
+    gitlab)
+      if ! git remote | grep -q "^gitlab$"; then
+        git remote add gitlab "$GITLAB_REMOTE_URL"
+      fi
+      for B in ${VCS_SYNC_BRANCHES:-main develop}; do
+        git show-ref --verify --quiet refs/heads/$B && git push gitlab $B
+      done
+      git push gitlab --tags
+      echo "✅ Mirrored → GitLab"
+      ;;
+    github)
+      if ! git remote | grep -q "^github-mirror$"; then
+        git remote add github-mirror "https://github.com/$GITHUB_USERNAME/$GITHUB_MIRROR_REPO.git"
+      fi
+      for B in ${VCS_SYNC_BRANCHES:-main develop}; do
+        git show-ref --verify --quiet refs/heads/$B && git push github-mirror $B
+      done
+      git push github-mirror --tags
+      echo "✅ Mirrored → GitHub"
+      ;;
+    bitbucket)
+      if ! git remote | grep -q "^bitbucket$"; then
+        git remote add bitbucket "https://bitbucket.org/$BITBUCKET_WORKSPACE/$BITBUCKET_REPO.git"
+      fi
+      for B in ${VCS_SYNC_BRANCHES:-main develop}; do
+        git show-ref --verify --quiet refs/heads/$B && git push bitbucket $B
+      done
+      git push bitbucket --tags
+      echo "✅ Mirrored → Bitbucket"
+      ;;
+    svn)
+      git svn dcommit
+      echo "✅ Committed → SVN (git-svn)"
+      ;;
+    azure-devops)
+      if ! git remote | grep -q "^azure$"; then
+        git remote add azure "$AZURE_ORG/$AZURE_PROJECT/_git/$AZURE_REPO"
+      fi
+      for B in ${VCS_SYNC_BRANCHES:-main develop}; do
+        git show-ref --verify --quiet refs/heads/$B && git push azure $B
+      done
+      git push azure --tags
+      echo "✅ Mirrored → Azure DevOps"
+      ;;
+    none|"")
+      echo "⏭ No secondary VCS configured — skipping"
+      ;;
+    *)
+      echo "⚠️ Unknown VCS_SECONDARY: $SECONDARY — skipping"
+      ;;
+  esac
+}
+
+[ -n "$VCS_SECONDARY_1" ] && [ "$VCS_SECONDARY_1" != "none" ] && mirror_to_secondary "$VCS_SECONDARY_1"
+[ -n "$VCS_SECONDARY_2" ] && [ "$VCS_SECONDARY_2" != "none" ] && mirror_to_secondary "$VCS_SECONDARY_2"
+```
+
+For detailed sync operations and conflict resolution:
+→ Read `~/.claude/sdlc/devstarter-vcs-sync.md`
+
+---
+
 ## Special Cases
 
 ### SVN Projects (legacy C#, Java, etc.)
@@ -171,3 +248,22 @@ Some teams use:
 - No VCS + Trello for tasks → `VCS_TYPE=none` + `PM_TYPE=trello`
 
 All combinations are valid.
+
+### Multi-VCS (primary + mirrors)
+
+When a team uses multiple VCS simultaneously (e.g. GitHub primary + GitLab mirror + SVN archive):
+
+```bash
+# .project.env
+VCS_TYPE=github          # primary — full PR/issue/branch workflow runs here
+VCS_SECONDARY_1=gitlab   # mirror — pushed after every primary merge
+VCS_SECONDARY_2=svn      # archive — committed after every primary merge
+VCS_SYNC_BRANCHES=main develop
+```
+
+**Rule:** All SDLC operations (branching, PRs, issues, CI) run against `VCS_TYPE` only.
+Secondary VCS receive pushes at the END of each workflow (Step 5).
+Secondary VCS are never the source of truth — they receive, never initiate.
+
+After any merge, agents MUST call Step 5 mirror function above.
+For on-demand sync or conflict resolution: read `~/.claude/sdlc/devstarter-vcs-sync.md`.
