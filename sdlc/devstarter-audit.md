@@ -42,17 +42,47 @@ Every finding must have a severity:
 
 ---
 
+## ⚡ FIRST ACTION — Show This Before Anything Else
+
+**If no inline args were provided, the very first message to the user MUST be:**
+
+```
+What do you want to audit?
+
+  1. 🔒 Security      — OWASP Top 10, auth, secrets
+  2. 🔧 Code Quality  — structure, patterns, duplication
+  3. ⚡ Performance   — N+1 queries, slow endpoints, caching
+  4. 🧪 Tests         — coverage gaps, missing assertions
+  5. 📦 Dependencies  — outdated + vulnerable packages
+  6. 🏗️  Architecture  — layers, coupling, scalability
+  7. 🔍 Full audit    — all of the above
+
+Then: report only / report + fix plan / fix now?
+```
+
+Wait for the user to respond. Parse audit type(s) and outcome from the reply.
+Nothing else before this prompt.
+
+**Auto-detect (skip asking):**
+- Q1 (project name) → use current folder name
+- Q5 (target environment) → check for `.env.production`, CI/CD config, or assume staging
+
+**Special case — inline args:** If the user ran `/devstarter-audit [text]`,
+skip this prompt. Extract audit types and outcome from args and start immediately.
+
+---
+
 ## PHASE 1 — Audit Scope
 
 Ask these questions ONE AT A TIME:
 
 **Q1. What is the project name?**
-(free text)
+(auto-detected from folder name — only ask if ambiguous)
 
 ---
 
 **Q2. What type of audit do you want?**
-(select all that apply)
+(answered via quick-picker or inline args — confirm if unclear)
 1. Security audit (OWASP Top 10 + vulnerabilities)
 2. Code quality audit (structure, patterns, maintainability)
 3. Performance audit (bottlenecks, N+1 queries, slow endpoints)
@@ -65,6 +95,7 @@ Ask these questions ONE AT A TIME:
 ---
 
 **Q3. What is the intended outcome?**
+(answered via quick-picker or inline args — confirm if unclear)
 1. Report only — I want to understand the current state
 2. Report + fix plan — I want a prioritized list of what to fix
 3. Report + fix now — I want agents to fix issues immediately after audit
@@ -72,11 +103,12 @@ Ask these questions ONE AT A TIME:
 ---
 
 **Q4. Are there any areas you already know are problematic?**
-(free text — or type "none")
+(free text — or type "none" — always ask this, even with inline args)
 
 ---
 
 **Q5. What is the target environment?**
+(auto-detected from config — only ask if cannot determine)
 1. Production system — needs zero-downtime fixes
 2. Staging system — fixes can be tested before production
 3. Development only — no production deployment yet

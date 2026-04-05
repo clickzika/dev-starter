@@ -98,17 +98,48 @@ Ask Q1 → wait for answer → ask Q2 → wait for answer → ...
 
 ---
 
+## ⚡ FIRST ACTION — Show This Before Anything Else
+
+**If no inline args were provided, the very first message to the user MUST be:**
+
+```
+What do you want to do with this project?
+
+  1. 🔍 Onboard       — understand this codebase first
+  2. ➕ Add / fix      — add a feature or fix a bug (describe it)
+  3. ♻️  Refactor      — improve code quality / structure
+  4. 🔒 Security      — security review + fixes
+  5. 📋 Full setup    — generate all missing docs + GitHub + Notion
+
+Or just describe it: "add user management", "fix login bug", "improve test coverage"
+```
+
+Wait for the user to type 1–5 or a description. Nothing else before this.
+
+**Auto-detect (skip asking):**
+- Q1 (project name) → use current folder name
+- Q3 (CLAUDE.md exists?) → check disk silently: `ls CLAUDE.md`
+- Q4 (existing docs?) → check disk silently: `ls docs/`
+- Q5 (tech stack?) → scan package.json / *.csproj / go.mod / pyproject.toml silently
+
+Only ask Q6 (known issues) after showing the discovery report.
+
+**Special case — inline args:** If the user ran `/devstarter-existing [text]`,
+skip this prompt. Treat text as intent (Q2), auto-detect everything else.
+
+---
+
 ## PHASE 1 — Project Discovery
 
 Ask these questions ONE AT A TIME:
 
 **Q1. What is the project name?**
-(free text)
+(auto-detected from folder name — only ask if detection is ambiguous)
 
 ---
 
 **Q2. What do you want to do with this project?**
-(select all that apply)
+(select all that apply — or was answered via quick-picker / inline args)
 1. Add new features
 2. Fix bugs
 3. Improve code quality / refactoring
@@ -121,27 +152,12 @@ Ask these questions ONE AT A TIME:
 
 ---
 
-**Q3. Is there an existing CLAUDE.md or spec document in this project?**
-1. Yes — CLAUDE.md exists in the project root
-2. Yes — spec exists but in a different format (Word, Notion, etc.)
-3. No — no spec document exists
-4. Not sure
+**Q3–Q5 — Auto-detected from disk (do NOT ask):**
+- Q3: CLAUDE.md exists? → check `CLAUDE.md` on disk
+- Q4: Existing docs? → check `docs/` folder on disk
+- Q5: Tech stack? → scan config files (package.json, *.csproj, go.mod, pyproject.toml, requirements.txt)
 
----
-
-**Q4. Is there existing documentation?**
-(select all that apply)
-1. docs/ folder with HTML documents
-2. README.md
-3. Notion / Confluence pages
-4. Swagger / OpenAPI spec
-5. Inline code comments only
-6. No documentation at all
-
----
-
-**Q5. What is the current tech stack?**
-(free text — describe what you know: language, framework, database, etc.)
+Report what was found in the discovery report. Only ask if detection fails.
 
 ---
 

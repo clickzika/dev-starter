@@ -86,6 +86,28 @@ If Track B depends on Track A output (e.g. API response shape), complete Track A
 
 ---
 
+## ⚡ FIRST ACTION — Show This Before Anything Else
+
+**If no inline args were provided, the very first message to the user MUST be:**
+
+```
+What do you want to do?
+
+  1. ➕ Add feature    — add something new
+  2. ➖ Remove feature — remove or disable something
+  3. 🐛 Fix bug        — something is broken
+
+Or just describe it:
+  "add dark mode", "remove social login", "fix login redirect"
+```
+
+Wait for the user to type 1, 2, 3, or a description. Nothing else before this.
+
+**Special case — inline args:** If the user ran `/devstarter-change [text]`,
+skip this prompt. Extract type + description from the args and proceed directly.
+
+---
+
 ## PHASE 1 — Identify Change Type
 
 Ask these questions ONE AT A TIME:
