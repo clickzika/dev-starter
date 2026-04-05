@@ -47,6 +47,10 @@ Show this menu and ask ONE question:
   16. 🔐 Secrets Management
   17. 📡 Setup Monitoring
 
+── AI / ML ────────────────────────────────────
+  18. 🤖 New AI/ML Project
+  19. 🔬 ML Workflow (train / evaluate / deploy)
+
 Type the number of your choice:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -72,3 +76,5 @@ Route to correct file:
 | 15 | `~/.claude/sdlc/devstarter-env.md` |
 | 16 | `~/.claude/sdlc/devstarter-secrets.md` |
 | 17 | `~/.claude/sdlc/devstarter-monitor.md` |
+| 18 | `~/.claude/sdlc/devstarter-starter.md` (select ML stack) |
+| 19 | `~/.claude/sdlc/devstarter-ml-workflow.md` |
