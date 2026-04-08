@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/devstarter-config-hook.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

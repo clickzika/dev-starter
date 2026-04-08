@@ -1,7 +1,7 @@
 {
-  "workflow": "devstarter-change autopilot-mode",
+  "workflow": "devstarter-release",
   "status": "completed",
-  "completed_at": "2026-04-08T01:00:00",
-  "total_tasks": 3,
-  "notes": "Autopilot mode merged to develop. Gates 3→4 prompt, silent resume in checkpoint, Autopilot Mode section in agent-base."
+  "completed_at": "2026-04-08T00:00:00",
+  "version": "v1.6.0",
+  "notes": "v1.6.0 released. Mandatory devstarter-config.yml enforcement across all workflows."
 }
