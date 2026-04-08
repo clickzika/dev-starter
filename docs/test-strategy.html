@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Strategy — DevStarter</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{--bg-page:#f5f7fa;--bg-header:#ffffff;--bg-sidebar:#f0f2f5;--bg-content:#ffffff;--bg-card:#f8f9fb;--bg-hover:#e8ebf0;--accent:#e94560;--accent-light:#d63851;--text:#1a1a2e;--text-dim:#5a6578;--text-muted:#8493a8;--border:#d8dde4;--border-light:#e2e7ed;--status-approved:#10b981;--section-1:#3b82f6;--section-2:#8b5cf6;--section-3:#f59e0b;--section-4:#10b981;--section-5:#ef4444;--section-6:#f97316;--header-h:64px;--sidebar-w:280px;--code-bg:#f1f5f9;--code-inline-bg:rgba(233,69,96,0.08);--code-inline-color:#d63851;--table-even-bg:rgba(0,0,0,0.02);--table-hover-bg:rgba(233,69,96,0.04);--shadow:0 1px 3px rgba(0,0,0,0.06);--toggle-bg:#e2e6eb;--toggle-knob:#ffffff;}
+  [data-theme="dark"]{--bg-page:#0f0f23;--bg-header:#1a1a2e;--bg-sidebar:#16213e;--bg-content:#1e1e3a;--bg-card:#252547;--bg-hover:#0f3460;--accent:#e94560;--accent-light:#ff6b81;--text:#eeeeee;--text-dim:#94a3b8;--text-muted:#64748b;--border:#1e3a5f;--border-light:#2d4a6f;--code-bg:#0d0d1a;--code-inline-bg:rgba(233,69,96,0.1);--code-inline-color:#ff6b81;--table-even-bg:rgba(255,255,255,0.02);--table-hover-bg:rgba(233,69,96,0.05);--shadow:0 1px 3px rgba(0,0,0,0.3);--toggle-bg:#1e3a5f;--toggle-knob:#e94560;}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-page);color:var(--text);line-height:1.6;height:100vh;overflow:hidden;}
+  .doc-header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--bg-header);border-bottom:1px solid var(--border);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:100;}
+  .doc-header-left{display:flex;align-items:center;gap:16px;}
+  .doc-header-logo{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;}
+  .doc-header-title{display:flex;flex-direction:column;}
+  .doc-header-project{font-size:18px;font-weight:700;color:var(--text);}
+  .doc-header-docname{font-size:12px;color:var(--text-dim);font-weight:500;}
+  .doc-header-right{display:flex;align-items:center;gap:16px;}
+  .doc-header-meta{text-align:right;font-size:12px;color:var(--text-dim);}
+  .doc-status-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+  .doc-status-badge.approved{background:rgba(16,185,129,0.15);color:var(--status-approved);border:1px solid rgba(16,185,129,0.3);}
+  .theme-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;}
+  .theme-toggle-icon{font-size:14px;color:var(--text-dim);}
+  .theme-toggle-track{width:44px;height:24px;background:var(--toggle-bg);border-radius:12px;position:relative;border:1px solid var(--border);}
+  .theme-toggle-knob{width:18px;height:18px;background:var(--toggle-knob);border-radius:50%;position:absolute;top:2px;left:3px;transition:transform 0.3s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+  [data-theme="dark"] .theme-toggle-knob{transform:translateX(20px);}
+  .doc-sidebar{position:fixed;top:var(--header-h);left:0;bottom:0;width:var(--sidebar-w);background:var(--bg-sidebar);border-right:1px solid var(--border);overflow-y:auto;padding:20px 0;z-index:50;}
+  .doc-sidebar-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-muted);padding:0 20px 12px;border-bottom:1px solid var(--border);margin-bottom:8px;}
+  .toc-list{list-style:none;padding:0;}.toc-item{display:block;}
+  .toc-link{display:flex;align-items:center;gap:10px;padding:8px 20px;color:var(--text-dim);text-decoration:none;font-size:13px;font-weight:500;transition:all 0.15s;border-left:3px solid transparent;}
+  .toc-link:hover{background:var(--bg-hover);color:var(--text);border-left-color:var(--accent);}
+  .toc-link.active{background:rgba(233,69,96,0.1);color:var(--accent-light);border-left-color:var(--accent);}
+  .toc-number{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:700;flex-shrink:0;color:#fff;}
+  .toc-number.s1{background:var(--section-1);}.toc-number.s2{background:var(--section-2);}.toc-number.s3{background:var(--section-3);}.toc-number.s4{background:var(--section-4);}.toc-number.s5{background:var(--section-5);}.toc-number.s6{background:var(--section-6);}
+  .doc-info-card{margin:16px 12px 0;padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;font-size:12px;}
+  .doc-info-row{display:flex;justify-content:space-between;padding:4px 0;color:var(--text-dim);}
+  .doc-info-row span:first-child{color:var(--text-muted);}
+  .doc-content{margin-left:var(--sidebar-w);margin-top:var(--header-h);height:calc(100vh - var(--header-h));overflow-y:auto;padding:40px 48px 80px;background:var(--bg-content);}
+  .section-header{display:flex;align-items:center;gap:14px;margin:48px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  .section-header:first-child{margin-top:0;}
+  .section-number{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+  .section-number.s1{background:var(--section-1);}.section-number.s2{background:var(--section-2);}.section-number.s3{background:var(--section-3);}.section-number.s4{background:var(--section-4);}.section-number.s5{background:var(--section-5);}.section-number.s6{background:var(--section-6);}
+  .section-title{font-size:22px;font-weight:700;}
+  h3{font-size:16px;font-weight:600;color:var(--text);margin:28px 0 12px;border-left:3px solid var(--accent);padding-left:12px;}
+  p{color:var(--text-dim);margin-bottom:16px;font-size:14px;line-height:1.7;}
+  table{width:100%;border-collapse:collapse;margin:16px 0 24px;font-size:13px;border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+  thead th{background:var(--bg-sidebar);color:var(--text);font-weight:600;text-align:left;padding:12px 16px;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:2px solid var(--accent);}
+  tbody tr{border-bottom:1px solid var(--border);}
+  tbody tr:nth-child(even){background:var(--table-even-bg);}
+  tbody tr:hover{background:var(--table-hover-bg);}
+  td{padding:10px 16px;color:var(--text-dim);vertical-align:top;}
+  ul,ol{margin:8px 0 16px 24px;color:var(--text-dim);font-size:14px;}
+  li{margin-bottom:6px;line-height:1.6;}
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0 24px;}
+  .card-title{font-size:14px;font-weight:600;margin-bottom:8px;color:var(--text);}
+  .warning{border-left:4px solid #f59e0b;background:rgba(245,158,11,0.05);}
+  .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;}
+  .badge-green{background:rgba(16,185,129,0.15);color:#10b981;}.badge-yellow{background:rgba(245,158,11,0.15);color:#f59e0b;}.badge-red{background:rgba(239,68,68,0.15);color:#ef4444;}.badge-gray{background:rgba(100,116,139,0.15);color:#94a3b8;}.badge-blue{background:rgba(59,130,246,0.15);color:#3b82f6;}
+  @media print{.doc-sidebar{display:none;}.doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;}body{background:#fff;color:#000;}.theme-toggle{display:none;}}
+</style>
+</head>
+<body>
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Test Strategy</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta"><div>Version 1.0 · 2026-04-05</div><div>Author: @devstarter-qa</div></div>
+    <span class="doc-status-badge approved">● Approved</span>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Table of Contents</div>
+  <ul class="toc-list">
+    <li class="toc-item"><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> Scope & Objectives</a></li>
+    <li class="toc-item"><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> Test Types</a></li>
+    <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> Manual Test Procedures</a></li>
+    <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> Regression Checklist</a></li>
+    <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> Test Coverage Targets</a></li>
+    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> Future: Automated Testing</a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Version</span><span>1.0</span></div>
+    <div class="doc-info-row"><span>Status</span><span>Approved</span></div>
+    <div class="doc-info-row"><span>Date</span><span>2026-04-05</span></div>
+    <div class="doc-info-row"><span>Agent</span><span>@devstarter-qa</span></div>
+  </div>
+</nav>
+<main class="doc-content">
+
+  <div class="section-header" id="section-1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title">Scope & Objectives</h2>
+  </div>
+  <p>DevStarter is a Markdown + Bash toolkit with no compiled code. Traditional unit and integration test frameworks do not apply. Testing is primarily manual workflow validation — running commands end-to-end and verifying output correctness, completeness, and cross-reference integrity.</p>
+
+  <div class="card warning">
+    <div class="card-title">Current State</div>
+    <p>No automated test suite exists (see OI-001 in BRD). All validation is manual pre-release. Future goal: a bash-based validation script that checks cross-references, required fields, and file naming conventions.</p>
+  </div>
+
+  <h3>Test Objectives</h3>
+  <ul>
+    <li>Verify all 24 slash commands route to the correct SDLC runbook</li>
+    <li>Verify all agent files read correctly by Claude Code</li>
+    <li>Verify <code>install.sh</code> runs successfully on all 3 platforms</li>
+    <li>Verify checkpoints save and resume correctly</li>
+    <li>Verify gate approval stops are enforced — no command skips a gate</li>
+    <li>Verify all document files use the standard template</li>
+    <li>Verify all internal cross-references use the <code>devstarter-</code> prefix</li>
+  </ul>
+
+  <div class="section-header" id="section-2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title">Test Types</h2>
+  </div>
+  <table>
+    <thead><tr><th>Type</th><th>What is Tested</th><th>Method</th><th>Frequency</th></tr></thead>
+    <tbody>
+      <tr><td>Smoke Test</td><td>install.sh completes, /devstarter-menu appears</td><td>Manual — fresh install</td><td>Every release</td></tr>
+      <tr><td>Command Routing Test</td><td>Each /devstarter-X routes to correct runbook</td><td>Manual — run each command, verify file loaded</td><td>Every release</td></tr>
+      <tr><td>Workflow E2E Test</td><td>Full workflow runs gate-to-gate without error</td><td>Manual — run /devstarter-new on a test project</td><td>Major versions</td></tr>
+      <tr><td>Checkpoint Test</td><td>Interrupt mid-workflow; verify resume picks up correctly</td><td>Manual — close session mid-workflow</td><td>Major versions</td></tr>
+      <tr><td>Cross-Reference Lint</td><td>All file cross-references use devstarter- prefix</td><td>grep — automated (shell script)</td><td>Pre-commit</td></tr>
+      <tr><td>Install Safety Test</td><td>Re-running install.sh does not overwrite USER.md</td><td>Manual — run install on existing installation</td><td>Every release</td></tr>
+      <tr><td>Platform Test</td><td>install.sh works on Windows/macOS/Linux</td><td>Manual — test on each platform</td><td>Major versions</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title">Manual Test Procedures</h2>
+  </div>
+
+  <h3>TP-001: Smoke Test</h3>
+  <ol>
+    <li>Clone fresh from release remote to a temp directory</li>
+    <li>Run <code>bash install.sh</code></li>
+    <li>Open Claude Code in any project folder</li>
+    <li>Type: <code>/devstarter-menu</code></li>
+    <li><strong>Pass:</strong> Menu displays all 20 options correctly</li>
+    <li><strong>Fail:</strong> Error, missing options, or wrong routing</li>
+  </ol>
+
+  <h3>TP-002: Checkpoint Resume Test</h3>
+  <ol>
+    <li>Start <code>/devstarter-new React test app</code></li>
+    <li>Let it reach Gate 1 approval and approve</li>
+    <li>Let it start Gate 2 document generation</li>
+    <li>Close the Claude Code session mid-generation</li>
+    <li>Reopen Claude Code in the same directory</li>
+    <li>Type: <code>continue</code></li>
+    <li><strong>Pass:</strong> Agent reads progress.json, announces resume, continues from last task without repeating approved work</li>
+    <li><strong>Fail:</strong> Agent restarts from beginning or fails to detect checkpoint</li>
+  </ol>
+
+  <h3>TP-003: Gate Enforcement Test</h3>
+  <ol>
+    <li>Start <code>/devstarter-new</code> and reach Gate 1</li>
+    <li>Do NOT type "approve" — instead type "continue" or any other phrase</li>
+    <li><strong>Pass:</strong> Agent holds at the gate, asks for explicit "approve" or "revise"</li>
+    <li><strong>Fail:</strong> Agent proceeds past the gate without approval</li>
+  </ol>
+
+  <h3>TP-004: Cross-Reference Integrity</h3>
+  <pre><code># Run from repo root
+grep -r "@techlead\|@backend\|@ba\b" agents/ commands/ sdlc/ --include="*.md"
+# Expected: 0 results (all refs should use @devstarter- prefix)</code></pre>
+
+  <div class="section-header" id="section-4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title">Pre-Release Regression Checklist</h2>
+  </div>
+  <table>
+    <thead><tr><th>#</th><th>Check</th><th>Pass Criteria</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>VERSION file updated</td><td>Contains new SemVer string only</td></tr>
+      <tr><td>2</td><td>CHANGELOG.md updated</td><td>New version section at top with all changes</td></tr>
+      <tr><td>3</td><td>devstarter-menu.md updated</td><td>New command registered if added</td></tr>
+      <tr><td>4</td><td>Command has both files</td><td>commands/devstarter-X.md + sdlc/devstarter-X.md both exist</td></tr>
+      <tr><td>5</td><td>No bare @agent refs</td><td>grep for <code>@techlead</code> etc returns 0 results</td></tr>
+      <tr><td>6</td><td>install.sh smoke test passes</td><td>TP-001 passes on macOS or Linux</td></tr>
+      <tr><td>7</td><td>No .env in staged files</td><td><code>git diff --cached --name-only | grep "\.env"</code> returns nothing</td></tr>
+      <tr><td>8</td><td>Docs use standard template</td><td>All docs/ HTML files include the standard CSS variables block</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title">Test Coverage Targets</h2>
+  </div>
+  <table>
+    <thead><tr><th>Area</th><th>Current Coverage</th><th>Target</th></tr></thead>
+    <tbody>
+      <tr><td>Slash command routing</td><td><span class="badge badge-yellow">Manual only</span></td><td><span class="badge badge-green">100% smoke tested</span></td></tr>
+      <tr><td>install.sh</td><td><span class="badge badge-yellow">Manual only</span></td><td><span class="badge badge-green">All 3 platforms</span></td></tr>
+      <tr><td>Checkpoint resume</td><td><span class="badge badge-yellow">Manual only</span></td><td><span class="badge badge-green">Tested each major version</span></td></tr>
+      <tr><td>Cross-reference integrity</td><td><span class="badge badge-blue">grep script</span></td><td><span class="badge badge-green">Pre-commit hook</span></td></tr>
+      <tr><td>Gate enforcement</td><td><span class="badge badge-yellow">Manual only</span></td><td><span class="badge badge-green">Tested each major version</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title">Future: Automated Testing</h2>
+  </div>
+  <p>Planned validation script (addresses OI-001):</p>
+  <ul>
+    <li><strong>validate-commands.sh</strong> — check every entry in devstarter-menu.md has a matching sdlc/ runbook</li>
+    <li><strong>validate-prefixes.sh</strong> — grep for un-prefixed agent/command references</li>
+    <li><strong>validate-templates.sh</strong> — verify all docs/ HTML files contain the CSS variables block</li>
+    <li><strong>validate-json.sh</strong> — verify progress.json is valid JSON with required fields</li>
+  </ul>
+  <p>These would run as a GitHub Actions workflow on every PR to the dev repo origin.</p>
+</main>
+<script>
+  function toggleTheme(){var h=document.documentElement;var d=h.getAttribute('data-theme')==='dark';if(d){h.removeAttribute('data-theme');localStorage.setItem('docportal-theme','light');document.getElementById('themeIcon').innerHTML='&#9788;';}else{h.setAttribute('data-theme','dark');localStorage.setItem('docportal-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';}}
+  (function(){var s=localStorage.getItem('docportal-theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';}})();
+  const sections=document.querySelectorAll('.section-header[id]');const tocLinks=document.querySelectorAll('.toc-link');const content=document.querySelector('.doc-content');
+  content.addEventListener('scroll',()=>{let c='';sections.forEach(s=>{if(content.scrollTop>=s.offsetTop-content.offsetTop-100)c=s.id;});tocLinks.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+c)l.classList.add('active');});});
+  tocLinks.forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)content.scrollTo({top:t.offsetTop-content.offsetTop-20,behavior:'smooth'});});});
+</script>
+</body>
+</html>

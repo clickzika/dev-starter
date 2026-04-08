@@ -163,10 +163,51 @@ GATE 3 — Foundation + Task Setup      ← HARD STOP: user must approve before 
     ✅ Scaffold complete
   ⛔ STOP → wait for "approve" or "revise [component]"
 
+  ── AUTOPILOT PROMPT (show immediately after Gate 3 approved) ──────────────
+
+  Count total tasks from the Notion task list, group by sprint, then show:
+
+  ```
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🚀 READY TO DEVELOP — [Project Name]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Sprints:  [N]   Tasks:  [N]   Est: ~[N] hours
+  Tracks:   Backend · Frontend · Infra (parallel)
+
+  Next stop after development: Gate 5 — Delivery Review
+
+    "autopilot"  → develop all sprints unattended
+                   rate-limit pauses auto-resume via cron
+                   you will be called back only at Gate 5
+
+    "manual"     → step-by-step with per-task approvals
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ```
+
+  When user types "autopilot":
+  1. Write to progress.json:
+     ```json
+     "autopilot_mode": true,
+     "autopilot_sprint": 1,
+     "autopilot_total_sprints": [N],
+     "autopilot_total_tasks": [N],
+     "autopilot_tasks_done": 0
+     ```
+  2. Announce: "🤖 Autopilot ON — developing [N] sprints. Come back at Gate 5."
+  3. Proceed to Gate 4 — develop ALL tasks without stopping
+
+  When user types "manual":
+  1. Write to progress.json: `"autopilot_mode": false`
+  2. Proceed to Gate 4 with normal per-task flow
+
 GATE 4 — Feature Development          ← Continuous Development (Rule 6 + Rule 7)
 
   ⚠️ IMPORTANT: After Gate 3 approval, develop ALL tasks continuously.
   Do NOT stop for per-task approval. Only stop at Gate 5 when ALL tasks are done.
+
+  ⚠️ AUTOPILOT: If autopilot_mode=true in progress.json — no announcements,
+  no questions, no per-task stops. Handle all blockers silently (fix and continue).
+  Rate-limit pauses auto-resume via cron. Next human interaction: Gate 5 only.
 
   PARALLEL TRACKS (Rule 7):
   ┌─────────────────────────────────────────────────────────────┐
@@ -208,7 +249,12 @@ GATE 4 — Feature Development          ← Continuous Development (Rule 6 + Rul
     7. DevOps → PROC-GH-08: merge PR, close issue
        ⚠️ If merge conflict → follow PROC-GH-13 (conflict resolution)
     8. PM     → PROC-NT-06: update Notion task → "Done"
+    9. Update progress.json:
+       - Increment `autopilot_tasks_done` by 1 (if autopilot_mode=true)
+       - Increment `tasks_this_session` by 1
+       - Update `autopilot_sprint` when moving to next sprint
     → proceed to next task (NO STOP between tasks)
+    → if autopilot_mode=true: no announcements between tasks — silent continuation
 
 GATE 5 — Quality & Delivery           ← HARD STOP: user must approve before deploy
   QA       → read docs/brd.html → write + run tests → coverage report
@@ -230,4 +276,7 @@ GATE 5 — Quality & Delivery           ← HARD STOP: user must approve before 
 ```
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 

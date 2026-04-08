@@ -1,15 +1,21 @@
 # devstarter-svn.md — Shared SVN Procedures
 
+**Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
+Read `~/.claude/sdlc/devstarter-vcs-common.md` — do not duplicate those definitions here.
+
 ## Purpose
 
-This file contains shared SVN (Subversion) procedures used by all DevStarter workflows
-when `VCS_TYPE=svn` or `VCS_SECONDARY_1/2=svn` is set in `.project.env`.
+This file contains SVN-specific procedures (`svn`, `git-svn` CLI) used by all DevStarter
+workflows when `VCS_TYPE=svn` or `VCS_SECONDARY_1/2=svn` is set in `.project.env`.
 
 Two usage modes:
 1. **Primary VCS (`VCS_TYPE=svn`)** — SVN is the single source of truth, no git
 2. **Secondary/mirror (`VCS_SECONDARY=svn`)** — git is primary, SVN receives git-svn commits
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 
 ## Prerequisites Check
 

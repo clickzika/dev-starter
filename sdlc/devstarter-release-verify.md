@@ -174,6 +174,9 @@ echo "✅ Local staging cleaned up"
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## PHASE 6 — UAT (User Acceptance Testing)
 
 ### Step 1 — Merge develop → uat

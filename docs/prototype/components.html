@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Library — DevStarter</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        accent: '#e94560',
+        'accent-dark': '#d63851',
+        'ds-blue': '#3b82f6',
+        'ds-purple': '#8b5cf6',
+        'ds-amber': '#f59e0b',
+        'ds-green': '#10b981',
+        'ds-red': '#ef4444',
+        'ds-orange': '#f97316',
+        'ds-cyan': '#06b6d4',
+        'ds-pink': '#ec4899',
+      }
+    }
+  }
+}
+</script>
+<style>
+  :root { --accent: #e94560; }
+  .component-section { scroll-margin-top: 80px; }
+  .nav-link { transition: all 0.15s; }
+  .nav-link:hover { color: var(--accent); }
+  .nav-link.active { color: var(--accent); border-left-color: var(--accent); }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+
+<!-- ═══ HEADER ═══ -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+  <div class="flex items-center justify-between px-8 h-14">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center text-white font-bold text-sm">DS</div>
+      <span class="font-bold text-lg">DevStarter</span>
+      <span class="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">Component Library</span>
+    </div>
+    <div class="text-xs text-gray-400">@devstarter-uxui · v1.0 · 2026-04-05</div>
+  </div>
+</header>
+
+<!-- ═══ LAYOUT ═══ -->
+<div class="flex mt-14 min-h-screen">
+
+  <!-- Sidebar Nav -->
+  <nav class="w-56 fixed top-14 bottom-0 bg-gray-50 border-r border-gray-200 overflow-y-auto p-4">
+    <div class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Sections</div>
+    <ul class="space-y-1">
+      <li><a href="#typography" class="nav-link flex items-center gap-2 text-sm text-gray-600 py-1.5 px-3 rounded border-l-2 border-transparent hover:bg-gray-100">&#128216; Typography</a></li>
+      <li><a href="#colors" class="nav-link flex items-center gap-2 text-sm text-gray-600 py-1.5 px-3 rounded border-l-2 border-transparent hover:bg-gray-100">&#127912; Colors</a></li>
+      <li><a href="#buttons" class="nav-link flex items-center gap-2 text-sm text-gray-600 py-1.5 px-3 rounded border-l-2 border-transparent hover:bg-gray-100">&#128073; Buttons</a></li>
+      <li><a href="#forms" class="nav-link flex items-center gap-2 text-sm text-gray-600 py-1.5 px-3 rounded border-l-2 border-transparent hover:bg-gray-100">&#128221; Forms</a></li>
+      <li><a href="#data-display" class="nav-link flex items-center gap-2 text-sm text-gray-600 py-1.5 px-3 rounded border-l-2 border-transparent hover:bg-gray-100">&#128202; Data Display</a></li>
+      <li><a href="#navigation" class="nav-link flex items-center gap-2 text-sm text-gray-600 py-1.5 px-3 rounded border-l-2 border-transparent hover:bg-gray-100">&#128204; Navigation</a></li>
+      <li><a href="#feedback" class="nav-link flex items-center gap-2 text-sm text-gray-600 py-1.5 px-3 rounded border-l-2 border-transparent hover:bg-gray-100">&#128276; Feedback</a></li>
+      <li><a href="#layout" class="nav-link flex items-center gap-2 text-sm text-gray-600 py-1.5 px-3 rounded border-l-2 border-transparent hover:bg-gray-100">&#9881; Layout</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="ml-56 flex-1 p-10 max-w-5xl">
+
+    <!-- ═══ 1. TYPOGRAPHY ═══ -->
+    <section id="typography" class="component-section mb-16">
+      <div class="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
+        <div class="w-8 h-8 bg-ds-blue rounded-lg flex items-center justify-center text-white font-bold text-sm">1</div>
+        <h2 class="text-2xl font-bold">Typography</h2>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 p-8 space-y-4 mb-4">
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Display / Page Title</div>
+          <h1 class="text-4xl font-bold tracking-tight text-gray-900">DevStarter — Build Anything</h1>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Section Header (H2)</div>
+          <h2 class="text-2xl font-bold text-gray-800">Business Requirements Document</h2>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Subsection (H3)</div>
+          <h3 class="text-lg font-semibold text-gray-700 border-l-4 pl-3" style="border-color:var(--accent)">Functional Requirements</h3>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Body Text</div>
+          <p class="text-sm text-gray-600 leading-relaxed">DevStarter is a drop-in workflow system for Claude Code. Installing it gives any project a complete software team — 13 specialist AI agents, 24 slash commands, and 28+ SDLC runbooks — with a 5-gate approval workflow.</p>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Code / Monospace</div>
+          <code class="text-sm bg-red-50 text-red-600 px-2 py-0.5 rounded font-mono">/devstarter-new React SaaS app</code>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Code Block</div>
+          <pre class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-xs font-mono text-gray-700 overflow-x-auto">git commit -m "feat: add /devstarter-document command"
+git tag v1.4.1
+git push release main v1.4.1</pre>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Caption / Meta</div>
+          <span class="text-xs text-gray-400">Version 1.4.1 · 2026-04-05 · @devstarter-ba</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 2. COLORS ═══ -->
+    <section id="colors" class="component-section mb-16">
+      <div class="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
+        <div class="w-8 h-8 bg-ds-purple rounded-lg flex items-center justify-center text-white font-bold text-sm">2</div>
+        <h2 class="text-2xl font-bold">Colors</h2>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 p-8">
+        <div class="mb-6">
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Accent / Brand</div>
+          <div class="flex gap-3">
+            <div class="text-center"><div class="w-16 h-16 rounded-xl shadow-sm mb-1" style="background:#e94560"></div><div class="text-xs text-gray-500">accent</div><div class="text-xs text-gray-400">#e94560</div></div>
+            <div class="text-center"><div class="w-16 h-16 rounded-xl shadow-sm mb-1 bg-red-100"></div><div class="text-xs text-gray-500">accent-light</div><div class="text-xs text-gray-400">#d63851</div></div>
+          </div>
+        </div>
+        <div class="mb-6">
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Section Colors (1–8)</div>
+          <div class="flex flex-wrap gap-3">
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-ds-blue"></div><div class="text-xs text-gray-400">s1 blue</div></div>
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-ds-purple"></div><div class="text-xs text-gray-400">s2 purple</div></div>
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-ds-amber"></div><div class="text-xs text-gray-400">s3 amber</div></div>
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-ds-green"></div><div class="text-xs text-gray-400">s4 green</div></div>
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-ds-red"></div><div class="text-xs text-gray-400">s5 red</div></div>
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-ds-orange"></div><div class="text-xs text-gray-400">s6 orange</div></div>
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-ds-cyan"></div><div class="text-xs text-gray-400">s7 cyan</div></div>
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-ds-pink"></div><div class="text-xs text-gray-400">s8 pink</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Status Colors</div>
+          <div class="flex gap-3">
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-amber-400"></div><div class="text-xs text-gray-400">Draft</div></div>
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-blue-500"></div><div class="text-xs text-gray-400">Review</div></div>
+            <div class="text-center"><div class="w-12 h-12 rounded-lg mb-1 bg-emerald-500"></div><div class="text-xs text-gray-400">Approved</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 3. BUTTONS ═══ -->
+    <section id="buttons" class="component-section mb-16">
+      <div class="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
+        <div class="w-8 h-8 bg-ds-amber rounded-lg flex items-center justify-center text-white font-bold text-sm">3</div>
+        <h2 class="text-2xl font-bold">Buttons</h2>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 p-8 space-y-6">
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Primary</div>
+          <div class="flex flex-wrap gap-3 items-center">
+            <button class="px-5 py-2 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90" style="background:#e94560">Approve Gate</button>
+            <button class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-all">Save Checkpoint</button>
+            <button class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 transition-all">Deploy Release</button>
+            <button class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-red-600 hover:bg-red-700 transition-all">Hotfix</button>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Secondary / Outline</div>
+          <div class="flex flex-wrap gap-3 items-center">
+            <button class="px-5 py-2 rounded-lg text-sm font-semibold border-2 transition-all hover:bg-gray-50" style="border-color:#e94560;color:#e94560">Revise</button>
+            <button class="px-4 py-2 rounded-lg text-sm font-semibold border border-gray-300 text-gray-700 hover:bg-gray-50 transition-all">Cancel</button>
+            <button class="px-4 py-2 rounded-lg text-sm font-semibold border border-blue-300 text-blue-600 hover:bg-blue-50 transition-all">View Docs</button>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Sizes</div>
+          <div class="flex flex-wrap gap-3 items-center">
+            <button class="px-3 py-1 rounded text-xs font-semibold text-white" style="background:#e94560">Small</button>
+            <button class="px-4 py-2 rounded-lg text-sm font-semibold text-white" style="background:#e94560">Medium</button>
+            <button class="px-6 py-3 rounded-xl text-base font-semibold text-white" style="background:#e94560">Large</button>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">States</div>
+          <div class="flex flex-wrap gap-3 items-center">
+            <button class="px-4 py-2 rounded-lg text-sm font-semibold text-white" style="background:#e94560">Active</button>
+            <button class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-gray-400 cursor-not-allowed" disabled>Disabled</button>
+            <button class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-blue-600 flex items-center gap-2">
+              <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+              Loading...
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 4. FORMS ═══ -->
+    <section id="forms" class="component-section mb-16">
+      <div class="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
+        <div class="w-8 h-8 bg-ds-green rounded-lg flex items-center justify-center text-white font-bold text-sm">4</div>
+        <h2 class="text-2xl font-bold">Forms</h2>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 p-8 space-y-6">
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Text Input</div>
+          <div class="space-y-3 max-w-md">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
+              <input type="text" placeholder="e.g. My SaaS App" class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:border-transparent transition-all" style="--tw-ring-color:#e94560" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Description <span class="text-gray-400 font-normal">(optional)</span></label>
+              <textarea rows="3" placeholder="Describe your project..." class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm resize-none focus:outline-none focus:ring-2 transition-all"></textarea>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Select / Dropdown</div>
+          <div class="max-w-md">
+            <label class="block text-sm font-medium text-gray-700 mb-1">VCS Type</label>
+            <select class="w-full px-3 py-2 rounded-lg border border-gray-300 text-sm bg-white focus:outline-none">
+              <option>GitHub</option>
+              <option>GitLab</option>
+              <option>SVN</option>
+              <option>Azure DevOps</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Checkboxes & Radio</div>
+          <div class="space-y-2">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="rounded" checked /><span class="text-sm text-gray-700">Generate CLAUDE.md</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="rounded" /><span class="text-sm text-gray-700">Setup Notion board</span></label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" class="rounded" /><span class="text-sm text-gray-700">Create GitHub repo</span></label>
+          </div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Input States</div>
+          <div class="space-y-3 max-w-md">
+            <input type="text" value="Valid input" class="w-full px-3 py-2 rounded-lg border border-emerald-400 text-sm bg-emerald-50 focus:outline-none" />
+            <input type="text" value="Error input" class="w-full px-3 py-2 rounded-lg border border-red-400 text-sm bg-red-50 focus:outline-none" />
+            <input type="text" placeholder="Disabled" disabled class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm bg-gray-50 cursor-not-allowed text-gray-400" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 5. DATA DISPLAY ═══ -->
+    <section id="data-display" class="component-section mb-16">
+      <div class="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
+        <div class="w-8 h-8 bg-ds-red rounded-lg flex items-center justify-center text-white font-bold text-sm">5</div>
+        <h2 class="text-2xl font-bold">Data Display</h2>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 p-8 space-y-8">
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Badges</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-emerald-100 text-emerald-700">Must</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-blue-100 text-blue-700">Should</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-gray-100 text-gray-600">Could</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-red-100 text-red-600">Won't</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-amber-100 text-amber-700">Draft</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-blue-100 text-blue-600">Review</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-emerald-100 text-emerald-600">Approved</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide bg-purple-100 text-purple-600">In Progress</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Table</div>
+          <div class="overflow-hidden rounded-lg border border-gray-200">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="bg-gray-50 border-b-2" style="border-color:#e94560">
+                  <th class="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Command</th>
+                  <th class="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Category</th>
+                  <th class="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Inline Args</th>
+                  <th class="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wide text-gray-500">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr class="hover:bg-gray-50 transition-colors"><td class="px-4 py-3 font-mono text-xs text-red-600">/devstarter-new</td><td class="px-4 py-3 text-gray-600">Setup</td><td class="px-4 py-3"><span class="text-emerald-600">✓</span></td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Ready</span></td></tr>
+                <tr class="bg-gray-50 hover:bg-gray-100 transition-colors"><td class="px-4 py-3 font-mono text-xs text-red-600">/devstarter-change</td><td class="px-4 py-3 text-gray-600">Daily</td><td class="px-4 py-3"><span class="text-emerald-600">✓</span></td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Ready</span></td></tr>
+                <tr class="hover:bg-gray-50 transition-colors"><td class="px-4 py-3 font-mono text-xs text-red-600">/devstarter-release</td><td class="px-4 py-3 text-gray-600">Production</td><td class="px-4 py-3"><span class="text-gray-400">—</span></td><td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700">Ready</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Progress Bar</div>
+          <div class="space-y-3 max-w-sm">
+            <div><div class="flex justify-between text-xs text-gray-500 mb-1"><span>Gate Progress</span><span>7/8 docs</span></div><div class="w-full bg-gray-200 rounded-full h-2"><div class="h-2 rounded-full bg-gradient-to-r from-emerald-400 to-emerald-600" style="width:87%"></div></div></div>
+            <div><div class="flex justify-between text-xs text-gray-500 mb-1"><span>Release</span><span>v1.4.1</span></div><div class="w-full bg-gray-200 rounded-full h-2"><div class="h-2 rounded-full" style="width:100%;background:#e94560"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 6. NAVIGATION ═══ -->
+    <section id="navigation" class="component-section mb-16">
+      <div class="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
+        <div class="w-8 h-8 bg-ds-orange rounded-lg flex items-center justify-center text-white font-bold text-sm">6</div>
+        <h2 class="text-2xl font-bold">Navigation</h2>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 p-8 space-y-8">
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Sidebar TOC</div>
+          <div class="w-56 bg-gray-50 rounded-lg border border-gray-200 p-2">
+            <div class="text-xs font-bold uppercase tracking-widest text-gray-400 px-3 py-2 border-b border-gray-200 mb-1">Contents</div>
+            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded text-sm text-white font-medium" style="background:rgba(233,69,96,0.1);border-left:3px solid #e94560;color:#e94560">
+              <span class="w-5 h-5 rounded text-xs font-bold flex items-center justify-center text-white bg-blue-500">1</span> Requirements
+            </a>
+            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded text-sm text-gray-600 hover:bg-gray-100 border-l-2 border-transparent">
+              <span class="w-5 h-5 rounded text-xs font-bold flex items-center justify-center text-white bg-purple-500">2</span> Scope
+            </a>
+            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded text-sm text-gray-600 hover:bg-gray-100 border-l-2 border-transparent">
+              <span class="w-5 h-5 rounded text-xs font-bold flex items-center justify-center text-white bg-amber-500">3</span> Stakeholders
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Breadcrumb</div>
+          <div class="flex items-center gap-2 text-sm text-gray-500">
+            <span class="hover:text-gray-800 cursor-pointer">DevStarter</span>
+            <span class="text-gray-300">/</span>
+            <span class="hover:text-gray-800 cursor-pointer">docs</span>
+            <span class="text-gray-300">/</span>
+            <span class="font-medium text-gray-800">brd.html</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Tab Bar</div>
+          <div class="flex border-b border-gray-200">
+            <button class="px-4 py-2 text-sm font-medium border-b-2 -mb-px" style="border-color:#e94560;color:#e94560">Overview</button>
+            <button class="px-4 py-2 text-sm text-gray-500 hover:text-gray-800 border-b-2 border-transparent -mb-px">Requirements</button>
+            <button class="px-4 py-2 text-sm text-gray-500 hover:text-gray-800 border-b-2 border-transparent -mb-px">Architecture</button>
+            <button class="px-4 py-2 text-sm text-gray-500 hover:text-gray-800 border-b-2 border-transparent -mb-px">History</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 7. FEEDBACK ═══ -->
+    <section id="feedback" class="component-section mb-16">
+      <div class="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
+        <div class="w-8 h-8 bg-ds-cyan rounded-lg flex items-center justify-center text-white font-bold text-sm">7</div>
+        <h2 class="text-2xl font-bold">Feedback</h2>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 p-8 space-y-4">
+        <!-- Note Card -->
+        <div class="rounded-lg p-4 border-l-4 border-blue-400 bg-blue-50">
+          <div class="font-semibold text-sm text-blue-800 mb-1">Note</div>
+          <p class="text-sm text-blue-700">DevStarter has no compiled binaries. All content is plain Markdown or Bash.</p>
+        </div>
+        <!-- Warning Card -->
+        <div class="rounded-lg p-4 border-l-4 border-amber-400 bg-amber-50">
+          <div class="font-semibold text-sm text-amber-800 mb-1">Warning</div>
+          <p class="text-sm text-amber-700">Never commit <code class="bg-amber-100 px-1 rounded">.env</code> to git. Add it to <code class="bg-amber-100 px-1 rounded">.gitignore</code> before the first commit.</p>
+        </div>
+        <!-- Critical Card -->
+        <div class="rounded-lg p-4 border-l-4 border-red-400 bg-red-50">
+          <div class="font-semibold text-sm text-red-800 mb-1">Critical</div>
+          <p class="text-sm text-red-700">STOP at every gate. Do NOT continue until user explicitly types "approve".</p>
+        </div>
+        <!-- Success Card -->
+        <div class="rounded-lg p-4 border-l-4 border-emerald-400 bg-emerald-50">
+          <div class="font-semibold text-sm text-emerald-800 mb-1">✅ Gate 1 Complete</div>
+          <p class="text-sm text-emerald-700">All 8 required documents generated. Type "approve" to proceed to Gate 2.</p>
+        </div>
+        <!-- Gate Box -->
+        <div class="rounded-lg border-2 p-4 text-center" style="border-color:#e94560;background:rgba(233,69,96,0.04)">
+          <div class="text-xs font-bold uppercase tracking-wide mb-2" style="color:#e94560">⛔ GATE 2 APPROVAL REQUIRED</div>
+          <p class="text-sm text-gray-600 mb-3">Review all documents above. Are they accurate?</p>
+          <div class="flex gap-2 justify-center">
+            <button class="px-4 py-1.5 rounded text-sm font-semibold text-white" style="background:#e94560">approve</button>
+            <button class="px-4 py-1.5 rounded text-sm font-semibold border text-gray-600 border-gray-300">revise [notes]</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 8. LAYOUT ═══ -->
+    <section id="layout" class="component-section mb-16">
+      <div class="flex items-center gap-3 mb-6 pb-3 border-b border-gray-200">
+        <div class="w-8 h-8 bg-ds-pink rounded-lg flex items-center justify-center text-white font-bold text-sm">8</div>
+        <h2 class="text-2xl font-bold">Layout</h2>
+      </div>
+
+      <div class="bg-white rounded-xl border border-gray-200 p-8 space-y-8">
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Document Layout (Header + Sidebar + Content)</div>
+          <div class="border border-gray-200 rounded-lg overflow-hidden" style="height:200px">
+            <div class="bg-gray-800 h-10 flex items-center px-4 gap-3">
+              <div class="w-6 h-6 rounded" style="background:#e94560"></div>
+              <div class="text-white text-xs font-bold">DevStarter</div>
+              <div class="text-gray-400 text-xs ml-auto">v1.0 · Approved</div>
+            </div>
+            <div class="flex" style="height:calc(200px - 40px)">
+              <div class="w-32 bg-gray-50 border-r border-gray-200 p-2 flex-shrink-0">
+                <div class="text-xs text-gray-400 mb-2">CONTENTS</div>
+                <div class="space-y-1">
+                  <div class="h-2 bg-blue-200 rounded w-full"></div>
+                  <div class="h-2 bg-gray-200 rounded w-5/6"></div>
+                  <div class="h-2 bg-gray-200 rounded w-4/6"></div>
+                  <div class="h-2 bg-gray-200 rounded w-full"></div>
+                </div>
+              </div>
+              <div class="flex-1 bg-white p-4">
+                <div class="h-3 bg-blue-500 rounded w-1/3 mb-3"></div>
+                <div class="space-y-1.5">
+                  <div class="h-2 bg-gray-200 rounded w-full"></div>
+                  <div class="h-2 bg-gray-200 rounded w-5/6"></div>
+                  <div class="h-2 bg-gray-200 rounded w-full"></div>
+                  <div class="h-2 bg-gray-200 rounded w-4/6"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Card Grid</div>
+          <div class="grid grid-cols-3 gap-4">
+            <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
+              <div class="w-8 h-8 rounded-lg bg-blue-500 mb-3"></div>
+              <div class="font-semibold text-sm text-gray-800 mb-1">13 Agents</div>
+              <div class="text-xs text-gray-500">Specialist AI personas</div>
+            </div>
+            <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
+              <div class="w-8 h-8 rounded-lg bg-purple-500 mb-3"></div>
+              <div class="font-semibold text-sm text-gray-800 mb-1">24 Commands</div>
+              <div class="text-xs text-gray-500">Slash command workflows</div>
+            </div>
+            <div class="bg-gray-50 rounded-lg border border-gray-200 p-4">
+              <div class="w-8 h-8 rounded-lg bg-amber-500 mb-3"></div>
+              <div class="font-semibold text-sm text-gray-800 mb-1">28+ Runbooks</div>
+              <div class="text-xs text-gray-500">SDLC workflow files</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-xs text-gray-400 mb-3 font-medium uppercase tracking-wide">Info Card</div>
+          <div class="bg-gray-50 border border-gray-200 rounded-xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-white font-bold" style="background:#e94560">DS</div>
+              <div>
+                <div class="font-semibold text-gray-800 mb-1">DevStarter v1.4.1</div>
+                <div class="text-sm text-gray-500 mb-3">A complete development workflow system for Claude Code.</div>
+                <div class="flex gap-4 text-xs text-gray-400">
+                  <span>&#128197; 2026-04-05</span>
+                  <span>&#128100; clickzika</span>
+                  <span>&#9989; Approved</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>
