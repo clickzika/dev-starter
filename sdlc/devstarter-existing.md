@@ -7,6 +7,9 @@ Follow these phases in order. Do NOT skip any phase.
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## ⚠️ CRITICAL RULES (same as all workflows)
 
 ### Rule 0 — Checkpoint & Auto-Resume (ALWAYS active)
@@ -289,7 +292,8 @@ After Gate 1 approved, before showing work plan:
 
 1. Read `~/.claude/devstarter-github.md` → follow PROC-GH-02 (connect existing repo)
 2. Read `~/.claude/devstarter-notion.md` → follow PROC-NT-01 + PROC-NT-02 (create task board)
-3. Save `.project.env` with NOTION_DATABASE_ID and GITHUB_REPO
+3. Generate `devstarter-config.yml` from `templates/devstarter-config.template.yml` — fill in vcs, pm, ci values
+4. Run sync: `python3 sdlc/devstarter-config-sync.md` → auto-generates `.project.env` for bash compat
 
 Show:
 ```

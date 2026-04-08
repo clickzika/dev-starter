@@ -10,6 +10,9 @@ Agents read this file when GitHub actions are needed.
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## Prerequisites Check
 
 Before any GitHub operation, verify:

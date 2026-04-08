@@ -10,6 +10,9 @@ Used when `.project.env` has `VCS_SECONDARY_1` or `VCS_SECONDARY_2` defined.
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## When to Run
 
 - After every `devstarter-change` feature merge to develop
