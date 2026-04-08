@@ -97,22 +97,20 @@ If below both thresholds → continue to next task normally.
 {
   "workflow": "dev-starter",
   "status": "in_progress",
-  "gate": 2,
-  "current_task": "DBA — database-design.html",
-  "completed_tasks": [
-    "BA — brd.html",
-    "BA + TechLead — srs.html"
-  ],
-  "next_task": "Backend — api-reference.html",
-  "files_modified": [
-    "docs/brd.html",
-    "docs/srs.html",
-    "docs/database-design.html"
-  ],
+  "gate": 4,
+  "autopilot_mode": true,
+  "autopilot_sprint": 2,
+  "autopilot_total_sprints": 4,
+  "autopilot_total_tasks": 32,
+  "autopilot_tasks_done": 11,
+  "current_task": "Sprint 2 — Task 3: Auth middleware",
+  "completed_tasks": ["Sprint 1 — Task 1", "Sprint 1 — Task 2"],
+  "next_task": "Sprint 2 — Task 4: JWT validation",
+  "files_modified": ["src/middleware/auth.ts"],
   "tasks_this_session": 3,
   "files_read_this_session": 7,
   "last_checkpoint": "2026-03-21T14:30:00",
-  "notes": "User approved Gate 1. Working on Gate 2 documents."
+  "notes": "Autopilot active. Sprint 2/4. Resume silently."
 }
 ```
 
@@ -149,9 +147,13 @@ Checkpoint:  [timestamp]
 ขั้นตอน:
 1. อ่าน `memory/progress.json`
 2. ตรวจสอบ `status`:
-   - `paused_limit` → **reset counters**: ตั้ง `tasks_this_session: 0` และ `files_read_this_session: 0` แล้ว resume
-   - `in_progress` / `interrupted` → resume ทันที
-   - `waiting_approval` → แสดง gate และรอ user approve
+   - `paused_limit` →
+     - ถ้า `autopilot_mode: true` → **silent resume**: reset counters silently, ไม่แจ้ง user, ทำต่อทันที
+     - ถ้า `autopilot_mode: false` หรือไม่มี → **reset counters**: ตั้ง `tasks_this_session: 0` และ `files_read_this_session: 0` แล้ว resume พร้อมแจ้ง user
+   - `in_progress` / `interrupted` →
+     - ถ้า `autopilot_mode: true` → resume ทันทีโดยไม่แจ้ง user (silent)
+     - ถ้า `autopilot_mode: false` หรือไม่มี → resume ทันทีพร้อมแสดง resume prompt ปกติ
+   - `waiting_approval` → แสดง gate และรอ user approve (เสมอ — ไม่ข้ามแม้ autopilot)
    - `completed` → ไม่ทำอะไร
 3. อ่าน workflow file จาก `~/.claude/sdlc/`
 4. อ่านไฟล์ที่เกี่ยวข้องจาก disk (ไม่ใช่จาก chat history)
@@ -189,7 +191,7 @@ Checkpoint:  [timestamp]
 
 | สถานการณ์ | วิธีจัดการ |
 |-----------|----------|
-| `tasks_this_session` ถึง threshold | จบ task ปัจจุบัน → save `paused_limit` → หยุด → Cron resume + reset counters |
+| `tasks_this_session` ถึง threshold | จบ task ปัจจุบัน → save `paused_limit` → หยุด → Cron resume + reset counters (silent ถ้า autopilot) |
 | ติด rate limit กลางการเขียนไฟล์ | Cron resume จะเช็คว่าไฟล์เขียนครบมั้ย ถ้าไม่ครบให้เขียนใหม่ |
 | User กลับมาก่อน Cron fires | User พิมพ์ "ทำต่อ" → อ่าน checkpoint → resume ปกติ |
 | Checkpoint file ไม่มี | ไม่ทำอะไร — ไม่มีงานค้าง |
