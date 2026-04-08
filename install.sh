@@ -106,6 +106,10 @@ cp -r "$SOURCE_DIR/sdlc/"*.md "$CLAUDE_DIR/sdlc/" 2>/dev/null || true
 # Copy templates
 cp -r "$SOURCE_DIR/templates/"* "$CLAUDE_DIR/templates/" 2>/dev/null || true
 
+# Copy scripts
+mkdir -p "$CLAUDE_DIR/scripts"
+cp -r "$SOURCE_DIR/scripts/"*.sh "$CLAUDE_DIR/scripts/" 2>/dev/null || true
+
 # Copy root files (never overwrite .env if exists)
 cp "$SOURCE_DIR/devstarter-menu.md" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/.env.example" "$CLAUDE_DIR/" 2>/dev/null || true
