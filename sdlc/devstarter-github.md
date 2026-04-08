@@ -1,9 +1,12 @@
-# dev-github.md — Shared GitHub Procedures
+# devstarter-github.md — Shared GitHub Procedures
+
+**Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
+Read `~/.claude/sdlc/devstarter-vcs-common.md` — do not duplicate those definitions here.
 
 ## Purpose
 
-This file contains shared GitHub procedures used by all dev workflows.
-Agents import these procedures by reading this file when GitHub actions are needed.
+This file contains GitHub-specific procedures (`gh` CLI) used by all DevStarter workflows.
+Agents read this file when GitHub actions are needed.
 
 ---
 
@@ -526,27 +529,11 @@ git merge develop
 
 ### Step 2 — Resolve conflicts
 
-```
-⚠️ MERGE CONFLICT DETECTED
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-Branch: [feature branch]
-Merging from: develop
-Conflicting files:
-  - [file1]
-  - [file2]
-
-Resolution strategy:
-  1. Read both versions of each conflicting file
-  2. Understand the intent of BOTH changes
-  3. Merge manually — preserve both intentions where possible
-  4. If unclear → ask user which version to keep
-  5. NEVER blindly pick "ours" or "theirs"
-```
+See `devstarter-vcs-common.md § Conflict Resolution Protocol` for the resolution strategy and rules.
 
 ### Step 3 — Complete merge
 
 ```bash
-# After resolving all conflicts in the files:
 git add .
 git commit -m "chore: resolve merge conflict with develop
 
@@ -557,12 +544,6 @@ Conflicts resolved:
 git push origin "$FEATURE_BRANCH"
 echo "✅ Conflict resolved and pushed"
 ```
-
-### Rules:
-- **NEVER** use `git checkout --ours .` or `git checkout --theirs .` without reading both sides
-- **ALWAYS** read the conflicting sections and understand what each side intended
-- **ASK** the user if intent is ambiguous
-- **TEST** after resolving — conflicts can introduce subtle bugs
 
 ---
 
@@ -700,28 +681,7 @@ echo "Current version: $LATEST_TAG"
 
 ### Determine bump type
 
-```
-VERSION BUMP RULES
-━━━━━━━━━━━━━━━━━━
-PATCH (v1.0.0 → v1.0.1):
-  - Bug fixes
-  - Hotfixes
-  - Typo/doc fixes
-  - No API or behavior changes
-
-MINOR (v1.0.0 → v1.1.0):
-  - New features (backward compatible)
-  - New API endpoints
-  - New UI screens/components
-  - Non-breaking database additions
-
-MAJOR (v1.0.0 → v2.0.0):
-  - Breaking API changes
-  - Database schema breaking changes
-  - Removed features
-  - Major architecture changes
-  - Incompatible with previous version
-```
+See `devstarter-vcs-common.md § Semantic Versioning Rules` for PATCH/MINOR/MAJOR criteria.
 
 ### Auto-increment
 
@@ -753,21 +713,7 @@ echo "✅ Tagged: $NEXT_VERSION"
 
 ### Decision flow for agents:
 
-```
-Is this a hotfix? (from PROC-GH-12)
-  └── YES → PATCH bump
-
-Is this a release? (from PROC-GH-09)
-  ├── Any breaking changes in this release?
-  │   └── YES → MAJOR bump
-  ├── Any new features?
-  │   └── YES → MINOR bump
-  └── Only fixes/refactors?
-      └── PATCH bump
-
-If unsure → ask user:
-  "This release includes [summary]. Should this be a patch, minor, or major version bump?"
-```
+See `devstarter-vcs-common.md § Semantic Versioning Rules` for the decision flow.
 
 
 ---
