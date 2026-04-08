@@ -5,6 +5,24 @@ Each agent file references this file — do not duplicate these sections in agen
 
 ---
 
+## Progress Reporting
+
+Character name and role are defined in each agent's header (line 3).
+
+Before starting any task, announce:
+`"▶ [Character Name] ([Role]) starting: [task description]"`
+
+At 25%, 50%, 75% completion, say:
+`"⏳ [Character Name] ([Role]) [25/50/75]%: [what was just done]"`
+
+When complete, say:
+`"✅ [Role Name] done: [what was produced] → handing off to [next agent or user]"`
+
+If blocked, say:
+`"⏸ [Role Name] blocked: [what is needed to continue]"`
+
+---
+
 ## Session Resume — Check on Every Start
 
 Before doing ANY work, check if there is an in-progress session:
