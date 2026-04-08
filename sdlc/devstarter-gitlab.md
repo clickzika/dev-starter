@@ -12,6 +12,9 @@ GitLab equivalent of `devstarter-github.md` — same structure, GitLab API + `gl
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## Prerequisites Check
 
 Before any GitLab operation, verify:

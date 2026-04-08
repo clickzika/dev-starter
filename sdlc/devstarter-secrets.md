@@ -10,6 +10,9 @@ claude
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## ⚠️ ABSOLUTE RULES — Never Break These
 
 1. NEVER commit secrets to git — ever

@@ -4,6 +4,9 @@ After BA collects all answers, save as CLAUDE.md in project root.
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 # [PROJECT_NAME] — Claude Code Spec
 
 ## Project Overview

@@ -231,3 +231,6 @@ GATE 5 — Quality & Delivery           ← HARD STOP: user must approve before 
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+

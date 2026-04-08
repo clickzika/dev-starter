@@ -9,6 +9,9 @@ Follow all phases in order. Do NOT skip any phase.
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## ⚠️ CRITICAL RULES
 
 ### Rule 1 — Hard Approval Gates

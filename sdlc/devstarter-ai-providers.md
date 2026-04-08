@@ -11,6 +11,9 @@ When a project uses AI features (LLMs, embeddings, image generation):
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## ⚠️ CRITICAL RULES
 
 ### Rule 1 — Never Hardcode Provider SDK

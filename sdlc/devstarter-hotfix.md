@@ -10,6 +10,9 @@ claude
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## ⚠️ HOTFIX RULES
 
 1. Hotfix goes directly: `main` ← `hotfix/[slug]` ← merge back to `develop`

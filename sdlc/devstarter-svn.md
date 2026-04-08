@@ -14,6 +14,9 @@ Two usage modes:
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## Prerequisites Check
 
 ```bash

@@ -7,6 +7,9 @@ Follow these phases in order. Do NOT skip any phase.
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## ⚠️ CRITICAL RULES (same as all workflows)
 
 ### Rule 0 — Checkpoint & Auto-Resume (ALWAYS active)

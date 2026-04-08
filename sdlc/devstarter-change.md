@@ -16,6 +16,9 @@ claude
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## ⚠️ CRITICAL RULES
 
 ### Rule 0 — Checkpoint & Auto-Resume (ALWAYS active)
