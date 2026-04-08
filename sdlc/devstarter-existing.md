@@ -352,6 +352,46 @@ Estimated gates:
 
 ---
 
+## PHASE 4.5 — Autopilot Prompt (show immediately after plan approval)
+
+Count total tasks from the work plan, then show:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 READY TO DEVELOP — [Project Name]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tasks:  [N]   Tracks:  Backend · Frontend · Infra (parallel)
+
+Next stop after development: Final Gate — Delivery Review
+
+  "autopilot"  → execute all tasks unattended
+                 rate-limit pauses auto-resume via cron
+                 you will be called back only at the final gate
+
+  "manual"     → step-by-step with per-task approvals
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+When user types "autopilot":
+1. Write to progress.json:
+   ```json
+   "autopilot_mode": true,
+   "autopilot_total_tasks": [N],
+   "autopilot_tasks_done": 0
+   ```
+2. Announce: "🤖 Autopilot ON — executing [N] tasks. Come back at the final gate."
+3. Proceed to Phase 5 — execute ALL tasks without stopping
+
+When user types "manual":
+1. Write to progress.json: `"autopilot_mode": false`
+2. Proceed to Phase 5 with normal per-task flow
+
+⚠️ AUTOPILOT in Phase 5: If `autopilot_mode=true` — no announcements between tasks,
+no per-task stops, silent blocker handling (fix and continue), silent cron resume.
+Next human interaction: final delivery gate only.
+
+---
+
 ## PHASE 5 — Execute with Gates
 
 Follow the same Gate structure as new projects.

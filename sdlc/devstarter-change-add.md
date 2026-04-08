@@ -289,6 +289,45 @@ Show summary:
 → Ready to start development
 ```
 
+── AUTOPILOT PROMPT (show immediately after tasks created) ──────────────
+
+Count total tasks from the Notion task list, then show:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 READY TO DEVELOP — [Feature Name]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tasks:  [N]   Tracks:  Backend · Frontend · Infra (parallel)
+
+Next stop after development: Gate A4 — Feature Approval
+
+  "autopilot"  → develop all tasks unattended
+                 rate-limit pauses auto-resume via cron
+                 you will be called back only at Gate A4
+
+  "manual"     → step-by-step with per-task approvals
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+When user types "autopilot":
+1. Write to progress.json:
+   ```json
+   "autopilot_mode": true,
+   "autopilot_total_tasks": [N],
+   "autopilot_tasks_done": 0
+   ```
+2. Announce: "🤖 Autopilot ON — developing [N] tasks. Come back at Gate A4."
+3. Proceed to A-PHASE 5 — develop ALL tasks without stopping
+
+When user types "manual":
+1. Write to progress.json: `"autopilot_mode": false`
+2. Proceed to A-PHASE 5 with normal per-task flow
+
+⚠️ AUTOPILOT in A-PHASE 5: If `autopilot_mode=true` — no announcements between tasks,
+no per-task stops, silent blocker handling (fix and continue), silent cron resume.
+Increment `autopilot_tasks_done` by 1 after each task.
+Next human interaction: Gate A4 only.
+
 ---
 
 ## A-PHASE 5 — Development (Continuous + Parallel)

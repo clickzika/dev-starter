@@ -211,10 +211,19 @@ Checkpoint:  [timestamp]
 3. **ตอนจบ** — cleanup (update status + ลบ Cron)
 
 Workflow ที่ **ต้องใช้**:
-- `dev-starter.md` — ยาวมาก (5 gates, หลายสิบ tasks)
-- `dev-change.md` — หลาย phases
-- `dev-audit.md` — หลาย categories
-- `dev-sprint.md` — หลาย tasks
+- `devstarter-starter-gates.md` — ยาวมาก (5 gates, หลายสิบ tasks) — autopilot prompt หลัง Gate 3
+- `devstarter-existing.md` — หลาย phases — autopilot prompt หลัง Phase 4 plan approval
+- `devstarter-change-add.md` — หลาย phases — autopilot prompt หลัง Gate A3 (tasks created)
+- `devstarter-change-bug.md` — หลาย phases
+- `devstarter-change-remove.md` — หลาย phases
+- `devstarter-audit.md` — หลาย categories
+- `devstarter-sprint.md` — หลาย tasks
+
+**Autopilot resume applies to ALL workflows above.**
+เมื่อ `autopilot_mode: true` ใน progress.json — resume logic ใน Step 3 ใช้ได้กับทุก workflow ไม่ใช่แค่ dev-starter:
+- `paused_limit` + autopilot → silent resume, reset counters, ทำต่อทันที
+- `in_progress` / `interrupted` + autopilot → resume ทันทีโดยไม่แจ้ง user
+- `waiting_approval` → รอ user approve เสมอ (ทุก workflow, ไม่ข้ามแม้ autopilot)
 
 Workflow ที่ **ไม่จำเป็น** (สั้น, จบเร็ว):
 - `dev-env.md`
