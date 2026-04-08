@@ -10,7 +10,12 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
          → PROC-NT-01: find or create Notion parent page
          → PROC-NT-02: create project database (Task Board)
          → PROC-NT-07: create views (Board, By Epic, Sprint, All Tasks)
-  DevOps → save .project.env (NOTION_DATABASE_ID, GITHUB_REPO)
+  DevOps → generate devstarter-config.yml from ~/.claude/templates/devstarter-config.template.yml
+         → fill in: project.name, project.type, project.language from intake answers
+         → fill in: vcs.type, vcs.repo, vcs.branch_strategy, vcs.main_branch, vcs.dev_branch
+         → fill in: pm.type, pm.notion_database_id, pm.notion_board_url
+         → fill in: ci.type, ai.provider, team.skill_level, team.size
+         → run config-sync: python3 sdlc/devstarter-config-sync.md → generates .project.env
   ──────────────────────────────────────────────────
   Show:
     ✅ GitHub: github.com/[user]/[PROJECT_NAME]
@@ -18,6 +23,8 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
     ✅ Branch protection: main protected
     ✅ Templates: PR + Issue templates created
     ✅ Notion views: Board, By Epic, Sprint, All Tasks
+    ✅ devstarter-config.yml — project config created
+    ✅ .project.env — synced from config
   No approval needed — proceed to Gate 1 automatically
 
 GATE 1 — Discovery                    ← HARD STOP: user must approve before Gate 2

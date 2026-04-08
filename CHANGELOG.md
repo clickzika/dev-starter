@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.6.0 (2026-04-08)
+
+### Mandatory devstarter-config.yml — Every Project Must Have One
+
+- **`sdlc/devstarter-starter-gates.md`** — Gate 0 now generates `devstarter-config.yml` from template + syncs `.project.env`; config file is created before any Gate 1 work begins
+- **`sdlc/devstarter-existing.md`** — Phase 3.5 promoted to a hard stop: `devstarter-config.yml` must exist on disk before proceeding to work plan; handles both create and update cases
+- **`agents/shared/devstarter-agent-base.md`** — new `Config Guard` rule: every agent checks for `devstarter-config.yml` on session start and blocks until it exists
+- **`sdlc/devstarter-starter.md`** — Rule 2 "read from disk" now includes `devstarter-config.yml` in the required file list
+- **`update.sh`** — post-update check: warns user if current project is missing `devstarter-config.yml` and directs them to `/devstarter-existing`
+
+---
+
 ## v1.5.0 (2026-04-08)
 
 ### Token Optimization — Leaner Commands, Agents & VCS Runbooks

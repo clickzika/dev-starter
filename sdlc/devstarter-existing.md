@@ -286,17 +286,36 @@ Please review. Are these accurate?
 
 ---
 
-## PHASE 3.5 — GitHub + Notion Setup (after Gate 1 approved)
+## PHASE 3.5 — Config + GitHub + Notion Setup (after Gate 1 approved)
 
 After Gate 1 approved, before showing work plan:
 
-1. Read `~/.claude/devstarter-github.md` → follow PROC-GH-02 (connect existing repo)
-2. Read `~/.claude/devstarter-notion.md` → follow PROC-NT-01 + PROC-NT-02 (create task board)
-3. Generate `devstarter-config.yml` from `templates/devstarter-config.template.yml` — fill in vcs, pm, ci values
-4. Run sync: `python3 sdlc/devstarter-config-sync.md` → auto-generates `.project.env` for bash compat
+### Step 1 — devstarter-config.yml (MANDATORY)
+
+Check if `devstarter-config.yml` exists:
+- **Does NOT exist** → generate it from `~/.claude/templates/devstarter-config.template.yml`
+  - Fill in: `project.name`, `project.type`, `project.language` from discovery
+  - Fill in: `vcs.type`, `vcs.repo`, `vcs.branch_strategy`, `vcs.main_branch`, `vcs.dev_branch`
+  - Fill in: `pm.type` (and pm-specific fields), `ci.type`, `ai.provider`
+  - Fill in: `team.skill_level`, `team.size` from USER.md if available
+  - Fill in: `stack.frontend`, `stack.backend`, `stack.database` from stack detection
+- **Already exists** → read it; update any fields that differ from what was discovered
+
+⛔ Do NOT proceed past this step until `devstarter-config.yml` exists on disk.
+
+### Step 2 — Sync to .project.env
+
+Run: `python3 sdlc/devstarter-config-sync.md` → auto-generates `.project.env` for bash compat.
+
+### Step 3 — GitHub + Notion
+
+1. Read `~/.claude/sdlc/devstarter-github.md` → follow PROC-GH-02 (connect existing repo)
+2. Read `~/.claude/sdlc/devstarter-notion.md` → follow PROC-NT-01 + PROC-NT-02 (create task board)
 
 Show:
 ```
+✅ devstarter-config.yml — created / updated
+✅ .project.env — synced from config
 ✅ GitHub: [repo URL]
 ✅ Notion: [board URL] — Task Board ready
 → Proceeding to work plan...
