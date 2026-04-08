@@ -1,0 +1,45 @@
+# devstarter-config.yml — DevStarter Project Configuration
+# This is the single source of truth for all project settings.
+# Edit this file. Never edit .project.env directly — it is auto-generated.
+# Secrets (API keys, tokens) go in .env — never here.
+#
+# After editing: run `devstarter-config-sync` to regenerate .project.env
+# See: sdlc/devstarter-config-sync.md
+
+project:
+  name: DevStarter
+  description: "A complete development workflow system for Claude Code"
+  version: "1.4.1"         # mirrors VERSION file
+  status: active           # active | archived | migrating | maintenance
+  type: framework          # app | api | framework | library | mobile | ml
+  language: "markdown+bash"
+
+vcs:
+  type: github             # github | gitlab | svn | none
+  repo: clickzika/dev-starter-dev
+  branch_strategy: gitflow # gitflow | trunk | simple | svn-standard
+  main_branch: main
+  dev_branch: develop
+  secondary_1: none        # none | github | gitlab | svn
+  secondary_2: none
+  sync_branches: "main develop"
+
+pm:
+  type: notion             # notion | jira | github-issues | gitlab-issues | linear | trello | none
+  notion_database_id: "339d9f1f-cda1-815b-9b47-c9c6f5a8e54b"
+  notion_board_url: "https://www.notion.so/339d9f1fcda1815b9b47c9c6f5a8e54b"
+
+ci:
+  type: github-actions     # github-actions | gitlab-ci | jenkins | azure-pipelines | none
+
+secrets:
+  backend: env-file        # env-file | vault | aws-secrets-manager | azure-keyvault | gcp-secret-manager
+
+ai:
+  provider: claude         # claude | litellm | openai | gemini | local
+  model: claude-sonnet-4-6
+  # For LiteLLM proxy: provider: litellm, provider_url: http://localhost:4000
+
+team:
+  skill_level: intermediate  # beginner | intermediate | advanced | expert
+  size: solo               # solo | small (2-5) | medium (6-15) | large (15+)
