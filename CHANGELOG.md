@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.7.0 (2026-04-08)
+
+### Autopilot Mode — Extended to Existing + Change Flows
+
+- **`sdlc/devstarter-existing.md`** — new Phase 4.5 autopilot prompt shown immediately after plan approval; `"autopilot"` sets `autopilot_mode=true` + task count in `progress.json`; Phase 5 executes all tasks unattended with silent cron resume; `"manual"` preserves original per-task flow
+- **`sdlc/devstarter-change-add.md`** — autopilot prompt added after Gate A3 (GitHub issues + Notion tasks created); `"autopilot"` runs all A-PHASE 5 development tasks unattended; `autopilot_tasks_done` incremented per task; next human interaction is Gate A4 only
+- **`sdlc/devstarter-checkpoint.md`** — expanded workflow list to all 7 SDLC runbooks with correct `devstarter-` prefixes; added explicit rule: autopilot resume logic (`paused_limit` → silent, `in_progress` → silent, `waiting_approval` → always wait) applies to **all** workflows, not only `devstarter-starter-gates`
+
+---
+
 ## v1.6.1 (2026-04-08)
 
 ### Config Auto-Sync — devstarter-config.yml → .project.env
