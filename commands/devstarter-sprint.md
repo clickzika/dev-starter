@@ -1,4 +1,2 @@
 # /devstarter-sprint — Sprint Planning
-
-Read `~/.claude/sdlc/devstarter-sprint.md` and plan the next sprint.
-Follow all phases in that file.
+Read `~/.claude/sdlc/devstarter-sprint.md` and follow all phases.
