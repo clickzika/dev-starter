@@ -9,7 +9,7 @@
 project:
   name: DevStarter
   description: "A complete development workflow system for Claude Code"
-  version: "1.4.1"         # mirrors VERSION file
+  version: "1.6.1"         # mirrors VERSION file
   status: active           # active | archived | migrating | maintenance
   type: framework          # app | api | framework | library | mobile | ml
   language: "markdown+bash"
@@ -25,7 +25,7 @@ vcs:
   sync_branches: "main develop"
 
 pm:
-  type: notion             # notion | jira | github-issues | gitlab-issues | linear | trello | none
+  type: github-issues      # notion | jira | github-issues | gitlab-issues | linear | trello | none
   notion_database_id: "339d9f1f-cda1-815b-9b47-c9c6f5a8e54b"
   notion_board_url: "https://www.notion.so/339d9f1fcda1815b9b47c9c6f5a8e54b"
 
@@ -41,5 +41,5 @@ ai:
   # For LiteLLM proxy: provider: litellm, provider_url: http://localhost:4000
 
 team:
-  skill_level: intermediate  # beginner | intermediate | advanced | expert
+  skill_level: expert      # beginner | intermediate | advanced | expert
   size: solo               # solo | small (2-5) | medium (6-15) | large (15+)
