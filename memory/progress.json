@@ -1,31 +1,7 @@
 {
-  "workflow": "devstarter-document all",
+  "workflow": "devstarter-change autopilot-mode",
   "status": "completed",
-  "gate": 1,
-  "current_task": null,
-  "completed_tasks": [
-    "BA — docs/brd.html",
-    "DBA — docs/database-design.html",
-    "Backend — docs/api-reference.html",
-    "Security — docs/security-design.html",
-    "DevOps — docs/infrastructure-guide.html",
-    "QA — docs/test-strategy.html",
-    "PM — docs/project-plan.html",
-    "UX/UI — docs/prototype/components.html",
-    "Portal — docs/index.html"
-  ],
-  "next_task": null,
-  "files_modified": [
-    "docs/brd.html",
-    "docs/database-design.html",
-    "docs/api-reference.html",
-    "docs/security-design.html",
-    "docs/infrastructure-guide.html",
-    "docs/test-strategy.html",
-    "docs/project-plan.html",
-    "docs/prototype/components.html",
-    "docs/index.html"
-  ],
-  "last_checkpoint": "2026-04-05T00:10:00",
-  "notes": "All 8 documents + portal index complete. Awaiting gate approval."
+  "completed_at": "2026-04-08T01:00:00",
+  "total_tasks": 3,
+  "notes": "Autopilot mode merged to develop. Gates 3→4 prompt, silent resume in checkpoint, Autopilot Mode section in agent-base."
 }
