@@ -76,7 +76,8 @@ Use the matching template below, then adjust for the specific frameworks chosen.
 │
 ├── docker-compose.yml
 ├── CLAUDE.md
-├── .project.env
+├── devstarter-config.yml   ← primary config (edit this)
+├── .project.env            ← auto-generated from devstarter-config.yml
 ├── .gitignore
 └── README.md
 ```

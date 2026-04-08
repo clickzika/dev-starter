@@ -2,6 +2,7 @@
 
 Read `~/.claude/sdlc/devstarter-existing.md` and setup this project.
 Follow all phases and approval rules in that file.
+Generates `devstarter-config.yml` (primary config) and `.project.env` (bash compat layer).
 
 ---
 
