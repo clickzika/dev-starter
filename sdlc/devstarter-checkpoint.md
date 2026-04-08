@@ -54,6 +54,41 @@ Workflow Start
 ⏱️ Auto-resume ตั้งไว้แล้ว — ถ้าติด rate limit จะกลับมาทำต่อเองภายใน 10 นาที
 ```
 
+### 1b. Limit Check — Before Starting Each New Task
+
+Before beginning any new task (not the current one — the NEXT one),
+run this check and update `tasks_this_session` + `files_read_this_session` in progress.json:
+
+```
+LIMIT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+tasks_this_session:      [N]   threshold: 8
+files_read_this_session: [N]   threshold: 20
+
+If EITHER threshold is reached:
+  1. Finish the CURRENT task completely
+  2. Save checkpoint with status: "paused_limit"
+  3. Announce:
+     "⏸ Approaching rate limit — finishing current task then pausing.
+      Auto-resume via cron within 10 minutes."
+  4. STOP — do NOT start the next task
+  5. Cron will detect "paused_limit" and resume with fresh counters
+
+If below both thresholds → continue to next task normally.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**ค่า threshold แนะนำ:**
+| Workload | tasks threshold | files threshold |
+|----------|----------------|-----------------|
+| Light (small edits) | 12 | 30 |
+| Balanced (default) | 8 | 20 |
+| Heavy (doc generation) | 5 | 12 |
+
+ปรับค่าใน progress.json ถ้าต้องการ — default คือ Balanced.
+
+---
+
 ### 2. Save Checkpoint (ทำหลังจบทุก task)
 
 หลังจากทำแต่ละ task เสร็จ ให้เขียน `memory/progress.json`:
@@ -74,10 +109,22 @@ Workflow Start
     "docs/srs.html",
     "docs/database-design.html"
   ],
+  "tasks_this_session": 3,
+  "files_read_this_session": 7,
   "last_checkpoint": "2026-03-21T14:30:00",
   "notes": "User approved Gate 1. Working on Gate 2 documents."
 }
 ```
+
+**Valid `status` values:**
+
+| Status | Meaning |
+|--------|---------|
+| `in_progress` | Actively working — resume immediately |
+| `paused_limit` | Voluntarily paused at 90% limit — resume after reset |
+| `interrupted` | Crashed mid-task — resume from last checkpoint |
+| `completed` | Workflow finished — do nothing |
+| `waiting_approval` | Stopped at a gate — wait for user "approve" |
 
 **กฏสำคัญ:**
 - เขียน checkpoint **ทุกครั้ง** ที่ task เสร็จ — อย่ารอ
@@ -101,11 +148,16 @@ Checkpoint:  [timestamp]
 
 ขั้นตอน:
 1. อ่าน `memory/progress.json`
-2. อ่าน workflow file จาก `~/.claude/sdlc/`
-3. อ่านไฟล์ที่เกี่ยวข้องจาก disk (ไม่ใช่จาก chat history)
-4. ประกาศว่ากำลัง resume อะไร
-5. ทำ `next_task` ต่อ
-6. **อย่าข้าม gate approval** — ถ้า task สุดท้ายของ gate เสร็จแล้ว ต้องรอ user approve ก่อน
+2. ตรวจสอบ `status`:
+   - `paused_limit` → **reset counters**: ตั้ง `tasks_this_session: 0` และ `files_read_this_session: 0` แล้ว resume
+   - `in_progress` / `interrupted` → resume ทันที
+   - `waiting_approval` → แสดง gate และรอ user approve
+   - `completed` → ไม่ทำอะไร
+3. อ่าน workflow file จาก `~/.claude/sdlc/`
+4. อ่านไฟล์ที่เกี่ยวข้องจาก disk (ไม่ใช่จาก chat history)
+5. ประกาศว่ากำลัง resume อะไร
+6. ทำ `next_task` ต่อ
+7. **อย่าข้าม gate approval** — ถ้า task สุดท้ายของ gate เสร็จแล้ว ต้องรอ user approve ก่อน
 
 ---
 
@@ -137,12 +189,14 @@ Checkpoint:  [timestamp]
 
 | สถานการณ์ | วิธีจัดการ |
 |-----------|----------|
+| `tasks_this_session` ถึง threshold | จบ task ปัจจุบัน → save `paused_limit` → หยุด → Cron resume + reset counters |
 | ติด rate limit กลางการเขียนไฟล์ | Cron resume จะเช็คว่าไฟล์เขียนครบมั้ย ถ้าไม่ครบให้เขียนใหม่ |
 | User กลับมาก่อน Cron fires | User พิมพ์ "ทำต่อ" → อ่าน checkpoint → resume ปกติ |
 | Checkpoint file ไม่มี | ไม่ทำอะไร — ไม่มีงานค้าง |
 | อยู่ตรง gate approval | Resume แล้วรอ user approve — ไม่ข้ามเด็ดขาด |
 | Session ใหม่ (session เก่าตาย) | User เปิด claude ใหม่ → พิมพ์ "ทำต่อ" → อ่าน checkpoint → resume |
 | Cron fires แต่ยังติด rate limit | Cron จะ fire อีกรอบใน 10 นาที — ลองใหม่อัตโนมัติ |
+| `paused_limit` แต่ limit ยังไม่ reset | Cron fire → ยังติด limit → Cron fire ใหม่ใน 10 นาที (auto-retry) |
 
 ---
 

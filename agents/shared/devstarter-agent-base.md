@@ -62,6 +62,51 @@ Your progress.json tells the next session exactly where to pick up.
 
 ---
 
+## Proactive Rate-Limit Check — Before Every New Task
+
+After completing a task and BEFORE starting the next one, check counters:
+
+```
+LIMIT CHECK (run before each new task)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Read tasks_this_session from progress.json (or 0 if not set)
+2. Read files_read_this_session from progress.json (or 0 if not set)
+3. Increment tasks_this_session by 1 (for the task just completed)
+
+If tasks_this_session ≥ 8  OR  files_read_this_session ≥ 20:
+  → Finish current task fully
+  → Save progress.json with:
+      status: "paused_limit"
+      pause_reason: "rate_limit_90pct"
+      tasks_this_session: [current count]
+      files_read_this_session: [current count]
+  → Announce:
+    "⏸ Approaching rate limit — pausing after this task.
+     Auto-resume via cron within 10 minutes."
+  → STOP — do not start the next task
+
+If below both thresholds:
+  → Update progress.json with incremented counters
+  → Continue to next task
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Counter tracking rules:**
+- Increment `tasks_this_session` by 1 after each task completes
+- Increment `files_read_this_session` by the number of files read during that task
+- Counters reset to 0 when cron resumes from `paused_limit` status
+- Counters are stored in `progress.json` — persist across tool calls within a session
+
+**Threshold reference (from devstarter-checkpoint.md):**
+
+| Workload | tasks | files |
+|----------|-------|-------|
+| Light | 12 | 30 |
+| **Balanced (default)** | **8** | **20** |
+| Heavy | 5 | 12 |
+
+---
+
 ## Self-Improvement Protocol
 
 You are designed to grow smarter with every session.
