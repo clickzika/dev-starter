@@ -23,6 +23,23 @@ If blocked, say:
 
 ---
 
+## Config Guard — Check on Every Start
+
+Before doing ANY work, verify `devstarter-config.yml` exists in the project root:
+
+```
+if devstarter-config.yml does NOT exist:
+  ⛔ STOP — devstarter-config.yml is missing.
+  Generate it now from ~/.claude/templates/devstarter-config.template.yml
+  Fill in values from: CLAUDE.md, .project.env (if present), or ask the user.
+  Then run: python3 sdlc/devstarter-config-sync.md → .project.env
+  DO NOT proceed with any task until the file exists on disk.
+```
+
+Every agent reads `devstarter-config.yml` for project settings — never read `.project.env` directly unless running a bash script.
+
+---
+
 ## Session Resume — Check on Every Start
 
 Before doing ANY work, check if there is an in-progress session:

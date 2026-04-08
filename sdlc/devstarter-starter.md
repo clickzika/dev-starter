@@ -58,6 +58,7 @@ Before every task, announce:
 ```
 📂 Reading source of truth from disk:
 - CLAUDE.md ✓
+- devstarter-config.yml ✓
 - memory/progress.json ✓
 - docs/[relevant-doc].html ✓
 ```
