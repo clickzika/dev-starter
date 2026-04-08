@@ -1,5 +1,35 @@
 # Changelog
 
+## v1.5.0 (2026-04-08)
+
+### Token Optimization — Leaner Commands, Agents & VCS Runbooks
+
+- **Command routing registry** (`commands/devstarter-registry.md`) — single lookup table for all 24 commands; 16 thin routing files collapsed from 4 lines → 2 lines each
+- **Agent boilerplate extracted** — `Progress Reporting` + `Shared Protocols` sections stripped from all 13 agent files into `agents/shared/devstarter-agent-base.md`; net −351 lines across agents
+- **VCS common conventions** (`sdlc/devstarter-vcs-common.md`) — branch naming, commit format, .gitignore, labels, semver, and conflict resolution shared across github/gitlab/svn runbooks
+
+### Centralized Config — devstarter-config.yml
+
+- **`devstarter-config.yml`** — new primary config file at project root; replaces `.project.env` as the source of truth
+- **`templates/devstarter-config.template.yml`** — full template with all options documented (GitHub/GitLab/SVN, all PM tools, CI, secrets, AI provider)
+- **`sdlc/devstarter-config-sync.md`** — Python sync script to auto-generate `.project.env` from `devstarter-config.yml` for bash compatibility
+- All 15 SDLC runbooks updated to read `devstarter-config.yml` for project settings
+
+### Proactive Rate-Limit Pause
+
+- **`devstarter-checkpoint.md`** — new `1b. Limit Check` protocol: before each new task, check `tasks_this_session` (≥8) and `files_read_this_session` (≥20) counters
+- **`devstarter-agent-base.md`** — `Proactive Rate-Limit Check` section: finish current task → save `paused_limit` → stop → cron auto-resumes with reset counters
+- New `paused_limit` status in progress.json: voluntary clean pause, safer than mid-task crash
+
+### Autopilot Mode — Unattended Gate 4 Development
+
+- **`devstarter-starter-gates.md`** — after Gate 3 approval, shows sprint/task summary and offers `"autopilot"` / `"manual"` choice
+- `"autopilot"` → runs ALL Gate 4 tasks end-to-end with no user interaction; rate-limit pauses auto-resume via cron; next human interaction is Gate 5 only
+- **`devstarter-checkpoint.md`** — `paused_limit` + `autopilot_mode: true` resumes silently; `in_progress` + autopilot also skips resume prompt
+- **`devstarter-agent-base.md`** — new `## Autopilot Mode` section: no per-task announcements, silent blocker handling, counter updates, Gate 5 callout on completion
+
+---
+
 ## v1.4.1 (2026-04-05)
 
 ### New Command: /devstarter-document

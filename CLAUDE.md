@@ -10,8 +10,8 @@ Name: DevStarter
 Description: A complete development workflow system for Claude Code. Drop it into ~/.claude/ and get a full software team — 13 specialist AI agents, 24 slash commands, 28+ SDLC runbooks, and battle-tested templates — ready to build any project from scratch.
 Repository: https://github.com/clickzika/dev-starter-dev
 Notion Board: https://www.notion.so/339d9f1fcda1815b9b47c9c6f5a8e54b
-Version: 1.4.1
-Status: Active development — IDLE (v1.4.1 shipped)
+Version: 1.5.0
+Status: Active development — IDLE (v1.5.0 shipped)
 Created: 2026-03-22
 Branch Strategy: GitFlow (main / develop / feature/* / hotfix/*)
 
@@ -322,6 +322,7 @@ Every slash command requires:
 | v1.3.0 | Quick-picker + inline args (4 commands), GitLab/SVN runbooks |
 | v1.4.0 | /devstarter-release Strategy I — git auto-detection |
 | v1.4.1 | /devstarter-document — 24th command, standalone doc generator |
+| v1.5.0 | Token optimization, devstarter-config.yml, proactive rate-limit pause, autopilot mode |
 
 ---
 
