@@ -27,13 +27,16 @@ If blocked, say:
 
 Before doing ANY work, check if there is an in-progress session:
 
-1. Read `memory/progress.json` — if it exists, show the resume prompt:
-   ```
-   🔄 PREVIOUS SESSION DETECTED
-   Gate: [gate] | Task: [task] | Status: [status]
-   Last: [last step] | Next: [next step]
-   Continue? (yes / restart / show details)
-   ```
+1. Read `memory/progress.json` — if it exists:
+   - If `autopilot_mode: true` AND status is `in_progress` or `paused_limit`:
+     → **Silent resume** — do NOT show prompt, do NOT ask user. Reset counters if `paused_limit`, then continue from `next_task` immediately.
+   - Otherwise, show the resume prompt:
+     ```
+     🔄 PREVIOUS SESSION DETECTED
+     Gate: [gate] | Task: [task] | Status: [status]
+     Last: [last step] | Next: [next step]
+     Continue? (yes / restart / show details)
+     ```
 2. If user says "yes" or "continue" → pick up from where it stopped
 3. If no `progress.json` → start fresh as normal
 
@@ -104,6 +107,54 @@ If below both thresholds:
 | Light | 12 | 30 |
 | **Balanced (default)** | **8** | **20** |
 | Heavy | 5 | 12 |
+
+---
+
+## Autopilot Mode — Silent Execution
+
+When `autopilot_mode: true` in `progress.json`, all agents MUST follow these rules:
+
+```
+AUTOPILOT RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✗ NO per-task announcements ("Starting task X...")
+✗ NO approval prompts between tasks
+✗ NO progress summaries mid-sprint
+✗ NO "should I continue?" questions
+
+✓ Fix blockers silently — then continue
+✓ Save progress.json after every task
+✓ Rate-limit pause → cron resumes silently
+✓ ONLY stop at Gate 5 (quality review) or waiting_approval
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Blocker handling in autopilot:**
+- Missing file or import error → create the file / stub, continue
+- Merge conflict → apply the newer change, continue (log to progress.json notes)
+- Ambiguous requirement → pick the simpler interpretation, continue
+- Hard blocker (missing credential, external API down) → save `waiting_approval` status, show ONE message to user explaining what is needed
+
+**Autopilot counter update (per task):**
+After each task, increment in `progress.json`:
+- `autopilot_tasks_done` + 1
+- `autopilot_sprint` — update when sprint changes
+- `tasks_this_session` + 1
+
+**When autopilot ends:**
+Autopilot automatically ends when `autopilot_tasks_done >= autopilot_total_tasks`.
+At that point → proceed to Gate 5 and call user back:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ AUTOPILOT COMPLETE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Sprints done:  [N]/[N]
+Tasks done:    [N]/[N]
+Pauses:        [N] (auto-resumed via cron)
+
+Proceeding to Gate 5 — Quality & Delivery Review.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
 
 ---
 
