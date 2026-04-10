@@ -3,41 +3,5 @@
   "status": "completed",
   "completed_at": "2026-04-10T00:00:00",
   "feature": "Model tier mapping — devstarter-config.yml + SDLC runbook headers",
-  "tasks_completed": [
-    "Updated devstarter-config.yml — added model_management section with haiku/sonnet/opus IDs and command_tiers",
-    "Added ## Model: header to 29 SDLC runbooks (5 Opus, 19 Sonnet, 5 Haiku)"
-  ],
-  "files_modified": [
-    "devstarter-config.yml",
-    "sdlc/devstarter-audit.md",
-    "sdlc/devstarter-hotfix.md",
-    "sdlc/devstarter-incident.md",
-    "sdlc/devstarter-migrate.md",
-    "sdlc/devstarter-consult.md",
-    "sdlc/devstarter-change.md",
-    "sdlc/devstarter-change-add.md",
-    "sdlc/devstarter-change-bug.md",
-    "sdlc/devstarter-change-remove.md",
-    "sdlc/devstarter-change-resume.md",
-    "sdlc/devstarter-dependency.md",
-    "sdlc/devstarter-document.md",
-    "sdlc/devstarter-handover.md",
-    "sdlc/devstarter-ml-workflow.md",
-    "sdlc/devstarter-monitor.md",
-    "sdlc/devstarter-onboarding.md",
-    "sdlc/devstarter-release.md",
-    "sdlc/devstarter-retrospective.md",
-    "sdlc/devstarter-rollback.md",
-    "sdlc/devstarter-sprint.md",
-    "sdlc/devstarter-starter.md",
-    "sdlc/devstarter-existing.md",
-    "sdlc/devstarter-ai-providers.md",
-    "sdlc/devstarter-env.md",
-    "sdlc/devstarter-secrets.md",
-    "sdlc/devstarter-checkpoint.md",
-    "sdlc/devstarter-config-sync.md",
-    "sdlc/devstarter-dod.md",
-    "sdlc/devstarter-autopr.md"
-  ],
-  "notes": "Feature complete. Gate A4 shown. Pending: user approval + PR merge."
+  "notes": "Shipped on develop (efc1cce). Include in next release."
 }
