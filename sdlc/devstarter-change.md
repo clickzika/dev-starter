@@ -1,5 +1,7 @@
 # dev-change.md — Change Management Workflow
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 Place at `~/.claude/devstarter-change.md`

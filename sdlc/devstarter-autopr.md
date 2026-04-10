@@ -1,6 +1,8 @@
 # dev-autopr.md — Autonomous PR Review
 # DevStarter — GitHub Actions + Claude AI Runbook
 
+## Model: Haiku (`claude-haiku-4-5-20251001`)
+
 ## What is Autonomous PR Review?
 
 Autonomous PR review uses GitHub Actions + Claude API to automatically

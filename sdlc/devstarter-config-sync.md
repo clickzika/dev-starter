@@ -1,5 +1,7 @@
 # devstarter-config-sync.md — Sync devstarter-config.yml → .project.env
 
+## Model: Haiku (`claude-haiku-4-5-20251001`)
+
 ## Purpose
 
 `devstarter-config.yml` is the primary config file. `.project.env` is a

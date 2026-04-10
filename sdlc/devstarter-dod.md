@@ -1,5 +1,7 @@
 # dev-dod.md — Definition of Done + Quality Gates
 
+## Model: Haiku (`claude-haiku-4-5-20251001`)
+
 ## Purpose
 
 This file defines what "done" means at every level.

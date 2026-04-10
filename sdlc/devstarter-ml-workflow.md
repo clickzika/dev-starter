@@ -1,6 +1,8 @@
 # dev-ml-workflow.md — AI/ML Project Workflow
 # DevStarter MLOps Runbook
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 Use when starting or working on an AI/ML project:

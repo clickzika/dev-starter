@@ -1,5 +1,8 @@
 # dev-migrate.md — Migration Workflow
 
+## Model: Opus (`claude-opus-4-6`)
+> Deep reasoning required — run `/model opus` before this workflow.
+
 ## Instructions for Claude Code
 
 This workflow is for migrating an existing project to a new tech stack,

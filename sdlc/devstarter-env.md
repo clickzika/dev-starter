@@ -1,5 +1,7 @@
 # dev-env.md — Local Development Environment Setup
 
+## Model: Haiku (`claude-haiku-4-5-20251001`)
+
 ## How to Use
 
 When setting up a local dev environment from scratch:

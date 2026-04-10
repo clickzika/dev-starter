@@ -40,6 +40,42 @@ ai:
   model: claude-sonnet-4-6
   # For LiteLLM proxy: provider: litellm, provider_url: http://localhost:4000
 
+model_management:
+  # Model IDs — update here when Anthropic releases new versions
+  haiku:  claude-haiku-4-5-20251001    # Fast + cheap — mechanical tasks
+  sonnet: claude-sonnet-4-6            # Balanced   — standard dev workflows
+  opus:   claude-opus-4-6              # Most capable — complex reasoning
+
+  # Switch model in Claude Code: /model haiku | /model sonnet | /model opus
+  # Each SDLC runbook also declares its recommended tier in a ## Model: header.
+  command_tiers:
+    opus:
+      - devstarter-audit      # Security review, architecture analysis
+      - devstarter-hotfix     # Critical production bug fixes
+      - devstarter-incident   # Incident root cause + post-mortem
+      - devstarter-migrate    # Stack migration decisions
+      - devstarter-consult    # Nuanced trade-off analysis
+    sonnet:
+      - devstarter-new        # Scaffold new project
+      - devstarter-change     # Feature / fix / remove
+      - devstarter-existing   # Onboard existing repo
+      - devstarter-release    # CHANGELOG, version bump, deploy
+      - devstarter-sprint     # Sprint planning + Notion tasks
+      - devstarter-document   # Generate HTML docs
+      - devstarter-onboard    # Team onboarding plan
+      - devstarter-handover   # Project handover docs
+      - devstarter-retro      # Retrospective writeup
+      - devstarter-dependency # Dependency upgrade analysis
+      - devstarter-rollback   # Rollback workflow
+      - devstarter-monitor    # Monitoring setup plan
+    haiku:
+      - devstarter-context    # Context refresh (file reads only)
+      - devstarter-menu       # Menu + routing display
+      - devstarter-export     # File archive / copy
+      - devstarter-import     # File restore
+      - devstarter-env        # .env file generation
+      - devstarter-secrets    # Secrets template rendering
+
 team:
   skill_level: expert      # beginner | intermediate | advanced | expert
   size: solo               # solo | small (2-5) | medium (6-15) | large (15+)

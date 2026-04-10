@@ -1,5 +1,8 @@
 # dev-incident.md — Production Incident Response
 
+## Model: Opus (`claude-opus-4-6`)
+> Deep reasoning required — run `/model opus` before this workflow.
+
 ## How to Use
 
 When production is having issues (outage, degradation, security breach):

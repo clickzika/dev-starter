@@ -1,5 +1,7 @@
 # dev-existing.md — Existing Project Onboarding
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## Instructions for Claude Code
 
 This workflow is for projects that already have code.

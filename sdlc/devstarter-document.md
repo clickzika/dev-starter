@@ -1,5 +1,7 @@
 # devstarter-document.md — Document Generator Workflow
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## Purpose
 
 Generate or regenerate a specific project document at any time —

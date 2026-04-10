@@ -1,5 +1,7 @@
 # OPERATION B — REMOVE FEATURE
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ---
 
 ## B-PHASE 1 — Identify Feature to Remove

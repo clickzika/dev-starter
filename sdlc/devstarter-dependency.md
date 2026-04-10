@@ -1,5 +1,7 @@
 # dev-dependency.md — Dependency + Shared Library Updates
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 When updating packages, shared libraries, or cross-project dependencies:

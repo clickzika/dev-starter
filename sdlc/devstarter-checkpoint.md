@@ -1,5 +1,7 @@
 # dev-checkpoint.md — Checkpoint & Auto-Resume Protocol
 
+## Model: Haiku (`claude-haiku-4-5-20251001`)
+
 ## Purpose
 
 Prevents work loss when Claude Code hits rate limits during long workflows.

@@ -1,5 +1,8 @@
 # dev-consult.md — Consultation & Solution Advice
 
+## Model: Opus (`claude-opus-4-6`)
+> Deep reasoning required — run `/model opus` before this workflow.
+
 ## How to Use
 
 Place at `~/.claude/sdlc/devstarter-consult.md`

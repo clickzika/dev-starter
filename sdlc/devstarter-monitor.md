@@ -1,5 +1,7 @@
 # dev-monitor.md — Monitoring + Observability Setup
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 When setting up monitoring for a deployed project:
