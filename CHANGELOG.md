@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.8.0 (2026-04-10)
+
+### Model Tier Mapping — Per-Command Model Selection
+
+- **`devstarter-config.yml`** — new `model_management:` section; declares `haiku`, `sonnet`, and `opus` model IDs as the single source of truth; `command_tiers` map lists which commands belong to each tier (5 opus, 12 sonnet, 6 haiku); update model IDs here when Anthropic releases new versions
+- **29 SDLC runbooks** — each workflow runbook now opens with a `## Model: [tier] (model-id)` header so users know which Claude model to switch to before running the command
+  - **Opus** (5): `audit`, `hotfix`, `incident`, `migrate`, `consult` — deep reasoning, critical production decisions
+  - **Sonnet** (19): `change`, `change-add/bug/remove/resume`, `existing`, `release`, `sprint`, `document`, `onboard`, `handover`, `retro`, `dependency`, `rollback`, `monitor`, `autopr`, `ml-workflow`, `ai-providers`, `starter`
+  - **Haiku** (5): `env`, `secrets`, `checkpoint`, `config-sync`, `dod` — mechanical, lightweight tasks
+
+---
+
 ## v1.7.0 (2026-04-08)
 
 ### Autopilot Mode — Extended to Existing + Change Flows

@@ -9,7 +9,7 @@
 project:
   name: DevStarter
   description: "A complete development workflow system for Claude Code"
-  version: "1.6.1"         # mirrors VERSION file
+  version: "1.8.0"         # mirrors VERSION file
   status: active           # active | archived | migrating | maintenance
   type: framework          # app | api | framework | library | mobile | ml
   language: "markdown+bash"
