@@ -1,5 +1,7 @@
 # dev-handover.md — Project Handover
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 When a team member leaves or transfers ownership:

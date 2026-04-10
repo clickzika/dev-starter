@@ -1,5 +1,7 @@
 # dev-rollback.md — Production Rollback
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 When a production deploy causes problems and needs to be reverted:

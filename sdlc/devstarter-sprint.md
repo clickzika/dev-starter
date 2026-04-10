@@ -1,5 +1,7 @@
 # dev-sprint.md — Sprint Planning
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 At the start of each sprint:

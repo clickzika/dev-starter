@@ -1,5 +1,7 @@
 # dev-starter.md — Project Spec Intake Template
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use This File
 
 Place this file at `~/.claude/devstarter-starter.md` (global — works across all projects).

@@ -1,5 +1,7 @@
 # dev-retrospective.md — Sprint Retrospective
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 At end of each sprint or milestone:

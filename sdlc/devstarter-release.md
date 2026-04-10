@@ -1,5 +1,7 @@
 # dev-release.md — Release Checklist + Deployment
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 When ready to release a version:

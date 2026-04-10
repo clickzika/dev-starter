@@ -1,5 +1,8 @@
 # dev-audit.md — Audit & Review Workflow
 
+## Model: Opus (`claude-opus-4-6`)
+> Deep reasoning required — run `/model opus` before this workflow.
+
 ## Instructions for Claude Code
 
 This workflow audits an existing codebase for code quality,

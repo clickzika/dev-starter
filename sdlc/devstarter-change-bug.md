@@ -1,5 +1,7 @@
 # OPERATION C — FIX BUG
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ---
 
 ## C-PHASE 1 — Bug Report

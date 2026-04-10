@@ -1,5 +1,7 @@
 # dev-onboarding.md — New Member Onboarding
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 When a new team member joins, run:

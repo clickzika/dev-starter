@@ -1,5 +1,7 @@
 # OPERATION A — ADD FEATURE
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ---
 
 ## A-PHASE 1 — Feature Specification

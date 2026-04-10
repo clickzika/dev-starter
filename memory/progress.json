@@ -1,7 +1,7 @@
 {
-  "workflow": "devstarter-release",
+  "workflow": "devstarter-change-add",
   "status": "completed",
-  "completed_at": "2026-04-08T00:00:00",
-  "version": "v1.6.0",
-  "notes": "v1.6.0 released. Mandatory devstarter-config.yml enforcement across all workflows."
+  "completed_at": "2026-04-10T00:00:00",
+  "feature": "Model tier mapping — devstarter-config.yml + SDLC runbook headers",
+  "notes": "Shipped on develop (efc1cce). Include in next release."
 }
