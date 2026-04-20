@@ -331,6 +331,7 @@ Every slash command requires:
 | v1.8.0 | Model tier mapping — devstarter-config.yml + ## Model: headers in 29 SDLC runbooks |
 | v1.8.1 | Short agent aliases — @pm, @techlead, @ba, @backend, @frontend, @dba, @qa, @security, @devops, @uxui, @docs, @mobile, @mlops |
 | v1.9.0 | Platform features — Worktrees in dev flow, PushNotification on autopilot, Plan mode in consult, WebSearch in dependency |
+| v1.9.1 | setup.sh skill mapping fix + Config Guard added to 15 missing SDLC runbooks |
 
 ---
 
