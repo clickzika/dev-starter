@@ -98,6 +98,10 @@ Sprint:           [current / next]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate A1 — Impact analysis ready. Approve to proceed to document updates?"
+- options: ["approve", "revise"]
+
 ⛔ GATE A1 — wait for approval before touching any file.
 
 ---
@@ -197,6 +201,10 @@ Please review all updated documents.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate A2 — Documents updated. Approve to create tasks and start development?"
+- options: ["approve", "revise"]
+
 ⛔ GATE A2 — wait for approval before creating tasks or writing code.
 
 ### Step A3.7 — Update docs/changerequest-log.html
@@ -275,6 +283,10 @@ Show task list:
   "revise [notes]"     → adjust tasks before creating
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate A3 — Task list ready. Approve to create GitHub issues + Notion tasks?"
+- options: ["approve", "revise"]
 
 ⛔ GATE A3 — wait for approval.
 
@@ -437,6 +449,10 @@ Review findings:
   "revise [notes]" → fix issues and re-submit
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate A4 — All [N] tasks complete. Approve to merge all PRs and mark Done?"
+- options: ["approve", "revise"]
 
 After approval:
 - For EACH task:
