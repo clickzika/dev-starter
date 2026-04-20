@@ -53,6 +53,33 @@ Docker images:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+### Phase 1b — WebSearch Enrichment
+
+For every 🔴 Vulnerable and 🟡 Outdated package found above,
+use `WebSearch` to fetch:
+- Latest stable version number
+- Active CVE IDs and severity (CVSS score)
+- Breaking changes in the target version (if major bump)
+
+Search query pattern:
+```
+[package-name] latest version CVE 2025
+[package-name] [current-version] vulnerability
+```
+
+Append findings to the audit report:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 WEB-ENRICHED FINDINGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[package]  current: [x.y.z] → latest: [a.b.c]
+  CVEs: [CVE-ID] ([severity]) — [one-line description]
+  Breaking changes: [yes/no — summary if yes]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Only search for packages flagged 🔴 or 🟡 — skip ⚪ unused ones.
+
 ---
 
 ## PHASE 2 — Prioritize Updates

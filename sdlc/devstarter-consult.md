@@ -47,6 +47,11 @@ Before advising, read from disk:
 
 ## FLOW
 
+### Step 0 — Enter Plan Mode
+
+Use the `EnterPlanMode` tool immediately before any advice.
+This signals to Claude Code that this session is analysis-only — no file edits, no commands.
+
 ### Step 1 — Understand the Question
 
 If the user's question is clear enough, skip to Step 2.
@@ -136,8 +141,10 @@ Option C: [name] (if applicable)
 
 ### Step 4 — Follow-up Discussion
 
-After delivering advice, the user may:
-- Ask follow-up questions → answer within the same consultation (still no code changes)
+After delivering advice, use `ExitPlanMode` tool to return to normal mode.
+
+The user may then:
+- Ask follow-up questions → re-enter plan mode and answer (still no code changes)
 - Say "ทำเลย" or "implement" → suggest the right command: `/devstarter-change [description]`
 - Say "thanks" or move on → end consultation
 
