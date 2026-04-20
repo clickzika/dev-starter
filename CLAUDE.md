@@ -82,8 +82,9 @@ DevStarter/
 │   ├── shared/
 │   │   ├── devstarter-agent-base.md
 │   │   └── devstarter-vcs-pm-guide.md
+│   └── custom/             ← user custom agents (preserved by update.sh)
 │
-├── commands/               ← 24 slash commands
+├── commands/               ← 25 slash commands
 │   ├── devstarter-new.md
 │   ├── devstarter-change.md
 │   ├── devstarter-existing.md
@@ -106,6 +107,7 @@ DevStarter/
 │   ├── devstarter-import.md
 │   ├── devstarter-update.md
 │   ├── devstarter-consult.md
+│   ├── devstarter-doctor.md
 │   ├── devstarter-rollback.md
 │   └── devstarter-incident.md
 │

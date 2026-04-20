@@ -90,6 +90,15 @@ for folder in agents commands sdlc templates; do
   fi
 done
 
+# Restore agents/custom/ from backup (never overwrite user custom agents)
+if [ -d "$BACKUP_DIR/agents/custom" ]; then
+  mkdir -p "$CLAUDE_DIR/agents/custom"
+  cp -r "$BACKUP_DIR/agents/custom/." "$CLAUDE_DIR/agents/custom/"
+  echo "  Preserved: agents/custom/"
+else
+  mkdir -p "$CLAUDE_DIR/agents/custom"
+fi
+
 # Root files to update (toolkit files only, not user files)
 for f in update.sh install.sh setup.sh devstarter-menu.md VERSION CHANGELOG.md; do
   if [ -f "$TMP_DIR/$f" ]; then

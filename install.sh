@@ -87,6 +87,7 @@ echo -e "${CYAN}${BOLD}Step 3/4 — Installing files...${RESET}"
 
 # Create directory structure
 mkdir -p "$CLAUDE_DIR/agents/shared"
+mkdir -p "$CLAUDE_DIR/agents/custom"
 mkdir -p "$CLAUDE_DIR/agents/teams"
 mkdir -p "$CLAUDE_DIR/commands"
 mkdir -p "$CLAUDE_DIR/sdlc"
