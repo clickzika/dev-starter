@@ -91,6 +91,27 @@ If below both thresholds → continue to next task normally.
 
 ---
 
+### 1b. TaskCreate — Session UI Visibility (ทำตอนเริ่ม workflow)
+
+After setting up Cron, create one UI task per SDLC task using `TaskCreate`:
+
+```
+For each task in the workflow:
+  TaskCreate(
+    description: "[workflow] — [task name]",
+    prompt: "Task [N] of [total]: [task description]"
+  )
+```
+
+This makes tasks visible in the Claude Code UI during the session.
+**TaskCreate is session-scoped** — progress.json handles cross-session resume.
+
+During execution:
+- Before starting a task → `TaskUpdate(task_id, status="in_progress")`
+- After completing a task → `TaskUpdate(task_id, status="completed")`
+
+---
+
 ### 2. Save Checkpoint (ทำหลังจบทุก task)
 
 หลังจากทำแต่ละ task เสร็จ ให้เขียน `memory/progress.json`:
