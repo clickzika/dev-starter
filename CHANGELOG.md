@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.0.1 (2026-04-20)
+
+### Agent Slash Commands — Invoke Any Agent Directly
+
+- **`commands/devstarter-ba.md`** through **`commands/devstarter-mlops.md`** — 13 new slash commands, one per agent; type `/devstarter-ba [task]` to invoke the BA agent directly without going through a workflow
+- **`devstarter-menu.md`** — new AGENTS section listing all 13 agent commands for discoverability
+
+---
+
 ## v2.0.0 (2026-04-20)
 
 ### Native Platform Integration — TaskCreate, AskUserQuestion, agents/custom/, Doctor + Review Commands
