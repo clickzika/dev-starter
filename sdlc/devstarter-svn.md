@@ -1,7 +1,7 @@
 # devstarter-svn.md — Shared SVN Procedures
 
 **Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
-Read `~/.claude/sdlc/devstarter-vcs-common.md` — do not duplicate those definitions here.
+Read `~/.claude/sdlc/devstarter-github.md` (bottom section) — do not duplicate those definitions here.
 
 ## Purpose
 

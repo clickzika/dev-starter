@@ -52,6 +52,10 @@ Show this menu and ask ONE question:
   19. 🤖 New AI/ML Project
   20. 🔬 ML Workflow (train / evaluate / deploy)
 
+── UTILITIES ──────────────────────────────────
+  21. 🩺 Doctor (health check)
+  22. 🔍 Review (PR / branch / current changes)
+
 Type the number of your choice:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
@@ -80,3 +84,5 @@ Route to correct file:
 | 18 | `~/.claude/sdlc/devstarter-monitor.md` |
 | 19 | `~/.claude/sdlc/devstarter-starter.md` (select ML stack) |
 | 20 | `~/.claude/sdlc/devstarter-ml-workflow.md` |
+| 21 | `~/.claude/sdlc/devstarter-doctor.md` |
+| 22 | `~/.claude/sdlc/devstarter-review.md` |

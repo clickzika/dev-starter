@@ -2,6 +2,8 @@
 
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 ## How to Use
 
 At the start of each sprint:
@@ -90,6 +92,10 @@ Total effort: [N] / [N] available capacity
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate S1 — Sprint scope recommended. Approve to create sprint in Notion + GitHub?"
+- options: ["approve", "revise"]
+
 ⛔ GATE S1 — wait for approval before creating sprint.
 
 ---
@@ -119,6 +125,15 @@ Read `~/.claude/devstarter-notion.md` → PROC-NT-04 for each task:
 - Update Sprint field to "Sprint [N]"
 - Keep Status as "To Do"
 
+### TaskCreate — UI Visibility
+For each committed sprint item, call `TaskCreate`:
+```
+TaskCreate(
+  description: "Sprint [N] — [task name]",
+  prompt: "[task description] (@[role], Effort: [S/M/L])"
+)
+```
+
 Show summary:
 ```
 ✅ Sprint [N] created
@@ -126,6 +141,7 @@ Show summary:
   Notion sprint view: [URL]
   [N] issues assigned
   [N] Notion tasks assigned
+  [N] UI tasks created (TaskCreate)
 ```
 
 ---

@@ -82,13 +82,9 @@ DevStarter/
 │   ├── shared/
 │   │   ├── devstarter-agent-base.md
 │   │   └── devstarter-vcs-pm-guide.md
-│   └── teams/
-│       ├── devstarter-engineering.md
-│       ├── devstarter-leadership.md
-│       ├── devstarter-platform.md
-│       └── devstarter-quality.md
+│   └── custom/             ← user custom agents (preserved by update.sh)
 │
-├── commands/               ← 24 slash commands
+├── commands/               ← 25 slash commands
 │   ├── devstarter-new.md
 │   ├── devstarter-change.md
 │   ├── devstarter-existing.md
@@ -111,6 +107,8 @@ DevStarter/
 │   ├── devstarter-import.md
 │   ├── devstarter-update.md
 │   ├── devstarter-consult.md
+│   ├── devstarter-doctor.md
+│   ├── devstarter-review.md
 │   ├── devstarter-rollback.md
 │   └── devstarter-incident.md
 │
@@ -331,6 +329,8 @@ Every slash command requires:
 | v1.8.0 | Model tier mapping — devstarter-config.yml + ## Model: headers in 29 SDLC runbooks |
 | v1.8.1 | Short agent aliases — @pm, @techlead, @ba, @backend, @frontend, @dba, @qa, @security, @devops, @uxui, @docs, @mobile, @mlops |
 | v1.9.0 | Platform features — Worktrees in dev flow, PushNotification on autopilot, Plan mode in consult, WebSearch in dependency |
+| v1.9.1 | setup.sh skill mapping fix + Config Guard added to 15 missing SDLC runbooks |
+| v2.0.0 | Native TaskCreate/TaskUpdate + AskUserQuestion at gates + /devstarter-review + /devstarter-doctor + agents/custom/ |
 
 ---
 

@@ -98,6 +98,10 @@ Sprint:           [current / next]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate A1 — Impact analysis ready. Approve to proceed to document updates?"
+- options: ["approve", "revise"]
+
 ⛔ GATE A1 — wait for approval before touching any file.
 
 ---
@@ -197,6 +201,10 @@ Please review all updated documents.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate A2 — Documents updated. Approve to create tasks and start development?"
+- options: ["approve", "revise"]
+
 ⛔ GATE A2 — wait for approval before creating tasks or writing code.
 
 ### Step A3.7 — Update docs/changerequest-log.html
@@ -276,6 +284,10 @@ Show task list:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate A3 — Task list ready. Approve to create GitHub issues + Notion tasks?"
+- options: ["approve", "revise"]
+
 ⛔ GATE A3 — wait for approval.
 
 ### Step A4.2 — Create GitHub Issues
@@ -284,10 +296,21 @@ Read `~/.claude/devstarter-github.md` → follow PROC-GH-05 for each task.
 ### Step A4.3 — Create Notion Tasks
 Read `~/.claude/devstarter-notion.md` → follow PROC-NT-03 for each task.
 
+### Step A4.4 — TaskCreate for UI Visibility
+For each task, call `TaskCreate` so progress is visible in the Claude Code UI:
+```
+TaskCreate(
+  description: "[Feature Name] — [task name]",
+  prompt: "Implement: [task description] (@[role], Effort: [S/M/L])"
+)
+```
+Store returned task IDs for TaskUpdate calls in A5.2.
+
 Show summary:
 ```
 ✅ [N] GitHub issues created
 ✅ [N] Notion tasks created (Status: To Do)
+✅ [N] UI tasks created (TaskCreate)
 → Ready to start development
 ```
 
@@ -361,7 +384,8 @@ For **each track** (parallel when independent, sequential when dependent):
 For **each task** within a track:
 
 1. **NOTION → In Progress:** Read `~/.claude/devstarter-notion.md` → PROC-NT-04: status → In Progress ⚠️ MANDATORY
-2. Read `~/.claude/devstarter-github.md` → PROC-GH-06: create feature branch
+2. **TaskUpdate → in_progress:** `TaskUpdate(task_id, status="in_progress")` for this task's UI task
+3. Read `~/.claude/devstarter-github.md` → PROC-GH-06: create feature branch
 3. **Enter worktree** — use `EnterWorktree` tool with the feature branch name for isolated working copy
 4. Agent reads relevant docs from disk before coding:
    - @devstarter-backend → docs/api-reference.html + docs/database-design.html
@@ -370,7 +394,8 @@ For **each task** within a track:
 5. Implement code
 6. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
 7. **Exit worktree** — use `ExitWorktree` tool to return to main working copy
-8. **NOTION → In Review:** Read `~/.claude/devstarter-notion.md` → PROC-NT-05: status → In Review ⚠️ MANDATORY
+8. **TaskUpdate → completed:** `TaskUpdate(task_id, status="completed")` for this task's UI task
+9. **NOTION → In Review:** Read `~/.claude/devstarter-notion.md` → PROC-NT-05: status → In Review ⚠️ MANDATORY
 9. Announce progress and **continue to next task immediately** — do NOT wait for approval:
    ```
    ✅ Task [N/total]: [task name]
@@ -424,6 +449,10 @@ Review findings:
   "revise [notes]" → fix issues and re-submit
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate A4 — All [N] tasks complete. Approve to merge all PRs and mark Done?"
+- options: ["approve", "revise"]
 
 After approval:
 - For EACH task:

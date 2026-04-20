@@ -255,6 +255,10 @@ Is this analysis correct?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Codebase analysis complete. Is this correct?"
+- options: ["yes", "revise"]
+
 ⛔ STOP — wait for user to confirm analysis before proceeding.
 
 ---
@@ -285,6 +289,10 @@ Please review. Are these accurate?
   "revise [notes]" → correct any inaccuracies
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate 1 — CLAUDE.md and docs generated. Are these accurate?"
+- options: ["approve", "revise"]
 
 ---
 
@@ -350,6 +358,10 @@ Estimated gates:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Work plan ready. Approve to start development?"
+- options: ["approve", "revise"]
+
 ⛔ STOP — wait for plan approval before starting any work.
 
 ---
@@ -401,9 +413,10 @@ For each task:
 
 1. PM → read `~/.claude/devstarter-notion.md` → PROC-NT-03: create Notion task
 2. DevOps → read `~/.claude/devstarter-github.md` → PROC-GH-05: create GitHub issue
-3. Start work → PROC-GH-06: feature branch, PROC-NT-04: status → In Progress
-4. Complete → PROC-GH-07: PR, PROC-NT-05: status → In Review
-5. Approved → PROC-GH-08: merge, PROC-NT-06: status → Done
+3. `TaskCreate(description: "[task name]", prompt: "[task description]")` → store task_id
+4. Start work → PROC-GH-06: feature branch, PROC-NT-04: status → In Progress, `TaskUpdate(task_id, status="in_progress")`
+5. Complete → PROC-GH-07: PR, PROC-NT-05: status → In Review, `TaskUpdate(task_id, status="completed")`
+6. Approved → PROC-GH-08: merge, PROC-NT-06: status → Done
 - Gate per feature: approve before next feature
 - Revision Protocol: impact analysis before any change
 - Change Impact Map: same cascade rules apply

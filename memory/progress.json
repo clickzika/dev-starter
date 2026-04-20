@@ -2,6 +2,6 @@
   "workflow": "devstarter-change-add",
   "status": "completed",
   "completed_at": "2026-04-20T00:00:00",
-  "feature": "Short Agent Alias Files",
-  "notes": "13 alias files merged to develop. @pm, @techlead, @ba, @backend, @frontend, @dba, @qa, @security, @devops, @uxui, @docs, @mobile, @mlops all active."
+  "feature": "AskUserQuestion at approval gates",
+  "notes": "Merged to develop. All v2.0.0 committed items done. Ready for /devstarter-release v2.0.0."
 }

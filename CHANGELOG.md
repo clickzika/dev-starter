@@ -1,5 +1,25 @@
 # Changelog
 
+## v2.0.0 (2026-04-20)
+
+### Native Platform Integration — TaskCreate, AskUserQuestion, agents/custom/, Doctor + Review Commands
+
+- **`sdlc/devstarter-checkpoint.md`** — new Section 1b: `TaskCreate`/`TaskUpdate` protocol alongside `progress.json`; creates one UI task per SDLC task for session visibility; `TaskUpdate(in_progress)` on start, `TaskUpdate(completed)` on finish; complements cross-session `progress.json` (not a replacement)
+- **`sdlc/devstarter-change-add.md`** — Step A4.4: `TaskCreate` for each task after GitHub/Notion creation, stored task IDs used for `TaskUpdate` calls in A5.2; Step A5.2 steps 2 + 8: `TaskUpdate(in_progress)` / `TaskUpdate(completed)` per task
+- **`sdlc/devstarter-existing.md`** — Phase 5: `TaskCreate` + `TaskUpdate(in_progress/completed)` alongside Notion/GitHub steps
+- **`sdlc/devstarter-sprint.md`** — Phase 4: `TaskCreate` for each sprint item alongside GitHub/Notion creation
+- **`sdlc/devstarter-change-add.md`** — `AskUserQuestion` at gates A1, A2, A3, A4 with approve/revise options; interactive gate prompts replace passive text blocks
+- **`sdlc/devstarter-existing.md`** — `AskUserQuestion` at analysis confirm, Gate 1 (discovery), and work plan approval
+- **`sdlc/devstarter-sprint.md`** — `AskUserQuestion` at Gate S1 sprint scope approval
+- **`agents/custom/`** — new folder for user custom agents; preserved by `update.sh` (backup before overwrite, restore after); `install.sh` creates folder on fresh install; `README.md` documents naming convention and usage
+- **`commands/devstarter-doctor.md` + `sdlc/devstarter-doctor.md`** — new `/devstarter-doctor` command (#21 in menu); health check for core files, 13+13 agents, 25 commands, key SDLC runbooks, config; outputs ✅/⚠️/❌ per category; Model: Haiku
+- **`commands/devstarter-review.md` + `sdlc/devstarter-review.md`** — new `/devstarter-review` command (#22 in menu); 3 modes: PR `#N`, branch name, or current changes; parallel review by @techlead (architecture), @qa (testing), @security (OWASP); outputs 🔴 BLOCKER / 🟡 MAJOR / 🟢 MINOR + verdict; Model: Opus
+- **Cleanup:** `agents/teams/` removed (5 files); `sdlc/devstarter-dod.md` merged into `devstarter-checkpoint.md`; `sdlc/devstarter-vcs-common.md` merged into `devstarter-github.md`
+- **`setup.sh`** — Q0 name prompt → `devName` in USER.md Identity section; Q2b weak skills field; alias map normalisation (`js→javascript`, `node→node.js`, `azure→cloud`, etc.); `WEAK_LEVEL` auto-calculated one tier below default
+- **`sdlc/` 15 runbooks** — Config Guard (`**Config:** Read devstarter-config.yml...`) prepended after `## Model:` header in: audit, autopr, consult, dependency, document, env, handover, incident, ml-workflow, monitor, onboarding, release, retrospective, rollback, sprint
+
+---
+
 ## v1.9.0 (2026-04-20)
 
 ### Platform Features — Claude Code Native Tool Integration
