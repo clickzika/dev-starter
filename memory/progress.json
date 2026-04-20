@@ -1,7 +1,7 @@
 {
-  "workflow": "devstarter-change",
+  "workflow": "devstarter-change-add",
   "status": "completed",
   "completed_at": "2026-04-20T00:00:00",
-  "feature": "v1.9.1 fixes — setup.sh skill mapping + Config Guard in 15 SDLC runbooks",
-  "notes": "Merged to develop. Ready for /devstarter-sprint v2.0.0 scope planning."
+  "feature": "AskUserQuestion at approval gates",
+  "notes": "Merged to develop. All v2.0.0 committed items done. Ready for /devstarter-release v2.0.0."
 }
