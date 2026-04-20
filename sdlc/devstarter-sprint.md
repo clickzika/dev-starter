@@ -92,6 +92,10 @@ Total effort: [N] / [N] available capacity
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate S1 — Sprint scope recommended. Approve to create sprint in Notion + GitHub?"
+- options: ["approve", "revise"]
+
 ⛔ GATE S1 — wait for approval before creating sprint.
 
 ---

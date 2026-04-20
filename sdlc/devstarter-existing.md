@@ -255,6 +255,10 @@ Is this analysis correct?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Codebase analysis complete. Is this correct?"
+- options: ["yes", "revise"]
+
 ⛔ STOP — wait for user to confirm analysis before proceeding.
 
 ---
@@ -285,6 +289,10 @@ Please review. Are these accurate?
   "revise [notes]" → correct any inaccuracies
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate 1 — CLAUDE.md and docs generated. Are these accurate?"
+- options: ["approve", "revise"]
 
 ---
 
@@ -349,6 +357,10 @@ Estimated gates:
   "revise [notes]" → adjust the plan
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Work plan ready. Approve to start development?"
+- options: ["approve", "revise"]
 
 ⛔ STOP — wait for plan approval before starting any work.
 
