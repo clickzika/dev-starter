@@ -362,14 +362,16 @@ For **each task** within a track:
 
 1. **NOTION → In Progress:** Read `~/.claude/devstarter-notion.md` → PROC-NT-04: status → In Progress ⚠️ MANDATORY
 2. Read `~/.claude/devstarter-github.md` → PROC-GH-06: create feature branch
-3. Agent reads relevant docs from disk before coding:
+3. **Enter worktree** — use `EnterWorktree` tool with the feature branch name for isolated working copy
+4. Agent reads relevant docs from disk before coding:
    - @devstarter-backend → docs/api-reference.html + docs/database-design.html
    - @devstarter-frontend → docs/prototype/index.html + docs/brd.html
    - @devstarter-dba → docs/database-design.html
-4. Implement code
-5. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
-6. **NOTION → In Review:** Read `~/.claude/devstarter-notion.md` → PROC-NT-05: status → In Review ⚠️ MANDATORY
-7. Announce progress and **continue to next task immediately** — do NOT wait for approval:
+5. Implement code
+6. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
+7. **Exit worktree** — use `ExitWorktree` tool to return to main working copy
+8. **NOTION → In Review:** Read `~/.claude/devstarter-notion.md` → PROC-NT-05: status → In Review ⚠️ MANDATORY
+9. Announce progress and **continue to next task immediately** — do NOT wait for approval:
    ```
    ✅ Task [N/total]: [task name]
       Branch: [branch]  |  PR: #[N]
@@ -393,6 +395,13 @@ PR REVIEW — review ALL PRs together:
    Severity: 🔴 BLOCKER | 🟡 MAJOR | 🟢 MINOR
    → If 🔴 BLOCKER → fix before showing approval gate
    → If 🟡 MAJOR → list in summary, recommend fix
+
+**If `autopilot_mode=true`** — before showing Gate A4, call `PushNotification`:
+```
+title: "DevStarter — Gate A4 Ready"
+body:  "Feature '[feature name]' — all [N] tasks done. Review and approve to merge."
+```
+This alerts the user without requiring them to watch the terminal.
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

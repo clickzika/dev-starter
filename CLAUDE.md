@@ -328,6 +328,9 @@ Every slash command requires:
 | v1.6.0 | Mandatory devstarter-config.yml for every project, Config Guard in agent-base |
 | v1.6.1 | Config auto-sync: scripts/config-sync.sh + Claude Code PostToolUse hook |
 | v1.7.0 | Autopilot mode extended to /devstarter-existing + /devstarter-change add flows |
+| v1.8.0 | Model tier mapping — devstarter-config.yml + ## Model: headers in 29 SDLC runbooks |
+| v1.8.1 | Short agent aliases — @pm, @techlead, @ba, @backend, @frontend, @dba, @qa, @security, @devops, @uxui, @docs, @mobile, @mlops |
+| v1.9.0 | Platform features — Worktrees in dev flow, PushNotification on autopilot, Plan mode in consult, WebSearch in dependency |
 
 ---
 
