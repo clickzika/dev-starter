@@ -121,6 +121,15 @@ Read `~/.claude/devstarter-notion.md` → PROC-NT-04 for each task:
 - Update Sprint field to "Sprint [N]"
 - Keep Status as "To Do"
 
+### TaskCreate — UI Visibility
+For each committed sprint item, call `TaskCreate`:
+```
+TaskCreate(
+  description: "Sprint [N] — [task name]",
+  prompt: "[task description] (@[role], Effort: [S/M/L])"
+)
+```
+
 Show summary:
 ```
 ✅ Sprint [N] created
@@ -128,6 +137,7 @@ Show summary:
   Notion sprint view: [URL]
   [N] issues assigned
   [N] Notion tasks assigned
+  [N] UI tasks created (TaskCreate)
 ```
 
 ---
