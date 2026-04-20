@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.9.0 (2026-04-20)
+
+### Platform Features — Claude Code Native Tool Integration
+
+- **`sdlc/devstarter-change-add.md`** — Step A5.2 now wraps each task's feature branch in `EnterWorktree`/`ExitWorktree` for isolated working copies; prevents dirty state between parallel tasks
+- **`sdlc/devstarter-change-add.md`** — Gate A4 autopilot path now calls `PushNotification` before showing the approval prompt; users get a system notification when unattended development completes instead of having to watch the terminal
+- **`sdlc/devstarter-consult.md`** — added Step 0: `EnterPlanMode` at consultation start, `ExitPlanMode` after advice delivered; signals to Claude Code that this session is analysis-only
+- **`sdlc/devstarter-dependency.md`** — new Phase 1b WebSearch Enrichment step; after local audit, runs `WebSearch` for latest stable version, active CVE IDs (CVSS severity), and breaking changes for every 🔴 Vulnerable and 🟡 Outdated package found
+
+---
+
+## v1.8.1 (2026-04-20)
+
+### Short Agent Aliases — Type @pm Instead of @devstarter-pm
+
+- **`agents/pm.md`, `agents/techlead.md`, `agents/ba.md`, `agents/backend.md`, `agents/frontend.md`, `agents/dba.md`, `agents/qa.md`, `agents/security.md`, `agents/devops.md`, `agents/uxui.md`, `agents/docs.md`, `agents/mobile.md`, `agents/mlops.md`** — 13 thin alias files; each delegates immediately to the full `devstarter-*.md` spec so aliases stay maintenance-free; `install.sh` copies them automatically via existing `agents/*.md` glob
+- **`CLAUDE.md`** — agent table updated with Short Alias column; alias file convention documented
+
+---
+
 ## v1.8.0 (2026-04-10)
 
 ### Model Tier Mapping — Per-Command Model Selection

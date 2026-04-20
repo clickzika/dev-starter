@@ -1,7 +1,7 @@
 {
   "workflow": "devstarter-change-add",
   "status": "completed",
-  "completed_at": "2026-04-10T00:00:00",
-  "feature": "Model tier mapping — devstarter-config.yml + SDLC runbook headers",
-  "notes": "Shipped on develop (efc1cce). Include in next release."
+  "completed_at": "2026-04-20T00:00:00",
+  "feature": "Short Agent Alias Files",
+  "notes": "13 alias files merged to develop. @pm, @techlead, @ba, @backend, @frontend, @dba, @qa, @security, @devops, @uxui, @docs, @mobile, @mlops all active."
 }
