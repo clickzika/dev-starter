@@ -217,21 +217,23 @@ Do NOT create files without the `devstarter-` prefix (except root files: CLAUDE.
 - When adding a new command: create BOTH files. Register in `devstarter-menu.md`.
 
 ### Agent Character Names (Sanrio Theme)
-| Agent | Character | Role |
-|-------|-----------|------|
-| @devstarter-pm | Hello Kitty | Sprint planning, tracking |
-| @devstarter-techlead | Tuxedo Sam | Architecture, AI/LLM decisions |
-| @devstarter-ba | My Melody | Requirements, BRD, user stories |
-| @devstarter-backend | Badtz-Maru | API, services, server-side |
-| @devstarter-frontend | Cinnamoroll | UI components, state |
-| @devstarter-dba | Pochacco | Schema design, migrations |
-| @devstarter-qa | Keroppi | Testing strategy & automation |
-| @devstarter-security | Kuromi | OWASP, auth, secrets |
-| @devstarter-devops | Pompompurin | CI/CD, infra, Docker |
-| @devstarter-uxui | Kiki | Design system, prototypes |
-| @devstarter-docs | Gudetama | Technical writing, API docs |
-| @devstarter-mobile | Aggretsuko | Flutter, React Native |
-| @devstarter-mlops | (new) | ML pipelines, model serving |
+| Agent | Short Alias | Character | Role |
+|-------|-------------|-----------|------|
+| @devstarter-pm | @pm | Hello Kitty | Sprint planning, tracking |
+| @devstarter-techlead | @techlead | Tuxedo Sam | Architecture, AI/LLM decisions |
+| @devstarter-ba | @ba | My Melody | Requirements, BRD, user stories |
+| @devstarter-backend | @backend | Badtz-Maru | API, services, server-side |
+| @devstarter-frontend | @frontend | Cinnamoroll | UI components, state |
+| @devstarter-dba | @dba | Pochacco | Schema design, migrations |
+| @devstarter-qa | @qa | Keroppi | Testing strategy & automation |
+| @devstarter-security | @security | Kuromi | OWASP, auth, secrets |
+| @devstarter-devops | @devops | Pompompurin | CI/CD, infra, Docker |
+| @devstarter-uxui | @uxui | Kiki | Design system, prototypes |
+| @devstarter-docs | @docs | Gudetama | Technical writing, API docs |
+| @devstarter-mobile | @mobile | Aggretsuko | Flutter, React Native |
+| @devstarter-mlops | @mlops | (new) | ML pipelines, model serving |
+
+**Short aliases** — each agent has a thin alias file at `agents/[shortname].md` so you can type `@pm` instead of `@devstarter-pm`. Aliases mirror the full agent; Claude Code resolves them by filename.
 
 ---
 
