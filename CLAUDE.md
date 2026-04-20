@@ -84,7 +84,7 @@ DevStarter/
 │   │   └── devstarter-vcs-pm-guide.md
 │   └── custom/             ← user custom agents (preserved by update.sh)
 │
-├── commands/               ← 25 slash commands
+├── commands/               ← 38 slash commands (25 workflows + 13 agent direct-invoke)
 │   ├── devstarter-new.md
 │   ├── devstarter-change.md
 │   ├── devstarter-existing.md
@@ -331,6 +331,7 @@ Every slash command requires:
 | v1.9.0 | Platform features — Worktrees in dev flow, PushNotification on autopilot, Plan mode in consult, WebSearch in dependency |
 | v1.9.1 | setup.sh skill mapping fix + Config Guard added to 15 missing SDLC runbooks |
 | v2.0.0 | Native TaskCreate/TaskUpdate + AskUserQuestion at gates + /devstarter-review + /devstarter-doctor + agents/custom/ |
+| v2.0.1 | Agent slash commands — /devstarter-[agent] for all 13 agents |
 
 ---
 

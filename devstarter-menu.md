@@ -56,7 +56,22 @@ Show this menu and ask ONE question:
   21. 🩺 Doctor (health check)
   22. 🔍 Review (PR / branch / current changes)
 
-Type the number of your choice:
+── AGENTS ─────────────────────────────────────
+  /devstarter-ba        Business Analyst
+  /devstarter-pm        Project Manager
+  /devstarter-techlead  Tech Lead
+  /devstarter-backend   Backend Engineer
+  /devstarter-frontend  Frontend Engineer
+  /devstarter-dba       Database Architect
+  /devstarter-qa        QA Engineer
+  /devstarter-security  Security Engineer
+  /devstarter-devops    DevOps Engineer
+  /devstarter-uxui      UX/UI Designer
+  /devstarter-docs      Technical Writer
+  /devstarter-mobile    Mobile Engineer
+  /devstarter-mlops     MLOps Engineer
+
+Type the number of your choice, or /devstarter-[agent] [task] to invoke an agent directly:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
