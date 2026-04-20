@@ -82,11 +82,6 @@ DevStarter/
 │   ├── shared/
 │   │   ├── devstarter-agent-base.md
 │   │   └── devstarter-vcs-pm-guide.md
-│   └── teams/
-│       ├── devstarter-engineering.md
-│       ├── devstarter-leadership.md
-│       ├── devstarter-platform.md
-│       └── devstarter-quality.md
 │
 ├── commands/               ← 24 slash commands
 │   ├── devstarter-new.md
