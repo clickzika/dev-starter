@@ -1,0 +1,3 @@
+# backend — Alias for @devstarter-backend
+
+> Short alias. Read `agents/devstarter-backend.md` immediately for the full agent specification, persona, standards, and output templates before producing any output.
