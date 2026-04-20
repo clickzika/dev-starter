@@ -1,7 +1,7 @@
 {
-  "workflow": "devstarter-change-add",
+  "workflow": "devstarter-change",
   "status": "completed",
   "completed_at": "2026-04-20T00:00:00",
-  "feature": "Short Agent Alias Files",
-  "notes": "13 alias files merged to develop. @pm, @techlead, @ba, @backend, @frontend, @dba, @qa, @security, @devops, @uxui, @docs, @mobile, @mlops all active."
+  "feature": "v1.9.1 fixes — setup.sh skill mapping + Config Guard in 15 SDLC runbooks",
+  "notes": "Merged to develop. Ready for /devstarter-sprint v2.0.0 scope planning."
 }
