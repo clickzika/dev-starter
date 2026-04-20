@@ -2,6 +2,8 @@
 
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 ## How to Use
 
 When updating packages, shared libraries, or cross-project dependencies:
