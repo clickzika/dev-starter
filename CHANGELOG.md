@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.1.0 (2026-04-22)
+
+### Multi-VCS + Multi-PM Selection at Project Creation
+
+- **`sdlc/devstarter-starter-intake.md`** — new Q0-VCS + Q0-PM questions added before Q1; user selects VCS (GitHub / GitLab / SVN / None) and PM tool (GitHub Issues / GitLab Issues / Notion / Jira / None) at the very start of every new project; PM auto-suggested based on VCS choice (GitHub → GitHub Issues, GitLab → GitLab Issues, SVN/None → None); answers written immediately to `devstarter-config.yml`
+- **`templates/CLAUDE.md.template`** — removed hardcoded `github.com` repository URL and `Notion Board` fields; replaced with `{{REPOSITORY_URL}}`, `{{PM_BOARD_URL}}`, `{{VCS_TYPE}}`, `{{PM_TYPE}}` placeholders; Gate 0 now branches on `vcs.type` and `pm.type` (GitHub → `gh repo create`, GitLab → `glab project create`, SVN → SVN init, None → `git init`; PM setup routes to matching CLI/API per tool); `Notion ↔ GitHub Sync Rules` section renamed to `PM ↔ VCS Sync Rules` covering all PM/VCS combinations
+- **`sdlc/devstarter-existing.md`** — Phase 3.5 Step 1 now asks Q0-VCS + Q0-PM when `devstarter-config.yml` does not exist or has placeholder values; Step 3 conditional on `vcs.type` and `pm.type` — routes to `devstarter-github.md`, `devstarter-gitlab.md`, or `devstarter-svn.md` for VCS, and to Notion / `gh` / `glab` / Jira for PM setup
+
+---
+
 ## v2.0.1 (2026-04-20)
 
 ### Agent Slash Commands — Invoke Any Agent Directly

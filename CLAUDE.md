@@ -332,6 +332,7 @@ Every slash command requires:
 | v1.9.1 | setup.sh skill mapping fix + Config Guard added to 15 missing SDLC runbooks |
 | v2.0.0 | Native TaskCreate/TaskUpdate + AskUserQuestion at gates + /devstarter-review + /devstarter-doctor + agents/custom/ |
 | v2.0.1 | Agent slash commands — /devstarter-[agent] for all 13 agents |
+| v2.1.0 | Multi-VCS + Multi-PM selection — Q0-VCS/Q0-PM in starter intake, conditional Gate 0, CLAUDE.md.template updated |
 
 ---
 
