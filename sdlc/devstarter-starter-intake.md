@@ -9,6 +9,50 @@ Example: `login, product catalog, cart, checkout, payment`
 
 ---
 
+### Q0 — Infrastructure (ask FIRST, before anything else)
+
+**Q0-VCS. Which version control system will you use?**
+1. 🐙 GitHub
+2. 🦊 GitLab
+3. 📦 SVN (Subversion)
+4. 🚫 None / local git only
+0. Let Claude decide (defaults to GitHub)
+
+---
+
+**Q0-PM. Which project management tool?**
+
+Auto-suggest based on Q0-VCS:
+- GitHub selected  → suggest `1. GitHub Issues`
+- GitLab selected  → suggest `2. GitLab Issues`
+- SVN / None       → suggest `5. None`
+
+Options:
+1. 🐙 GitHub Issues  (built-in, no extra setup)
+2. 🦊 GitLab Issues  (built-in, no extra setup)
+3. 📝 Notion
+4. 🗂️  Jira
+5. 🚫 None
+0. Let Claude decide
+
+---
+
+Write both answers immediately to `devstarter-config.yml`:
+```yaml
+vcs:
+  type: github   # github | gitlab | svn | none
+pm:
+  type: github-issues  # github-issues | gitlab-issues | notion | jira | none
+```
+
+Then save `{{REPOSITORY_URL}}` and `{{PM_BOARD_URL}}` placeholders for use in CLAUDE.md generation:
+- github  → `https://github.com/{{GITHUB_USERNAME}}/{{PROJECT_NAME}}`
+- gitlab  → `https://gitlab.com/{{GITLAB_USERNAME}}/{{PROJECT_NAME}}`
+- svn     → `svn+ssh://{{SVN_HOST}}/{{PROJECT_NAME}}`
+- none    → `(local only)`
+
+---
+
 **Q1. What is the project name?**
 (e.g. MyShop, HRSystem, TaskManager)
 

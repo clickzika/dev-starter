@@ -303,13 +303,41 @@ After Gate 1 approved, before showing work plan:
 ### Step 1 — devstarter-config.yml (MANDATORY)
 
 Check if `devstarter-config.yml` exists:
-- **Does NOT exist** → generate it from `~/.claude/templates/devstarter-config.template.yml`
+
+- **Does NOT exist** → ask the user two questions BEFORE generating the config:
+
+  **Q0-VCS. Which version control system is this project using?**
+  1. 🐙 GitHub
+  2. 🦊 GitLab
+  3. 📦 SVN (Subversion)
+  4. 🚫 None / local git only
+  0. Auto-detect from codebase (inspect `.git/config` remote URL)
+
+  **Q0-PM. Which project management tool do you use?**
+  Auto-suggest based on Q0-VCS answer:
+  - GitHub → suggest `1. GitHub Issues`
+  - GitLab → suggest `2. GitLab Issues`
+  - SVN / None → suggest `5. None`
+
+  Options:
+  1. 🐙 GitHub Issues
+  2. 🦊 GitLab Issues
+  3. 📝 Notion
+  4. 🗂️  Jira
+  5. 🚫 None
+  0. Let Claude decide
+
+  Then generate config from `~/.claude/templates/devstarter-config.template.yml`:
   - Fill in: `project.name`, `project.type`, `project.language` from discovery
-  - Fill in: `vcs.type`, `vcs.repo`, `vcs.branch_strategy`, `vcs.main_branch`, `vcs.dev_branch`
-  - Fill in: `pm.type` (and pm-specific fields), `ci.type`, `ai.provider`
+  - Fill in: `vcs.type` (from Q0-VCS), `vcs.repo`, `vcs.branch_strategy`, `vcs.main_branch`, `vcs.dev_branch`
+  - Fill in: `pm.type` (from Q0-PM) and pm-specific fields (notion_database_id if pm=notion, etc.)
+  - Fill in: `ci.type`, `ai.provider`
   - Fill in: `team.skill_level`, `team.size` from USER.md if available
   - Fill in: `stack.frontend`, `stack.backend`, `stack.database` from stack detection
-- **Already exists** → read it; update any fields that differ from what was discovered
+
+- **Already exists** → read it; update any fields that differ from what was discovered.
+  If `vcs.type` or `pm.type` is missing or set to `github`/`notion` as placeholder,
+  ask Q0-VCS and Q0-PM to confirm the correct values.
 
 ⛔ Do NOT proceed past this step until `devstarter-config.yml` exists on disk.
 
@@ -317,17 +345,30 @@ Check if `devstarter-config.yml` exists:
 
 Run: `python3 sdlc/devstarter-config-sync.md` → auto-generates `.project.env` for bash compat.
 
-### Step 3 — GitHub + Notion
+### Step 3 — VCS + PM Setup (conditional on devstarter-config.yml values)
 
-1. Read `~/.claude/sdlc/devstarter-github.md` → follow PROC-GH-02 (connect existing repo)
-2. Read `~/.claude/sdlc/devstarter-notion.md` → follow PROC-NT-01 + PROC-NT-02 (create task board)
+Read `vcs.type` and `pm.type` from config, then run the matching setup:
+
+**VCS:**
+- `github` → Read `~/.claude/sdlc/devstarter-github.md` → PROC-GH-02 (connect existing repo)
+- `gitlab` → Read `~/.claude/sdlc/devstarter-gitlab.md` → connect existing GitLab repo
+- `svn`    → Read `~/.claude/sdlc/devstarter-svn.md` → connect existing SVN repo
+- `none`   → skip VCS connection step
+
+**PM:**
+- `notion`        → Read `~/.claude/sdlc/devstarter-notion.md` → PROC-NT-01 + PROC-NT-02 (create task board)
+- `github-issues` → create GitHub issue labels + milestones via `gh` CLI
+- `gitlab-issues` → configure GitLab issue board via `glab` CLI
+- `jira`          → Read `~/.claude/sdlc/devstarter-jira.md` → create Jira project
+- `none`          → skip PM setup
 
 Show:
 ```
 ✅ devstarter-config.yml — created / updated
+   VCS: [vcs.type]   PM: [pm.type]
 ✅ .project.env — synced from config
-✅ GitHub: [repo URL]
-✅ Notion: [board URL] — Task Board ready
+✅ [VCS label]: [repo URL]
+✅ [PM label]:  [board URL or "not configured"]
 → Proceeding to work plan...
 ```
 

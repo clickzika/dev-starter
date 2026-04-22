@@ -8,8 +8,10 @@ This file is auto-generated during project setup. It is loaded automatically by 
 
 Name: {{PROJECT_NAME}}
 Description: {{PROJECT_DESCRIPTION}}
-Repository: https://github.com/{{GITHUB_USERNAME}}/{{PROJECT_NAME}}.git
-Notion Board: {{NOTION_BOARD_URL}}
+Repository: {{REPOSITORY_URL}}
+PM Board: {{PM_BOARD_URL}}
+VCS: {{VCS_TYPE}}
+PM Tool: {{PM_TYPE}}
 Status: Active development
 Created: {{CREATED_DATE}}
 
@@ -169,9 +171,22 @@ GATE 5 — Quality       → STOP → wait for: "Approved" → merge to main, ta
 
 ### GATE 0 — Project Setup (automatic)
 
-- DevOps → create GitHub repo + branch strategy
-- PM → create Notion task board
-- DevOps → save .project.env
+Steps depend on `vcs.type` and `pm.type` in `devstarter-config.yml`:
+
+**VCS setup:**
+- `github` → `gh repo create {{GITHUB_USERNAME}}/{{PROJECT_NAME}} --private --source=. --remote=origin --push`
+- `gitlab` → `glab project create {{PROJECT_NAME}} --private`
+- `svn`    → initialize SVN repository at {{REPOSITORY_URL}}
+- `none`   → `git init` + initial commit only
+
+**PM setup:**
+- `notion`         → @pm creates Notion task board (PROC-NT-01 + NT-02)
+- `github-issues`  → @pm creates GitHub issue labels + milestones
+- `gitlab-issues`  → @pm configures GitLab issue board
+- `jira`           → @pm creates Jira project + epics (devstarter-jira.md)
+- `none`           → skip PM setup
+
+- DevOps → save `.project.env` (run `devstarter-config-sync`)
 
 ### GATE 1 — Discovery
 
@@ -227,13 +242,20 @@ hotfix/[issue-#]-[kebab-description]
 
 ---
 
-## Notion ↔ GitHub Sync Rules
+## PM ↔ VCS Sync Rules
 
-| Event       | Notion Status | GitHub                         |
-| ----------- | ------------- | ------------------------------ |
-| Task starts | In Progress   | Issue assigned, branch created |
-| PR opened   | In Review     | PR linked to issue             |
-| PR merged   | Done          | Issue closed, branch deleted   |
+Applies based on `pm.type` + `vcs.type` in `devstarter-config.yml`:
+
+| Event       | PM Status (Notion/Jira/Issues) | VCS Action                         |
+| ----------- | ------------------------------ | ---------------------------------- |
+| Task starts | In Progress                    | Issue assigned, branch created     |
+| PR opened   | In Review                      | PR linked to issue                 |
+| PR merged   | Done                           | Issue closed, branch deleted       |
+
+- `notion` / `jira` → use Notion API / Jira API for status updates
+- `github-issues`   → `gh issue` commands handle status via labels
+- `gitlab-issues`   → `glab issue` commands handle status via labels
+- `none`            → skip PM sync steps
 
 ---
 
