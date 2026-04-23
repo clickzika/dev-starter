@@ -778,6 +778,72 @@ gh pr create --title "test: verify AI review" --body "Testing autonomous PR revi
 **Verify:** After pushing a PR, check GitHub Actions tab.
 The "Claude AI PR Review" job should run and post a comment within 60 seconds.
 
+## PROC-GH-18 — Apply Branch Protection to Existing Repo
+
+**Used by:** devstarter-existing.md Phase 3.5 (after PROC-GH-02)
+**Also callable standalone** for any repo that needs protection applied retroactively.
+
+```bash
+cd "$PROJECT_DIR"
+
+# Read branch names from devstarter-config.yml (fall back to defaults)
+MAIN_BRANCH=$(grep 'main_branch:' devstarter-config.yml 2>/dev/null | awk '{print $2}' || echo "main")
+UAT_BRANCH=$(grep 'uat_branch:'  devstarter-config.yml 2>/dev/null | awk '{print $2}' || echo "uat")
+
+# Protection payload — standard rules
+PROTECTION_PAYLOAD='{
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true
+  },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
+  "enforce_admins": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "restrictions": null
+}'
+
+# Apply to main branch
+if git ls-remote --exit-code origin "$MAIN_BRANCH" &>/dev/null; then
+  echo "$PROTECTION_PAYLOAD" | gh api \
+    repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/$MAIN_BRANCH/protection \
+    --method PUT --input - && \
+    echo "✅ Branch protection applied: $MAIN_BRANCH" || \
+    echo "⚠️  Could not protect $MAIN_BRANCH (requires GitHub Pro or public repo)"
+else
+  echo "⚠️  Branch '$MAIN_BRANCH' not found on remote — skipping"
+fi
+
+# Apply to uat branch (only if it exists)
+if git ls-remote --exit-code origin "$UAT_BRANCH" &>/dev/null; then
+  echo "$PROTECTION_PAYLOAD" | gh api \
+    repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/$UAT_BRANCH/protection \
+    --method PUT --input - && \
+    echo "✅ Branch protection applied: $UAT_BRANCH" || \
+    echo "⚠️  Could not protect $UAT_BRANCH (requires GitHub Pro or public repo)"
+else
+  echo "ℹ️  Branch '$UAT_BRANCH' not found on remote — skipping (create it when ready)"
+fi
+
+echo ""
+echo "Protection summary for $GITHUB_USERNAME/$PROJECT_NAME:"
+echo "  ✅ No direct push to $MAIN_BRANCH / $UAT_BRANCH"
+echo "  ✅ PR + 1 review required to merge"
+echo "  ✅ Status checks must pass (strict mode)"
+echo "  ✅ Force push blocked"
+echo "  ✅ Branch deletion blocked"
+echo ""
+echo "ℹ️  Add CI check names to 'contexts' once your workflow files exist:"
+echo "    e.g. \"contexts\": [\"ci / build\", \"ci / test\"]"
+```
+
+⚠️ **Requires GitHub Pro or public repo** for private repos. If it fails, print warning and continue — protection can be applied manually in GitHub repo settings.
+
+---
+
 ## PROC-GH-17 — AI Provider Update in GitHub Actions
 
 When rotating or changing the AI provider used by GitHub Actions workflows:
