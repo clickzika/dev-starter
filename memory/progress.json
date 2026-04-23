@@ -1,7 +1,9 @@
 {
-  "workflow": "devstarter-change-add",
+  "workflow": "devstarter-change",
   "status": "completed",
-  "completed_at": "2026-04-20T00:00:00",
-  "feature": "AskUserQuestion at approval gates",
-  "notes": "Merged to develop. All v2.0.0 committed items done. Ready for /devstarter-release v2.0.0."
+  "completed_at": "2026-04-23",
+  "feature": "Requirement Intake Templates + File-arg Pattern",
+  "pr": "https://github.com/clickzika/dev-starter-dev/pull/4",
+  "branch": "feature/intake-templates",
+  "notes": "4 intake templates, file-arg pattern for all 4 flows, 3 SDLC runbooks modified. PR #4 ready to merge as v2.2.0."
 }

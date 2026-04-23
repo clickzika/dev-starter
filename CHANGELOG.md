@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.2.0 (2026-04-23)
+
+### Requirement Intake Templates + File-Arg Pattern
+
+- **`templates/intake/devstarter-intake-new-project.md`** (NEW) — 8-section structured PRD template for new projects; covers Project Identity, Target Users, Core Features (MoSCoW), Technical Constraints, NFRs, Success Criteria, Constraints, and Out of Scope; includes INTAKE SUMMARY block for Claude to fill and present for approval before proceeding to Q0-VCS
+- **`templates/intake/devstarter-intake-add-feature.md`** (NEW) — 5-section intake for new features; Feature Identity, User Story + Given/When/Then acceptance criteria, Technical Scope (UI/API/DB), Constraints & Boundaries, Priority & Effort; use with `/devstarter-change newfeature.md`
+- **`templates/intake/devstarter-intake-modify-feature.md`** (NEW) — 5-section intake for modifying existing features; captures AS-IS vs TO-BE behavior, regression criteria, impact assessment (breaking change flag, UI/API/DB scope), Priority & Effort; use with `/devstarter-change change-login.md`
+- **`templates/intake/devstarter-intake-fix-bug.md`** (NEW) — 5-section bug report template; Bug Identity (severity, environment), Reproduction steps, Expected vs Actual + error logs (with sanitize warning for secrets/PII), Context, Fix Acceptance Criteria; use with `/devstarter-change bug-login.md`
+- **`sdlc/devstarter-starter-intake.md`** — `## SECTION 0` prepended: (1) file-arg check — if `.md`/`.txt` file passed, read it, extract requirements, show pre-filled INTAKE SUMMARY, wait for approval, go directly to Q0-VCS; (2) inline MODE 3 pre-fill path; (3) interactive section-by-section fallback; answer carry-forward skips Q1, Q2, Q6, Q7 after intake approval
+- **`sdlc/devstarter-change-add.md`** — `## A-SECTION 0` prepended: file-arg check with type auto-detection from file content ("AS-IS"/"TO-BE"/"modify" → Modify Feature; "bug"/"error"/"fix"/"broken" → Bug Fix; else → Add Feature); interactive fallback reads matching template; A-PHASE 1 skipped after intake approval; answer carry-forward covers A-Q1 through A-Q8
+- **`sdlc/devstarter-change-bug.md`** — `## C-SECTION 0` prepended: file-arg check reads bug report template; C-PHASE 1 skipped after intake approval; answer carry-forward covers C-Q1 through C-Q6
+- **`commands/devstarter-new.md`** — File Arg Handling section added before Inline Args: detects `.md`/`.txt` path or file-on-disk arg, reads file, extracts requirements, skips mode-picker + SECTION 0, shows INTAKE SUMMARY for approval; fallback to inline text (MODE 3) if file not found
+- **`commands/devstarter-change.md`** — File Arg Handling section added before Inline Args: reads file, auto-detects change type from content keywords, extracts requirements, skips A-SECTION 0 / C-SECTION 0, shows typed INTAKE SUMMARY for approval; fallback to inline text if file not found
+
+---
+
 ## v2.1.0 (2026-04-22)
 
 ### Multi-VCS + Multi-PM Selection at Project Creation

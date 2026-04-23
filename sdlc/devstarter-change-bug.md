@@ -4,7 +4,43 @@
 
 ---
 
+## C-SECTION 0 — Requirements Intake (ALWAYS run first)
+
+Before starting bug analysis, capture a complete structured bug report.
+A thorough report leads to faster root cause diagnosis and fewer back-and-forth rounds.
+
+**Step 0 — File arg check (check FIRST):**
+If `/devstarter-change` was called with a `.md` file path (e.g. `/devstarter-change bug.md`):
+1. Read the file: `Read [filepath]`
+2. Extract all bug report sections from the file content
+3. Show INTAKE SUMMARY (pre-filled from file) and wait for approval
+4. After approval → skip Steps 1–5 below, go directly to C-PHASE 2 (Bug Analysis)
+Do NOT run Steps 1–5 if a file arg was provided and successfully read.
+
+**Steps 1–5 — Interactive intake (only if no file arg):**
+1. Read `~/.claude/templates/intake/devstarter-intake-fix-bug.md`
+2. Present each section to the user ONE SECTION AT A TIME
+3. Fill in answers as the user responds
+4. Save the completed intake to: `memory/intake-fix-bug-[YYYY-MM-DD].md`
+5. Show the INTAKE SUMMARY and wait for approval before continuing
+
+After approval → skip C-PHASE 1 questions and go directly to C-PHASE 2 (Bug Analysis).
+The intake replaces C-Q1 through C-Q6.
+
+**Answer carry-forward after approval:**
+- C-Q1 (describe bug)   → Sections 1.1 + 3.1 + 3.2
+- C-Q2 (reproduction)   → Sections 2.1 + 2.2
+- C-Q3 (severity)       → Section 1.3
+- C-Q4 (environment)    → Section 1.4
+- C-Q5 (affected area)  → Section 1.2
+- C-Q6 (error messages) → Section 3.3
+
+---
+
 ## C-PHASE 1 — Bug Report
+
+> **Note:** C-PHASE 1 is skipped when C-SECTION 0 intake is complete and approved.
+> Only run C-PHASE 1 questions if intake was skipped or incomplete.
 
 Ask these questions ONE AT A TIME:
 
