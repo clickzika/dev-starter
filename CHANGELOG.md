@@ -1,5 +1,16 @@
 # Changelog
 
+## v2.3.1 (2026-04-23)
+
+### Publish Fix — Exclude docs/ and memory/ from Public Release
+
+- **`scripts/publish.sh`** — added `EXCLUDE_FROM_RELEASE=("docs" "memory")` variable; release step now creates a `_release_clean` temp branch from `main`, strips excluded folders, and pushes that to the `release` remote — keeping local `main` intact with dev files while `dev-starter.git` stays clean
+- **`scripts/publish.sh`** — removed `git pull release main` (release remote is write-only); local `main` is now merged from `develop` then pushed to `origin/main` independently
+- **`docs/management-report.html`** — removed (dev-only document, not needed in repo)
+- **`docs/release-v2.3.0.html`** — release notes for v2.3.0
+
+---
+
 ## v2.3.0 (2026-04-23)
 
 ### Git Branch Strategy — 3-Branch Setup + Protection Rules

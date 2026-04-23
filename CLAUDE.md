@@ -338,6 +338,7 @@ Every slash command requires:
 | v2.3.0 | Standard branch protection — PROC-GH-10 adds allow_force_pushes:false, allow_deletions:false, required_status_checks to main + uat |
 | v2.3.0 | PROC-GH-18 — apply protection to existing repos; wired into devstarter-existing Phase 3.5 after PROC-GH-02 |
 | v2.3.0 | PROC-GH-10 Step 2 — optional develop protection post-scaffold; prompted at Gate 3 completion; teams ≥ 3 recommended |
+| v2.3.1 | publish.sh fix — exclude docs/ and memory/ from public release via _release_clean temp branch; release remote is now write-only |
 
 ---
 
