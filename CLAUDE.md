@@ -334,6 +334,10 @@ Every slash command requires:
 | v2.0.1 | Agent slash commands — /devstarter-[agent] for all 13 agents |
 | v2.1.0 | Multi-VCS + Multi-PM selection — Q0-VCS/Q0-PM in starter intake, conditional Gate 0, CLAUDE.md.template updated |
 | v2.2.0 | Requirement intake templates — 4 structured intake templates (new-project, add-feature, modify-feature, fix-bug) in templates/intake/, wired into Gate 0 of starter + change flows |
+| v2.3.0 | UAT branch bootstrap — PROC-GH-01 sets develop as default branch, Gate 0 shows all 3 branches, devstarter-config.yml adds uat_branch field |
+| v2.3.0 | Standard branch protection — PROC-GH-10 adds allow_force_pushes:false, allow_deletions:false, required_status_checks to main + uat |
+| v2.3.0 | PROC-GH-18 — apply protection to existing repos; wired into devstarter-existing Phase 3.5 after PROC-GH-02 |
+| v2.3.0 | PROC-GH-10 Step 2 — optional develop protection post-scaffold; prompted at Gate 3 completion; teams ≥ 3 recommended |
 
 ---
 
