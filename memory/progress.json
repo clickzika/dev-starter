@@ -1,9 +1,8 @@
 {
-  "workflow": "devstarter-change",
+  "workflow": "devstarter-release",
   "status": "completed",
   "completed_at": "2026-04-23",
-  "feature": "Requirement Intake Templates + File-arg Pattern",
-  "pr": "https://github.com/clickzika/dev-starter-dev/pull/4",
-  "branch": "feature/intake-templates",
-  "notes": "4 intake templates, file-arg pattern for all 4 flows, 3 SDLC runbooks modified. PR #4 ready to merge as v2.2.0."
+  "version": "v2.2.0",
+  "tag": "v2.2.0",
+  "notes": "v2.2.0 released to main. 4 intake templates + file-arg pattern. Merged PR #4, tagged, pushed main + tag. Release notes at docs/release-v2.2.0.html."
 }
