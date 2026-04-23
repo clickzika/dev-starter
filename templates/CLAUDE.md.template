@@ -179,6 +179,16 @@ Steps depend on `vcs.type` and `pm.type` in `devstarter-config.yml`:
 - `svn`    → initialize SVN repository at {{REPOSITORY_URL}}
 - `none`   → `git init` + initial commit only
 
+**Branch strategy (auto-created by PROC-GH-01):**
+
+| Branch | Purpose | Protection |
+|--------|---------|-----------|
+| `main` | Production | Protected (1 PR review required) |
+| `uat` | User Acceptance Testing | Protected (1 PR review required) |
+| `develop` | Active development — **default branch** | Open (agents push directly) |
+
+Flow: `feature/*` → merge to `develop` → release flow merges `develop → uat → main`
+
 **PM setup:**
 - `notion`         → @pm creates Notion task board (PROC-NT-01 + NT-02)
 - `github-issues`  → @pm creates GitHub issue labels + milestones

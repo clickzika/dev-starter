@@ -79,7 +79,7 @@ else
   git remote add origin "https://github.com/$GITHUB_USERNAME/$PROJECT_NAME.git" 2>/dev/null || true
 fi
 
-# Create branch strategy: main (production) + uat (user testing) + develop (development)
+# Create branch strategy: main (production) + uat (user testing) + develop (default)
 git checkout -b develop 2>/dev/null || git checkout develop
 git push -u origin develop 2>/dev/null || true
 
@@ -88,10 +88,14 @@ git push -u origin uat 2>/dev/null || true
 
 git checkout develop
 
+# Set develop as the default branch on GitHub
+gh repo edit "$GITHUB_USERNAME/$PROJECT_NAME" --default-branch develop 2>/dev/null || \
+  echo "⚠️  Could not set default branch via gh — set manually in GitHub repo settings"
+
 echo "✅ Branch strategy:"
-echo "   develop  → Claude develops + local test"
-echo "   uat      → User acceptance testing"
-echo "   main     → Production"
+echo "   main     → Production (protected)"
+echo "   uat      → User acceptance testing (protected)"
+echo "   develop  → Active development (default branch)"
 ```
 
 ---

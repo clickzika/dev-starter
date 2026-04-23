@@ -20,7 +20,9 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
   Show:
     ✅ GitHub: github.com/[user]/[PROJECT_NAME]
     ✅ Notion: [NOTION_BOARD_URL]
-    ✅ Branch protection: main protected
+    ✅ Branches: main (production) → uat (acceptance) → develop (default ★)
+    ✅ Branch protection: main + uat protected
+    ✅ Default branch: develop
     ✅ Templates: PR + Issue templates created
     ✅ Notion views: Board, By Epic, Sprint, All Tasks
     ✅ devstarter-config.yml — project config created
