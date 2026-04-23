@@ -311,16 +311,26 @@ develop  → active development
 main     → production + tag
 ```
 
-#### Step 1 — Auto-detect remote
+#### Step 1 — Resolve push remote
+
+Priority order: config file → git remote auto-detect → origin fallback.
 
 ```bash
-# Detect which model applies
-if git remote | grep -q "^release$"; then
+# 1. Read from devstarter-config.yml (explicit wins)
+CONFIG_REMOTE=$(grep 'release_remote:' devstarter-config.yml 2>/dev/null \
+  | awk '{print $2}' | tr -d '"')
+
+if [ -n "$CONFIG_REMOTE" ] && [ "$CONFIG_REMOTE" != '""' ] && [ "$CONFIG_REMOTE" != "~" ]; then
+  PUSH_REMOTE="$CONFIG_REMOTE"
+  echo "Config: release_remote=$PUSH_REMOTE — using from devstarter-config.yml"
+elif git remote | grep -q "^release$"; then
+  # 2. Fall back to auto-detect (release remote present but not in config)
   PUSH_REMOTE="release"
-  echo "Model A detected — pushing to: release remote"
+  echo "Auto-detected: release remote present — pushing to: release"
 else
+  # 3. Default: single-repo model
   PUSH_REMOTE="origin"
-  echo "Model B detected — pushing to: origin"
+  echo "Default: no release remote — pushing to: origin"
 fi
 ```
 
@@ -375,8 +385,13 @@ set -e
 
 VERSION="${1:?Usage: release.sh <version>  e.g. release.sh 1.4.0}"
 
-# Auto-detect remote
-if git remote | grep -q "^release$"; then
+# Resolve push remote: config → auto-detect → fallback
+CONFIG_REMOTE=$(grep 'release_remote:' devstarter-config.yml 2>/dev/null \
+  | awk '{print $2}' | tr -d '"')
+
+if [ -n "$CONFIG_REMOTE" ] && [ "$CONFIG_REMOTE" != '""' ] && [ "$CONFIG_REMOTE" != "~" ]; then
+  PUSH_REMOTE="$CONFIG_REMOTE"
+elif git remote | grep -q "^release$"; then
   PUSH_REMOTE="release"
 else
   PUSH_REMOTE="origin"

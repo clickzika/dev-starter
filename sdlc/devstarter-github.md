@@ -343,6 +343,11 @@ echo "🚀 Ready for production deployment"
 
 **Used by:** dev-starter.md Gate 0 (after repo creation)
 
+Supports three remote topologies — detected from `devstarter-config.yml`:
+- **Scenario B** (origin only): protects `origin/main` + `origin/uat`
+- **Scenario A** (origin + release remote): also protects `release/main`
+- **Scenario C** (origin + fork): same as B; upstream protection is upstream maintainer's responsibility
+
 ```bash
 cd "$PROJECT_DIR"
 
@@ -406,6 +411,43 @@ echo "   - Only merge from develop (via PROC-GH-09)"
 # Note: "contexts": [] means no specific CI checks are required at setup time.
 # Add CI check names here once your workflow files exist, e.g.:
 # "contexts": ["ci / build", "ci / test"]
+
+# Scenario A — protect release remote/main if release_remote != origin
+RELEASE_REMOTE=$(grep 'release_remote:' devstarter-config.yml 2>/dev/null \
+  | awk '{print $2}' | tr -d '"')
+RELEASE_REPO=$(grep 'release_repo:' devstarter-config.yml 2>/dev/null \
+  | awk '{print $2}' | tr -d '"')
+
+if [ -n "$RELEASE_REMOTE" ] && [ "$RELEASE_REMOTE" != "origin" ] && [ -n "$RELEASE_REPO" ]; then
+  echo ""
+  echo "Scenario A detected — release_remote=$RELEASE_REMOTE, repo=$RELEASE_REPO"
+  echo "Applying branch protection to release repo main branch..."
+
+  gh api repos/$RELEASE_REPO/branches/main/protection \
+    --method PUT \
+    --input - << 'EOF3'
+{
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true
+  },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
+  "enforce_admins": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "restrictions": null
+}
+EOF3
+
+  echo "✅ Branch protection set on $RELEASE_REPO/main:"
+  echo "   - Mirrors protection on origin/main"
+  echo "   - Only publish.sh / release agent should push here"
+else
+  echo "ℹ️  Single-remote project — no release remote protection needed."
+fi
 ```
 
 ⚠️ **Requires GitHub Pro or public repo** — free private repos cannot set branch protection via API. If it fails, print warning and continue.
