@@ -400,10 +400,8 @@ echo "   - Block force push"
 echo "   - Block branch deletion"
 echo "   - Only merge from develop (via PROC-GH-09)"
 
-# Note: develop branch is NOT protected
-# (agents need to push directly during Gate 3 scaffold)
-# After Gate 3, optionally protect develop too:
-# gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/develop/protection ...
+# Note: develop is NOT protected here — agents push directly during Gate 3 scaffold.
+# After Gate 3 is complete, run PROC-GH-10 Step 2 to optionally protect develop.
 
 # Note: "contexts": [] means no specific CI checks are required at setup time.
 # Add CI check names here once your workflow files exist, e.g.:
@@ -411,6 +409,64 @@ echo "   - Only merge from develop (via PROC-GH-09)"
 ```
 
 ⚠️ **Requires GitHub Pro or public repo** — free private repos cannot set branch protection via API. If it fails, print warning and continue.
+
+---
+
+### PROC-GH-10 Step 2 — Protect develop branch (post-scaffold, optional)
+
+**Used by:** `devstarter-starter-gates.md` after Gate 3 approval
+**Also called by:** PROC-GH-18 for existing repos
+
+Ask the user before running:
+
+```
+Protect the develop branch too?
+
+  Recommended for teams ≥ 3 — forces all devs to use
+  feature/* branches + PRs instead of pushing directly.
+  Claude agents use PRs via PROC-GH-06/07/08 (Gate 4 already does this).
+
+  "yes" → apply protection   |   "no" → skip (add later via PROC-GH-10 Step 2)
+```
+
+If user answers **"yes"**:
+
+```bash
+cd "$PROJECT_DIR"
+
+DEV_BRANCH=$(grep 'dev_branch:' devstarter-config.yml 2>/dev/null | awk '{print $2}' || echo "develop")
+
+gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/$DEV_BRANCH/protection \
+  --method PUT \
+  --input - << 'EOF'
+{
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true
+  },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
+  "enforce_admins": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "restrictions": null
+}
+EOF
+
+echo "✅ develop branch is now protected:"
+echo "   - All devs must use feature/* branches + PR"
+echo "   - Claude agents use PRs via Gate 4 (PROC-GH-06/07/08)"
+echo "   - No direct push to develop"
+```
+
+If user answers **"no"**:
+
+```bash
+echo "ℹ️  develop branch left unprotected."
+echo "   Run PROC-GH-10 Step 2 anytime to enable later."
+```
 
 ---
 
@@ -838,6 +894,12 @@ echo "  ✅ Branch deletion blocked"
 echo ""
 echo "ℹ️  Add CI check names to 'contexts' once your workflow files exist:"
 echo "    e.g. \"contexts\": [\"ci / build\", \"ci / test\"]"
+```
+
+After applying main + uat protection, run **PROC-GH-10 Step 2** to optionally protect develop:
+
+```bash
+# Ask the user, then call PROC-GH-10 Step 2 (see devstarter-github.md)
 ```
 
 ⚠️ **Requires GitHub Pro or public repo** for private repos. If it fails, print warning and continue — protection can be applied manually in GitHub repo settings.
