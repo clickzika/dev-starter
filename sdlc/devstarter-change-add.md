@@ -4,7 +4,56 @@
 
 ---
 
+## A-SECTION 0 — Requirements Intake (ALWAYS run first)
+
+Before asking specification questions, collect feature requirements.
+This captures the full scope before any impact analysis or coding begins.
+
+**Step 0 — File arg check (check FIRST):**
+If `/devstarter-change` was called with a `.md` file path (e.g. `/devstarter-change feature.md`):
+1. Read the file: `Read [filepath]`
+2. Detect type: contains "AS-IS"/"TO-BE"/"modify" → modify path; contains "bug"/"error"/"fix" → bug path; otherwise → add-feature path
+3. Extract all requirement sections from the file content
+4. Show INTAKE SUMMARY (pre-filled from file) and wait for approval
+5. After approval → skip Steps 1–5 below, go directly to A-PHASE 2 (Impact Analysis)
+Do NOT run Steps 1–5 if a file arg was provided and successfully read.
+
+**Step 1 — Detect feature type from description:**
+- New feature keywords: "add", "create", "build", "implement", "new"
+- Modify feature keywords: "change", "update", "modify", "extend", "improve", "edit"
+- When ambiguous, ask: "Is this a NEW feature or modifying an EXISTING one?"
+
+**Step 2 — Read the matching template:**
+- New feature   → read `~/.claude/templates/intake/devstarter-intake-add-feature.md`
+- Modify feature → read `~/.claude/templates/intake/devstarter-intake-modify-feature.md`
+
+**Step 3 — Collect requirements:**
+Present each section to the user ONE SECTION AT A TIME.
+Fill in answers as the user responds.
+
+**Step 4 — Save filled intake:**
+- New:    `memory/intake-add-feature-[YYYY-MM-DD].md`
+- Modify: `memory/intake-modify-feature-[YYYY-MM-DD].md`
+
+**Step 5 — Show INTAKE SUMMARY and wait for approval.**
+After approval → skip A-PHASE 1 questions and go directly to A-PHASE 2 (Impact Analysis).
+
+**Answer carry-forward after approval:**
+- A-Q1 (feature name)  → Section 1.1
+- A-Q2 (problem)       → Section 1.3
+- A-Q3 (users)         → Section 2.1
+- A-Q4 (DB changes)    → Section 3.3
+- A-Q5 (API changes)   → Section 3.2
+- A-Q6 (UI changes)    → Section 3.1
+- A-Q7 (priority)      → Section 5.1
+- A-Q8 (effort)        → Section 5.2
+
+---
+
 ## A-PHASE 1 — Feature Specification
+
+> **Note:** A-PHASE 1 is skipped when A-SECTION 0 intake is complete and approved.
+> Only run A-PHASE 1 questions if intake was skipped or incomplete.
 
 Ask these questions ONE AT A TIME:
 

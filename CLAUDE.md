@@ -333,6 +333,7 @@ Every slash command requires:
 | v2.0.0 | Native TaskCreate/TaskUpdate + AskUserQuestion at gates + /devstarter-review + /devstarter-doctor + agents/custom/ |
 | v2.0.1 | Agent slash commands — /devstarter-[agent] for all 13 agents |
 | v2.1.0 | Multi-VCS + Multi-PM selection — Q0-VCS/Q0-PM in starter intake, conditional Gate 0, CLAUDE.md.template updated |
+| v2.2.0 | Requirement intake templates — 4 structured intake templates (new-project, add-feature, modify-feature, fix-bug) in templates/intake/, wired into Gate 0 of starter + change flows |
 
 ---
 
