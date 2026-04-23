@@ -6,6 +6,13 @@
 # Usage:
 #   bash scripts/publish.sh 1.2.0 "Short description"
 #   bash scripts/publish.sh            ← prompts for version
+#
+# Remotes:
+#   origin  → dev-starter-dev.git  (full dev repo)
+#   release → dev-starter.git      (public release repo)
+#
+# Folders excluded from the public release:
+EXCLUDE_FROM_RELEASE=("docs" "memory")
 # ─────────────────────────────────────────────────────
 
 set -euo pipefail
@@ -91,20 +98,39 @@ git add VERSION
 git commit -m "Bump version to $NEW_VERSION"
 git push origin develop
 
-# ─── Step 2: Merge develop → main ────────────────────
+# ─── Step 2: Merge develop → main (local, full) ──────
 echo -e "${CYAN}[2/6] Merging develop → main...${NC}"
 git checkout main
-git pull release main
-git merge develop -m "Release v$NEW_VERSION — $DESCRIPTION"
-git push release main
+git merge develop --no-ff -m "release: v$NEW_VERSION — $DESCRIPTION"
+git push origin main
 
-# ─── Step 3: Create tag ──────────────────────────────
-echo -e "${CYAN}[3/6] Creating tag v$NEW_VERSION...${NC}"
+# ─── Step 3: Push clean release (strip dev-only folders) ───
+echo -e "${CYAN}[3/6] Creating clean release branch for public repo...${NC}"
+git checkout -b _release_clean main
+
+for FOLDER in "${EXCLUDE_FROM_RELEASE[@]}"; do
+  if [ -d "$FOLDER" ]; then
+    git rm -r --cached "$FOLDER" > /dev/null 2>&1 || true
+    echo -e "  Excluded: $FOLDER/"
+  fi
+done
+
+if ! git diff --cached --quiet; then
+  git commit -m "chore: strip dev-only folders for public release"
+fi
+
+git push release _release_clean:main --force-with-lease
+git checkout main
+git branch -D _release_clean
+
+# ─── Step 4: Create tag ──────────────────────────────
+echo -e "${CYAN}[4/6] Creating tag v$NEW_VERSION...${NC}"
 git tag -a "v$NEW_VERSION" -m "v$NEW_VERSION — $DESCRIPTION"
 git push release "v$NEW_VERSION"
+git push origin "v$NEW_VERSION"
 
-# ─── Step 4: Create GitHub Release ───────────────────
-echo -e "${CYAN}[4/6] Creating GitHub Release...${NC}"
+# ─── Step 5: Create GitHub Release ───────────────────
+echo -e "${CYAN}[5/7] Creating GitHub Release...${NC}"
 
 CHANGELOG_SECTION=""
 if [ -f "CHANGELOG.md" ]; then
@@ -135,12 +161,12 @@ gh release create "v$NEW_VERSION" \
 ---
 **Update:** Run \`/update\` in Claude Code to get this version."
 
-# ─── Step 5: Back to develop ─────────────────────────
-echo -e "${CYAN}[5/6] Switching back to develop...${NC}"
+# ─── Step 6: Back to develop ─────────────────────────
+echo -e "${CYAN}[6/7] Switching back to develop...${NC}"
 git checkout develop
 
-# ─── Step 6: Done ────────────────────────────────────
-echo -e "${CYAN}[6/6] Verifying...${NC}"
+# ─── Step 7: Done ────────────────────────────────────
+echo -e "${CYAN}[7/7] Verifying...${NC}"
 echo ""
 echo -e "${GREEN}═══════════════════════════════════════════${NC}"
 echo -e "${GREEN}  Published: v$NEW_VERSION                  ${NC}"
