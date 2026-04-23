@@ -1,5 +1,15 @@
 # Changelog
 
+## v2.4.0 (2026-04-23)
+
+### Multi-Remote Release Configuration
+
+- **`devstarter-config.yml`** — added three new fields to the `vcs:` section: `release_remote` (remote name for final main+tag push, e.g. `release` or `origin`), `release_repo` (repo slug on the release remote for Scenario A dual-remote), `upstream_remote` (empty by default, for Scenario C2 fork-based projects)
+- **`sdlc/devstarter-release-deploy.md` — Strategy I Step 1** — updated "Auto-detect remote" to "Resolve push remote"; priority order: `devstarter-config.yml release_remote` → git remote auto-detect → `origin` fallback; full copy-paste script updated with same logic
+- **`sdlc/devstarter-github.md` — PROC-GH-10** — added Scenario A block at end of protection script: reads `release_remote` + `release_repo` from config; when `release_remote != origin`, applies identical branch protection to `release/main` on the release repo; no-op for Scenario B/C (prints info message instead)
+
+---
+
 ## v2.3.1 (2026-04-23)
 
 ### Publish Fix — Exclude docs/ and memory/ from Public Release

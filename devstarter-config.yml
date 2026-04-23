@@ -9,7 +9,7 @@
 project:
   name: DevStarter
   description: "A complete development workflow system for Claude Code"
-  version: "1.8.0"         # mirrors VERSION file
+  version: "2.4.0"         # mirrors VERSION file
   status: active           # active | archived | migrating | maintenance
   type: framework          # app | api | framework | library | mobile | ml
   language: "markdown+bash"
@@ -24,6 +24,12 @@ vcs:
   secondary_1: none        # none | github | gitlab | svn
   secondary_2: none
   sync_branches: "main uat develop"
+  release_remote: release  # remote name where main+tags are pushed at release time
+                           # "origin" for single-repo projects (Scenario B/C)
+                           # "release" for dual-remote (Scenario A — this project)
+  release_repo: clickzika/dev-starter   # repo slug on the release remote (Scenario A only)
+  upstream_remote: ""      # upstream remote for fork-based projects (Scenario C2)
+                           # leave empty for Scenario A/B
 
 pm:
   type: github-issues      # notion | jira | github-issues | gitlab-issues | linear | trello | none
