@@ -1,5 +1,9 @@
 # dev-env.md — Local Development Environment Setup
 
+## Model: Haiku (`claude-haiku-4-5-20251001`)
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 ## How to Use
 
 When setting up a local dev environment from scratch:

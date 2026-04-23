@@ -52,7 +52,26 @@ Show this menu and ask ONE question:
   19. 🤖 New AI/ML Project
   20. 🔬 ML Workflow (train / evaluate / deploy)
 
-Type the number of your choice:
+── UTILITIES ──────────────────────────────────
+  21. 🩺 Doctor (health check)
+  22. 🔍 Review (PR / branch / current changes)
+
+── AGENTS ─────────────────────────────────────
+  /devstarter-ba        Business Analyst
+  /devstarter-pm        Project Manager
+  /devstarter-techlead  Tech Lead
+  /devstarter-backend   Backend Engineer
+  /devstarter-frontend  Frontend Engineer
+  /devstarter-dba       Database Architect
+  /devstarter-qa        QA Engineer
+  /devstarter-security  Security Engineer
+  /devstarter-devops    DevOps Engineer
+  /devstarter-uxui      UX/UI Designer
+  /devstarter-docs      Technical Writer
+  /devstarter-mobile    Mobile Engineer
+  /devstarter-mlops     MLOps Engineer
+
+Type the number of your choice, or /devstarter-[agent] [task] to invoke an agent directly:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -80,3 +99,5 @@ Route to correct file:
 | 18 | `~/.claude/sdlc/devstarter-monitor.md` |
 | 19 | `~/.claude/sdlc/devstarter-starter.md` (select ML stack) |
 | 20 | `~/.claude/sdlc/devstarter-ml-workflow.md` |
+| 21 | `~/.claude/sdlc/devstarter-doctor.md` |
+| 22 | `~/.claude/sdlc/devstarter-review.md` |

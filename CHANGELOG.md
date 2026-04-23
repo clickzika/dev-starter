@@ -1,5 +1,172 @@
 # Changelog
 
+## v2.3.0 (2026-04-23)
+
+### Git Branch Strategy — 3-Branch Setup + Protection Rules
+
+- **`sdlc/devstarter-github.md` — PROC-GH-01** — auto-creates 3 branches (`main`, `uat`, `develop`) on new project init; sets `develop` as the GitHub default branch via `gh repo edit --default-branch develop`
+- **`sdlc/devstarter-github.md` — PROC-GH-10 Step 1** — standard branch protection for `main` + `uat`: `allow_force_pushes: false`, `allow_deletions: false`, `required_status_checks`, `required_pull_request_reviews` (1 approving review, dismiss stale reviews)
+- **`sdlc/devstarter-github.md` — PROC-GH-10 Step 2** (NEW) — optional `develop` branch protection prompted after scaffold at Gate 3; recommended for teams ≥ 3; applies same protection payload as Step 1
+- **`sdlc/devstarter-github.md` — PROC-GH-18** (NEW) — idempotent procedure to apply branch protection to existing repos; reads `main_branch` + `uat_branch` from `devstarter-config.yml`; checks branch exists before applying; wired into `/devstarter-existing` Phase 3.5 after PROC-GH-02
+- **`sdlc/devstarter-starter-gates.md`** — Gate 0 output updated to show `✅ Branches: main → uat → develop (default ★)` and `✅ Default branch: develop`; Gate 3 completion wired to PROC-GH-10 Step 2 with status line `✅ develop branch: [protected | unprotected]`
+- **`sdlc/devstarter-existing.md`** — Phase 3.5 Step 3 (GitHub path): runs PROC-GH-18 after PROC-GH-02; confirms `✅ Branch protection: main + uat — PR required, no force push, no deletion`
+- **`templates/CLAUDE.md.template`** — Gate 0 section updated with 3-branch strategy table (main/uat/develop with protection status and flow)
+- **`devstarter-config.yml`** — added `uat_branch: uat` field; `sync_branches` updated to `"main uat develop"`
+- **`docs/git-workflow.md`** (NEW) — team handoff reference: Branch Overview table, Daily Dev Workflow (feature/* → PR), Head Dev PR review/merge commands, Release Flow (develop→uat→main), Hotfix Flow, Branch Protection Rules table, 7 Key Rules, Quick Reference block
+
+---
+
+## v2.2.0 (2026-04-23)
+
+### Requirement Intake Templates + File-Arg Pattern
+
+- **`templates/intake/devstarter-intake-new-project.md`** (NEW) — 8-section structured PRD template for new projects; covers Project Identity, Target Users, Core Features (MoSCoW), Technical Constraints, NFRs, Success Criteria, Constraints, and Out of Scope; includes INTAKE SUMMARY block for Claude to fill and present for approval before proceeding to Q0-VCS
+- **`templates/intake/devstarter-intake-add-feature.md`** (NEW) — 5-section intake for new features; Feature Identity, User Story + Given/When/Then acceptance criteria, Technical Scope (UI/API/DB), Constraints & Boundaries, Priority & Effort; use with `/devstarter-change newfeature.md`
+- **`templates/intake/devstarter-intake-modify-feature.md`** (NEW) — 5-section intake for modifying existing features; captures AS-IS vs TO-BE behavior, regression criteria, impact assessment (breaking change flag, UI/API/DB scope), Priority & Effort; use with `/devstarter-change change-login.md`
+- **`templates/intake/devstarter-intake-fix-bug.md`** (NEW) — 5-section bug report template; Bug Identity (severity, environment), Reproduction steps, Expected vs Actual + error logs (with sanitize warning for secrets/PII), Context, Fix Acceptance Criteria; use with `/devstarter-change bug-login.md`
+- **`sdlc/devstarter-starter-intake.md`** — `## SECTION 0` prepended: (1) file-arg check — if `.md`/`.txt` file passed, read it, extract requirements, show pre-filled INTAKE SUMMARY, wait for approval, go directly to Q0-VCS; (2) inline MODE 3 pre-fill path; (3) interactive section-by-section fallback; answer carry-forward skips Q1, Q2, Q6, Q7 after intake approval
+- **`sdlc/devstarter-change-add.md`** — `## A-SECTION 0` prepended: file-arg check with type auto-detection from file content ("AS-IS"/"TO-BE"/"modify" → Modify Feature; "bug"/"error"/"fix"/"broken" → Bug Fix; else → Add Feature); interactive fallback reads matching template; A-PHASE 1 skipped after intake approval; answer carry-forward covers A-Q1 through A-Q8
+- **`sdlc/devstarter-change-bug.md`** — `## C-SECTION 0` prepended: file-arg check reads bug report template; C-PHASE 1 skipped after intake approval; answer carry-forward covers C-Q1 through C-Q6
+- **`commands/devstarter-new.md`** — File Arg Handling section added before Inline Args: detects `.md`/`.txt` path or file-on-disk arg, reads file, extracts requirements, skips mode-picker + SECTION 0, shows INTAKE SUMMARY for approval; fallback to inline text (MODE 3) if file not found
+- **`commands/devstarter-change.md`** — File Arg Handling section added before Inline Args: reads file, auto-detects change type from content keywords, extracts requirements, skips A-SECTION 0 / C-SECTION 0, shows typed INTAKE SUMMARY for approval; fallback to inline text if file not found
+
+---
+
+## v2.1.0 (2026-04-22)
+
+### Multi-VCS + Multi-PM Selection at Project Creation
+
+- **`sdlc/devstarter-starter-intake.md`** — new Q0-VCS + Q0-PM questions added before Q1; user selects VCS (GitHub / GitLab / SVN / None) and PM tool (GitHub Issues / GitLab Issues / Notion / Jira / None) at the very start of every new project; PM auto-suggested based on VCS choice (GitHub → GitHub Issues, GitLab → GitLab Issues, SVN/None → None); answers written immediately to `devstarter-config.yml`
+- **`templates/CLAUDE.md.template`** — removed hardcoded `github.com` repository URL and `Notion Board` fields; replaced with `{{REPOSITORY_URL}}`, `{{PM_BOARD_URL}}`, `{{VCS_TYPE}}`, `{{PM_TYPE}}` placeholders; Gate 0 now branches on `vcs.type` and `pm.type` (GitHub → `gh repo create`, GitLab → `glab project create`, SVN → SVN init, None → `git init`; PM setup routes to matching CLI/API per tool); `Notion ↔ GitHub Sync Rules` section renamed to `PM ↔ VCS Sync Rules` covering all PM/VCS combinations
+- **`sdlc/devstarter-existing.md`** — Phase 3.5 Step 1 now asks Q0-VCS + Q0-PM when `devstarter-config.yml` does not exist or has placeholder values; Step 3 conditional on `vcs.type` and `pm.type` — routes to `devstarter-github.md`, `devstarter-gitlab.md`, or `devstarter-svn.md` for VCS, and to Notion / `gh` / `glab` / Jira for PM setup
+
+---
+
+## v2.0.1 (2026-04-20)
+
+### Agent Slash Commands — Invoke Any Agent Directly
+
+- **`commands/devstarter-ba.md`** through **`commands/devstarter-mlops.md`** — 13 new slash commands, one per agent; type `/devstarter-ba [task]` to invoke the BA agent directly without going through a workflow
+- **`devstarter-menu.md`** — new AGENTS section listing all 13 agent commands for discoverability
+
+---
+
+## v2.0.0 (2026-04-20)
+
+### Native Platform Integration — TaskCreate, AskUserQuestion, agents/custom/, Doctor + Review Commands
+
+- **`sdlc/devstarter-checkpoint.md`** — new Section 1b: `TaskCreate`/`TaskUpdate` protocol alongside `progress.json`; creates one UI task per SDLC task for session visibility; `TaskUpdate(in_progress)` on start, `TaskUpdate(completed)` on finish; complements cross-session `progress.json` (not a replacement)
+- **`sdlc/devstarter-change-add.md`** — Step A4.4: `TaskCreate` for each task after GitHub/Notion creation, stored task IDs used for `TaskUpdate` calls in A5.2; Step A5.2 steps 2 + 8: `TaskUpdate(in_progress)` / `TaskUpdate(completed)` per task
+- **`sdlc/devstarter-existing.md`** — Phase 5: `TaskCreate` + `TaskUpdate(in_progress/completed)` alongside Notion/GitHub steps
+- **`sdlc/devstarter-sprint.md`** — Phase 4: `TaskCreate` for each sprint item alongside GitHub/Notion creation
+- **`sdlc/devstarter-change-add.md`** — `AskUserQuestion` at gates A1, A2, A3, A4 with approve/revise options; interactive gate prompts replace passive text blocks
+- **`sdlc/devstarter-existing.md`** — `AskUserQuestion` at analysis confirm, Gate 1 (discovery), and work plan approval
+- **`sdlc/devstarter-sprint.md`** — `AskUserQuestion` at Gate S1 sprint scope approval
+- **`agents/custom/`** — new folder for user custom agents; preserved by `update.sh` (backup before overwrite, restore after); `install.sh` creates folder on fresh install; `README.md` documents naming convention and usage
+- **`commands/devstarter-doctor.md` + `sdlc/devstarter-doctor.md`** — new `/devstarter-doctor` command (#21 in menu); health check for core files, 13+13 agents, 25 commands, key SDLC runbooks, config; outputs ✅/⚠️/❌ per category; Model: Haiku
+- **`commands/devstarter-review.md` + `sdlc/devstarter-review.md`** — new `/devstarter-review` command (#22 in menu); 3 modes: PR `#N`, branch name, or current changes; parallel review by @techlead (architecture), @qa (testing), @security (OWASP); outputs 🔴 BLOCKER / 🟡 MAJOR / 🟢 MINOR + verdict; Model: Opus
+- **Cleanup:** `agents/teams/` removed (5 files); `sdlc/devstarter-dod.md` merged into `devstarter-checkpoint.md`; `sdlc/devstarter-vcs-common.md` merged into `devstarter-github.md`
+- **`setup.sh`** — Q0 name prompt → `devName` in USER.md Identity section; Q2b weak skills field; alias map normalisation (`js→javascript`, `node→node.js`, `azure→cloud`, etc.); `WEAK_LEVEL` auto-calculated one tier below default
+- **`sdlc/` 15 runbooks** — Config Guard (`**Config:** Read devstarter-config.yml...`) prepended after `## Model:` header in: audit, autopr, consult, dependency, document, env, handover, incident, ml-workflow, monitor, onboarding, release, retrospective, rollback, sprint
+
+---
+
+## v1.9.0 (2026-04-20)
+
+### Platform Features — Claude Code Native Tool Integration
+
+- **`sdlc/devstarter-change-add.md`** — Step A5.2 now wraps each task's feature branch in `EnterWorktree`/`ExitWorktree` for isolated working copies; prevents dirty state between parallel tasks
+- **`sdlc/devstarter-change-add.md`** — Gate A4 autopilot path now calls `PushNotification` before showing the approval prompt; users get a system notification when unattended development completes instead of having to watch the terminal
+- **`sdlc/devstarter-consult.md`** — added Step 0: `EnterPlanMode` at consultation start, `ExitPlanMode` after advice delivered; signals to Claude Code that this session is analysis-only
+- **`sdlc/devstarter-dependency.md`** — new Phase 1b WebSearch Enrichment step; after local audit, runs `WebSearch` for latest stable version, active CVE IDs (CVSS severity), and breaking changes for every 🔴 Vulnerable and 🟡 Outdated package found
+
+---
+
+## v1.8.1 (2026-04-20)
+
+### Short Agent Aliases — Type @pm Instead of @devstarter-pm
+
+- **`agents/pm.md`, `agents/techlead.md`, `agents/ba.md`, `agents/backend.md`, `agents/frontend.md`, `agents/dba.md`, `agents/qa.md`, `agents/security.md`, `agents/devops.md`, `agents/uxui.md`, `agents/docs.md`, `agents/mobile.md`, `agents/mlops.md`** — 13 thin alias files; each delegates immediately to the full `devstarter-*.md` spec so aliases stay maintenance-free; `install.sh` copies them automatically via existing `agents/*.md` glob
+- **`CLAUDE.md`** — agent table updated with Short Alias column; alias file convention documented
+
+---
+
+## v1.8.0 (2026-04-10)
+
+### Model Tier Mapping — Per-Command Model Selection
+
+- **`devstarter-config.yml`** — new `model_management:` section; declares `haiku`, `sonnet`, and `opus` model IDs as the single source of truth; `command_tiers` map lists which commands belong to each tier (5 opus, 12 sonnet, 6 haiku); update model IDs here when Anthropic releases new versions
+- **29 SDLC runbooks** — each workflow runbook now opens with a `## Model: [tier] (model-id)` header so users know which Claude model to switch to before running the command
+  - **Opus** (5): `audit`, `hotfix`, `incident`, `migrate`, `consult` — deep reasoning, critical production decisions
+  - **Sonnet** (19): `change`, `change-add/bug/remove/resume`, `existing`, `release`, `sprint`, `document`, `onboard`, `handover`, `retro`, `dependency`, `rollback`, `monitor`, `autopr`, `ml-workflow`, `ai-providers`, `starter`
+  - **Haiku** (5): `env`, `secrets`, `checkpoint`, `config-sync`, `dod` — mechanical, lightweight tasks
+
+---
+
+## v1.7.0 (2026-04-08)
+
+### Autopilot Mode — Extended to Existing + Change Flows
+
+- **`sdlc/devstarter-existing.md`** — new Phase 4.5 autopilot prompt shown immediately after plan approval; `"autopilot"` sets `autopilot_mode=true` + task count in `progress.json`; Phase 5 executes all tasks unattended with silent cron resume; `"manual"` preserves original per-task flow
+- **`sdlc/devstarter-change-add.md`** — autopilot prompt added after Gate A3 (GitHub issues + Notion tasks created); `"autopilot"` runs all A-PHASE 5 development tasks unattended; `autopilot_tasks_done` incremented per task; next human interaction is Gate A4 only
+- **`sdlc/devstarter-checkpoint.md`** — expanded workflow list to all 7 SDLC runbooks with correct `devstarter-` prefixes; added explicit rule: autopilot resume logic (`paused_limit` → silent, `in_progress` → silent, `waiting_approval` → always wait) applies to **all** workflows, not only `devstarter-starter-gates`
+
+---
+
+## v1.6.1 (2026-04-08)
+
+### Config Auto-Sync — devstarter-config.yml → .project.env
+
+- **`scripts/config-sync.sh`** — new bash script; reads `devstarter-config.yml` and regenerates `.project.env` with all sections; run manually with `bash scripts/config-sync.sh`
+- **`scripts/devstarter-config-hook.sh`** — Claude Code `PostToolUse` hook wrapper; detects edits to `devstarter-config.yml` and triggers `config-sync.sh` automatically
+- **`.claude/settings.json`** — new project-level Claude Code settings; registers the config-sync hook on `Edit`/`Write` tool use
+- **`devstarter-config.yml`** — updated: `pm.type` → `github-issues`, `skill_level` → `expert`, `version` → `1.6.1`
+- **`.project.env`** — now fully regenerated by `config-sync.sh`; Notion fields omitted when PM is not `notion`
+
+---
+
+## v1.6.0 (2026-04-08)
+
+### Mandatory devstarter-config.yml — Every Project Must Have One
+
+- **`sdlc/devstarter-starter-gates.md`** — Gate 0 now generates `devstarter-config.yml` from template + syncs `.project.env`; config file is created before any Gate 1 work begins
+- **`sdlc/devstarter-existing.md`** — Phase 3.5 promoted to a hard stop: `devstarter-config.yml` must exist on disk before proceeding to work plan; handles both create and update cases
+- **`agents/shared/devstarter-agent-base.md`** — new `Config Guard` rule: every agent checks for `devstarter-config.yml` on session start and blocks until it exists
+- **`sdlc/devstarter-starter.md`** — Rule 2 "read from disk" now includes `devstarter-config.yml` in the required file list
+- **`update.sh`** — post-update check: warns user if current project is missing `devstarter-config.yml` and directs them to `/devstarter-existing`
+
+---
+
+## v1.5.0 (2026-04-08)
+
+### Token Optimization — Leaner Commands, Agents & VCS Runbooks
+
+- **Command routing registry** (`commands/devstarter-registry.md`) — single lookup table for all 24 commands; 16 thin routing files collapsed from 4 lines → 2 lines each
+- **Agent boilerplate extracted** — `Progress Reporting` + `Shared Protocols` sections stripped from all 13 agent files into `agents/shared/devstarter-agent-base.md`; net −351 lines across agents
+- **VCS common conventions** (`sdlc/devstarter-vcs-common.md`) — branch naming, commit format, .gitignore, labels, semver, and conflict resolution shared across github/gitlab/svn runbooks
+
+### Centralized Config — devstarter-config.yml
+
+- **`devstarter-config.yml`** — new primary config file at project root; replaces `.project.env` as the source of truth
+- **`templates/devstarter-config.template.yml`** — full template with all options documented (GitHub/GitLab/SVN, all PM tools, CI, secrets, AI provider)
+- **`sdlc/devstarter-config-sync.md`** — Python sync script to auto-generate `.project.env` from `devstarter-config.yml` for bash compatibility
+- All 15 SDLC runbooks updated to read `devstarter-config.yml` for project settings
+
+### Proactive Rate-Limit Pause
+
+- **`devstarter-checkpoint.md`** — new `1b. Limit Check` protocol: before each new task, check `tasks_this_session` (≥8) and `files_read_this_session` (≥20) counters
+- **`devstarter-agent-base.md`** — `Proactive Rate-Limit Check` section: finish current task → save `paused_limit` → stop → cron auto-resumes with reset counters
+- New `paused_limit` status in progress.json: voluntary clean pause, safer than mid-task crash
+
+### Autopilot Mode — Unattended Gate 4 Development
+
+- **`devstarter-starter-gates.md`** — after Gate 3 approval, shows sprint/task summary and offers `"autopilot"` / `"manual"` choice
+- `"autopilot"` → runs ALL Gate 4 tasks end-to-end with no user interaction; rate-limit pauses auto-resume via cron; next human interaction is Gate 5 only
+- **`devstarter-checkpoint.md`** — `paused_limit` + `autopilot_mode: true` resumes silently; `in_progress` + autopilot also skips resume prompt
+- **`devstarter-agent-base.md`** — new `## Autopilot Mode` section: no per-task announcements, silent blocker handling, counter updates, Gate 5 callout on completion
+
+---
+
 ## v1.4.1 (2026-04-05)
 
 ### New Command: /devstarter-document

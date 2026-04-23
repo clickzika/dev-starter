@@ -1,8 +1,59 @@
 # OPERATION A — ADD FEATURE
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
+---
+
+## A-SECTION 0 — Requirements Intake (ALWAYS run first)
+
+Before asking specification questions, collect feature requirements.
+This captures the full scope before any impact analysis or coding begins.
+
+**Step 0 — File arg check (check FIRST):**
+If `/devstarter-change` was called with a `.md` file path (e.g. `/devstarter-change feature.md`):
+1. Read the file: `Read [filepath]`
+2. Detect type: contains "AS-IS"/"TO-BE"/"modify" → modify path; contains "bug"/"error"/"fix" → bug path; otherwise → add-feature path
+3. Extract all requirement sections from the file content
+4. Show INTAKE SUMMARY (pre-filled from file) and wait for approval
+5. After approval → skip Steps 1–5 below, go directly to A-PHASE 2 (Impact Analysis)
+Do NOT run Steps 1–5 if a file arg was provided and successfully read.
+
+**Step 1 — Detect feature type from description:**
+- New feature keywords: "add", "create", "build", "implement", "new"
+- Modify feature keywords: "change", "update", "modify", "extend", "improve", "edit"
+- When ambiguous, ask: "Is this a NEW feature or modifying an EXISTING one?"
+
+**Step 2 — Read the matching template:**
+- New feature   → read `~/.claude/templates/intake/devstarter-intake-add-feature.md`
+- Modify feature → read `~/.claude/templates/intake/devstarter-intake-modify-feature.md`
+
+**Step 3 — Collect requirements:**
+Present each section to the user ONE SECTION AT A TIME.
+Fill in answers as the user responds.
+
+**Step 4 — Save filled intake:**
+- New:    `memory/intake-add-feature-[YYYY-MM-DD].md`
+- Modify: `memory/intake-modify-feature-[YYYY-MM-DD].md`
+
+**Step 5 — Show INTAKE SUMMARY and wait for approval.**
+After approval → skip A-PHASE 1 questions and go directly to A-PHASE 2 (Impact Analysis).
+
+**Answer carry-forward after approval:**
+- A-Q1 (feature name)  → Section 1.1
+- A-Q2 (problem)       → Section 1.3
+- A-Q3 (users)         → Section 2.1
+- A-Q4 (DB changes)    → Section 3.3
+- A-Q5 (API changes)   → Section 3.2
+- A-Q6 (UI changes)    → Section 3.1
+- A-Q7 (priority)      → Section 5.1
+- A-Q8 (effort)        → Section 5.2
+
 ---
 
 ## A-PHASE 1 — Feature Specification
+
+> **Note:** A-PHASE 1 is skipped when A-SECTION 0 intake is complete and approved.
+> Only run A-PHASE 1 questions if intake was skipped or incomplete.
 
 Ask these questions ONE AT A TIME:
 
@@ -95,6 +146,10 @@ Sprint:           [current / next]
   "revise [notes]" → adjust scope before proceeding
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate A1 — Impact analysis ready. Approve to proceed to document updates?"
+- options: ["approve", "revise"]
 
 ⛔ GATE A1 — wait for approval before touching any file.
 
@@ -195,6 +250,10 @@ Please review all updated documents.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate A2 — Documents updated. Approve to create tasks and start development?"
+- options: ["approve", "revise"]
+
 ⛔ GATE A2 — wait for approval before creating tasks or writing code.
 
 ### Step A3.7 — Update docs/changerequest-log.html
@@ -274,6 +333,10 @@ Show task list:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate A3 — Task list ready. Approve to create GitHub issues + Notion tasks?"
+- options: ["approve", "revise"]
+
 ⛔ GATE A3 — wait for approval.
 
 ### Step A4.2 — Create GitHub Issues
@@ -282,12 +345,62 @@ Read `~/.claude/devstarter-github.md` → follow PROC-GH-05 for each task.
 ### Step A4.3 — Create Notion Tasks
 Read `~/.claude/devstarter-notion.md` → follow PROC-NT-03 for each task.
 
+### Step A4.4 — TaskCreate for UI Visibility
+For each task, call `TaskCreate` so progress is visible in the Claude Code UI:
+```
+TaskCreate(
+  description: "[Feature Name] — [task name]",
+  prompt: "Implement: [task description] (@[role], Effort: [S/M/L])"
+)
+```
+Store returned task IDs for TaskUpdate calls in A5.2.
+
 Show summary:
 ```
 ✅ [N] GitHub issues created
 ✅ [N] Notion tasks created (Status: To Do)
+✅ [N] UI tasks created (TaskCreate)
 → Ready to start development
 ```
+
+── AUTOPILOT PROMPT (show immediately after tasks created) ──────────────
+
+Count total tasks from the Notion task list, then show:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 READY TO DEVELOP — [Feature Name]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tasks:  [N]   Tracks:  Backend · Frontend · Infra (parallel)
+
+Next stop after development: Gate A4 — Feature Approval
+
+  "autopilot"  → develop all tasks unattended
+                 rate-limit pauses auto-resume via cron
+                 you will be called back only at Gate A4
+
+  "manual"     → step-by-step with per-task approvals
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+When user types "autopilot":
+1. Write to progress.json:
+   ```json
+   "autopilot_mode": true,
+   "autopilot_total_tasks": [N],
+   "autopilot_tasks_done": 0
+   ```
+2. Announce: "🤖 Autopilot ON — developing [N] tasks. Come back at Gate A4."
+3. Proceed to A-PHASE 5 — develop ALL tasks without stopping
+
+When user types "manual":
+1. Write to progress.json: `"autopilot_mode": false`
+2. Proceed to A-PHASE 5 with normal per-task flow
+
+⚠️ AUTOPILOT in A-PHASE 5: If `autopilot_mode=true` — no announcements between tasks,
+no per-task stops, silent blocker handling (fix and continue), silent cron resume.
+Increment `autopilot_tasks_done` by 1 after each task.
+Next human interaction: Gate A4 only.
 
 ---
 
@@ -320,15 +433,19 @@ For **each track** (parallel when independent, sequential when dependent):
 For **each task** within a track:
 
 1. **NOTION → In Progress:** Read `~/.claude/devstarter-notion.md` → PROC-NT-04: status → In Progress ⚠️ MANDATORY
-2. Read `~/.claude/devstarter-github.md` → PROC-GH-06: create feature branch
-3. Agent reads relevant docs from disk before coding:
+2. **TaskUpdate → in_progress:** `TaskUpdate(task_id, status="in_progress")` for this task's UI task
+3. Read `~/.claude/devstarter-github.md` → PROC-GH-06: create feature branch
+3. **Enter worktree** — use `EnterWorktree` tool with the feature branch name for isolated working copy
+4. Agent reads relevant docs from disk before coding:
    - @devstarter-backend → docs/api-reference.html + docs/database-design.html
    - @devstarter-frontend → docs/prototype/index.html + docs/brd.html
    - @devstarter-dba → docs/database-design.html
-4. Implement code
-5. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
-6. **NOTION → In Review:** Read `~/.claude/devstarter-notion.md` → PROC-NT-05: status → In Review ⚠️ MANDATORY
-7. Announce progress and **continue to next task immediately** — do NOT wait for approval:
+5. Implement code
+6. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
+7. **Exit worktree** — use `ExitWorktree` tool to return to main working copy
+8. **TaskUpdate → completed:** `TaskUpdate(task_id, status="completed")` for this task's UI task
+9. **NOTION → In Review:** Read `~/.claude/devstarter-notion.md` → PROC-NT-05: status → In Review ⚠️ MANDATORY
+9. Announce progress and **continue to next task immediately** — do NOT wait for approval:
    ```
    ✅ Task [N/total]: [task name]
       Branch: [branch]  |  PR: #[N]
@@ -353,6 +470,13 @@ PR REVIEW — review ALL PRs together:
    → If 🔴 BLOCKER → fix before showing approval gate
    → If 🟡 MAJOR → list in summary, recommend fix
 
+**If `autopilot_mode=true`** — before showing Gate A4, call `PushNotification`:
+```
+title: "DevStarter — Gate A4 Ready"
+body:  "Feature '[feature name]' — all [N] tasks done. Review and approve to merge."
+```
+This alerts the user without requiring them to watch the terminal.
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⛔ GATE A4 — FEATURE APPROVAL (ALL TASKS)
@@ -374,6 +498,10 @@ Review findings:
   "revise [notes]" → fix issues and re-submit
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate A4 — All [N] tasks complete. Approve to merge all PRs and mark Done?"
+- options: ["approve", "revise"]
 
 After approval:
 - For EACH task:

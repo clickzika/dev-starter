@@ -1,5 +1,7 @@
 # dev-checkpoint.md — Checkpoint & Auto-Resume Protocol
 
+## Model: Haiku (`claude-haiku-4-5-20251001`)
+
 ## Purpose
 
 Prevents work loss when Claude Code hits rate limits during long workflows.
@@ -54,6 +56,62 @@ Workflow Start
 ⏱️ Auto-resume ตั้งไว้แล้ว — ถ้าติด rate limit จะกลับมาทำต่อเองภายใน 10 นาที
 ```
 
+### 1b. Limit Check — Before Starting Each New Task
+
+Before beginning any new task (not the current one — the NEXT one),
+run this check and update `tasks_this_session` + `files_read_this_session` in progress.json:
+
+```
+LIMIT CHECK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+tasks_this_session:      [N]   threshold: 8
+files_read_this_session: [N]   threshold: 20
+
+If EITHER threshold is reached:
+  1. Finish the CURRENT task completely
+  2. Save checkpoint with status: "paused_limit"
+  3. Announce:
+     "⏸ Approaching rate limit — finishing current task then pausing.
+      Auto-resume via cron within 10 minutes."
+  4. STOP — do NOT start the next task
+  5. Cron will detect "paused_limit" and resume with fresh counters
+
+If below both thresholds → continue to next task normally.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**ค่า threshold แนะนำ:**
+| Workload | tasks threshold | files threshold |
+|----------|----------------|-----------------|
+| Light (small edits) | 12 | 30 |
+| Balanced (default) | 8 | 20 |
+| Heavy (doc generation) | 5 | 12 |
+
+ปรับค่าใน progress.json ถ้าต้องการ — default คือ Balanced.
+
+---
+
+### 1b. TaskCreate — Session UI Visibility (ทำตอนเริ่ม workflow)
+
+After setting up Cron, create one UI task per SDLC task using `TaskCreate`:
+
+```
+For each task in the workflow:
+  TaskCreate(
+    description: "[workflow] — [task name]",
+    prompt: "Task [N] of [total]: [task description]"
+  )
+```
+
+This makes tasks visible in the Claude Code UI during the session.
+**TaskCreate is session-scoped** — progress.json handles cross-session resume.
+
+During execution:
+- Before starting a task → `TaskUpdate(task_id, status="in_progress")`
+- After completing a task → `TaskUpdate(task_id, status="completed")`
+
+---
+
 ### 2. Save Checkpoint (ทำหลังจบทุก task)
 
 หลังจากทำแต่ละ task เสร็จ ให้เขียน `memory/progress.json`:
@@ -62,22 +120,32 @@ Workflow Start
 {
   "workflow": "dev-starter",
   "status": "in_progress",
-  "gate": 2,
-  "current_task": "DBA — database-design.html",
-  "completed_tasks": [
-    "BA — brd.html",
-    "BA + TechLead — srs.html"
-  ],
-  "next_task": "Backend — api-reference.html",
-  "files_modified": [
-    "docs/brd.html",
-    "docs/srs.html",
-    "docs/database-design.html"
-  ],
+  "gate": 4,
+  "autopilot_mode": true,
+  "autopilot_sprint": 2,
+  "autopilot_total_sprints": 4,
+  "autopilot_total_tasks": 32,
+  "autopilot_tasks_done": 11,
+  "current_task": "Sprint 2 — Task 3: Auth middleware",
+  "completed_tasks": ["Sprint 1 — Task 1", "Sprint 1 — Task 2"],
+  "next_task": "Sprint 2 — Task 4: JWT validation",
+  "files_modified": ["src/middleware/auth.ts"],
+  "tasks_this_session": 3,
+  "files_read_this_session": 7,
   "last_checkpoint": "2026-03-21T14:30:00",
-  "notes": "User approved Gate 1. Working on Gate 2 documents."
+  "notes": "Autopilot active. Sprint 2/4. Resume silently."
 }
 ```
+
+**Valid `status` values:**
+
+| Status | Meaning |
+|--------|---------|
+| `in_progress` | Actively working — resume immediately |
+| `paused_limit` | Voluntarily paused at 90% limit — resume after reset |
+| `interrupted` | Crashed mid-task — resume from last checkpoint |
+| `completed` | Workflow finished — do nothing |
+| `waiting_approval` | Stopped at a gate — wait for user "approve" |
 
 **กฏสำคัญ:**
 - เขียน checkpoint **ทุกครั้ง** ที่ task เสร็จ — อย่ารอ
@@ -101,11 +169,20 @@ Checkpoint:  [timestamp]
 
 ขั้นตอน:
 1. อ่าน `memory/progress.json`
-2. อ่าน workflow file จาก `~/.claude/sdlc/`
-3. อ่านไฟล์ที่เกี่ยวข้องจาก disk (ไม่ใช่จาก chat history)
-4. ประกาศว่ากำลัง resume อะไร
-5. ทำ `next_task` ต่อ
-6. **อย่าข้าม gate approval** — ถ้า task สุดท้ายของ gate เสร็จแล้ว ต้องรอ user approve ก่อน
+2. ตรวจสอบ `status`:
+   - `paused_limit` →
+     - ถ้า `autopilot_mode: true` → **silent resume**: reset counters silently, ไม่แจ้ง user, ทำต่อทันที
+     - ถ้า `autopilot_mode: false` หรือไม่มี → **reset counters**: ตั้ง `tasks_this_session: 0` และ `files_read_this_session: 0` แล้ว resume พร้อมแจ้ง user
+   - `in_progress` / `interrupted` →
+     - ถ้า `autopilot_mode: true` → resume ทันทีโดยไม่แจ้ง user (silent)
+     - ถ้า `autopilot_mode: false` หรือไม่มี → resume ทันทีพร้อมแสดง resume prompt ปกติ
+   - `waiting_approval` → แสดง gate และรอ user approve (เสมอ — ไม่ข้ามแม้ autopilot)
+   - `completed` → ไม่ทำอะไร
+3. อ่าน workflow file จาก `~/.claude/sdlc/`
+4. อ่านไฟล์ที่เกี่ยวข้องจาก disk (ไม่ใช่จาก chat history)
+5. ประกาศว่ากำลัง resume อะไร
+6. ทำ `next_task` ต่อ
+7. **อย่าข้าม gate approval** — ถ้า task สุดท้ายของ gate เสร็จแล้ว ต้องรอ user approve ก่อน
 
 ---
 
@@ -137,12 +214,14 @@ Checkpoint:  [timestamp]
 
 | สถานการณ์ | วิธีจัดการ |
 |-----------|----------|
+| `tasks_this_session` ถึง threshold | จบ task ปัจจุบัน → save `paused_limit` → หยุด → Cron resume + reset counters (silent ถ้า autopilot) |
 | ติด rate limit กลางการเขียนไฟล์ | Cron resume จะเช็คว่าไฟล์เขียนครบมั้ย ถ้าไม่ครบให้เขียนใหม่ |
 | User กลับมาก่อน Cron fires | User พิมพ์ "ทำต่อ" → อ่าน checkpoint → resume ปกติ |
 | Checkpoint file ไม่มี | ไม่ทำอะไร — ไม่มีงานค้าง |
 | อยู่ตรง gate approval | Resume แล้วรอ user approve — ไม่ข้ามเด็ดขาด |
 | Session ใหม่ (session เก่าตาย) | User เปิด claude ใหม่ → พิมพ์ "ทำต่อ" → อ่าน checkpoint → resume |
 | Cron fires แต่ยังติด rate limit | Cron จะ fire อีกรอบใน 10 นาที — ลองใหม่อัตโนมัติ |
+| `paused_limit` แต่ limit ยังไม่ reset | Cron fire → ยังติด limit → Cron fire ใหม่ใน 10 นาที (auto-retry) |
 
 ---
 
@@ -155,12 +234,131 @@ Checkpoint:  [timestamp]
 3. **ตอนจบ** — cleanup (update status + ลบ Cron)
 
 Workflow ที่ **ต้องใช้**:
-- `dev-starter.md` — ยาวมาก (5 gates, หลายสิบ tasks)
-- `dev-change.md` — หลาย phases
-- `dev-audit.md` — หลาย categories
-- `dev-sprint.md` — หลาย tasks
+- `devstarter-starter-gates.md` — ยาวมาก (5 gates, หลายสิบ tasks) — autopilot prompt หลัง Gate 3
+- `devstarter-existing.md` — หลาย phases — autopilot prompt หลัง Phase 4 plan approval
+- `devstarter-change-add.md` — หลาย phases — autopilot prompt หลัง Gate A3 (tasks created)
+- `devstarter-change-bug.md` — หลาย phases
+- `devstarter-change-remove.md` — หลาย phases
+- `devstarter-audit.md` — หลาย categories
+- `devstarter-sprint.md` — หลาย tasks
+
+**Autopilot resume applies to ALL workflows above.**
+เมื่อ `autopilot_mode: true` ใน progress.json — resume logic ใน Step 3 ใช้ได้กับทุก workflow ไม่ใช่แค่ dev-starter:
+- `paused_limit` + autopilot → silent resume, reset counters, ทำต่อทันที
+- `in_progress` / `interrupted` + autopilot → resume ทันทีโดยไม่แจ้ง user
+- `waiting_approval` → รอ user approve เสมอ (ทุก workflow, ไม่ข้ามแม้ autopilot)
 
 Workflow ที่ **ไม่จำเป็น** (สั้น, จบเร็ว):
 - `dev-env.md`
 - `dev-secrets.md`
 - `dev-dod.md`
+# dev-dod.md — Definition of Done + Quality Gates
+
+## Model: Haiku (`claude-haiku-4-5-20251001`)
+
+## Purpose
+
+This file defines what "done" means at every level.
+All agents check this file before marking any task complete.
+Place at project root.
+
+---
+
+## Task Level — Done means:
+
+```
+Code
+  [ ] Feature implemented as per docs/brd.html acceptance criteria
+  [ ] Code follows standards in CLAUDE.md
+  [ ] No hardcoded secrets or debug code
+  [ ] No commented-out code left behind
+
+Tests
+  [ ] Unit tests written for new business logic
+  [ ] Unit tests passing (all green)
+  [ ] Integration tests passing
+  [ ] No test skipped without documented reason
+
+Review
+  [ ] PR created with description
+  [ ] At least 1 reviewer approved (see TEAM.md)
+  [ ] All PR comments resolved
+  [ ] Branch merged + deleted
+
+Tracking
+  [ ] GitHub issue closed
+  [ ] Notion task → Done
+  [ ] CLAUDE.md Progress Tracker ticked
+```
+
+---
+
+## Feature Level — Done means:
+
+All task-level checks PLUS:
+
+```
+Documentation
+  [ ] docs/brd.html acceptance criteria all passing
+  [ ] docs/api.html updated if endpoints added/changed
+  [ ] docs/schema.html updated if DB changed
+  [ ] docs/uxui.html updated if UI changed
+  [ ] README.md updated if setup steps changed
+
+Quality
+  [ ] Feature tested in development environment end-to-end
+  [ ] Edge cases tested (empty state, error state, max values)
+  [ ] Accessible (keyboard nav, screen reader if applicable)
+  [ ] Responsive (mobile + desktop if web app)
+
+Security
+  [ ] Auth/authorization enforced on new endpoints
+  [ ] Input validation on all new request bodies
+  [ ] No PII in logs from new code
+  [ ] OWASP checklist item verified (if relevant)
+```
+
+---
+
+## Sprint Level — Done means:
+
+All feature-level checks PLUS:
+
+```
+Sprint closure
+  [ ] All committed tasks Done or moved with documented reason
+  [ ] Sprint retrospective completed
+  [ ] Retrospective action items created in GitHub + Notion
+  [ ] CLAUDE.md Last Checkpoint updated
+  [ ] docs/retrospective-sprint-[N].html written
+  [ ] Next sprint planned (dev-sprint.md)
+```
+
+---
+
+## Release Level — Done means:
+
+All sprint-level checks PLUS: see `dev-release.md` checklist.
+
+---
+
+## Agent Rules
+
+Before announcing any task as complete, agents MUST verify:
+
+1. Read this file
+2. Check every applicable item for the task level
+3. If any item is NOT checked → fix it before announcing done
+4. Never mark done just because code is written
+5. Show the DoD checklist in the gate approval message
+
+Gate approval must include:
+```
+DoD Status:
+  [x] Code complete
+  [x] Tests passing
+  [x] PR approved
+  [x] GitHub closed
+  [x] Notion → Done
+  [ ] FAILED: [what is missing]
+```

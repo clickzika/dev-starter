@@ -1,0 +1,91 @@
+# devstarter-config.yml — DevStarter Project Configuration
+# Copy this to your project root and fill in your values.
+# This is the single source of truth for all project settings.
+# Secrets (API keys, tokens) go in .env — never here.
+#
+# After editing: run `devstarter-config-sync` to regenerate .project.env
+# See: sdlc/devstarter-config-sync.md
+
+project:
+  name: MyProject
+  description: "Short project description"
+  version: "1.0.0"
+  status: active           # active | archived | migrating | maintenance
+  type: app                # app | api | framework | library | mobile | ml
+  language: typescript     # typescript | python | go | java | etc.
+
+vcs:
+  type: github             # github | gitlab | svn | none
+
+  # ── GitHub ──────────────────────────────────────────
+  repo: username/repo-name
+
+  # ── GitLab ──────────────────────────────────────────
+  # type: gitlab
+  # gitlab_url: https://gitlab.com
+  # gitlab_project: group/repo-name
+
+  # ── SVN ─────────────────────────────────────────────
+  # type: svn
+  # svn_url: https://svn.company.com/repos/project
+  # svn_trunk: trunk
+  # svn_branches: branches
+  # svn_tags: tags
+
+  branch_strategy: gitflow # gitflow | trunk | simple | svn-standard
+  main_branch: main
+  dev_branch: develop      # gitflow only
+
+  # ── Secondary VCS (mirror / archive) ────────────────
+  secondary_1: none        # none | github | gitlab | svn
+  secondary_2: none
+  sync_branches: "main develop"
+
+pm:
+  type: notion             # notion | jira | github-issues | gitlab-issues | linear | trello | none
+
+  # ── Notion ──────────────────────────────────────────
+  # notion_database_id: "xxx-xxx-xxx"
+  # notion_board_url: "https://notion.so/xxx"
+
+  # ── Jira ────────────────────────────────────────────
+  # type: jira
+  # jira_url: https://company.atlassian.net
+  # jira_project: PROJ
+  # jira_board_id: 1
+  # jira_default_issue_type: Story
+
+  # ── Linear ──────────────────────────────────────────
+  # type: linear
+  # linear_team: xxx
+
+  # ── Trello ──────────────────────────────────────────
+  # type: trello
+  # trello_board_id: xxx
+
+ci:
+  type: github-actions     # github-actions | gitlab-ci | jenkins | azure-pipelines | none
+
+secrets:
+  backend: env-file        # env-file | vault | aws-secrets-manager | azure-keyvault | gcp-secret-manager
+  # vault:   backend_url: https://vault.company.com:8200
+  # aws:     backend_region: us-east-1
+  # azure:   backend_url: https://my-vault.vault.azure.net
+  # gcp:     backend_region: us-central1
+
+ai:
+  provider: claude         # claude | litellm | openai | gemini | local
+  model: claude-sonnet-4-6
+  # For LiteLLM proxy:
+  # provider: litellm
+  # provider_url: http://localhost:4000
+
+team:
+  skill_level: intermediate  # beginner | intermediate | advanced | expert
+  size: solo               # solo | small (2-5) | medium (6-15) | large (15+)
+
+# ── Tech Stack (fill for app/api/mobile/ml projects) ─
+stack:
+  frontend: react          # react | vue | angular | next | svelte | none
+  backend: python          # python | node | go | java | dotnet | none
+  database: postgresql     # postgresql | mysql | mongodb | sqlite | none

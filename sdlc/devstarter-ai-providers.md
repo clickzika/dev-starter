@@ -1,6 +1,8 @@
 # dev-ai-providers.md — Multi-Provider AI Support
 # DevStarter — Provider Selection & Routing Runbook
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 When a project uses AI features (LLMs, embeddings, image generation):
@@ -10,6 +12,9 @@ When a project uses AI features (LLMs, embeddings, image generation):
 ```
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 
 ## ⚠️ CRITICAL RULES
 

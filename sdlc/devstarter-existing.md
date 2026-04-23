@@ -1,11 +1,16 @@
 # dev-existing.md — Existing Project Onboarding
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## Instructions for Claude Code
 
 This workflow is for projects that already have code.
 Follow these phases in order. Do NOT skip any phase.
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 
 ## ⚠️ CRITICAL RULES (same as all workflows)
 
@@ -250,6 +255,10 @@ Is this analysis correct?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Codebase analysis complete. Is this correct?"
+- options: ["yes", "revise"]
+
 ⛔ STOP — wait for user to confirm analysis before proceeding.
 
 ---
@@ -281,20 +290,88 @@ Please review. Are these accurate?
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate 1 — CLAUDE.md and docs generated. Are these accurate?"
+- options: ["approve", "revise"]
+
 ---
 
-## PHASE 3.5 — GitHub + Notion Setup (after Gate 1 approved)
+## PHASE 3.5 — Config + GitHub + Notion Setup (after Gate 1 approved)
 
 After Gate 1 approved, before showing work plan:
 
-1. Read `~/.claude/devstarter-github.md` → follow PROC-GH-02 (connect existing repo)
-2. Read `~/.claude/devstarter-notion.md` → follow PROC-NT-01 + PROC-NT-02 (create task board)
-3. Save `.project.env` with NOTION_DATABASE_ID and GITHUB_REPO
+### Step 1 — devstarter-config.yml (MANDATORY)
+
+Check if `devstarter-config.yml` exists:
+
+- **Does NOT exist** → ask the user two questions BEFORE generating the config:
+
+  **Q0-VCS. Which version control system is this project using?**
+  1. 🐙 GitHub
+  2. 🦊 GitLab
+  3. 📦 SVN (Subversion)
+  4. 🚫 None / local git only
+  0. Auto-detect from codebase (inspect `.git/config` remote URL)
+
+  **Q0-PM. Which project management tool do you use?**
+  Auto-suggest based on Q0-VCS answer:
+  - GitHub → suggest `1. GitHub Issues`
+  - GitLab → suggest `2. GitLab Issues`
+  - SVN / None → suggest `5. None`
+
+  Options:
+  1. 🐙 GitHub Issues
+  2. 🦊 GitLab Issues
+  3. 📝 Notion
+  4. 🗂️  Jira
+  5. 🚫 None
+  0. Let Claude decide
+
+  Then generate config from `~/.claude/templates/devstarter-config.template.yml`:
+  - Fill in: `project.name`, `project.type`, `project.language` from discovery
+  - Fill in: `vcs.type` (from Q0-VCS), `vcs.repo`, `vcs.branch_strategy`, `vcs.main_branch`, `vcs.dev_branch`
+  - Fill in: `pm.type` (from Q0-PM) and pm-specific fields (notion_database_id if pm=notion, etc.)
+  - Fill in: `ci.type`, `ai.provider`
+  - Fill in: `team.skill_level`, `team.size` from USER.md if available
+  - Fill in: `stack.frontend`, `stack.backend`, `stack.database` from stack detection
+
+- **Already exists** → read it; update any fields that differ from what was discovered.
+  If `vcs.type` or `pm.type` is missing or set to `github`/`notion` as placeholder,
+  ask Q0-VCS and Q0-PM to confirm the correct values.
+
+⛔ Do NOT proceed past this step until `devstarter-config.yml` exists on disk.
+
+### Step 2 — Sync to .project.env
+
+Run: `python3 sdlc/devstarter-config-sync.md` → auto-generates `.project.env` for bash compat.
+
+### Step 3 — VCS + PM Setup (conditional on devstarter-config.yml values)
+
+Read `vcs.type` and `pm.type` from config, then run the matching setup:
+
+**VCS:**
+- `github` → Read `~/.claude/sdlc/devstarter-github.md` → PROC-GH-02 (connect existing repo)
+            → then PROC-GH-18 (apply standard branch protection to main + uat)
+- `gitlab` → Read `~/.claude/sdlc/devstarter-gitlab.md` → connect existing GitLab repo
+- `svn`    → Read `~/.claude/sdlc/devstarter-svn.md` → connect existing SVN repo
+- `none`   → skip VCS connection step
+
+**PM:**
+- `notion`        → Read `~/.claude/sdlc/devstarter-notion.md` → PROC-NT-01 + PROC-NT-02 (create task board)
+- `github-issues` → create GitHub issue labels + milestones via `gh` CLI
+- `gitlab-issues` → configure GitLab issue board via `glab` CLI
+- `jira`          → Read `~/.claude/sdlc/devstarter-jira.md` → create Jira project
+- `none`          → skip PM setup
 
 Show:
 ```
-✅ GitHub: [repo URL]
-✅ Notion: [board URL] — Task Board ready
+✅ devstarter-config.yml — created / updated
+   VCS: [vcs.type]   PM: [pm.type]
+✅ .project.env — synced from config
+✅ [VCS label]: [repo URL]
+✅ Branch protection: main + uat — PR required, no force push, no deletion
+   (skipped if vcs.type ≠ github or branch doesn't exist on remote)
+✅ [PM label]:  [board URL or "not configured"]
 → Proceeding to work plan...
 ```
 
@@ -325,7 +402,51 @@ Estimated gates:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Work plan ready. Approve to start development?"
+- options: ["approve", "revise"]
+
 ⛔ STOP — wait for plan approval before starting any work.
+
+---
+
+## PHASE 4.5 — Autopilot Prompt (show immediately after plan approval)
+
+Count total tasks from the work plan, then show:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 READY TO DEVELOP — [Project Name]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Tasks:  [N]   Tracks:  Backend · Frontend · Infra (parallel)
+
+Next stop after development: Final Gate — Delivery Review
+
+  "autopilot"  → execute all tasks unattended
+                 rate-limit pauses auto-resume via cron
+                 you will be called back only at the final gate
+
+  "manual"     → step-by-step with per-task approvals
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+When user types "autopilot":
+1. Write to progress.json:
+   ```json
+   "autopilot_mode": true,
+   "autopilot_total_tasks": [N],
+   "autopilot_tasks_done": 0
+   ```
+2. Announce: "🤖 Autopilot ON — executing [N] tasks. Come back at the final gate."
+3. Proceed to Phase 5 — execute ALL tasks without stopping
+
+When user types "manual":
+1. Write to progress.json: `"autopilot_mode": false`
+2. Proceed to Phase 5 with normal per-task flow
+
+⚠️ AUTOPILOT in Phase 5: If `autopilot_mode=true` — no announcements between tasks,
+no per-task stops, silent blocker handling (fix and continue), silent cron resume.
+Next human interaction: final delivery gate only.
 
 ---
 
@@ -336,9 +457,10 @@ For each task:
 
 1. PM → read `~/.claude/devstarter-notion.md` → PROC-NT-03: create Notion task
 2. DevOps → read `~/.claude/devstarter-github.md` → PROC-GH-05: create GitHub issue
-3. Start work → PROC-GH-06: feature branch, PROC-NT-04: status → In Progress
-4. Complete → PROC-GH-07: PR, PROC-NT-05: status → In Review
-5. Approved → PROC-GH-08: merge, PROC-NT-06: status → Done
+3. `TaskCreate(description: "[task name]", prompt: "[task description]")` → store task_id
+4. Start work → PROC-GH-06: feature branch, PROC-NT-04: status → In Progress, `TaskUpdate(task_id, status="in_progress")`
+5. Complete → PROC-GH-07: PR, PROC-NT-05: status → In Review, `TaskUpdate(task_id, status="completed")`
+6. Approved → PROC-GH-08: merge, PROC-NT-06: status → Done
 - Gate per feature: approve before next feature
 - Revision Protocol: impact analysis before any change
 - Change Impact Map: same cascade rules apply

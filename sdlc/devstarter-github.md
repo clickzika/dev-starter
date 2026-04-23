@@ -1,11 +1,17 @@
-# dev-github.md — Shared GitHub Procedures
+# devstarter-github.md — Shared GitHub Procedures
+
+**Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
+Read `~/.claude/sdlc/devstarter-vcs-common.md` — do not duplicate those definitions here.
 
 ## Purpose
 
-This file contains shared GitHub procedures used by all dev workflows.
-Agents import these procedures by reading this file when GitHub actions are needed.
+This file contains GitHub-specific procedures (`gh` CLI) used by all DevStarter workflows.
+Agents read this file when GitHub actions are needed.
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 
 ## Prerequisites Check
 
@@ -73,7 +79,7 @@ else
   git remote add origin "https://github.com/$GITHUB_USERNAME/$PROJECT_NAME.git" 2>/dev/null || true
 fi
 
-# Create branch strategy: main (production) + uat (user testing) + develop (development)
+# Create branch strategy: main (production) + uat (user testing) + develop (default)
 git checkout -b develop 2>/dev/null || git checkout develop
 git push -u origin develop 2>/dev/null || true
 
@@ -82,10 +88,14 @@ git push -u origin uat 2>/dev/null || true
 
 git checkout develop
 
+# Set develop as the default branch on GitHub
+gh repo edit "$GITHUB_USERNAME/$PROJECT_NAME" --default-branch develop 2>/dev/null || \
+  echo "⚠️  Could not set default branch via gh — set manually in GitHub repo settings"
+
 echo "✅ Branch strategy:"
-echo "   develop  → Claude develops + local test"
-echo "   uat      → User acceptance testing"
-echo "   main     → Production"
+echo "   main     → Production (protected)"
+echo "   uat      → User acceptance testing (protected)"
+echo "   develop  → Active development (default branch)"
 ```
 
 ---
@@ -336,7 +346,7 @@ echo "🚀 Ready for production deployment"
 ```bash
 cd "$PROJECT_DIR"
 
-# Protect main branch
+# Protect main branch — standard rules
 gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/main/protection \
   --method PUT \
   --input - << 'EOF'
@@ -345,8 +355,13 @@ gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/main/protection \
     "required_approving_review_count": 1,
     "dismiss_stale_reviews": true
   },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
   "enforce_admins": false,
-  "required_status_checks": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
   "restrictions": null
 }
 EOF
@@ -354,9 +369,11 @@ EOF
 echo "✅ Branch protection set on main:"
 echo "   - Require 1 PR review"
 echo "   - Dismiss stale reviews on new push"
-echo "   - No direct push allowed"
+echo "   - Require status checks to pass (strict)"
+echo "   - Block force push"
+echo "   - Block branch deletion"
 
-# Note: uat branch uses same protection as main
+# Protect uat branch — same standard rules as main
 gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/uat/protection \
   --method PUT \
   --input - << 'EOF2'
@@ -365,22 +382,91 @@ gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/uat/protection \
     "required_approving_review_count": 1,
     "dismiss_stale_reviews": true
   },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
   "enforce_admins": false,
-  "required_status_checks": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
   "restrictions": null
 }
 EOF2
 
 echo "✅ Branch protection set on uat:"
+echo "   - Require 1 PR review"
+echo "   - Require status checks to pass (strict)"
+echo "   - Block force push"
+echo "   - Block branch deletion"
 echo "   - Only merge from develop (via PROC-GH-09)"
 
-# Note: develop branch is NOT protected
-# (agents need to push directly during Gate 3 scaffold)
-# After Gate 3, optionally protect develop too:
-# gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/develop/protection ...
+# Note: develop is NOT protected here — agents push directly during Gate 3 scaffold.
+# After Gate 3 is complete, run PROC-GH-10 Step 2 to optionally protect develop.
+
+# Note: "contexts": [] means no specific CI checks are required at setup time.
+# Add CI check names here once your workflow files exist, e.g.:
+# "contexts": ["ci / build", "ci / test"]
 ```
 
 ⚠️ **Requires GitHub Pro or public repo** — free private repos cannot set branch protection via API. If it fails, print warning and continue.
+
+---
+
+### PROC-GH-10 Step 2 — Protect develop branch (post-scaffold, optional)
+
+**Used by:** `devstarter-starter-gates.md` after Gate 3 approval
+**Also called by:** PROC-GH-18 for existing repos
+
+Ask the user before running:
+
+```
+Protect the develop branch too?
+
+  Recommended for teams ≥ 3 — forces all devs to use
+  feature/* branches + PRs instead of pushing directly.
+  Claude agents use PRs via PROC-GH-06/07/08 (Gate 4 already does this).
+
+  "yes" → apply protection   |   "no" → skip (add later via PROC-GH-10 Step 2)
+```
+
+If user answers **"yes"**:
+
+```bash
+cd "$PROJECT_DIR"
+
+DEV_BRANCH=$(grep 'dev_branch:' devstarter-config.yml 2>/dev/null | awk '{print $2}' || echo "develop")
+
+gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/$DEV_BRANCH/protection \
+  --method PUT \
+  --input - << 'EOF'
+{
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true
+  },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
+  "enforce_admins": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "restrictions": null
+}
+EOF
+
+echo "✅ develop branch is now protected:"
+echo "   - All devs must use feature/* branches + PR"
+echo "   - Claude agents use PRs via Gate 4 (PROC-GH-06/07/08)"
+echo "   - No direct push to develop"
+```
+
+If user answers **"no"**:
+
+```bash
+echo "ℹ️  develop branch left unprotected."
+echo "   Run PROC-GH-10 Step 2 anytime to enable later."
+```
 
 ---
 
@@ -526,27 +612,11 @@ git merge develop
 
 ### Step 2 — Resolve conflicts
 
-```
-⚠️ MERGE CONFLICT DETECTED
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-Branch: [feature branch]
-Merging from: develop
-Conflicting files:
-  - [file1]
-  - [file2]
-
-Resolution strategy:
-  1. Read both versions of each conflicting file
-  2. Understand the intent of BOTH changes
-  3. Merge manually — preserve both intentions where possible
-  4. If unclear → ask user which version to keep
-  5. NEVER blindly pick "ours" or "theirs"
-```
+See `devstarter-vcs-common.md § Conflict Resolution Protocol` for the resolution strategy and rules.
 
 ### Step 3 — Complete merge
 
 ```bash
-# After resolving all conflicts in the files:
 git add .
 git commit -m "chore: resolve merge conflict with develop
 
@@ -557,12 +627,6 @@ Conflicts resolved:
 git push origin "$FEATURE_BRANCH"
 echo "✅ Conflict resolved and pushed"
 ```
-
-### Rules:
-- **NEVER** use `git checkout --ours .` or `git checkout --theirs .` without reading both sides
-- **ALWAYS** read the conflicting sections and understand what each side intended
-- **ASK** the user if intent is ambiguous
-- **TEST** after resolving — conflicts can introduce subtle bugs
 
 ---
 
@@ -700,28 +764,7 @@ echo "Current version: $LATEST_TAG"
 
 ### Determine bump type
 
-```
-VERSION BUMP RULES
-━━━━━━━━━━━━━━━━━━
-PATCH (v1.0.0 → v1.0.1):
-  - Bug fixes
-  - Hotfixes
-  - Typo/doc fixes
-  - No API or behavior changes
-
-MINOR (v1.0.0 → v1.1.0):
-  - New features (backward compatible)
-  - New API endpoints
-  - New UI screens/components
-  - Non-breaking database additions
-
-MAJOR (v1.0.0 → v2.0.0):
-  - Breaking API changes
-  - Database schema breaking changes
-  - Removed features
-  - Major architecture changes
-  - Incompatible with previous version
-```
+See `devstarter-vcs-common.md § Semantic Versioning Rules` for PATCH/MINOR/MAJOR criteria.
 
 ### Auto-increment
 
@@ -753,21 +796,7 @@ echo "✅ Tagged: $NEXT_VERSION"
 
 ### Decision flow for agents:
 
-```
-Is this a hotfix? (from PROC-GH-12)
-  └── YES → PATCH bump
-
-Is this a release? (from PROC-GH-09)
-  ├── Any breaking changes in this release?
-  │   └── YES → MAJOR bump
-  ├── Any new features?
-  │   └── YES → MINOR bump
-  └── Only fixes/refactors?
-      └── PATCH bump
-
-If unsure → ask user:
-  "This release includes [summary]. Should this be a patch, minor, or major version bump?"
-```
+See `devstarter-vcs-common.md § Semantic Versioning Rules` for the decision flow.
 
 
 ---
@@ -805,6 +834,78 @@ gh pr create --title "test: verify AI review" --body "Testing autonomous PR revi
 **Verify:** After pushing a PR, check GitHub Actions tab.
 The "Claude AI PR Review" job should run and post a comment within 60 seconds.
 
+## PROC-GH-18 — Apply Branch Protection to Existing Repo
+
+**Used by:** devstarter-existing.md Phase 3.5 (after PROC-GH-02)
+**Also callable standalone** for any repo that needs protection applied retroactively.
+
+```bash
+cd "$PROJECT_DIR"
+
+# Read branch names from devstarter-config.yml (fall back to defaults)
+MAIN_BRANCH=$(grep 'main_branch:' devstarter-config.yml 2>/dev/null | awk '{print $2}' || echo "main")
+UAT_BRANCH=$(grep 'uat_branch:'  devstarter-config.yml 2>/dev/null | awk '{print $2}' || echo "uat")
+
+# Protection payload — standard rules
+PROTECTION_PAYLOAD='{
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true
+  },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
+  "enforce_admins": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "restrictions": null
+}'
+
+# Apply to main branch
+if git ls-remote --exit-code origin "$MAIN_BRANCH" &>/dev/null; then
+  echo "$PROTECTION_PAYLOAD" | gh api \
+    repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/$MAIN_BRANCH/protection \
+    --method PUT --input - && \
+    echo "✅ Branch protection applied: $MAIN_BRANCH" || \
+    echo "⚠️  Could not protect $MAIN_BRANCH (requires GitHub Pro or public repo)"
+else
+  echo "⚠️  Branch '$MAIN_BRANCH' not found on remote — skipping"
+fi
+
+# Apply to uat branch (only if it exists)
+if git ls-remote --exit-code origin "$UAT_BRANCH" &>/dev/null; then
+  echo "$PROTECTION_PAYLOAD" | gh api \
+    repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/$UAT_BRANCH/protection \
+    --method PUT --input - && \
+    echo "✅ Branch protection applied: $UAT_BRANCH" || \
+    echo "⚠️  Could not protect $UAT_BRANCH (requires GitHub Pro or public repo)"
+else
+  echo "ℹ️  Branch '$UAT_BRANCH' not found on remote — skipping (create it when ready)"
+fi
+
+echo ""
+echo "Protection summary for $GITHUB_USERNAME/$PROJECT_NAME:"
+echo "  ✅ No direct push to $MAIN_BRANCH / $UAT_BRANCH"
+echo "  ✅ PR + 1 review required to merge"
+echo "  ✅ Status checks must pass (strict mode)"
+echo "  ✅ Force push blocked"
+echo "  ✅ Branch deletion blocked"
+echo ""
+echo "ℹ️  Add CI check names to 'contexts' once your workflow files exist:"
+echo "    e.g. \"contexts\": [\"ci / build\", \"ci / test\"]"
+```
+
+After applying main + uat protection, run **PROC-GH-10 Step 2** to optionally protect develop:
+
+```bash
+# Ask the user, then call PROC-GH-10 Step 2 (see devstarter-github.md)
+```
+
+⚠️ **Requires GitHub Pro or public repo** for private repos. If it fails, print warning and continue — protection can be applied manually in GitHub repo settings.
+
+---
+
 ## PROC-GH-17 — AI Provider Update in GitHub Actions
 
 When rotating or changing the AI provider used by GitHub Actions workflows:
@@ -822,3 +923,181 @@ gh secret list
 # Test by re-running the last review workflow
 gh run rerun $(gh run list --workflow=claude-pr-review.yml --limit=1 --json databaseId -q '.[0].databaseId')
 ```
+
+---
+# devstarter-vcs-common.md — Shared VCS Conventions
+
+Shared reference for all VCS workflows. Read this file for conventions that apply
+regardless of which VCS tool is in use (GitHub, GitLab, SVN).
+
+Referenced by: `devstarter-github.md` · `devstarter-gitlab.md` · `devstarter-svn.md`
+
+---
+
+## Branch Naming Conventions
+
+```
+feature/[description]     — new feature work
+fix/[description]         — non-critical bug fix
+hotfix/[description]      — critical production fix (branches from main)
+release/[version]         — release preparation
+migration/[name]-[date]   — tech stack migration
+```
+
+**Branch strategy: develop → uat → main**
+
+| Branch | Purpose |
+|--------|---------|
+| `develop` | Claude develops + local test |
+| `uat` | User acceptance testing |
+| `main` | Production — protected |
+
+---
+
+## Commit Message Format (Conventional Commits)
+
+```
+feat:     New feature
+fix:      Bug fix
+hotfix:   Critical production fix
+chore:    Build, deps, config — no behavior change
+docs:     Documentation only
+refactor: Code restructure — no behavior change
+test:     Tests only
+ci:       CI/CD pipeline changes
+release:  Version bump + changelog
+```
+
+Example:
+```
+feat: add bulk import for orders
+fix: correct redirect after login
+chore: update dependencies to latest
+```
+
+---
+
+## Standard .gitignore Template
+
+```gitignore
+node_modules/
+.env
+.project.env
+dist/
+build/
+*.log
+.DS_Store
+obj/
+bin/
+*.user
+.vs/
+.angular/
+__pycache__/
+*.pyc
+.pytest_cache/
+```
+
+---
+
+## Standard Label Definitions
+
+Used by all workflows for issue and PR labeling.
+
+### Gate Labels
+| Label | Color | Purpose |
+|-------|-------|---------|
+| `gate:1-discovery` | `#0075ca` | Gate 1: Discovery |
+| `gate:2-design` | `#e4e669` | Gate 2: Design |
+| `gate:3-foundation` | `#d93f0b` | Gate 3: Foundation |
+| `gate:4-feature` | `#0e8a16` | Gate 4: Feature |
+| `gate:5-delivery` | `#5319e7` | Gate 5: Delivery |
+
+### Role Labels
+| Label | Color | Purpose |
+|-------|-------|---------|
+| `role:frontend` | `#1d76db` | @devstarter-frontend |
+| `role:backend` | `#e4e669` | @devstarter-backend |
+| `role:dba` | `#0e8a16` | @devstarter-dba |
+| `role:qa` | `#d93f0b` | @devstarter-qa |
+| `role:devops` | `#5319e7` | @devstarter-devops |
+| `role:security` | `#b60205` | @devstarter-security |
+| `role:uxui` | `#f9d0c4` | @devstarter-uxui |
+
+### Status / Priority Labels
+| Label | Color |
+|-------|-------|
+| `status:blocked` | `#b60205` |
+| `status:in-progress` | `#e4e669` |
+| `status:in-review` | `#0075ca` |
+| `priority:critical` | `#b60205` |
+| `priority:high` | `#d93f0b` |
+| `priority:medium` | `#e4e669` |
+| `priority:low` | `#0e8a16` |
+
+---
+
+## Semantic Versioning Rules
+
+Format: `vMAJOR.MINOR.PATCH`
+
+```
+VERSION BUMP RULES
+━━━━━━━━━━━━━━━━━━
+PATCH (v1.0.0 → v1.0.1):
+  - Bug fixes, hotfixes, typo/doc fixes
+  - No API or behavior changes
+
+MINOR (v1.0.0 → v1.1.0):
+  - New features (backward compatible)
+  - New API endpoints, UI screens, non-breaking DB additions
+
+MAJOR (v1.0.0 → v2.0.0):
+  - Breaking API changes, DB schema breaking changes
+  - Removed features, major architecture changes
+```
+
+**Decision flow:**
+```
+Hotfix?       → PATCH
+Breaking changes in release? → MAJOR
+New features in release?     → MINOR
+Only fixes/refactors?        → PATCH
+Unsure? → ask user: "patch, minor, or major?"
+```
+
+---
+
+## Conflict Resolution Protocol
+
+When `git merge` fails with conflicts:
+
+```
+⚠️ MERGE CONFLICT DETECTED
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+Branch: [feature branch]
+Merging from: develop
+Conflicting files: [list]
+
+Resolution strategy:
+  1. Read both versions of each conflicting file
+  2. Understand the intent of BOTH changes
+  3. Merge manually — preserve both intentions where possible
+  4. If unclear → ask user which version to keep
+  5. NEVER blindly pick "ours" or "theirs"
+```
+
+**Rules:**
+- NEVER use `git checkout --ours .` or `--theirs .` without reading both sides
+- ALWAYS understand what each side intended
+- ASK the user if intent is ambiguous
+- TEST after resolving — conflicts can introduce subtle bugs
+
+---
+
+## Branch Protection Defaults
+
+| Branch | Protection |
+|--------|-----------|
+| `main` | Require 1 PR review + dismiss stale reviews |
+| `uat` | Same as main — only merge from develop via release flow |
+| `develop` | Not protected (agents push directly during Gate 3 scaffold) |

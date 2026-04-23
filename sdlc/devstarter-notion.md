@@ -26,6 +26,9 @@ Agents read this file when Notion operations are needed.
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## Prerequisites Check
 
 ```bash

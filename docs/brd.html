@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Requirements Document — DevStarter</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page: #f5f7fa; --bg-header: #ffffff; --bg-sidebar: #f0f2f5;
+    --bg-content: #ffffff; --bg-card: #f8f9fb; --bg-hover: #e8ebf0;
+    --accent: #e94560; --accent-light: #d63851;
+    --text: #1a1a2e; --text-dim: #5a6578; --text-muted: #8493a8;
+    --border: #d8dde4; --border-light: #e2e7ed;
+    --status-draft: #f59e0b; --status-review: #3b82f6; --status-approved: #10b981;
+    --section-1: #3b82f6; --section-2: #8b5cf6; --section-3: #f59e0b;
+    --section-4: #10b981; --section-5: #ef4444; --section-6: #f97316;
+    --section-7: #06b6d4; --section-8: #ec4899; --section-9: #6366f1; --section-10: #14b8a6;
+    --header-h: 64px; --sidebar-w: 280px;
+    --code-bg: #f1f5f9; --code-inline-bg: rgba(233,69,96,0.08); --code-inline-color: #d63851;
+    --table-even-bg: rgba(0,0,0,0.02); --table-hover-bg: rgba(233,69,96,0.04);
+    --shadow: 0 1px 3px rgba(0,0,0,0.06); --toggle-bg: #e2e6eb; --toggle-knob: #ffffff;
+    --mermaid-bg: rgba(0,0,0,0.02);
+  }
+  [data-theme="dark"] {
+    --bg-page: #0f0f23; --bg-header: #1a1a2e; --bg-sidebar: #16213e;
+    --bg-content: #1e1e3a; --bg-card: #252547; --bg-hover: #0f3460;
+    --accent: #e94560; --accent-light: #ff6b81;
+    --text: #eeeeee; --text-dim: #94a3b8; --text-muted: #64748b;
+    --border: #1e3a5f; --border-light: #2d4a6f;
+    --code-bg: #0d0d1a; --code-inline-bg: rgba(233,69,96,0.1); --code-inline-color: #ff6b81;
+    --table-even-bg: rgba(255,255,255,0.02); --table-hover-bg: rgba(233,69,96,0.05);
+    --shadow: 0 1px 3px rgba(0,0,0,0.3); --toggle-bg: #1e3a5f; --toggle-knob: #e94560;
+    --mermaid-bg: rgba(255,255,255,0.03);
+  }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-page); color: var(--text); line-height: 1.6; height: 100vh; overflow: hidden; transition: background 0.3s, color 0.3s; }
+  .doc-header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); background: var(--bg-header); border-bottom: 1px solid var(--border); box-shadow: var(--shadow); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; z-index: 100; transition: background 0.3s, border-color 0.3s; }
+  .doc-header-left { display: flex; align-items: center; gap: 16px; }
+  .doc-header-logo { width: 36px; height: 36px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px; color: #fff; }
+  .doc-header-title { display: flex; flex-direction: column; }
+  .doc-header-project { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; color: var(--text); }
+  .doc-header-docname { font-size: 12px; color: var(--text-dim); font-weight: 500; }
+  .doc-header-right { display: flex; align-items: center; gap: 16px; }
+  .doc-header-meta { text-align: right; font-size: 12px; color: var(--text-dim); }
+  .doc-status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .doc-status-badge.approved { background: rgba(16,185,129,0.15); color: var(--status-approved); border: 1px solid rgba(16,185,129,0.3); }
+  .theme-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+  .theme-toggle-icon { font-size: 14px; color: var(--text-dim); }
+  .theme-toggle-track { width: 44px; height: 24px; background: var(--toggle-bg); border-radius: 12px; position: relative; transition: background 0.3s; border: 1px solid var(--border); }
+  .theme-toggle-knob { width: 18px; height: 18px; background: var(--toggle-knob); border-radius: 50%; position: absolute; top: 2px; left: 3px; transition: transform 0.3s, background 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform: translateX(20px); }
+  .doc-sidebar { position: fixed; top: var(--header-h); left: 0; bottom: 0; width: var(--sidebar-w); background: var(--bg-sidebar); border-right: 1px solid var(--border); overflow-y: auto; padding: 20px 0; z-index: 50; transition: background 0.3s, border-color 0.3s; }
+  .doc-sidebar::-webkit-scrollbar { width: 4px; }
+  .doc-sidebar::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+  .doc-sidebar-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); padding: 0 20px 12px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+  .toc-list { list-style: none; padding: 0; }
+  .toc-item { display: block; }
+  .toc-link { display: flex; align-items: center; gap: 10px; padding: 8px 20px; color: var(--text-dim); text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.15s ease; border-left: 3px solid transparent; }
+  .toc-link:hover { background: var(--bg-hover); color: var(--text); border-left-color: var(--accent); }
+  .toc-link.active { background: rgba(233,69,96,0.1); color: var(--accent-light); border-left-color: var(--accent); }
+  .toc-number { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 6px; font-size: 11px; font-weight: 700; flex-shrink: 0; color: #fff; }
+  .toc-number.s1 { background: var(--section-1); } .toc-number.s2 { background: var(--section-2); }
+  .toc-number.s3 { background: var(--section-3); } .toc-number.s4 { background: var(--section-4); }
+  .toc-number.s5 { background: var(--section-5); } .toc-number.s6 { background: var(--section-6); }
+  .toc-number.s7 { background: var(--section-7); } .toc-number.s8 { background: var(--section-8); }
+  .toc-number.s9 { background: var(--section-9); } .toc-number.s10 { background: var(--section-10); }
+  .doc-info-card { margin: 16px 12px 0; padding: 14px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; font-size: 12px; transition: background 0.3s, border-color 0.3s; }
+  .doc-info-row { display: flex; justify-content: space-between; padding: 4px 0; color: var(--text-dim); }
+  .doc-info-row span:first-child { color: var(--text-muted); }
+  .doc-content { margin-left: var(--sidebar-w); margin-top: var(--header-h); height: calc(100vh - var(--header-h)); overflow-y: auto; padding: 40px 48px 80px; background: var(--bg-content); transition: background 0.3s; }
+  .doc-content::-webkit-scrollbar { width: 6px; }
+  .doc-content::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 6px; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin: 48px 0 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-header:first-child { margin-top: 0; }
+  .section-number { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; font-size: 14px; font-weight: 800; color: #fff; flex-shrink: 0; }
+  .section-number.s1 { background: var(--section-1); } .section-number.s2 { background: var(--section-2); }
+  .section-number.s3 { background: var(--section-3); } .section-number.s4 { background: var(--section-4); }
+  .section-number.s5 { background: var(--section-5); } .section-number.s6 { background: var(--section-6); }
+  .section-number.s7 { background: var(--section-7); } .section-number.s8 { background: var(--section-8); }
+  .section-number.s9 { background: var(--section-9); } .section-number.s10 { background: var(--section-10); }
+  .section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  h3 { font-size: 16px; font-weight: 600; color: var(--text); margin: 28px 0 12px; border-left: 3px solid var(--accent); padding-left: 12px; }
+  h4 { font-size: 14px; font-weight: 600; color: var(--text-dim); margin: 20px 0 8px; }
+  p { color: var(--text-dim); margin-bottom: 16px; font-size: 14px; line-height: 1.7; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 13px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  thead th { background: var(--bg-sidebar); color: var(--text); font-weight: 600; text-align: left; padding: 12px 16px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--accent); transition: background 0.3s; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s ease; }
+  tbody tr:nth-child(even) { background: var(--table-even-bg); }
+  tbody tr:hover { background: var(--table-hover-bg); }
+  td { padding: 10px 16px; color: var(--text-dim); vertical-align: top; }
+  pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; overflow-x: auto; margin: 12px 0 20px; font-size: 13px; line-height: 1.5; transition: background 0.3s, border-color 0.3s; }
+  code { font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; font-size: 13px; }
+  :not(pre) > code { background: var(--code-inline-bg); color: var(--code-inline-color); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  ul, ol { margin: 8px 0 16px 24px; color: var(--text-dim); font-size: 14px; }
+  li { margin-bottom: 6px; line-height: 1.6; }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 16px 0 24px; transition: background 0.3s, border-color 0.3s; }
+  .card-title { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+  .note { border-left: 4px solid var(--section-1); background: rgba(59,130,246,0.05); }
+  .warning { border-left: 4px solid var(--status-draft); background: rgba(245,158,11,0.05); }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
+  .badge-green { background: rgba(16,185,129,0.15); color: #10b981; }
+  .badge-blue  { background: rgba(59,130,246,0.15); color: #3b82f6; }
+  .badge-yellow { background: rgba(245,158,11,0.15); color: #f59e0b; }
+  .badge-purple { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+  .badge-red { background: rgba(239,68,68,0.15); color: #ef4444; }
+  .badge-gray { background: rgba(100,116,139,0.15); color: #94a3b8; }
+  .mermaid { background: var(--mermaid-bg); border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin: 16px 0 24px; text-align: center; transition: background 0.3s, border-color 0.3s; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+  @media (max-width: 768px) { .doc-sidebar { display: none; } .doc-content { margin-left: 0; padding: 24px 16px 60px; } }
+  @media print {
+    .doc-header { position: static; border-bottom: 2px solid #000; box-shadow: none; }
+    .doc-sidebar { display: none; }
+    .doc-content { margin-left: 0; height: auto; overflow: visible; padding: 20px; }
+    body { background: #fff; color: #000; }
+    td, p, li { color: #333; }
+    .theme-toggle { display: none; }
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  var savedTheme = localStorage.getItem('docportal-theme');
+  mermaid.initialize({ theme: savedTheme === 'dark' ? 'dark' : 'default', startOnLoad: true });
+</script>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Business Requirements Document</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>Version 1.0 · 2026-04-05</div>
+      <div>Author: @devstarter-ba</div>
+    </div>
+    <span class="doc-status-badge approved">● Approved</span>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Table of Contents</div>
+  <ul class="toc-list">
+    <li class="toc-item"><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> Executive Summary</a></li>
+    <li class="toc-item"><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> Scope</a></li>
+    <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> Stakeholders</a></li>
+    <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> AS-IS State</a></li>
+    <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> TO-BE State</a></li>
+    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> Functional Requirements</a></li>
+    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> Non-Functional Requirements</a></li>
+    <li class="toc-item"><a href="#section-8" class="toc-link"><span class="toc-number s8">8</span> Data Requirements</a></li>
+    <li class="toc-item"><a href="#section-9" class="toc-link"><span class="toc-number s9">9</span> Open Issues</a></li>
+    <li class="toc-item"><a href="#section-10" class="toc-link"><span class="toc-number s10">10</span> Glossary</a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Version</span><span>1.0</span></div>
+    <div class="doc-info-row"><span>Status</span><span>Approved</span></div>
+    <div class="doc-info-row"><span>Date</span><span>2026-04-05</span></div>
+    <div class="doc-info-row"><span>Author</span><span>@devstarter-ba</span></div>
+  </div>
+</nav>
+
+<main class="doc-content">
+
+  <div class="section-header" id="section-1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title">Executive Summary</h2>
+  </div>
+
+  <h3>Problem Statement</h3>
+  <p>Developers using Claude Code lack a consistent, repeatable engineering workflow. Every new project starts from zero: no agreed agent roles, no gate approvals, no SDLC runbooks, no document standards. This leads to inconsistent outputs, lost context between sessions, and no institutional process to build on.</p>
+
+  <h3>Solution</h3>
+  <p>DevStarter is a drop-in workflow system for Claude Code. Installing it gives any project a complete software team — 13 specialist AI agents, 24 slash commands, and 28+ SDLC runbooks — with a 5-gate approval workflow, session-resumable checkpoints, and a self-contained document portal.</p>
+
+  <h3>Business Objectives</h3>
+  <ul>
+    <li><strong>OBJ-001:</strong> Reduce time-to-first-working-feature from hours to minutes for any new project</li>
+    <li><strong>OBJ-002:</strong> Eliminate context loss between Claude Code sessions via structured checkpoints</li>
+    <li><strong>OBJ-003:</strong> Standardise document output so every project produces the same 9 core documents</li>
+    <li><strong>OBJ-004:</strong> Support any technology stack without requiring per-stack customisation</li>
+    <li><strong>OBJ-005:</strong> Be installable in under 60 seconds on Windows, macOS, and Linux</li>
+  </ul>
+
+  <h3>Success Metrics</h3>
+  <table>
+    <thead><tr><th>Metric</th><th>Target</th><th>Measurement</th></tr></thead>
+    <tbody>
+      <tr><td>Install time</td><td>&lt; 60 seconds</td><td>Time from clone to first /devstarter-menu</td></tr>
+      <tr><td>Commands available</td><td>24 commands</td><td>Count in commands/ folder</td></tr>
+      <tr><td>Cross-platform support</td><td>Windows + macOS + Linux</td><td>install.sh runs on all 3</td></tr>
+      <tr><td>Session resume rate</td><td>100% resumable</td><td>progress.json always written before stop</td></tr>
+      <tr><td>Document output</td><td>9 standard docs per project</td><td>docs/ folder completeness check</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title">Scope</h2>
+  </div>
+
+  <h3>In Scope</h3>
+  <ul>
+    <li>13 specialist AI agent definition files (Markdown)</li>
+    <li>24 slash commands covering the full SDLC</li>
+    <li>28+ SDLC workflow runbooks</li>
+    <li>HTML document templates (portal + 9 doc types)</li>
+    <li>GitHub and GitLab procedure runbooks (PROC-GH-01–17, PROC-GL-01–17)</li>
+    <li>Notion and Jira task-management integration procedures</li>
+    <li>SVN and multi-VCS sync support</li>
+    <li>MLOps agent and AI/ML project workflows</li>
+    <li>Enterprise secrets management templates (Vault, AWS, Azure, GCP)</li>
+    <li>LiteLLM multi-provider AI routing config</li>
+    <li>One-command installer (<code>bash install.sh</code>)</li>
+    <li>Checkpoint/auto-resume protocol for rate-limit recovery</li>
+  </ul>
+
+  <h3>Out of Scope</h3>
+  <ul>
+    <li>Hosting or cloud deployment of DevStarter itself (it is a local tool)</li>
+    <li>A web UI for DevStarter configuration</li>
+    <li>Native IDE plugin (VS Code extension, JetBrains plugin)</li>
+    <li>Automated test execution (DevStarter authors runbooks; projects execute their own tests)</li>
+    <li>Billing or licence management</li>
+  </ul>
+
+  <h3>Assumptions</h3>
+  <ul>
+    <li>Users have Claude Code installed and authenticated</li>
+    <li>Users have Git installed and configured</li>
+    <li>Users have bash available (Git Bash on Windows, native on macOS/Linux)</li>
+    <li>GitHub or GitLab access is available for VCS operations</li>
+  </ul>
+
+  <h3>Constraints</h3>
+  <ul>
+    <li>All file content must be plain Markdown or Bash — no compiled binaries</li>
+    <li>All file names must carry the <code>devstarter-</code> prefix (except root files)</li>
+    <li>Installation target is <code>~/.claude/</code> — no system-level changes</li>
+    <li>Must not break existing <code>~/.claude/</code> configurations (permissions merge, not overwrite)</li>
+  </ul>
+
+  <div class="section-header" id="section-3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title">Stakeholders</h2>
+  </div>
+
+  <table>
+    <thead><tr><th>Stakeholder</th><th>Role</th><th>Power</th><th>Interest</th><th>Strategy</th></tr></thead>
+    <tbody>
+      <tr><td>clickzika</td><td>Creator / Maintainer</td><td>High</td><td>High</td><td>Manage Closely — all decisions</td></tr>
+      <tr><td>Claude Code users</td><td>End Users</td><td>Low</td><td>High</td><td>Keep Informed — release notes, CHANGELOG</td></tr>
+      <tr><td>Open-source contributors</td><td>Contributors</td><td>Low</td><td>Medium</td><td>Keep Informed — README, contribution guide</td></tr>
+      <tr><td>Anthropic (Claude)</td><td>Platform Provider</td><td>High</td><td>Low</td><td>Keep Satisfied — comply with Claude Code conventions</td></tr>
+    </tbody>
+  </table>
+
+  <h3>RACI Matrix</h3>
+  <table>
+    <thead><tr><th>Activity</th><th>clickzika</th><th>End Users</th><th>Contributors</th></tr></thead>
+    <tbody>
+      <tr><td>Feature prioritisation</td><td><span class="badge badge-green">R/A</span></td><td><span class="badge badge-blue">C</span></td><td><span class="badge badge-blue">C</span></td></tr>
+      <tr><td>Runbook authoring</td><td><span class="badge badge-green">R/A</span></td><td><span class="badge badge-gray">I</span></td><td><span class="badge badge-blue">C</span></td></tr>
+      <tr><td>Release publishing</td><td><span class="badge badge-green">R/A</span></td><td><span class="badge badge-gray">I</span></td><td><span class="badge badge-gray">I</span></td></tr>
+      <tr><td>Bug reporting</td><td><span class="badge badge-blue">C</span></td><td><span class="badge badge-green">R</span></td><td><span class="badge badge-green">R</span></td></tr>
+      <tr><td>Installation</td><td><span class="badge badge-gray">I</span></td><td><span class="badge badge-green">R/A</span></td><td><span class="badge badge-green">R/A</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title">AS-IS State</h2>
+  </div>
+
+  <h3>Current Process (without DevStarter)</h3>
+  <p>A developer opening Claude Code for a new project faces an unstructured session. They must manually:</p>
+  <ul>
+    <li>Define what they want built (no structured intake)</li>
+    <li>Ask Claude to perform specific tasks (no agent specialisation)</li>
+    <li>Remember what was done in prior sessions (no checkpoint system)</li>
+    <li>Create and format documents ad hoc (no template standards)</li>
+    <li>Manage GitHub issues, branches, and PRs manually (no procedure runbooks)</li>
+    <li>Re-explain the project on every new session (no persistent CLAUDE.md)</li>
+  </ul>
+
+  <h3>Pain Points</h3>
+  <table>
+    <thead><tr><th>Pain Point</th><th>Impact</th><th>Root Cause</th></tr></thead>
+    <tbody>
+      <tr><td>Context loss between sessions</td><td>High — rework, repetition</td><td>No persistent project state file</td></tr>
+      <tr><td>No structured workflow</td><td>High — inconsistent outputs</td><td>Claude is general-purpose; no SDLC layer</td></tr>
+      <tr><td>No agent specialisation</td><td>Medium — shallow expertise</td><td>Single-agent responses lack domain depth</td></tr>
+      <tr><td>Rate limit interruptions</td><td>Medium — lost progress</td><td>No checkpoint/resume mechanism</td></tr>
+      <tr><td>No document standards</td><td>Medium — every project looks different</td><td>No shared template or portal</td></tr>
+      <tr><td>Manual GitHub/Notion ops</td><td>Low — time-consuming</td><td>No procedure runbooks</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title">TO-BE State</h2>
+  </div>
+
+  <h3>Desired Future State</h3>
+  <p>With DevStarter installed, a developer opens Claude Code and immediately has access to a complete, structured workflow. They type a slash command, select an option, and a specialist agent takes over with deep domain knowledge, a gated approval workflow, and automatic session-resumable progress tracking.</p>
+
+  <div class="mermaid">
+flowchart LR
+  A[Developer opens Claude Code] --> B[/devstarter-menu]
+  B --> C{Pick workflow}
+  C --> D[/devstarter-new]
+  C --> E[/devstarter-change]
+  C --> F[/devstarter-existing]
+  D --> G[Specialist agents]
+  E --> G
+  F --> G
+  G --> H[Gate approval]
+  H --> I[Checkpoint saved]
+  I --> J[Continue or resume]
+  </div>
+
+  <h3>Business Rules</h3>
+  <ul>
+    <li><strong>BR-001:</strong> Every workflow MUST stop at each gate and wait for explicit user approval before proceeding</li>
+    <li><strong>BR-002:</strong> All agent output MUST be saved to disk before the checkpoint is updated</li>
+    <li><strong>BR-003:</strong> All document files MUST use the standard HTML template — never plain Markdown</li>
+    <li><strong>BR-004:</strong> All new files MUST carry the <code>devstarter-</code> prefix</li>
+    <li><strong>BR-005:</strong> A new slash command requires both a <code>commands/</code> file and an <code>sdlc/</code> runbook</li>
+    <li><strong>BR-006:</strong> Version bumps follow Semantic Versioning: MAJOR.MINOR.PATCH</li>
+  </ul>
+
+  <div class="section-header" id="section-6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title">Functional Requirements</h2>
+  </div>
+
+  <h3>REQ-CMD — Slash Commands</h3>
+  <table>
+    <thead><tr><th>Req ID</th><th>Requirement</th><th>Priority</th><th>Command</th></tr></thead>
+    <tbody>
+      <tr><td>REQ-CMD-001</td><td>System SHALL provide a menu entry point listing all available workflows</td><td><span class="badge badge-green">Must</span></td><td>/devstarter-menu</td></tr>
+      <tr><td>REQ-CMD-002</td><td>System SHALL support starting a new project with 3 intake modes (Quick/Custom/Describe)</td><td><span class="badge badge-green">Must</span></td><td>/devstarter-new</td></tr>
+      <tr><td>REQ-CMD-003</td><td>System SHALL support onboarding an existing codebase via discovery scan</td><td><span class="badge badge-green">Must</span></td><td>/devstarter-existing</td></tr>
+      <tr><td>REQ-CMD-004</td><td>System SHALL support adding features, removing features, and fixing bugs</td><td><span class="badge badge-green">Must</span></td><td>/devstarter-change</td></tr>
+      <tr><td>REQ-CMD-005</td><td>System SHALL support a release + deploy pipeline with ≥8 deploy strategies</td><td><span class="badge badge-green">Must</span></td><td>/devstarter-release</td></tr>
+      <tr><td>REQ-CMD-006</td><td>System SHALL support critical production bug fixes via a hotfix workflow</td><td><span class="badge badge-green">Must</span></td><td>/devstarter-hotfix</td></tr>
+      <tr><td>REQ-CMD-007</td><td>System SHALL support production rollback</td><td><span class="badge badge-green">Must</span></td><td>/devstarter-rollback</td></tr>
+      <tr><td>REQ-CMD-008</td><td>System SHALL support audit and review of any project</td><td><span class="badge badge-green">Must</span></td><td>/devstarter-audit</td></tr>
+      <tr><td>REQ-CMD-009</td><td>System SHALL support standalone document generation for any of 10 doc types</td><td><span class="badge badge-green">Must</span></td><td>/devstarter-document</td></tr>
+      <tr><td>REQ-CMD-010</td><td>System SHALL support inline args on all intake commands to bypass question flow</td><td><span class="badge badge-blue">Should</span></td><td>all</td></tr>
+    </tbody>
+  </table>
+
+  <h3>REQ-AGT — Agent System</h3>
+  <table>
+    <thead><tr><th>Req ID</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td>REQ-AGT-001</td><td>System SHALL provide 13 specialist agents covering BA, Backend, DBA, DevOps, Docs, Frontend, MLOps, Mobile, PM, QA, Security, Tech Lead, UX/UI</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-AGT-002</td><td>Each agent SHALL announce its identity and progress at 25/50/75/100% completion</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-AGT-003</td><td>Each agent SHALL read its spec file before producing any output</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-AGT-004</td><td>Agents SHALL run in parallel tracks (Backend / Frontend / Infra) when independent</td><td><span class="badge badge-blue">Should</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>REQ-WF — Workflow System</h3>
+  <table>
+    <thead><tr><th>Req ID</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td>REQ-WF-001</td><td>All multi-gate workflows SHALL stop at each gate and require explicit user approval</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-WF-002</td><td>System SHALL save a checkpoint to <code>memory/progress.json</code> after every task</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-WF-003</td><td>System SHALL set up a 10-minute auto-resume Cron job on every long workflow start</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-WF-004</td><td>System SHALL resume from last checkpoint without repeating approved work</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-WF-005</td><td>System SHALL support GitFlow branching strategy across all VCS workflows</td><td><span class="badge badge-blue">Should</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-7">
+    <span class="section-number s7">7</span>
+    <h2 class="section-title">Non-Functional Requirements</h2>
+  </div>
+
+  <table>
+    <thead><tr><th>Req ID</th><th>Category</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td>REQ-NFR-001</td><td>Compatibility</td><td>install.sh SHALL run on Windows (Git Bash), macOS, and Linux without modification</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-NFR-002</td><td>Portability</td><td>All files SHALL be plain text (Markdown, Bash, HTML) — no compiled binaries</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-NFR-003</td><td>Install safety</td><td>Installer SHALL merge permissions, not overwrite existing <code>~/.claude/</code> files</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-NFR-004</td><td>Maintainability</td><td>All internal cross-references SHALL use the full <code>devstarter-</code> prefixed filename</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-NFR-005</td><td>Versioning</td><td>VERSION file SHALL be updated on every release; CHANGELOG.md SHALL record all changes</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-NFR-006</td><td>Discoverability</td><td>Every new slash command SHALL be registered in <code>devstarter-menu.md</code></td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-NFR-007</td><td>Documentation</td><td>Every agent, command, and runbook SHALL be self-contained — no external dependencies for understanding</td><td><span class="badge badge-blue">Should</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-8">
+    <span class="section-number s8">8</span>
+    <h2 class="section-title">Data Requirements</h2>
+  </div>
+
+  <h3>Core Data Entities</h3>
+  <table>
+    <thead><tr><th>Entity</th><th>File</th><th>Purpose</th><th>Written By</th></tr></thead>
+    <tbody>
+      <tr><td>Project Context</td><td><code>CLAUDE.md</code></td><td>Persistent project state loaded by Claude Code every session</td><td>BA agent / user</td></tr>
+      <tr><td>Workflow Checkpoint</td><td><code>memory/progress.json</code></td><td>Current gate, last task, next task — enables auto-resume</td><td>Every workflow</td></tr>
+      <tr><td>Project Config</td><td><code>.project.env</code></td><td>VCS type, PM type, AI provider, CI/CD, secrets backend</td><td>DevOps / setup commands</td></tr>
+      <tr><td>User Config</td><td><code>USER.md</code></td><td>User skill level, preferences, communication style</td><td>install.sh wizard</td></tr>
+      <tr><td>Secrets</td><td><code>.env</code></td><td>Local API keys and secrets (gitignored)</td><td>User / secrets command</td></tr>
+    </tbody>
+  </table>
+
+  <h3>progress.json Schema</h3>
+  <pre><code>{
+  "workflow":         string,   // e.g. "devstarter-change"
+  "status":           string,   // "in_progress" | "completed" | "idle"
+  "gate":             number,   // current gate number
+  "current_task":     string,   // e.g. "BA — docs/brd.html"
+  "completed_tasks":  string[], // list of completed task names
+  "next_task":        string,   // what to do on resume
+  "files_modified":   string[], // files written this session
+  "last_checkpoint":  string,   // ISO 8601 timestamp
+  "notes":            string    // human-readable context
+}</code></pre>
+
+  <h3>Data Rules</h3>
+  <ul>
+    <li><strong>DR-001:</strong> <code>progress.json</code> MUST be written after every task — before any other operation</li>
+    <li><strong>DR-002:</strong> <code>.env</code> MUST be listed in <code>.gitignore</code> — never committed</li>
+    <li><strong>DR-003:</strong> <code>CLAUDE.md</code> is the single source of truth for project stack and conventions</li>
+    <li><strong>DR-004:</strong> <code>.project.env</code> MUST be committed to the repo — it contains no secrets</li>
+  </ul>
+
+  <div class="section-header" id="section-9">
+    <span class="section-number s9">9</span>
+    <h2 class="section-title">Open Issues</h2>
+  </div>
+
+  <table>
+    <thead><tr><th>ID</th><th>Description</th><th>Owner</th><th>Priority</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>OI-001</td><td>No automated test suite for runbook correctness — changes are validated manually</td><td>clickzika</td><td><span class="badge badge-yellow">Medium</span></td><td>Open</td></tr>
+      <tr><td>OI-002</td><td>No contribution guide for external contributors</td><td>clickzika</td><td><span class="badge badge-yellow">Medium</span></td><td>Open</td></tr>
+      <tr><td>OI-003</td><td>install.sh has no rollback — if install fails mid-way, partial state may remain</td><td>clickzika</td><td><span class="badge badge-yellow">Medium</span></td><td>Open</td></tr>
+      <tr><td>OI-004</td><td>Bitbucket not yet supported as a primary VCS (only as secondary mirror)</td><td>clickzika</td><td><span class="badge badge-gray">Low</span></td><td>Open</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-10">
+    <span class="section-number s10">10</span>
+    <h2 class="section-title">Glossary</h2>
+  </div>
+
+  <table>
+    <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+    <tbody>
+      <tr><td>Agent</td><td>A specialist AI persona defined in a Markdown file under <code>agents/</code>, read by Claude Code to shape its behaviour for a domain (e.g. Backend, QA, Security)</td></tr>
+      <tr><td>Checkpoint</td><td>A snapshot of current workflow progress written to <code>memory/progress.json</code> after each completed task, enabling resume after interruption</td></tr>
+      <tr><td>CLAUDE.md</td><td>A project-level context file placed at the repo root; Claude Code loads it automatically at every session start</td></tr>
+      <tr><td>Gate</td><td>A mandatory approval stop in a workflow where Claude halts and waits for the user to type "approve" before proceeding</td></tr>
+      <tr><td>GitFlow</td><td>A branching strategy with main, develop, feature/*, hotfix/*, and release/* branches</td></tr>
+      <tr><td>Runbook</td><td>A step-by-step procedure file in <code>sdlc/</code> that defines a complete workflow (e.g. how to create a GitHub PR, how to run a sprint retrospective)</td></tr>
+      <tr><td>Slash command</td><td>A Claude Code command file in <code>commands/</code> that users invoke with <code>/devstarter-X</code>; it routes to the matching SDLC runbook</td></tr>
+      <tr><td>SDLC</td><td>Software Development Lifecycle — the end-to-end process from requirements to deployment</td></tr>
+      <tr><td>devstarter- prefix</td><td>The mandatory namespace prefix applied to all agents, commands, and SDLC files in this project to distinguish them from other Claude Code extensions</td></tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function toggleTheme() {
+    var html = document.documentElement;
+    var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function(){ var s=localStorage.getItem('docportal-theme'); if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';} })();
+  const sections=document.querySelectorAll('.section-header[id]');
+  const tocLinks=document.querySelectorAll('.toc-link');
+  const content=document.querySelector('.doc-content');
+  content.addEventListener('scroll',()=>{ let c=''; sections.forEach(s=>{if(content.scrollTop>=s.offsetTop-content.offsetTop-100)c=s.id;}); tocLinks.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+c)l.classList.add('active');}); });
+  tocLinks.forEach(l=>{ l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)content.scrollTo({top:t.offsetTop-content.offsetTop-20,behavior:'smooth'});}); });
+</script>
+</body>
+</html>

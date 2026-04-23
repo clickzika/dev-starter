@@ -1,5 +1,7 @@
 # dev-starter.md — Project Spec Intake Template
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use This File
 
 Place this file at `~/.claude/devstarter-starter.md` (global — works across all projects).
@@ -58,6 +60,7 @@ Before every task, announce:
 ```
 📂 Reading source of truth from disk:
 - CLAUDE.md ✓
+- devstarter-config.yml ✓
 - memory/progress.json ✓
 - docs/[relevant-doc].html ✓
 ```

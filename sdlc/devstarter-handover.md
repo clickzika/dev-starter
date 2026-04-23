@@ -1,5 +1,9 @@
 # dev-handover.md — Project Handover
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 ## How to Use
 
 When a team member leaves or transfers ownership:

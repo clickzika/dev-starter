@@ -1,5 +1,9 @@
 # devstarter-document.md — Document Generator Workflow
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 ## Purpose
 
 Generate or regenerate a specific project document at any time —

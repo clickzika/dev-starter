@@ -5,17 +5,55 @@ Each agent file references this file — do not duplicate these sections in agen
 
 ---
 
+## Progress Reporting
+
+Character name and role are defined in each agent's header (line 3).
+
+Before starting any task, announce:
+`"▶ [Character Name] ([Role]) starting: [task description]"`
+
+At 25%, 50%, 75% completion, say:
+`"⏳ [Character Name] ([Role]) [25/50/75]%: [what was just done]"`
+
+When complete, say:
+`"✅ [Role Name] done: [what was produced] → handing off to [next agent or user]"`
+
+If blocked, say:
+`"⏸ [Role Name] blocked: [what is needed to continue]"`
+
+---
+
+## Config Guard — Check on Every Start
+
+Before doing ANY work, verify `devstarter-config.yml` exists in the project root:
+
+```
+if devstarter-config.yml does NOT exist:
+  ⛔ STOP — devstarter-config.yml is missing.
+  Generate it now from ~/.claude/templates/devstarter-config.template.yml
+  Fill in values from: CLAUDE.md, .project.env (if present), or ask the user.
+  Then run: python3 sdlc/devstarter-config-sync.md → .project.env
+  DO NOT proceed with any task until the file exists on disk.
+```
+
+Every agent reads `devstarter-config.yml` for project settings — never read `.project.env` directly unless running a bash script.
+
+---
+
 ## Session Resume — Check on Every Start
 
 Before doing ANY work, check if there is an in-progress session:
 
-1. Read `memory/progress.json` — if it exists, show the resume prompt:
-   ```
-   🔄 PREVIOUS SESSION DETECTED
-   Gate: [gate] | Task: [task] | Status: [status]
-   Last: [last step] | Next: [next step]
-   Continue? (yes / restart / show details)
-   ```
+1. Read `memory/progress.json` — if it exists:
+   - If `autopilot_mode: true` AND status is `in_progress` or `paused_limit`:
+     → **Silent resume** — do NOT show prompt, do NOT ask user. Reset counters if `paused_limit`, then continue from `next_task` immediately.
+   - Otherwise, show the resume prompt:
+     ```
+     🔄 PREVIOUS SESSION DETECTED
+     Gate: [gate] | Task: [task] | Status: [status]
+     Last: [last step] | Next: [next step]
+     Continue? (yes / restart / show details)
+     ```
 2. If user says "yes" or "continue" → pick up from where it stopped
 3. If no `progress.json` → start fresh as normal
 
@@ -41,6 +79,99 @@ Follow these rules to protect against data loss:
 
 If the limit hits mid-task, the user will run `/continue` after reset.
 Your progress.json tells the next session exactly where to pick up.
+
+---
+
+## Proactive Rate-Limit Check — Before Every New Task
+
+After completing a task and BEFORE starting the next one, check counters:
+
+```
+LIMIT CHECK (run before each new task)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Read tasks_this_session from progress.json (or 0 if not set)
+2. Read files_read_this_session from progress.json (or 0 if not set)
+3. Increment tasks_this_session by 1 (for the task just completed)
+
+If tasks_this_session ≥ 8  OR  files_read_this_session ≥ 20:
+  → Finish current task fully
+  → Save progress.json with:
+      status: "paused_limit"
+      pause_reason: "rate_limit_90pct"
+      tasks_this_session: [current count]
+      files_read_this_session: [current count]
+  → Announce:
+    "⏸ Approaching rate limit — pausing after this task.
+     Auto-resume via cron within 10 minutes."
+  → STOP — do not start the next task
+
+If below both thresholds:
+  → Update progress.json with incremented counters
+  → Continue to next task
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Counter tracking rules:**
+- Increment `tasks_this_session` by 1 after each task completes
+- Increment `files_read_this_session` by the number of files read during that task
+- Counters reset to 0 when cron resumes from `paused_limit` status
+- Counters are stored in `progress.json` — persist across tool calls within a session
+
+**Threshold reference (from devstarter-checkpoint.md):**
+
+| Workload | tasks | files |
+|----------|-------|-------|
+| Light | 12 | 30 |
+| **Balanced (default)** | **8** | **20** |
+| Heavy | 5 | 12 |
+
+---
+
+## Autopilot Mode — Silent Execution
+
+When `autopilot_mode: true` in `progress.json`, all agents MUST follow these rules:
+
+```
+AUTOPILOT RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✗ NO per-task announcements ("Starting task X...")
+✗ NO approval prompts between tasks
+✗ NO progress summaries mid-sprint
+✗ NO "should I continue?" questions
+
+✓ Fix blockers silently — then continue
+✓ Save progress.json after every task
+✓ Rate-limit pause → cron resumes silently
+✓ ONLY stop at Gate 5 (quality review) or waiting_approval
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+**Blocker handling in autopilot:**
+- Missing file or import error → create the file / stub, continue
+- Merge conflict → apply the newer change, continue (log to progress.json notes)
+- Ambiguous requirement → pick the simpler interpretation, continue
+- Hard blocker (missing credential, external API down) → save `waiting_approval` status, show ONE message to user explaining what is needed
+
+**Autopilot counter update (per task):**
+After each task, increment in `progress.json`:
+- `autopilot_tasks_done` + 1
+- `autopilot_sprint` — update when sprint changes
+- `tasks_this_session` + 1
+
+**When autopilot ends:**
+Autopilot automatically ends when `autopilot_tasks_done >= autopilot_total_tasks`.
+At that point → proceed to Gate 5 and call user back:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ AUTOPILOT COMPLETE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Sprints done:  [N]/[N]
+Tasks done:    [N]/[N]
+Pauses:        [N] (auto-resumed via cron)
+
+Proceeding to Gate 5 — Quality & Delivery Review.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
 
 ---
 

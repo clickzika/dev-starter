@@ -1,5 +1,7 @@
 # RESUME INSTRUCTIONS
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 If resuming mid-change:
 
 1. Read `memory/progress.json` first

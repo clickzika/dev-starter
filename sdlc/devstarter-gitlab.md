@@ -1,14 +1,19 @@
 # devstarter-gitlab.md — Shared GitLab Procedures
 
+**Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
+Read `~/.claude/sdlc/devstarter-vcs-common.md` — do not duplicate those definitions here.
+
 ## Purpose
 
-This file contains shared GitLab procedures used by all DevStarter workflows
+This file contains GitLab-specific procedures (`glab` CLI) used by all DevStarter workflows
 when `VCS_TYPE=gitlab` or `VCS_SECONDARY_1/2=gitlab` is set in `.project.env`.
-Agents import these procedures by reading this file when GitLab actions are needed.
 
 GitLab equivalent of `devstarter-github.md` — same structure, GitLab API + `glab` CLI.
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 
 ## Prerequisites Check
 
@@ -524,22 +529,7 @@ git merge develop
 
 ### Step 2 — Resolve conflicts
 
-```
-⚠️ MERGE CONFLICT DETECTED
-━━━━━━━━━━━━━━━━━━━━━━━━━━
-Branch: [feature branch]
-Merging from: develop
-Conflicting files:
-  - [file1]
-  - [file2]
-
-Resolution strategy:
-  1. Read both versions of each conflicting file
-  2. Understand the intent of BOTH changes
-  3. Merge manually — preserve both intentions where possible
-  4. If unclear → ask user which version to keep
-  5. NEVER blindly pick "ours" or "theirs"
-```
+See `devstarter-vcs-common.md § Conflict Resolution Protocol` for the resolution strategy and rules.
 
 ### Step 3 — Complete merge
 
@@ -554,12 +544,6 @@ Conflicts resolved:
 git push origin "$FEATURE_BRANCH"
 echo "✅ Conflict resolved and pushed"
 ```
-
-### Rules:
-- **NEVER** use `git checkout --ours .` or `git checkout --theirs .` without reading both sides
-- **ALWAYS** read the conflicting sections and understand what each side intended
-- **ASK** the user if intent is ambiguous
-- **TEST** after resolving — conflicts can introduce subtle bugs
 
 ---
 

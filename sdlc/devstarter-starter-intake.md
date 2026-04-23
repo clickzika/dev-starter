@@ -1,3 +1,38 @@
+## SECTION 0 — Requirements Intake (ALWAYS run first)
+
+Before asking technical questions, collect project requirements.
+This ensures Gate 1 documents are complete and accurate from the start.
+
+**Step 0 — File arg check (check FIRST):**
+If `/devstarter-new` was called with a `.md` file path (e.g. `/devstarter-new prd.md`):
+1. Read the file: `Read [filepath]`
+2. Extract all requirement sections from the file content
+3. Show INTAKE SUMMARY (pre-filled from file) and wait for approval
+4. After approval → skip interactive questions below, go directly to Q0-VCS
+Do NOT run Steps 1–5 if a file arg was provided and successfully read.
+
+**Step 1 — Check for inline description or MODE 3 input:**
+If the user provided a plain-text description (inline arg or MODE 3 free-text):
+- Extract answers and pre-fill the intake template sections
+- Show the pre-filled INTAKE SUMMARY for confirmation (do NOT ask section by section)
+- After confirmation → go to Q0-VCS
+
+**Step 2 — Interactive intake (only if no file arg and no description):**
+1. Read `~/.claude/templates/intake/devstarter-intake-new-project.md`
+2. Present each section to the user ONE SECTION AT A TIME
+3. Fill in answers as the user responds
+4. Save the completed intake to: `memory/intake-new-project-[YYYY-MM-DD].md`
+5. Show the INTAKE SUMMARY and wait for approval before continuing
+6. After approval → continue to Q0-VCS (infrastructure questions below)
+
+**Answer carry-forward:** After intake approval, skip these overlapping questions:
+- Q1 (project name)      → use Section 1.1 answer
+- Q2 (project purpose)   → use Section 1.2 + 1.3 answers
+- Q6 (main features)     → use Section 3 full feature list (Must + Should + Could)
+- Q7 (user roles)        → use Section 2.1 personas
+
+---
+
 ## MODE 1 — Quick Start (8 Questions)
 
 Ask ONE question at a time. Every question has option `0. Let Claude decide`.
@@ -6,6 +41,50 @@ User can type a single answer, comma-separated numbers, or free text.
 **For questions that need multiple lines** (e.g. features, description):
 Tell the user to separate items with commas or semicolons on one line.
 Example: `login, product catalog, cart, checkout, payment`
+
+---
+
+### Q0 — Infrastructure (ask FIRST, before anything else)
+
+**Q0-VCS. Which version control system will you use?**
+1. 🐙 GitHub
+2. 🦊 GitLab
+3. 📦 SVN (Subversion)
+4. 🚫 None / local git only
+0. Let Claude decide (defaults to GitHub)
+
+---
+
+**Q0-PM. Which project management tool?**
+
+Auto-suggest based on Q0-VCS:
+- GitHub selected  → suggest `1. GitHub Issues`
+- GitLab selected  → suggest `2. GitLab Issues`
+- SVN / None       → suggest `5. None`
+
+Options:
+1. 🐙 GitHub Issues  (built-in, no extra setup)
+2. 🦊 GitLab Issues  (built-in, no extra setup)
+3. 📝 Notion
+4. 🗂️  Jira
+5. 🚫 None
+0. Let Claude decide
+
+---
+
+Write both answers immediately to `devstarter-config.yml`:
+```yaml
+vcs:
+  type: github   # github | gitlab | svn | none
+pm:
+  type: github-issues  # github-issues | gitlab-issues | notion | jira | none
+```
+
+Then save `{{REPOSITORY_URL}}` and `{{PM_BOARD_URL}}` placeholders for use in CLAUDE.md generation:
+- github  → `https://github.com/{{GITHUB_USERNAME}}/{{PROJECT_NAME}}`
+- gitlab  → `https://gitlab.com/{{GITLAB_USERNAME}}/{{PROJECT_NAME}}`
+- svn     → `svn+ssh://{{SVN_HOST}}/{{PROJECT_NAME}}`
+- none    → `(local only)`
 
 ---
 

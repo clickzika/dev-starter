@@ -1,5 +1,8 @@
 # dev-hotfix.md — Emergency Production Fix
 
+## Model: Opus (`claude-opus-4-6`)
+> Deep reasoning required — run `/model opus` before this workflow.
+
 ## How to Use
 
 When there is a critical bug in PRODUCTION that cannot wait for normal sprint:
@@ -9,6 +12,9 @@ claude
 ```
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 
 ## ⚠️ HOTFIX RULES
 

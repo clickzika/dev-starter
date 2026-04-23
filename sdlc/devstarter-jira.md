@@ -10,6 +10,9 @@ Agents: @devstarter-pm reads this file before any Jira operation.
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 ## Prerequisites & Config
 
 ```bash

@@ -68,9 +68,10 @@ overall: Intermediate
 
 Response language:    English
 Code comments:        English
-Explanation style:    Show full example
+Explanation style:    Short and concise — no lengthy explanations, I will ask follow-up questions
 Error messages:       Keep in English
 When I am stuck:      Walk me through step by step
+Token preference:     Minimal — skip preamble, skip summaries, bullets over paragraphs
 
 ---
 

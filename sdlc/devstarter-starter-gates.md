@@ -10,14 +10,23 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
          → PROC-NT-01: find or create Notion parent page
          → PROC-NT-02: create project database (Task Board)
          → PROC-NT-07: create views (Board, By Epic, Sprint, All Tasks)
-  DevOps → save .project.env (NOTION_DATABASE_ID, GITHUB_REPO)
+  DevOps → generate devstarter-config.yml from ~/.claude/templates/devstarter-config.template.yml
+         → fill in: project.name, project.type, project.language from intake answers
+         → fill in: vcs.type, vcs.repo, vcs.branch_strategy, vcs.main_branch, vcs.dev_branch
+         → fill in: pm.type, pm.notion_database_id, pm.notion_board_url
+         → fill in: ci.type, ai.provider, team.skill_level, team.size
+         → run config-sync: python3 sdlc/devstarter-config-sync.md → generates .project.env
   ──────────────────────────────────────────────────
   Show:
     ✅ GitHub: github.com/[user]/[PROJECT_NAME]
     ✅ Notion: [NOTION_BOARD_URL]
-    ✅ Branch protection: main protected
+    ✅ Branches: main (production) → uat (acceptance) → develop (default ★)
+    ✅ Branch protection: main + uat protected
+    ✅ Default branch: develop
     ✅ Templates: PR + Issue templates created
     ✅ Notion views: Board, By Epic, Sprint, All Tasks
+    ✅ devstarter-config.yml — project config created
+    ✅ .project.env — synced from config
   No approval needed — proceed to Gate 1 automatically
 
 GATE 1 — Discovery                    ← HARD STOP: user must approve before Gate 2
@@ -156,17 +165,60 @@ GATE 3 — Foundation + Task Setup      ← HARD STOP: user must approve before 
   DevOps → scaffold Docker Compose, branch strategy
   Backend → scaffold project, DB connection, /health endpoint
   Frontend → scaffold project, API service, auth interceptor
+  DevOps → read ~/.claude/sdlc/devstarter-github.md → PROC-GH-10 Step 2: ask user to protect develop branch
   ──────────────────────────────────────────────────
   Show:
     ✅ [N] GitHub issues created (assigned to milestones)
     ✅ [N] Notion tasks created (Status: To Do)
     ✅ Scaffold complete
+    ✅ develop branch: [protected — all devs use PRs | unprotected — direct push allowed]
   ⛔ STOP → wait for "approve" or "revise [component]"
+
+  ── AUTOPILOT PROMPT (show immediately after Gate 3 approved) ──────────────
+
+  Count total tasks from the Notion task list, group by sprint, then show:
+
+  ```
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🚀 READY TO DEVELOP — [Project Name]
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Sprints:  [N]   Tasks:  [N]   Est: ~[N] hours
+  Tracks:   Backend · Frontend · Infra (parallel)
+
+  Next stop after development: Gate 5 — Delivery Review
+
+    "autopilot"  → develop all sprints unattended
+                   rate-limit pauses auto-resume via cron
+                   you will be called back only at Gate 5
+
+    "manual"     → step-by-step with per-task approvals
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ```
+
+  When user types "autopilot":
+  1. Write to progress.json:
+     ```json
+     "autopilot_mode": true,
+     "autopilot_sprint": 1,
+     "autopilot_total_sprints": [N],
+     "autopilot_total_tasks": [N],
+     "autopilot_tasks_done": 0
+     ```
+  2. Announce: "🤖 Autopilot ON — developing [N] sprints. Come back at Gate 5."
+  3. Proceed to Gate 4 — develop ALL tasks without stopping
+
+  When user types "manual":
+  1. Write to progress.json: `"autopilot_mode": false`
+  2. Proceed to Gate 4 with normal per-task flow
 
 GATE 4 — Feature Development          ← Continuous Development (Rule 6 + Rule 7)
 
   ⚠️ IMPORTANT: After Gate 3 approval, develop ALL tasks continuously.
   Do NOT stop for per-task approval. Only stop at Gate 5 when ALL tasks are done.
+
+  ⚠️ AUTOPILOT: If autopilot_mode=true in progress.json — no announcements,
+  no questions, no per-task stops. Handle all blockers silently (fix and continue).
+  Rate-limit pauses auto-resume via cron. Next human interaction: Gate 5 only.
 
   PARALLEL TRACKS (Rule 7):
   ┌─────────────────────────────────────────────────────────────┐
@@ -208,7 +260,12 @@ GATE 4 — Feature Development          ← Continuous Development (Rule 6 + Rul
     7. DevOps → PROC-GH-08: merge PR, close issue
        ⚠️ If merge conflict → follow PROC-GH-13 (conflict resolution)
     8. PM     → PROC-NT-06: update Notion task → "Done"
+    9. Update progress.json:
+       - Increment `autopilot_tasks_done` by 1 (if autopilot_mode=true)
+       - Increment `tasks_this_session` by 1
+       - Update `autopilot_sprint` when moving to next sprint
     → proceed to next task (NO STOP between tasks)
+    → if autopilot_mode=true: no announcements between tasks — silent continuation
 
 GATE 5 — Quality & Delivery           ← HARD STOP: user must approve before deploy
   QA       → read docs/brd.html → write + run tests → coverage report
@@ -230,4 +287,7 @@ GATE 5 — Quality & Delivery           ← HARD STOP: user must approve before 
 ```
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 

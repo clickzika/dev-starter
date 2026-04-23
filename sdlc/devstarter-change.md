@@ -1,5 +1,7 @@
 # dev-change.md — Change Management Workflow
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
 ## How to Use
 
 Place at `~/.claude/devstarter-change.md`
@@ -15,6 +17,9 @@ claude
 ```
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 
 ## ⚠️ CRITICAL RULES
 

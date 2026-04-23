@@ -1,5 +1,7 @@
 # dev-secrets.md — Secrets Management
 
+## Model: Haiku (`claude-haiku-4-5-20251001`)
+
 ## How to Use
 
 When managing secrets, API keys, and credentials:
@@ -9,6 +11,9 @@ claude
 ```
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 
 ## ⚠️ ABSOLUTE RULES — Never Break These
 

@@ -1,5 +1,9 @@
 # dev-onboarding.md — New Member Onboarding
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 ## How to Use
 
 When a new team member joins, run:

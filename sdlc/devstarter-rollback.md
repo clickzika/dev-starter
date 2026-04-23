@@ -1,5 +1,9 @@
 # dev-rollback.md — Production Rollback
 
+## Model: Sonnet (`claude-sonnet-4-6`)
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 ## How to Use
 
 When a production deploy causes problems and needs to be reverted:

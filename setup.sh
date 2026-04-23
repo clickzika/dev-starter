@@ -234,7 +234,14 @@ echo ""
 # ─── USER.md Profile Setup ────────────────────────────
 echo -e "${BOLD}━━━ Developer Profile ━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
 echo ""
-echo -e "${CYAN}3 quick questions to calibrate all agents to your level.${RESET}"
+echo -e "${CYAN}5 quick questions to calibrate all agents to your level.${RESET}"
+echo ""
+
+# Q0 — Name
+echo -e "${BOLD}Q0. What is your name?${RESET}"
+echo -n "  > "
+read -r DEV_NAME
+DEV_NAME="${DEV_NAME:-Dev}"
 echo ""
 
 # Q1 — Experience level
@@ -256,10 +263,17 @@ esac
 
 # Q2 — Strong languages/frameworks
 echo -e "${BOLD}Q2. What are you strongest at? (comma-separated)${RESET}"
-echo -e "  ${YELLOW}Examples: JavaScript, Python, React, Docker, SQL, C#, Angular${RESET}"
-echo -e "  ${YELLOW}These will be set to Advanced/Expert. Leave empty to skip.${RESET}"
+echo -e "  ${YELLOW}Examples: js, python, react, docker, sql, node, azure, go${RESET}"
+echo -e "  ${YELLOW}These will be set one level ABOVE your overall. Leave empty to skip.${RESET}"
 echo -n "  > "
 read -r STRONG_SKILLS
+echo ""
+
+# Q2b — Weak languages/frameworks
+echo -e "${BOLD}Q2b. Any areas you are WEAKER at? (comma-separated, or Enter to skip)${RESET}"
+echo -e "  ${YELLOW}These will be set one level BELOW your overall.${RESET}"
+echo -n "  > "
+read -r WEAK_SKILLS
 echo ""
 
 # Q3 — Response language
@@ -277,12 +291,12 @@ case "$LANG_CHOICE" in
   *) RESP_LANG="English"; CODE_LANG="English"; EXPLAIN_STYLE="Show full example"; ERROR_LANG="Keep in English"; STUCK_STYLE="Walk me through step by step" ;;
 esac
 
-# Determine strong skill level (one above default, capped at Expert)
+# Determine strong/weak skill levels relative to default
 case "$DEFAULT_LEVEL" in
-  Beginner) STRONG_LEVEL="Intermediate" ;;
-  Intermediate) STRONG_LEVEL="Advanced" ;;
-  Advanced) STRONG_LEVEL="Expert" ;;
-  Expert) STRONG_LEVEL="Expert" ;;
+  Beginner)     STRONG_LEVEL="Intermediate"; WEAK_LEVEL="Beginner" ;;
+  Intermediate) STRONG_LEVEL="Advanced";     WEAK_LEVEL="Beginner" ;;
+  Advanced)     STRONG_LEVEL="Expert";       WEAK_LEVEL="Intermediate" ;;
+  Expert)       STRONG_LEVEL="Expert";       WEAK_LEVEL="Advanced" ;;
 esac
 
 # Generate USER.md using Node.js for reliable string handling
@@ -295,14 +309,36 @@ fi
 
 node -e "
 const fs = require('fs');
+const devName = '$DEV_NAME';
 const defaultLevel = '$DEFAULT_LEVEL';
 const strongLevel = '$STRONG_LEVEL';
+const weakLevel   = '$WEAK_LEVEL';
 const strongSkills = '$STRONG_SKILLS'.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+const weakSkills   = '$WEAK_SKILLS'.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
 const respLang = '$RESP_LANG';
 const codeLang = '$CODE_LANG';
 const explainStyle = '$EXPLAIN_STYLE';
 const errorLang = '$ERROR_LANG';
 const stuckStyle = '$STUCK_STYLE';
+
+// Alias map — common shorthand → canonical item keywords
+const aliases = {
+  'js': 'javascript', 'ts': 'typescript',
+  'node': 'node.js', 'nodejs': 'node.js',
+  'react': 'react', 'next': 'react', 'nextjs': 'react',
+  'dotnet': 'asp.net', 'aspnet': 'asp.net', 'csharp': 'c#', 'c sharp': 'c#',
+  'azure': 'cloud', 'aws': 'cloud', 'gcp': 'cloud',
+  'postgres': 'sql', 'postgresql': 'sql', 'mysql': 'sql', 'mssql': 'sql',
+  'k8s': 'ci/cd', 'kubernetes': 'ci/cd', 'cicd': 'ci/cd',
+  'flutter': 'flutter', 'angular': 'angular', 'vue': 'vue',
+  'security': 'security', 'owasp': 'security',
+  'api': 'rest api', 'rest': 'rest api',
+  'db': 'database', 'database': 'database', 'schema': 'database',
+};
+
+function normalize(s) {
+  return aliases[s] || s;
+}
 
 // Map skill names to table entries
 const langs = [
@@ -318,13 +354,18 @@ const concepts = [
   'Testing', 'System design'
 ];
 
-function getLevel(name) {
-  const lower = name.toLowerCase();
-  for (const s of strongSkills) {
-    if (lower.includes(s) || s.includes(lower.replace(/ *\\/.*/,'').replace(/ *\\(.*/,''))) {
-      return strongLevel;
-    }
+function matches(itemName, skillList) {
+  const lower = itemName.toLowerCase();
+  for (const raw of skillList) {
+    const s = normalize(raw);
+    if (lower.includes(s) || s.includes(lower.split(' ')[0])) return true;
   }
+  return false;
+}
+
+function getLevel(name) {
+  if (matches(name, strongSkills)) return strongLevel;
+  if (matches(name, weakSkills))   return weakLevel;
   return defaultLevel;
 }
 
@@ -345,14 +386,14 @@ This file tells all agents how to calibrate their output depth.
 Place at \\\`~/.claude/USER.md\\\` for global use.
 All agents read this file at session start.
 
-**Quick setup:** Run \\\`bash ~/.claude/setup.sh\\\` — it asks 3 questions and fills this file automatically.
+**Quick setup:** Run \\\`bash ~/.claude/setup.sh\\\` — it asks 5 questions and fills this file automatically.
 **Manual setup:** Edit the levels below directly.
 
 ---
 
 ## Identity
 
-Name:         Dev
+Name:         \${devName}
 Role:         Developer
 Time zone:    \${Intl.DateTimeFormat().resolvedOptions().timeZone}
 Language:     \${respLang}
@@ -411,9 +452,13 @@ console.log('OK');
 "
 
 echo -e "${GREEN}✅ Developer profile saved: ~/.claude/USER.md${RESET}"
+echo -e "  Name:          ${CYAN}${DEV_NAME}${RESET}"
 echo -e "  Overall level: ${CYAN}${DEFAULT_LEVEL}${RESET}"
 if [ -n "$STRONG_SKILLS" ]; then
   echo -e "  Strong skills: ${CYAN}${STRONG_SKILLS}${RESET} → ${CYAN}${STRONG_LEVEL}${RESET}"
+fi
+if [ -n "$WEAK_SKILLS" ]; then
+  echo -e "  Weak skills:   ${CYAN}${WEAK_SKILLS}${RESET} → ${CYAN}${WEAK_LEVEL}${RESET}"
 fi
 echo -e "  Language:      ${CYAN}${RESP_LANG}${RESET}"
 echo ""

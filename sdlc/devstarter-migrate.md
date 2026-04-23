@@ -1,5 +1,8 @@
 # dev-migrate.md — Migration Workflow
 
+## Model: Opus (`claude-opus-4-6`)
+> Deep reasoning required — run `/model opus` before this workflow.
+
 ## Instructions for Claude Code
 
 This workflow is for migrating an existing project to a new tech stack,
@@ -8,6 +11,9 @@ framework version, database, or architecture pattern.
 Follow all phases in order. Do NOT skip any phase.
 
 ---
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 
 ## ⚠️ CRITICAL RULES
 

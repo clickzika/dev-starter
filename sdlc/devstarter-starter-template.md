@@ -4,6 +4,9 @@ After BA collects all answers, save as CLAUDE.md in project root.
 
 ---
 
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
+
 # [PROJECT_NAME] — Claude Code Spec
 
 ## Project Overview
@@ -73,7 +76,8 @@ Use the matching template below, then adjust for the specific frameworks chosen.
 │
 ├── docker-compose.yml
 ├── CLAUDE.md
-├── .project.env
+├── devstarter-config.yml   ← primary config (edit this)
+├── .project.env            ← auto-generated from devstarter-config.yml
 ├── .gitignore
 └── README.md
 ```

@@ -1,5 +1,10 @@
 # dev-incident.md — Production Incident Response
 
+## Model: Opus (`claude-opus-4-6`)
+> Deep reasoning required — run `/model opus` before this workflow.
+
+**Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
+
 ## How to Use
 
 When production is having issues (outage, degradation, security breach):
