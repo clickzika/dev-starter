@@ -346,7 +346,7 @@ echo "🚀 Ready for production deployment"
 ```bash
 cd "$PROJECT_DIR"
 
-# Protect main branch
+# Protect main branch — standard rules
 gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/main/protection \
   --method PUT \
   --input - << 'EOF'
@@ -355,8 +355,13 @@ gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/main/protection \
     "required_approving_review_count": 1,
     "dismiss_stale_reviews": true
   },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
   "enforce_admins": false,
-  "required_status_checks": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
   "restrictions": null
 }
 EOF
@@ -364,9 +369,11 @@ EOF
 echo "✅ Branch protection set on main:"
 echo "   - Require 1 PR review"
 echo "   - Dismiss stale reviews on new push"
-echo "   - No direct push allowed"
+echo "   - Require status checks to pass (strict)"
+echo "   - Block force push"
+echo "   - Block branch deletion"
 
-# Note: uat branch uses same protection as main
+# Protect uat branch — same standard rules as main
 gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/uat/protection \
   --method PUT \
   --input - << 'EOF2'
@@ -375,19 +382,32 @@ gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/uat/protection \
     "required_approving_review_count": 1,
     "dismiss_stale_reviews": true
   },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
   "enforce_admins": false,
-  "required_status_checks": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
   "restrictions": null
 }
 EOF2
 
 echo "✅ Branch protection set on uat:"
+echo "   - Require 1 PR review"
+echo "   - Require status checks to pass (strict)"
+echo "   - Block force push"
+echo "   - Block branch deletion"
 echo "   - Only merge from develop (via PROC-GH-09)"
 
 # Note: develop branch is NOT protected
 # (agents need to push directly during Gate 3 scaffold)
 # After Gate 3, optionally protect develop too:
 # gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/develop/protection ...
+
+# Note: "contexts": [] means no specific CI checks are required at setup time.
+# Add CI check names here once your workflow files exist, e.g.:
+# "contexts": ["ci / build", "ci / test"]
 ```
 
 ⚠️ **Requires GitHub Pro or public repo** — free private repos cannot set branch protection via API. If it fails, print warning and continue.
