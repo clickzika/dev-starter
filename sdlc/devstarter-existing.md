@@ -351,6 +351,7 @@ Read `vcs.type` and `pm.type` from config, then run the matching setup:
 
 **VCS:**
 - `github` → Read `~/.claude/sdlc/devstarter-github.md` → PROC-GH-02 (connect existing repo)
+            → then PROC-GH-18 (apply standard branch protection to main + uat)
 - `gitlab` → Read `~/.claude/sdlc/devstarter-gitlab.md` → connect existing GitLab repo
 - `svn`    → Read `~/.claude/sdlc/devstarter-svn.md` → connect existing SVN repo
 - `none`   → skip VCS connection step
@@ -368,6 +369,8 @@ Show:
    VCS: [vcs.type]   PM: [pm.type]
 ✅ .project.env — synced from config
 ✅ [VCS label]: [repo URL]
+✅ Branch protection: main + uat — PR required, no force push, no deletion
+   (skipped if vcs.type ≠ github or branch doesn't exist on remote)
 ✅ [PM label]:  [board URL or "not configured"]
 → Proceeding to work plan...
 ```

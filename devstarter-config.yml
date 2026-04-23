@@ -19,10 +19,11 @@ vcs:
   repo: clickzika/dev-starter-dev
   branch_strategy: gitflow # gitflow | trunk | simple | svn-standard
   main_branch: main
+  uat_branch: uat
   dev_branch: develop
   secondary_1: none        # none | github | gitlab | svn
   secondary_2: none
-  sync_branches: "main develop"
+  sync_branches: "main uat develop"
 
 pm:
   type: github-issues      # notion | jira | github-issues | gitlab-issues | linear | trello | none

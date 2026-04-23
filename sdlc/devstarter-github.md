@@ -79,7 +79,7 @@ else
   git remote add origin "https://github.com/$GITHUB_USERNAME/$PROJECT_NAME.git" 2>/dev/null || true
 fi
 
-# Create branch strategy: main (production) + uat (user testing) + develop (development)
+# Create branch strategy: main (production) + uat (user testing) + develop (default)
 git checkout -b develop 2>/dev/null || git checkout develop
 git push -u origin develop 2>/dev/null || true
 
@@ -88,10 +88,14 @@ git push -u origin uat 2>/dev/null || true
 
 git checkout develop
 
+# Set develop as the default branch on GitHub
+gh repo edit "$GITHUB_USERNAME/$PROJECT_NAME" --default-branch develop 2>/dev/null || \
+  echo "⚠️  Could not set default branch via gh — set manually in GitHub repo settings"
+
 echo "✅ Branch strategy:"
-echo "   develop  → Claude develops + local test"
-echo "   uat      → User acceptance testing"
-echo "   main     → Production"
+echo "   main     → Production (protected)"
+echo "   uat      → User acceptance testing (protected)"
+echo "   develop  → Active development (default branch)"
 ```
 
 ---
@@ -342,7 +346,7 @@ echo "🚀 Ready for production deployment"
 ```bash
 cd "$PROJECT_DIR"
 
-# Protect main branch
+# Protect main branch — standard rules
 gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/main/protection \
   --method PUT \
   --input - << 'EOF'
@@ -351,8 +355,13 @@ gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/main/protection \
     "required_approving_review_count": 1,
     "dismiss_stale_reviews": true
   },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
   "enforce_admins": false,
-  "required_status_checks": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
   "restrictions": null
 }
 EOF
@@ -360,9 +369,11 @@ EOF
 echo "✅ Branch protection set on main:"
 echo "   - Require 1 PR review"
 echo "   - Dismiss stale reviews on new push"
-echo "   - No direct push allowed"
+echo "   - Require status checks to pass (strict)"
+echo "   - Block force push"
+echo "   - Block branch deletion"
 
-# Note: uat branch uses same protection as main
+# Protect uat branch — same standard rules as main
 gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/uat/protection \
   --method PUT \
   --input - << 'EOF2'
@@ -371,22 +382,91 @@ gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/uat/protection \
     "required_approving_review_count": 1,
     "dismiss_stale_reviews": true
   },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
   "enforce_admins": false,
-  "required_status_checks": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
   "restrictions": null
 }
 EOF2
 
 echo "✅ Branch protection set on uat:"
+echo "   - Require 1 PR review"
+echo "   - Require status checks to pass (strict)"
+echo "   - Block force push"
+echo "   - Block branch deletion"
 echo "   - Only merge from develop (via PROC-GH-09)"
 
-# Note: develop branch is NOT protected
-# (agents need to push directly during Gate 3 scaffold)
-# After Gate 3, optionally protect develop too:
-# gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/develop/protection ...
+# Note: develop is NOT protected here — agents push directly during Gate 3 scaffold.
+# After Gate 3 is complete, run PROC-GH-10 Step 2 to optionally protect develop.
+
+# Note: "contexts": [] means no specific CI checks are required at setup time.
+# Add CI check names here once your workflow files exist, e.g.:
+# "contexts": ["ci / build", "ci / test"]
 ```
 
 ⚠️ **Requires GitHub Pro or public repo** — free private repos cannot set branch protection via API. If it fails, print warning and continue.
+
+---
+
+### PROC-GH-10 Step 2 — Protect develop branch (post-scaffold, optional)
+
+**Used by:** `devstarter-starter-gates.md` after Gate 3 approval
+**Also called by:** PROC-GH-18 for existing repos
+
+Ask the user before running:
+
+```
+Protect the develop branch too?
+
+  Recommended for teams ≥ 3 — forces all devs to use
+  feature/* branches + PRs instead of pushing directly.
+  Claude agents use PRs via PROC-GH-06/07/08 (Gate 4 already does this).
+
+  "yes" → apply protection   |   "no" → skip (add later via PROC-GH-10 Step 2)
+```
+
+If user answers **"yes"**:
+
+```bash
+cd "$PROJECT_DIR"
+
+DEV_BRANCH=$(grep 'dev_branch:' devstarter-config.yml 2>/dev/null | awk '{print $2}' || echo "develop")
+
+gh api repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/$DEV_BRANCH/protection \
+  --method PUT \
+  --input - << 'EOF'
+{
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true
+  },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
+  "enforce_admins": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "restrictions": null
+}
+EOF
+
+echo "✅ develop branch is now protected:"
+echo "   - All devs must use feature/* branches + PR"
+echo "   - Claude agents use PRs via Gate 4 (PROC-GH-06/07/08)"
+echo "   - No direct push to develop"
+```
+
+If user answers **"no"**:
+
+```bash
+echo "ℹ️  develop branch left unprotected."
+echo "   Run PROC-GH-10 Step 2 anytime to enable later."
+```
 
 ---
 
@@ -753,6 +833,78 @@ gh pr create --title "test: verify AI review" --body "Testing autonomous PR revi
 
 **Verify:** After pushing a PR, check GitHub Actions tab.
 The "Claude AI PR Review" job should run and post a comment within 60 seconds.
+
+## PROC-GH-18 — Apply Branch Protection to Existing Repo
+
+**Used by:** devstarter-existing.md Phase 3.5 (after PROC-GH-02)
+**Also callable standalone** for any repo that needs protection applied retroactively.
+
+```bash
+cd "$PROJECT_DIR"
+
+# Read branch names from devstarter-config.yml (fall back to defaults)
+MAIN_BRANCH=$(grep 'main_branch:' devstarter-config.yml 2>/dev/null | awk '{print $2}' || echo "main")
+UAT_BRANCH=$(grep 'uat_branch:'  devstarter-config.yml 2>/dev/null | awk '{print $2}' || echo "uat")
+
+# Protection payload — standard rules
+PROTECTION_PAYLOAD='{
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "dismiss_stale_reviews": true
+  },
+  "required_status_checks": {
+    "strict": true,
+    "contexts": []
+  },
+  "enforce_admins": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "restrictions": null
+}'
+
+# Apply to main branch
+if git ls-remote --exit-code origin "$MAIN_BRANCH" &>/dev/null; then
+  echo "$PROTECTION_PAYLOAD" | gh api \
+    repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/$MAIN_BRANCH/protection \
+    --method PUT --input - && \
+    echo "✅ Branch protection applied: $MAIN_BRANCH" || \
+    echo "⚠️  Could not protect $MAIN_BRANCH (requires GitHub Pro or public repo)"
+else
+  echo "⚠️  Branch '$MAIN_BRANCH' not found on remote — skipping"
+fi
+
+# Apply to uat branch (only if it exists)
+if git ls-remote --exit-code origin "$UAT_BRANCH" &>/dev/null; then
+  echo "$PROTECTION_PAYLOAD" | gh api \
+    repos/$GITHUB_USERNAME/$PROJECT_NAME/branches/$UAT_BRANCH/protection \
+    --method PUT --input - && \
+    echo "✅ Branch protection applied: $UAT_BRANCH" || \
+    echo "⚠️  Could not protect $UAT_BRANCH (requires GitHub Pro or public repo)"
+else
+  echo "ℹ️  Branch '$UAT_BRANCH' not found on remote — skipping (create it when ready)"
+fi
+
+echo ""
+echo "Protection summary for $GITHUB_USERNAME/$PROJECT_NAME:"
+echo "  ✅ No direct push to $MAIN_BRANCH / $UAT_BRANCH"
+echo "  ✅ PR + 1 review required to merge"
+echo "  ✅ Status checks must pass (strict mode)"
+echo "  ✅ Force push blocked"
+echo "  ✅ Branch deletion blocked"
+echo ""
+echo "ℹ️  Add CI check names to 'contexts' once your workflow files exist:"
+echo "    e.g. \"contexts\": [\"ci / build\", \"ci / test\"]"
+```
+
+After applying main + uat protection, run **PROC-GH-10 Step 2** to optionally protect develop:
+
+```bash
+# Ask the user, then call PROC-GH-10 Step 2 (see devstarter-github.md)
+```
+
+⚠️ **Requires GitHub Pro or public repo** for private repos. If it fails, print warning and continue — protection can be applied manually in GitHub repo settings.
+
+---
 
 ## PROC-GH-17 — AI Provider Update in GitHub Actions
 

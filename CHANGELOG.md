@@ -1,5 +1,21 @@
 # Changelog
 
+## v2.3.0 (2026-04-23)
+
+### Git Branch Strategy — 3-Branch Setup + Protection Rules
+
+- **`sdlc/devstarter-github.md` — PROC-GH-01** — auto-creates 3 branches (`main`, `uat`, `develop`) on new project init; sets `develop` as the GitHub default branch via `gh repo edit --default-branch develop`
+- **`sdlc/devstarter-github.md` — PROC-GH-10 Step 1** — standard branch protection for `main` + `uat`: `allow_force_pushes: false`, `allow_deletions: false`, `required_status_checks`, `required_pull_request_reviews` (1 approving review, dismiss stale reviews)
+- **`sdlc/devstarter-github.md` — PROC-GH-10 Step 2** (NEW) — optional `develop` branch protection prompted after scaffold at Gate 3; recommended for teams ≥ 3; applies same protection payload as Step 1
+- **`sdlc/devstarter-github.md` — PROC-GH-18** (NEW) — idempotent procedure to apply branch protection to existing repos; reads `main_branch` + `uat_branch` from `devstarter-config.yml`; checks branch exists before applying; wired into `/devstarter-existing` Phase 3.5 after PROC-GH-02
+- **`sdlc/devstarter-starter-gates.md`** — Gate 0 output updated to show `✅ Branches: main → uat → develop (default ★)` and `✅ Default branch: develop`; Gate 3 completion wired to PROC-GH-10 Step 2 with status line `✅ develop branch: [protected | unprotected]`
+- **`sdlc/devstarter-existing.md`** — Phase 3.5 Step 3 (GitHub path): runs PROC-GH-18 after PROC-GH-02; confirms `✅ Branch protection: main + uat — PR required, no force push, no deletion`
+- **`templates/CLAUDE.md.template`** — Gate 0 section updated with 3-branch strategy table (main/uat/develop with protection status and flow)
+- **`devstarter-config.yml`** — added `uat_branch: uat` field; `sync_branches` updated to `"main uat develop"`
+- **`docs/git-workflow.md`** (NEW) — team handoff reference: Branch Overview table, Daily Dev Workflow (feature/* → PR), Head Dev PR review/merge commands, Release Flow (develop→uat→main), Hotfix Flow, Branch Protection Rules table, 7 Key Rules, Quick Reference block
+
+---
+
 ## v2.2.0 (2026-04-23)
 
 ### Requirement Intake Templates + File-Arg Pattern

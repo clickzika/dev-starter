@@ -20,7 +20,9 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
   Show:
     ✅ GitHub: github.com/[user]/[PROJECT_NAME]
     ✅ Notion: [NOTION_BOARD_URL]
-    ✅ Branch protection: main protected
+    ✅ Branches: main (production) → uat (acceptance) → develop (default ★)
+    ✅ Branch protection: main + uat protected
+    ✅ Default branch: develop
     ✅ Templates: PR + Issue templates created
     ✅ Notion views: Board, By Epic, Sprint, All Tasks
     ✅ devstarter-config.yml — project config created
@@ -163,11 +165,13 @@ GATE 3 — Foundation + Task Setup      ← HARD STOP: user must approve before 
   DevOps → scaffold Docker Compose, branch strategy
   Backend → scaffold project, DB connection, /health endpoint
   Frontend → scaffold project, API service, auth interceptor
+  DevOps → read ~/.claude/sdlc/devstarter-github.md → PROC-GH-10 Step 2: ask user to protect develop branch
   ──────────────────────────────────────────────────
   Show:
     ✅ [N] GitHub issues created (assigned to milestones)
     ✅ [N] Notion tasks created (Status: To Do)
     ✅ Scaffold complete
+    ✅ develop branch: [protected — all devs use PRs | unprotected — direct push allowed]
   ⛔ STOP → wait for "approve" or "revise [component]"
 
   ── AUTOPILOT PROMPT (show immediately after Gate 3 approved) ──────────────
