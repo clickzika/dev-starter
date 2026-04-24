@@ -406,6 +406,15 @@ Next human interaction: Gate A4 only.
 
 ## A-PHASE 5 — Development (Continuous + Parallel)
 
+### ⚠️ BRANCH GUARD — mandatory before every task
+Before editing any file for any task:
+1. Run `git branch --show-current`
+2. If result is `develop`, `main`, `master`, or `uat` → **STOP — do not edit anything**
+3. Execute PROC-GH-06 to create the correct `feature/[slug]` or `fix/[slug]` branch
+4. Call `EnterWorktree` with that branch name
+5. Confirm with `git branch --show-current` — MUST be on a `feature/*` or `fix/*` branch
+This guard applies in autopilot mode, resume flows, and all other contexts without exception.
+
 ### Step A5.1 — Organize Parallel Tracks
 
 Group tasks into tracks based on dependencies:
@@ -434,18 +443,19 @@ For **each task** within a track:
 
 1. **NOTION → In Progress:** Read `~/.claude/devstarter-notion.md` → PROC-NT-04: status → In Progress ⚠️ MANDATORY
 2. **TaskUpdate → in_progress:** `TaskUpdate(task_id, status="in_progress")` for this task's UI task
-3. Read `~/.claude/devstarter-github.md` → PROC-GH-06: create feature branch
-3. **Enter worktree** — use `EnterWorktree` tool with the feature branch name for isolated working copy
-4. Agent reads relevant docs from disk before coding:
+3. **Branch Guard:** Run `git branch --show-current` — if on `develop`, `main`, `master`, or `uat` → STOP
+4. Read `~/.claude/devstarter-github.md` → PROC-GH-06: create `feature/[slug]` branch
+5. **Enter worktree** — use `EnterWorktree` tool with the feature branch name for isolated working copy
+6. Agent reads relevant docs from disk before coding:
    - @devstarter-backend → docs/api-reference.html + docs/database-design.html
    - @devstarter-frontend → docs/prototype/index.html + docs/brd.html
    - @devstarter-dba → docs/database-design.html
-5. Implement code
-6. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
-7. **Exit worktree** — use `ExitWorktree` tool to return to main working copy
-8. **TaskUpdate → completed:** `TaskUpdate(task_id, status="completed")` for this task's UI task
-9. **NOTION → In Review:** Read `~/.claude/devstarter-notion.md` → PROC-NT-05: status → In Review ⚠️ MANDATORY
-9. Announce progress and **continue to next task immediately** — do NOT wait for approval:
+7. Implement code
+8. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
+9. **Exit worktree** — use `ExitWorktree` tool to return to main working copy
+10. **TaskUpdate → completed:** `TaskUpdate(task_id, status="completed")` for this task's UI task
+11. **NOTION → In Review:** Read `~/.claude/devstarter-notion.md` → PROC-NT-05: status → In Review ⚠️ MANDATORY
+12. Announce progress and **continue to next task immediately** — do NOT wait for approval:
    ```
    ✅ Task [N/total]: [task name]
       Branch: [branch]  |  PR: #[N]

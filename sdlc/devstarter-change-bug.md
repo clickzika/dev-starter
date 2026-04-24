@@ -189,12 +189,16 @@ Show:
 ## C-PHASE 4 — Fix Development
 
 1. **NOTION → In Progress:** Read `~/.claude/devstarter-notion.md` → PROC-NT-04: status → In Progress ⚠️ MANDATORY
-2. Read `~/.claude/devstarter-github.md` → PROC-GH-06: create fix branch
+2. **Branch Guard:** Run `git branch --show-current` — if on `develop`, `main`, `master`, or `uat` → **STOP — do not edit anything**
+3. Read `~/.claude/devstarter-github.md` → PROC-GH-06: create fix branch
    Branch name: `fix/[issue-number]-[short-slug]`
-3. Agent reads relevant code and docs from disk
-4. Implement fix
-5. Write or update tests to cover the bug scenario
-6. Verify fix resolves the issue
+4. **Enter worktree** — use `EnterWorktree` tool with the fix branch name for isolated working copy
+5. Agent reads relevant code and docs from disk
+6. Implement fix
+7. Write or update tests to cover the bug scenario
+8. Verify fix resolves the issue
+9. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
+10. **Exit worktree** — use `ExitWorktree` tool to return to main working copy
 
 ---
 

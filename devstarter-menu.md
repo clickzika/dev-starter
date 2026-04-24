@@ -47,14 +47,15 @@ Show this menu and ask ONE question:
   16. 💻 Setup Local Environment
   17. 🔐 Secrets Management
   18. 📡 Setup Monitoring
+  19. 🌿 Git & Gitflow Setup
 
 ── AI / ML ────────────────────────────────────
-  19. 🤖 New AI/ML Project
-  20. 🔬 ML Workflow (train / evaluate / deploy)
+  20. 🤖 New AI/ML Project
+  21. 🔬 ML Workflow (train / evaluate / deploy)
 
 ── UTILITIES ──────────────────────────────────
-  21. 🩺 Doctor (health check)
-  22. 🔍 Review (PR / branch / current changes)
+  22. 🩺 Doctor (health check)
+  23. 🔍 Review (PR / branch / current changes)
 
 ── AGENTS ─────────────────────────────────────
   /devstarter-ba        Business Analyst
@@ -97,7 +98,8 @@ Route to correct file:
 | 16 | `~/.claude/sdlc/devstarter-env.md` |
 | 17 | `~/.claude/sdlc/devstarter-secrets.md` |
 | 18 | `~/.claude/sdlc/devstarter-monitor.md` |
-| 19 | `~/.claude/sdlc/devstarter-starter.md` (select ML stack) |
-| 20 | `~/.claude/sdlc/devstarter-ml-workflow.md` |
-| 21 | `~/.claude/sdlc/devstarter-doctor.md` |
-| 22 | `~/.claude/sdlc/devstarter-review.md` |
+| 19 | `~/.claude/sdlc/devstarter-gitsetup.md` |
+| 20 | `~/.claude/sdlc/devstarter-starter.md` (select ML stack) |
+| 21 | `~/.claude/sdlc/devstarter-ml-workflow.md` |
+| 22 | `~/.claude/sdlc/devstarter-doctor.md` |
+| 23 | `~/.claude/sdlc/devstarter-review.md` |

@@ -1,6 +1,6 @@
 # DevStarter Command Registry
 
-Quick reference for all 24 slash commands. Each entry lists the command, its purpose, SDLC target, and whether it accepts inline arguments.
+Quick reference for all 25 slash commands. Each entry lists the command, its purpose, SDLC target, and whether it accepts inline arguments.
 
 ---
 
@@ -32,6 +32,7 @@ Quick reference for all 24 slash commands. Each entry lists the command, its pur
 | `/devstarter-env` | Setup Local Environment | `sdlc/devstarter-env.md` |
 | `/devstarter-secrets` | Secrets Management | `sdlc/devstarter-secrets.md` |
 | `/devstarter-monitor` | Setup Monitoring | `sdlc/devstarter-monitor.md` |
+| `/devstarter-gitsetup` | Git & Gitflow Setup | `sdlc/devstarter-gitsetup.md` |
 | `/devstarter-migrate` | Migration to New Stack | `sdlc/devstarter-migrate.md` |
 | `/devstarter-onboard` | Onboard Team Member | `sdlc/devstarter-onboarding.md` |
 | `/devstarter-handover` | Handover Project | `sdlc/devstarter-handover.md` |
