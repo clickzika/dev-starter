@@ -68,9 +68,10 @@ if ! echo "$NEW_VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
   exit 1
 fi
 
+VERSION_PRE_BUMPED=false
 if [ "$NEW_VERSION" = "$CURRENT_VERSION" ]; then
-  echo -e "${RED}Error: New version is same as current ($CURRENT_VERSION)${NC}"
-  exit 1
+  echo -e "${YELLOW}Note: VERSION already at $NEW_VERSION (pre-bumped in release commit — skipping bump step)${NC}"
+  VERSION_PRE_BUMPED=true
 fi
 
 # ─── Get description ─────────────────────────────────
@@ -93,10 +94,15 @@ fi
 # ─── Step 1: Update VERSION file ─────────────────────
 echo ""
 echo -e "${CYAN}[1/6] Updating VERSION...${NC}"
-echo "$NEW_VERSION" > VERSION
-git add VERSION
-git commit -m "Bump version to $NEW_VERSION"
-git push origin develop
+if [ "$VERSION_PRE_BUMPED" = "true" ]; then
+  echo -e "${GREEN}  VERSION already at $NEW_VERSION — skipping bump commit${NC}"
+  git push origin develop 2>/dev/null || true
+else
+  echo "$NEW_VERSION" > VERSION
+  git add VERSION
+  git commit -m "Bump version to $NEW_VERSION"
+  git push origin develop
+fi
 
 # ─── Step 2: Merge develop → main (local, full) ──────
 echo -e "${CYAN}[2/6] Merging develop → main...${NC}"
