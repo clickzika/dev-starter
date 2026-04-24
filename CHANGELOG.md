@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.5.0 (2026-04-24)
+
+### New Command + Branch Guard + Template Sync
+
+- **`commands/devstarter-gitsetup.md`** (NEW) — thin command with inline arg routing: `full` (run all phases), `branches` (create/verify gitflow branches only), `protect` (apply protection only), `labels` (create GitHub labels only); no-arg shows interactive setup plan at Gate 1
+- **`sdlc/devstarter-gitsetup.md`** (NEW) — 6-phase idempotent runbook for standalone git + gitflow setup on any existing project; Phase 1: read config, Phase 2: connect/verify remote (PROC-GH-02), Phase 3: create missing `main`/`uat`/`develop` branches + set default branch, Phase 4: apply branch protection (PROC-GH-18 + PROC-GH-10 Step 2), Phase 5: create standard GitHub labels (PROC-GH-04), Phase 6: summary + next steps; safe to re-run on partially configured repos
+- **`devstarter-menu.md`** — item 19 "🌿 Git & Gitflow Setup" added under SETUP & INFRA; ML/Utilities section renumbered 20–23
+- **`commands/devstarter-registry.md`** — count updated 24 → 25; gitsetup entry added
+- **`sdlc/devstarter-change.md`** — Rule 9 (Branch Guard) added to critical rules: `git branch --show-current` check before any file edit; hard STOP if on `develop`, `main`, `master`, or `uat`; applies in autopilot, resume flows, and all other contexts
+- **`sdlc/devstarter-change-add.md`** — BRANCH GUARD block added before A-PHASE 5; duplicate step 3 numbering fixed (steps renumbered 1–12)
+- **`sdlc/devstarter-change-bug.md`** — BRANCH GUARD added as step 2 in C-PHASE 4; `EnterWorktree`, PROC-GH-07, and `ExitWorktree` steps added (were missing from bug fix flow)
+- **`templates/devstarter-config.template.yml`** — synced with v2.4.0+ defaults: added `vcs.uat_branch`, `release_remote`, `upstream_remote`, `branch_protection` block; updated `sync_branches` to `"main uat develop"`; changed `pm.type` default from `notion` → `github-issues`; added full `model_management` section with tier routing for all 25 commands
+
+---
+
 ## v2.4.0 (2026-04-23)
 
 ### Multi-Remote Release Configuration
