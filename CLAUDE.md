@@ -341,6 +341,7 @@ Every slash command requires:
 | v2.3.1 | publish.sh fix — exclude docs/ and memory/ from public release via _release_clean temp branch; release remote is now write-only |
 | v2.4.0 | Multi-remote release config — release_remote + release_repo + upstream_remote in devstarter-config.yml; Strategy I reads config; PROC-GH-10 protects release/main for Scenario A |
 | v2.5.0 | /devstarter-gitsetup — standalone git + gitflow setup command (25th command); Branch Guard (Rule 9) enforced in change add + bug flows; config template synced with v2.4.0+ defaults |
+| v2.6.0 | Branch Guard universal — Rule 9 added to agent-base (all 13 agents) + hotfix, release, incident, existing SDLC runbooks; no path can bypass protected-branch enforcement |
 
 ---
 

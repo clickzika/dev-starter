@@ -1,5 +1,17 @@
 # Changelog
 
+## v2.6.0 (2026-05-06)
+
+### Branch Guard — Universal Base Rule
+
+- **`agents/shared/devstarter-agent-base.md`** — Branch Guard section added after Config Guard: all 13 agents now check `git branch --show-current` before touching any file; hard STOP if on `develop`, `main`, `master`, or `uat`; creates `feature/`, `fix/`, or `hotfix/` branch via PROC-GH-06 before proceeding; cannot be skipped in autopilot, resume, or any other context
+- **`sdlc/devstarter-hotfix.md`** — Branch Guard warning added at start of PHASE 4 before any code edits
+- **`sdlc/devstarter-release.md`** — Branch Guard added before phase sub-file routing to enforce `release/vX.Y.Z` branch for VERSION/CHANGELOG edits
+- **`sdlc/devstarter-incident.md`** — Branch Guard added at PHASE 3 Mitigation to block direct file edits on protected branches; routes to `dev-hotfix.md` or `dev-rollback.md` instead
+- **`sdlc/devstarter-existing.md`** — Branch Guard added as Rule 10 in Critical Rules section
+
+---
+
 ## v2.5.0 (2026-04-24)
 
 ### New Command + Branch Guard + Template Sync
