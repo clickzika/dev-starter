@@ -111,21 +111,93 @@ git merge develop --no-ff -m "release: v$NEW_VERSION — $DESCRIPTION"
 git push origin main
 
 # ─── Step 3: Push clean release (strip dev-only folders) ───
-echo -e "${CYAN}[3/6] Creating clean release branch for public repo...${NC}"
-git checkout -b _release_clean main
+echo -e "${CYAN}[3/6] Building clean release for public repo...${NC}"
 
+# Resolve release repo early (also used in PR fallback and Step 5)
+RELEASE_REPO=$(git remote get-url release 2>/dev/null | sed 's|.*github.com[:/]||;s|\.git$||')
+if [ -z "$RELEASE_REPO" ]; then
+  echo -e "${RED}Error: 'release' remote not found${NC}"
+  exit 1
+fi
+
+# Fetch release/main so we can build a linear history on top of it
+git fetch release 2>/dev/null || true
+
+# Clean up any leftover branch from a previous failed run
+git branch -D _release_clean 2>/dev/null || true
+
+# Branch from release/main → new commit has no merge-commit ancestors
+# This satisfies "no merge commits" protection without needing --force-with-lease
+if git rev-parse --verify release/main > /dev/null 2>&1; then
+  git checkout -b _release_clean release/main
+  echo -e "  Base: release/main (linear — no force push required)"
+else
+  git checkout --orphan _release_clean
+  git reset --hard
+  echo -e "  Base: orphan (first push to release remote)"
+fi
+
+# Overlay all top-level items from local main, skipping excluded folders
+for ITEM in $(git ls-tree --name-only main); do
+  SKIP=false
+  for EXCLUDE in "${EXCLUDE_FROM_RELEASE[@]}"; do
+    [ "$ITEM" = "$EXCLUDE" ] && SKIP=true && break
+  done
+  [ "$SKIP" = "false" ] && git checkout main -- "$ITEM"
+done
+
+# Safety: strip excluded folders if they appeared
 for FOLDER in "${EXCLUDE_FROM_RELEASE[@]}"; do
-  if [ -d "$FOLDER" ]; then
-    git rm -r --cached "$FOLDER" > /dev/null 2>&1 || true
-    echo -e "  Excluded: $FOLDER/"
-  fi
+  git rm -r --cached "$FOLDER" > /dev/null 2>&1 || true
+  echo -e "  Excluded: $FOLDER/"
 done
 
 if ! git diff --cached --quiet; then
-  git commit -m "chore: strip dev-only folders for public release"
+  git commit -m "release: v$NEW_VERSION — $DESCRIPTION"
 fi
 
-git push release _release_clean:main --force-with-lease
+# Direct push (no --force-with-lease — we are strictly ahead of release/main)
+# Falls back to PR workflow if the remote requires pull-request-based merges
+set +e
+PUSH_OUT=$(git push release _release_clean:main 2>&1)
+PUSH_CODE=$?
+set -e
+echo "$PUSH_OUT"
+
+if [ $PUSH_CODE -ne 0 ]; then
+  echo -e "${YELLOW}  Direct push blocked — attempting PR workflow...${NC}"
+  PR_BRANCH="release-v${NEW_VERSION}"
+  set +e
+  git push release "_release_clean:${PR_BRANCH}" 2>&1
+  PR_PUSH_CODE=$?
+  set -e
+  if [ $PR_PUSH_CODE -eq 0 ]; then
+    gh pr create \
+      --repo "$RELEASE_REPO" \
+      --title "release: v$NEW_VERSION — $DESCRIPTION" \
+      --body "Automated release v$NEW_VERSION — $DESCRIPTION.
+
+See CHANGELOG.md for full details.
+
+> After merging this PR, re-run \`bash scripts/publish.sh $NEW_VERSION \"$DESCRIPTION\"\` to create the tag and GitHub release." \
+      --base main \
+      --head "$PR_BRANCH" || true
+    echo -e "${YELLOW}"
+    echo -e "  ⚠️  PR created on ${RELEASE_REPO}."
+    echo -e "  Merge the PR, then re-run publish.sh to tag + publish the release."
+    echo -e "${NC}"
+    git checkout -f main
+    git branch -D _release_clean
+    exit 0
+  else
+    echo -e "${RED}  Both direct push and PR branch creation blocked.${NC}"
+    echo -e "${RED}  Add a bypass actor to the release/main branch ruleset, then re-run.${NC}"
+    git checkout -f main
+    git branch -D _release_clean
+    exit 1
+  fi
+fi
+
 git checkout -f main
 git branch -D _release_clean
 
@@ -150,13 +222,6 @@ if [ -z "$CHANGELOG_SECTION" ]; then
 $DESCRIPTION
 
 See [CHANGELOG.md](CHANGELOG.md) for details."
-fi
-
-# Use release remote URL to determine the repo for gh release
-RELEASE_REPO=$(git remote get-url release 2>/dev/null | sed 's|.*github.com[:/]||;s|\.git$||')
-if [ -z "$RELEASE_REPO" ]; then
-  echo -e "${RED}Error: 'release' remote not found${NC}"
-  exit 1
 fi
 
 gh release create "v$NEW_VERSION" \
