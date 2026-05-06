@@ -126,7 +126,7 @@ if ! git diff --cached --quiet; then
 fi
 
 git push release _release_clean:main --force-with-lease
-git checkout main
+git checkout -f main
 git branch -D _release_clean
 
 # ─── Step 4: Create tag ──────────────────────────────

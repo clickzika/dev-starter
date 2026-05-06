@@ -40,6 +40,26 @@ Every agent reads `devstarter-config.yml` for project settings — never read `.
 
 ---
 
+## Branch Guard — Check Before Every File Edit
+
+Before editing ANY file, run: `git branch --show-current`
+
+```
+if output is develop / main / master / uat:
+  ⛔ STOP — you are on a protected branch.
+  Create a work branch first:
+    feature/[slug]  — new work
+    fix/[slug]      — bug fixes
+    hotfix/[slug]   — critical production fixes
+  Use PROC-GH-06 (devstarter-github.md) to create the branch.
+  Confirm: git branch --show-current — must NOT be a protected branch.
+  Only then proceed to editing.
+```
+
+This rule cannot be skipped in autopilot mode, resume flows, or any other context.
+
+---
+
 ## Session Resume — Check on Every Start
 
 Before doing ANY work, check if there is an in-progress session:

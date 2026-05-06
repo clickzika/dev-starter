@@ -1,8 +1,7 @@
 {
-  "workflow": "devstarter-release",
+  "workflow": "devstarter-change-add",
+  "feature": "Branch Guard — Universal Base Rule",
   "status": "completed",
-  "completed_at": "2026-04-23",
-  "version": "v2.2.0",
-  "tag": "v2.2.0",
-  "notes": "v2.2.0 released to main. 4 intake templates + file-arg pattern. Merged PR #4, tagged, pushed main + tag. Release notes at docs/release-v2.2.0.html."
+  "completed_at": "2026-05-06",
+  "notes": "Branch Guard (Rule 9/10) added to agent-base and 4 SDLC runbooks. Merged to develop and pushed. Ready for v2.6.0 release."
 }
