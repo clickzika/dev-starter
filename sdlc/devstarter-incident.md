@@ -99,6 +99,11 @@ Recommendation: [A/B/C/D/E]
 
 ## PHASE 3 — Mitigation
 
+⚠️ **BRANCH GUARD** — If mitigation requires editing any file directly:
+Run `git branch --show-current` — if on `main`, `develop`, `master`, or `uat` → **STOP**.
+Route to `dev-hotfix.md` (creates `hotfix/` branch) or `dev-rollback.md` instead.
+Never edit files on a protected branch during incident response.
+
 Based on decision:
 - Rollback → `dev-rollback.md`
 - Hotfix → `dev-hotfix.md`

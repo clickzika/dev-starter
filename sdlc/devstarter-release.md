@@ -35,6 +35,12 @@ PHASE 9: Release notes
 
 ---
 
+## ⚠️ Branch Guard — Before Any File Edit
+
+Before editing VERSION, CHANGELOG, or any release file:
+Run `git branch --show-current` — if on `develop`, `main`, `master`, or `uat` → **STOP**.
+Create a `release/vX.Y.Z` branch first, then proceed.
+Never edit release files directly on a protected branch.
 
 ---
 

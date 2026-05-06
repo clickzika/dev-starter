@@ -108,6 +108,9 @@ Rollback option:    [yes — run dev-rollback.md / no]
 
 ## PHASE 4 — Hotfix Branch + Fix
 
+⚠️ **BRANCH GUARD** — Before writing any code:
+Run `git branch --show-current` — if on `main`, `develop`, `master`, or `uat`, create the hotfix branch first (commands below). Never edit files while on a protected branch.
+
 ```bash
 # Branch from main (not develop)
 git checkout main
