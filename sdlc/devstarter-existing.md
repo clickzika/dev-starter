@@ -101,6 +101,16 @@ If Track B depends on Track A output (e.g. API response shape), complete Track A
 **NEVER ask multiple questions in one message.**
 Ask Q1 → wait for answer → ask Q2 → wait for answer → ...
 
+### Rule 10 — Branch Guard (ALWAYS active, no exceptions)
+**NEVER edit any file while on `develop`, `main`, `master`, or `uat`.**
+Before writing any code or editing any file:
+1. Run `git branch --show-current`
+2. If output is `develop`, `main`, `master`, or `uat` → **STOP immediately**
+3. Create and checkout `feature/[slug]` or `fix/[slug]` branch via PROC-GH-06
+4. Confirm with `git branch --show-current` — result MUST NOT be a protected branch
+5. Only then proceed to editing
+This rule cannot be skipped in autopilot mode, resume flows, or any other context.
+
 ---
 
 ## ⚡ FIRST ACTION — Show This Before Anything Else
