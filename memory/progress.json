@@ -1,7 +1,8 @@
 {
-  "workflow": "devstarter-change-add",
-  "feature": "Branch Guard — Universal Base Rule",
+  "workflow": "devstarter-change",
   "status": "completed",
-  "completed_at": "2026-05-06",
-  "notes": "Branch Guard (Rule 9/10) added to agent-base and 4 SDLC runbooks. Merged to develop and pushed. Ready for v2.6.0 release."
+  "feature": "SKILL.md Migration — v3.0.0",
+  "completed_at": "2026-05-07",
+  "pr": "https://github.com/clickzika/dev-starter-dev/pull/10",
+  "notes": "v3.0.0 — 41 commands migrated to skills/devstarter-*/SKILL.md. PR #10 merged to develop."
 }
