@@ -1,6 +1,6 @@
 # dev-incident.md — Production Incident Response
 
-## Model: Opus (`claude-opus-4-6`)
+## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
@@ -98,6 +98,11 @@ Recommendation: [A/B/C/D/E]
 ---
 
 ## PHASE 3 — Mitigation
+
+⚠️ **BRANCH GUARD** — If mitigation requires editing any file directly:
+Run `git branch --show-current` — if on `main`, `develop`, `master`, or `uat` → **STOP**.
+Route to `dev-hotfix.md` (creates `hotfix/` branch) or `dev-rollback.md` instead.
+Never edit files on a protected branch during incident response.
 
 Based on decision:
 - Rollback → `dev-rollback.md`

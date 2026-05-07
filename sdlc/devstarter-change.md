@@ -89,6 +89,16 @@ If Track B depends on Track A output (e.g. API response shape), complete Track A
   NEVER output text descriptions — always output actual rendered HTML components.
 - All docs MUST use `~/.claude/templates/docs/document-template.html` as the base template.
 
+### Rule 9 — Branch Guard (ALWAYS active, no exceptions)
+**NEVER edit any file while on `develop`, `main`, `master`, or `uat`.**
+Before writing any code or editing any file:
+1. Run `git branch --show-current`
+2. If output is `develop`, `main`, `master`, or `uat` → **STOP immediately**
+3. Create and checkout `feature/[slug]` or `fix/[slug]` branch via PROC-GH-06
+4. Confirm with `git branch --show-current` — result MUST NOT be a protected branch
+5. Only then proceed to editing
+This rule cannot be skipped in autopilot mode, resume flows, or any other context.
+
 ---
 
 ## ⚡ FIRST ACTION — Show This Before Anything Else
@@ -106,7 +116,11 @@ Or just describe it:
   "add dark mode", "remove social login", "fix login redirect"
 ```
 
-Wait for the user to type 1, 2, 3, or a description. Nothing else before this.
+Use `AskUserQuestion` with:
+- question: "What do you want to do?"
+- options: ["Add feature", "Remove feature", "Fix bug"]
+
+Wait for the user to select or type a description. Nothing else before this.
 
 **Special case — inline args:** If the user ran `/devstarter-change [text]`,
 skip this prompt. Extract type + description from the args and proceed directly.

@@ -453,6 +453,10 @@ Proceed with all updates? (yes / cancel)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Impact analysis complete. Proceed with all updates?"
+- options: ["yes — proceed", "cancel"]
+
 Wait for user to confirm before making any changes.
 
 ---
@@ -509,6 +513,10 @@ Code updated:
   "revise [notes]" → make further changes
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Revision complete. Approve to proceed to Gate [N+1]?"
+- options: ["approve", "revise"]
 
 ---
 

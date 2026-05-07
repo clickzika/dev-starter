@@ -1,6 +1,6 @@
 # dev-hotfix.md — Emergency Production Fix
 
-## Model: Opus (`claude-opus-4-6`)
+## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
 ## How to Use
@@ -102,11 +102,18 @@ Rollback option:    [yes — run dev-rollback.md / no]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate H1 — Root cause identified. Approve to start hotfix branch?"
+- options: ["approve", "investigate more"]
+
 ⛔ GATE H1 — wait for approval before touching code.
 
 ---
 
 ## PHASE 4 — Hotfix Branch + Fix
+
+⚠️ **BRANCH GUARD** — Before writing any code:
+Run `git branch --show-current` — if on `main`, `develop`, `master`, or `uat`, create the hotfix branch first (commands below). Never edit files while on a protected branch.
 
 ```bash
 # Branch from main (not develop)
@@ -149,6 +156,10 @@ P1: Tech Lead must approve within 2 hours
   "approve"  → deploy to production immediately
   "revise"   → fix before merging
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate H2 — Hotfix PR ready. Approve to deploy to production?"
+- options: ["approve", "revise"]
 
 ---
 

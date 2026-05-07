@@ -1,6 +1,6 @@
 # dev-migrate.md — Migration Workflow
 
-## Model: Opus (`claude-opus-4-6`)
+## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
 ## Instructions for Claude Code
@@ -147,6 +147,10 @@ Risks:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate 1 — Migration analysis complete. Approve to generate migration plan?"
+- options: ["approve", "revise"]
+
 ⛔ GATE 1 — wait for approval before proceeding.
 
 ---
@@ -195,6 +199,10 @@ Rollback plan: [description]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate 2 — Migration plan ready. Approve to create branch and begin migration?"
+- options: ["approve", "revise"]
+
 ---
 
 ## PHASE 4 — Migration Execution Gates
@@ -238,6 +246,10 @@ Parity:   [old behavior vs new behavior verified]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate 5 — Component migration complete. Approve to migrate next component?"
+- options: ["approve", "revise"]
+
 ### Gate 6 — Verification ⛔
 - [ ] QA: run full test suite on migrated system
 - [ ] QA: run parity tests (old vs new output comparison)
@@ -263,8 +275,9 @@ Rollback plan (if needed):
 
 Estimated downtime: [X minutes / zero downtime]
 
-Type "CUTOVER APPROVED" to begin.
-Type "cancel" to stay on current system.
+Use `AskUserQuestion` with:
+- question: "Gate 7 — POINT OF NO RETURN. Approve cutover to new system?"
+- options: ["CUTOVER APPROVED", "cancel — stay on current system"]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 

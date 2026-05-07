@@ -1,5 +1,119 @@
 # Changelog
 
+## v3.3.0 (2026-05-07)
+
+### Opus Model Gate + Commands Migration Cleanup + Model ID Update
+
+Three related improvements that complete the model-tier system introduced in v1.8.0 and clean up lingering debt from the v3.0.0 SKILL.md migration.
+
+**What changed:**
+
+- **feat: Opus model gate** — `skills/devstarter-audit/SKILL.md`, `devstarter-consult/SKILL.md`, `devstarter-hotfix/SKILL.md`, `devstarter-incident/SKILL.md`, `devstarter-migrate/SKILL.md`, `devstarter-review/SKILL.md` — added `## ⚠️ Model Gate` section at the top of each; uses `AskUserQuestion` to confirm user is on Opus before loading the SDLC runbook; if "I need to switch" is selected, workflow stops immediately
+- **fix: commands/ migration cleanup** — deleted orphaned `commands/` folder (41 stale .md files left from v3.0.0 migration; content already in `skills/`); fixed 4 stale `commands/` path references in `scripts/dev-setup.sh`, `sdlc/devstarter-doctor.md`, `skills/devstarter-export/SKILL.md`, `skills/devstarter-import/SKILL.md`
+- **chore: Opus model ID updated** — `claude-opus-4-6` → `claude-opus-4-7` in `devstarter-config.yml` + 6 SDLC runbooks (`devstarter-audit.md`, `devstarter-consult.md`, `devstarter-hotfix.md`, `devstarter-incident.md`, `devstarter-migrate.md`, `devstarter-review.md`)
+- **docs: bugfix log** — `docs/bugfix-log.html` created with BUG-2026-05-07-001 entry documenting the commands/ cleanup
+
+---
+
+## v3.2.0 (2026-05-07)
+
+### Consult→Change Handoff — Option C
+
+`/devstarter-consult` now saves the consultation context and offers a direct handoff to `/devstarter-change`, eliminating double-entry of requirements.
+
+**What changed:**
+- **`sdlc/devstarter-consult.md`** — Step 4 replaced with "Save Consultation" step:
+  - After delivering advice, saves `memory/consult-[YYYY-MM-DD]-[slug].md` using the new intake template
+  - `AskUserQuestion` gate: `["save advice only", "implement now", "ask follow-up"]`
+  - If "implement now": reads `devstarter-change.md`, skips all intake questions, jumps straight to Impact Analysis
+  - If "save advice only": shows file path so user can run `/devstarter-change memory/consult-...md` later (Option B path)
+  - If "ask follow-up": re-enters plan mode, loops back after answering
+- **`sdlc/devstarter-consult.md`** — Rule 1 updated: one write exception for `memory/consult-*.md` handoff file
+- **`templates/intake/devstarter-intake-consult.md`** — new intake template for consultation output; sections: Problem/Request, Analysis Summary, Recommended Approach, Acceptance Criteria
+
+---
+
+## v3.1.0 (2026-05-07)
+
+### AskUserQuestion at All Gates — Full UX Consistency
+
+All 52 remaining approval gates and mode-picker prompts across every SDLC runbook now use `AskUserQuestion` (arrow-key picker UI) instead of requiring typed input. Users can now select any gate response with arrow keys + Enter throughout the entire DevStarter workflow.
+
+**Files updated:**
+- **`agents/shared/devstarter-agent-base.md`** — Gate UX Rule added: `AskUserQuestion` required at every gate in every workflow; standard and release gate patterns documented
+- **`sdlc/devstarter-change.md`** — FIRST ACTION picker now uses `AskUserQuestion` (Add / Remove / Fix)
+- **`sdlc/devstarter-change-add.md`** — autopilot/manual choice uses `AskUserQuestion`
+- **`sdlc/devstarter-change-bug.md`** — Gate C1 uses `AskUserQuestion`
+- **`sdlc/devstarter-change-remove.md`** — Gates B1, B2, B3 use `AskUserQuestion`
+- **`sdlc/devstarter-audit.md`** — FIRST ACTION picker + Gates 1, 2, per-fix approval use `AskUserQuestion`
+- **`sdlc/devstarter-review.md`** — Mode picker + review outcome use `AskUserQuestion`
+- **`sdlc/devstarter-retrospective.md`** — Retrospective approval gate uses `AskUserQuestion`
+- **`sdlc/devstarter-dependency.md`** — Update approval gate uses `AskUserQuestion`
+- **`sdlc/devstarter-document.md`** — FIRST ACTION picker + both document review gates use `AskUserQuestion`
+- **`sdlc/devstarter-hotfix.md`** — Gates H1, H2 use `AskUserQuestion`
+- **`sdlc/devstarter-rollback.md`** — Gates R0, R1, R2 use `AskUserQuestion`
+- **`sdlc/devstarter-gitsetup.md`** — Gate 1 + develop branch protection prompt use `AskUserQuestion`
+- **`sdlc/devstarter-migrate.md`** — Gates 1, 2, component approval, Gate 7 cutover use `AskUserQuestion`
+- **`sdlc/devstarter-release-prep.md`** — Gate 1 DEV approval uses `AskUserQuestion`
+- **`sdlc/devstarter-release-verify.md`** — Gates 2 (SIT), 3 (UAT), 4 (Production deploy) use `AskUserQuestion`
+- **`sdlc/devstarter-starter.md`** — FIRST ACTION mode picker uses `AskUserQuestion`
+- **`sdlc/devstarter-starter-gates.md`** — Gates 1, 2, 3 (×2), autopilot/manual, Gate 5 use `AskUserQuestion`
+- **`sdlc/devstarter-starter-intake.md`** — Both PROJECT SUMMARY approval gates use `AskUserQuestion`
+- **`sdlc/devstarter-starter-template.md`** — Revision confirmation + re-approval gate use `AskUserQuestion`
+- **`sdlc/devstarter-existing.md`** — FIRST ACTION picker + autopilot/manual choice use `AskUserQuestion`
+
+---
+
+## v3.0.1 (2026-05-07)
+
+### Patch — publish.sh + update.sh migration fix
+
+- **`scripts/publish.sh`** — after overlaying new content onto `_release_clean`, now scans for top-level items present in the release branch but absent from current `main` and removes them; fixes `commands/` persisting in the release repo after v3.0.0 migration
+- **`update.sh`** — added v2→v3 migration step: removes `~/.claude/commands/` when `skills/` is present, so existing users get a clean state on next `/devstarter-update`
+
+---
+
+## v3.0.0 (2026-05-07)
+
+### SKILL.md Migration — Native Claude Code Skills Format
+
+**Breaking change** — all 41 commands migrated from flat `commands/devstarter-*.md` to the official Claude Code skills directory format `skills/devstarter-[name]/SKILL.md`. The `commands/` directory is removed. Users upgrading from v2.x must re-run `install.sh` to get the new `~/.claude/skills/` layout.
+
+- **`skills/`** (NEW directory, 41 entries) — each former `commands/devstarter-*.md` is now `skills/devstarter-[name]/SKILL.md`; content unchanged, structure follows Claude Code's official skill discovery pattern
+- **`commands/`** (REMOVED) — replaced entirely by `skills/`
+- **`install.sh`** — Step 3 updated: `mkdir -p ~/.claude/skills`, copies `skills/` recursively; backup check and item list updated from `commands` → `skills`
+- **`update.sh`** — folder loop updated: `commands` → `skills`
+- **`CLAUDE.md`** — project structure, naming convention, and one-command rule updated to reflect `skills/devstarter-X/SKILL.md` format
+
+---
+
+## v2.6.0 (2026-05-06)
+
+### Branch Guard — Universal Base Rule
+
+- **`agents/shared/devstarter-agent-base.md`** — Branch Guard section added after Config Guard: all 13 agents now check `git branch --show-current` before touching any file; hard STOP if on `develop`, `main`, `master`, or `uat`; creates `feature/`, `fix/`, or `hotfix/` branch via PROC-GH-06 before proceeding; cannot be skipped in autopilot, resume, or any other context
+- **`sdlc/devstarter-hotfix.md`** — Branch Guard warning added at start of PHASE 4 before any code edits
+- **`sdlc/devstarter-release.md`** — Branch Guard added before phase sub-file routing to enforce `release/vX.Y.Z` branch for VERSION/CHANGELOG edits
+- **`sdlc/devstarter-incident.md`** — Branch Guard added at PHASE 3 Mitigation to block direct file edits on protected branches; routes to `dev-hotfix.md` or `dev-rollback.md` instead
+- **`sdlc/devstarter-existing.md`** — Branch Guard added as Rule 10 in Critical Rules section
+
+---
+
+## v2.5.0 (2026-04-24)
+
+### New Command + Branch Guard + Template Sync
+
+- **`commands/devstarter-gitsetup.md`** (NEW) — thin command with inline arg routing: `full` (run all phases), `branches` (create/verify gitflow branches only), `protect` (apply protection only), `labels` (create GitHub labels only); no-arg shows interactive setup plan at Gate 1
+- **`sdlc/devstarter-gitsetup.md`** (NEW) — 6-phase idempotent runbook for standalone git + gitflow setup on any existing project; Phase 1: read config, Phase 2: connect/verify remote (PROC-GH-02), Phase 3: create missing `main`/`uat`/`develop` branches + set default branch, Phase 4: apply branch protection (PROC-GH-18 + PROC-GH-10 Step 2), Phase 5: create standard GitHub labels (PROC-GH-04), Phase 6: summary + next steps; safe to re-run on partially configured repos
+- **`devstarter-menu.md`** — item 19 "🌿 Git & Gitflow Setup" added under SETUP & INFRA; ML/Utilities section renumbered 20–23
+- **`commands/devstarter-registry.md`** — count updated 24 → 25; gitsetup entry added
+- **`sdlc/devstarter-change.md`** — Rule 9 (Branch Guard) added to critical rules: `git branch --show-current` check before any file edit; hard STOP if on `develop`, `main`, `master`, or `uat`; applies in autopilot, resume flows, and all other contexts
+- **`sdlc/devstarter-change-add.md`** — BRANCH GUARD block added before A-PHASE 5; duplicate step 3 numbering fixed (steps renumbered 1–12)
+- **`sdlc/devstarter-change-bug.md`** — BRANCH GUARD added as step 2 in C-PHASE 4; `EnterWorktree`, PROC-GH-07, and `ExitWorktree` steps added (were missing from bug fix flow)
+- **`templates/devstarter-config.template.yml`** — synced with v2.4.0+ defaults: added `vcs.uat_branch`, `release_remote`, `upstream_remote`, `branch_protection` block; updated `sync_branches` to `"main uat develop"`; changed `pm.type` default from `notion` → `github-issues`; added full `model_management` section with tier routing for all 25 commands
+
+---
+
 ## v2.4.0 (2026-04-23)
 
 ### Multi-Remote Release Configuration

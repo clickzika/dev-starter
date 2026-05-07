@@ -64,6 +64,10 @@ Open Notion tasks linked to this feature:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate B1 — Removal impact confirmed. Proceed with full removal?"
+- options: ["confirm removal", "cancel"]
+
 ⛔ GATE B1 — wait for "confirm removal" explicitly. Do NOT proceed on any other input.
 
 ---
@@ -122,6 +126,10 @@ Documents updated:
   "revise [notes]" → adjust removals
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate B2 — Document removal complete. Approve to proceed to code removal?"
+- options: ["approve", "revise"]
 
 ⛔ GATE B2 — wait for approval before touching code.
 
@@ -215,5 +223,11 @@ Tasks closed:
   "revise [notes]" → adjust before merging
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate B3 — Removal complete. Approve to merge PR and close all tasks?"
+- options: ["approve", "revise"]
+
+⛔ GATE B3 — wait for approval before merging.
 
 ---

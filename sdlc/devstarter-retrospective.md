@@ -90,7 +90,8 @@ For each improvement identified:
 - Update Last Checkpoint
 - Commit: `docs: sprint [N] retrospective`
 
-```
-⛔ GATE — Retrospective approval
-Show report → wait for "approve" before creating action items
-```
+Use `AskUserQuestion` with:
+- question: "Gate — Retrospective report complete. Approve to create action items?"
+- options: ["approve", "revise"]
+
+⛔ GATE — wait for approval before creating action items.

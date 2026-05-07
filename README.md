@@ -37,14 +37,12 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 │   ├── devstarter-docs.md          ← Technical writing, API docs, runbooks
 │   └── devstarter-mlops.md         ← ML pipelines, model serving, drift monitoring
 │
-├── commands/ (24 slash commands)
-│   ├── devstarter-new.md           ← /devstarter-new — start new project
-│   ├── devstarter-change.md        ← /devstarter-change — add feature / fix bug
-│   ├── devstarter-release.md       ← /devstarter-release — deploy pipeline
-│   ├── devstarter-vcs-sync.md      ← /devstarter-vcs-sync — mirror to secondary VCS
-│   ├── devstarter-jira.md          ← /devstarter-jira — Jira sprint management
-│   ├── devstarter-context.md       ← /devstarter-context — refresh CLAUDE.md
-│   └── ...                         ← 17 more shortcuts
+├── skills/ (41 Claude Code skills)
+│   ├── devstarter-new/SKILL.md     ← /devstarter-new — start new project
+│   ├── devstarter-change/SKILL.md  ← /devstarter-change — add feature / fix bug
+│   ├── devstarter-release/SKILL.md ← /devstarter-release — deploy pipeline
+│   ├── devstarter-context/SKILL.md ← /devstarter-context — refresh CLAUDE.md
+│   └── ...                         ← 37 more skills
 │
 ├── templates/
 │   ├── CLAUDE.md.template          ← Project context file template

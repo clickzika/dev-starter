@@ -82,13 +82,19 @@ echo -e "${GREEN}  Backup saved to: $BACKUP_DIR${NC}"
 echo -e "${CYAN}[2/4] Installing new files...${NC}"
 
 # Folders to update (overwrite with latest)
-for folder in agents commands sdlc templates; do
+for folder in agents skills sdlc templates; do
   if [ -d "$TMP_DIR/$folder" ]; then
     rm -rf "$CLAUDE_DIR/$folder"
     cp -r "$TMP_DIR/$folder" "$CLAUDE_DIR/$folder"
     echo "  Updated: $folder/"
   fi
 done
+
+# Migration: remove commands/ if skills/ now exists (v2.x → v3.x)
+if [ -d "$CLAUDE_DIR/skills" ] && [ -d "$CLAUDE_DIR/commands" ]; then
+  rm -rf "$CLAUDE_DIR/commands"
+  echo "  Migrated: commands/ removed (replaced by skills/)"
+fi
 
 # Restore agents/custom/ from backup (never overwrite user custom agents)
 if [ -d "$BACKUP_DIR/agents/custom" ]; then

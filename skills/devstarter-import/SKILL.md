@@ -88,8 +88,8 @@ count=$(ls "$HOME/.claude/agents/teams/"*.md 2>/dev/null | wc -l)
 echo "  $count team files found (expected: 6)"
 
 echo "--- Commands ---"
-count=$(ls "$HOME/.claude/commands/"*.md 2>/dev/null | wc -l)
-echo "  $count command files found (expected: 3)"
+count=$(ls "$HOME/.claude/skills/"*/SKILL.md 2>/dev/null | wc -l)
+echo "  $count skill files found (expected: 41)"
 
 echo "--- Workflows (sdlc/) ---"
 count=$(ls "$HOME/.claude/sdlc/"*.md 2>/dev/null | wc -l)

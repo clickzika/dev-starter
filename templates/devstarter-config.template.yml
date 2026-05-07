@@ -32,17 +32,28 @@ vcs:
   # svn_branches: branches
   # svn_tags: tags
 
-  branch_strategy: gitflow # gitflow | trunk | simple | svn-standard
+  branch_strategy: gitflow # gitflow — main (prod) + uat (UAT) + develop (default)
   main_branch: main
+  uat_branch: uat          # UAT / staging branch (gitflow only)
   dev_branch: develop      # gitflow only
+
+  # ── Release remotes ─────────────────────────────────
+  release_remote: origin   # origin = single-repo (Scenario B) | upstream = fork (Scenario A)
+  upstream_remote: ""      # leave empty unless this is a fork
 
   # ── Secondary VCS (mirror / archive) ────────────────
   secondary_1: none        # none | github | gitlab | svn
   secondary_2: none
-  sync_branches: "main develop"
+  sync_branches: "main uat develop"
+
+  # ── Branch Protection ────────────────────────────────
+  branch_protection:
+    main:    { require_pr: true, allow_force_push: false, allow_deletion: false }
+    uat:     { require_pr: true, allow_force_push: false, allow_deletion: false }
+    develop: { require_pr: true, allow_force_push: false, allow_deletion: false }
 
 pm:
-  type: notion             # notion | jira | github-issues | gitlab-issues | linear | trello | none
+  type: github-issues      # github-issues | notion | jira | gitlab-issues | linear | trello | none
 
   # ── Notion ──────────────────────────────────────────
   # notion_database_id: "xxx-xxx-xxx"
@@ -89,3 +100,38 @@ stack:
   frontend: react          # react | vue | angular | next | svelte | none
   backend: python          # python | node | go | java | dotnet | none
   database: postgresql     # postgresql | mysql | mongodb | sqlite | none
+
+# ── Model Management ─────────────────────────────────
+# Maps model tiers to current Claude model IDs.
+# Update model IDs here when Anthropic releases new versions.
+model_management:
+  haiku:  claude-haiku-4-5-20251001
+  sonnet: claude-sonnet-4-6
+  opus:   claude-opus-4-7
+  command_tiers:
+    opus:
+      - devstarter-audit
+      - devstarter-hotfix
+      - devstarter-incident
+      - devstarter-migrate
+      - devstarter-consult
+    sonnet:
+      - devstarter-new
+      - devstarter-change
+      - devstarter-existing
+      - devstarter-release
+      - devstarter-sprint
+      - devstarter-document
+      - devstarter-onboard
+      - devstarter-handover
+      - devstarter-retro
+      - devstarter-dependency
+      - devstarter-rollback
+      - devstarter-monitor
+    haiku:
+      - devstarter-context
+      - devstarter-menu
+      - devstarter-export
+      - devstarter-import
+      - devstarter-env
+      - devstarter-secrets

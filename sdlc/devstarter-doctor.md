@@ -46,8 +46,8 @@ agents/techlead.md                → exists (alias)
 agents/custom/                    → exists (custom agent folder)
 ```
 
-### 3 — Commands (25 required)
-Check all `~/.claude/commands/devstarter-*.md` files exist.
+### 3 — Skills (41 required)
+Check all `~/.claude/skills/devstarter-*/SKILL.md` files exist.
 
 ### 4 — SDLC Runbooks (key files)
 ```

@@ -36,8 +36,8 @@ if [ ! -f "$REPO_DIR/VERSION" ]; then
   exit 1
 fi
 
-if [ ! -d "$REPO_DIR/agents" ] || [ ! -d "$REPO_DIR/commands" ]; then
-  echo -e "${RED}Error: Missing agents/ or commands/ in repo.${NC}"
+if [ ! -d "$REPO_DIR/agents" ] || [ ! -d "$REPO_DIR/skills" ]; then
+  echo -e "${RED}Error: Missing agents/ or skills/ in repo.${NC}"
   exit 1
 fi
 

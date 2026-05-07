@@ -1,6 +1,6 @@
 # devstarter-review.md — Interactive Code Review
 
-## Model: Opus (`claude-opus-4-6`)
+## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
@@ -19,13 +19,9 @@ If inline arg provided, auto-detect mode:
 - `[branchname]` → Mode B: branch review
 - (nothing)     → Mode C: current changes
 
-Otherwise ask:
-```
-What do you want to review?
-  1. PR #[number]
-  2. Branch name
-  3. Current uncommitted/staged changes
-```
+Otherwise use `AskUserQuestion` with:
+- question: "What do you want to review?"
+- options: ["PR #[number]", "Branch name", "Current uncommitted/staged changes"]
 
 ---
 
@@ -106,7 +102,8 @@ Files: [N changed]  Lines: +[N] -[N]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-After output, user may:
-- "fix blockers" → agent fixes 🔴 items directly
-- "explain [item]" → deeper explanation of a finding
-- "approve" → done, no action needed
+Use `AskUserQuestion` with:
+- question: "Code review complete. What would you like to do?"
+- options: ["approve", "fix blockers", "explain finding"]
+
+After selection, continue accordingly.
