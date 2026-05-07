@@ -1,9 +1,9 @@
 {
   "workflow": "devstarter-change-add",
-  "feature": "AskUserQuestion at all 52 remaining gates",
-  "status": "in_review",
-  "branch": "feature/ask-user-all-gates",
-  "version": "v3.1.0",
-  "completed_at": "2026-05-07",
-  "notes": "All 52 gates across 24 SDLC files updated. Commit babe2ce on feature/ask-user-all-gates. PR pending merge to develop."
+  "feature": "Consult-to-Change handoff (Option C)",
+  "status": "in_progress",
+  "branch": "feature/consult-change-handoff",
+  "version": "v3.2.0",
+  "started_at": "2026-05-07",
+  "notes": "devstarter-consult.md Step 4 replaced with save + AskUserQuestion handoff. templates/intake/devstarter-intake-consult.md created. VERSION/CHANGELOG/CLAUDE.md/devstarter-config.yml bumped to v3.2.0. Pending: commit + PR."
 }

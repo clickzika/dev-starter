@@ -1,5 +1,23 @@
 # Changelog
 
+## v3.2.0 (2026-05-07)
+
+### Consult→Change Handoff — Option C
+
+`/devstarter-consult` now saves the consultation context and offers a direct handoff to `/devstarter-change`, eliminating double-entry of requirements.
+
+**What changed:**
+- **`sdlc/devstarter-consult.md`** — Step 4 replaced with "Save Consultation" step:
+  - After delivering advice, saves `memory/consult-[YYYY-MM-DD]-[slug].md` using the new intake template
+  - `AskUserQuestion` gate: `["save advice only", "implement now", "ask follow-up"]`
+  - If "implement now": reads `devstarter-change.md`, skips all intake questions, jumps straight to Impact Analysis
+  - If "save advice only": shows file path so user can run `/devstarter-change memory/consult-...md` later (Option B path)
+  - If "ask follow-up": re-enters plan mode, loops back after answering
+- **`sdlc/devstarter-consult.md`** — Rule 1 updated: one write exception for `memory/consult-*.md` handoff file
+- **`templates/intake/devstarter-intake-consult.md`** — new intake template for consultation output; sections: Problem/Request, Analysis Summary, Recommended Approach, Acceptance Criteria
+
+---
+
 ## v3.1.0 (2026-05-07)
 
 ### AskUserQuestion at All Gates — Full UX Consistency
