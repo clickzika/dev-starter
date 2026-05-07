@@ -84,33 +84,34 @@ DevStarter/
 │   │   └── devstarter-vcs-pm-guide.md
 │   └── custom/             ← user custom agents (preserved by update.sh)
 │
-├── commands/               ← 38 slash commands (25 workflows + 13 agent direct-invoke)
-│   ├── devstarter-new.md
-│   ├── devstarter-change.md
-│   ├── devstarter-existing.md
-│   ├── devstarter-release.md
-│   ├── devstarter-hotfix.md
-│   ├── devstarter-audit.md
-│   ├── devstarter-document.md
-│   ├── devstarter-sprint.md
-│   ├── devstarter-migrate.md
-│   ├── devstarter-onboard.md
-│   ├── devstarter-handover.md
-│   ├── devstarter-retro.md
-│   ├── devstarter-env.md
-│   ├── devstarter-secrets.md
-│   ├── devstarter-monitor.md
-│   ├── devstarter-dependency.md
-│   ├── devstarter-menu.md
-│   ├── devstarter-context.md
-│   ├── devstarter-export.md
-│   ├── devstarter-import.md
-│   ├── devstarter-update.md
-│   ├── devstarter-consult.md
-│   ├── devstarter-doctor.md
-│   ├── devstarter-review.md
-│   ├── devstarter-rollback.md
-│   └── devstarter-incident.md
+├── skills/                 ← 41 Claude Code skills (25 workflows + 13 agent direct-invoke + 3 registry/util)
+│   ├── devstarter-new/SKILL.md
+│   ├── devstarter-change/SKILL.md
+│   ├── devstarter-existing/SKILL.md
+│   ├── devstarter-release/SKILL.md
+│   ├── devstarter-hotfix/SKILL.md
+│   ├── devstarter-audit/SKILL.md
+│   ├── devstarter-document/SKILL.md
+│   ├── devstarter-sprint/SKILL.md
+│   ├── devstarter-migrate/SKILL.md
+│   ├── devstarter-onboard/SKILL.md
+│   ├── devstarter-handover/SKILL.md
+│   ├── devstarter-retro/SKILL.md
+│   ├── devstarter-env/SKILL.md
+│   ├── devstarter-secrets/SKILL.md
+│   ├── devstarter-monitor/SKILL.md
+│   ├── devstarter-dependency/SKILL.md
+│   ├── devstarter-menu/SKILL.md
+│   ├── devstarter-context/SKILL.md
+│   ├── devstarter-export/SKILL.md
+│   ├── devstarter-import/SKILL.md
+│   ├── devstarter-update/SKILL.md
+│   ├── devstarter-consult/SKILL.md
+│   ├── devstarter-doctor/SKILL.md
+│   ├── devstarter-review/SKILL.md
+│   ├── devstarter-rollback/SKILL.md
+│   ├── devstarter-incident/SKILL.md
+│   └── [+15 more — gitsetup, registry, agents, etc.]
 │
 ├── sdlc/                   ← 28+ SDLC workflow runbooks
 │   ├── devstarter-starter.md
@@ -210,7 +211,7 @@ Cross-references MUST use the full prefixed name.
 Do NOT create files without the `devstarter-` prefix (except root files: CLAUDE.md, README.md, CHANGELOG.md, VERSION, USER.md).
 
 ### Slash commands vs SDLC runbooks
-- `commands/devstarter-X.md` — the slash command file (thin, routes to SDLC)
+- `skills/devstarter-X/SKILL.md` — the skill entry point (thin, routes to SDLC)
 - `sdlc/devstarter-X.md` — the actual workflow runbook (thick, full logic)
 - When adding a new command: create BOTH files. Register in `devstarter-menu.md`.
 
@@ -303,7 +304,7 @@ refactor: restructure V
 
 ### Rule — One Command = Two Files
 Every slash command requires:
-1. `commands/devstarter-X.md` — thin command file
+1. `skills/devstarter-X/SKILL.md` — thin skill entry point
 2. `sdlc/devstarter-X.md` — full workflow runbook
 3. Registration entry in `devstarter-menu.md`
 
@@ -342,6 +343,7 @@ Every slash command requires:
 | v2.4.0 | Multi-remote release config — release_remote + release_repo + upstream_remote in devstarter-config.yml; Strategy I reads config; PROC-GH-10 protects release/main for Scenario A |
 | v2.5.0 | /devstarter-gitsetup — standalone git + gitflow setup command (25th command); Branch Guard (Rule 9) enforced in change add + bug flows; config template synced with v2.4.0+ defaults |
 | v2.6.0 | Branch Guard universal — Rule 9 added to agent-base (all 13 agents) + hotfix, release, incident, existing SDLC runbooks; no path can bypass protected-branch enforcement |
+| v3.0.0 | SKILL.md migration — all 41 commands migrated from commands/devstarter-*.md flat format to skills/devstarter-*/SKILL.md directory format; install.sh + update.sh updated; breaking change |
 
 ---
 

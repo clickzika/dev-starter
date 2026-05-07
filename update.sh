@@ -82,7 +82,7 @@ echo -e "${GREEN}  Backup saved to: $BACKUP_DIR${NC}"
 echo -e "${CYAN}[2/4] Installing new files...${NC}"
 
 # Folders to update (overwrite with latest)
-for folder in agents commands sdlc templates; do
+for folder in agents skills sdlc templates; do
   if [ -d "$TMP_DIR/$folder" ]; then
     rm -rf "$CLAUDE_DIR/$folder"
     cp -r "$TMP_DIR/$folder" "$CLAUDE_DIR/$folder"

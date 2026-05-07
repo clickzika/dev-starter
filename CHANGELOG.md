@@ -1,5 +1,19 @@
 # Changelog
 
+## v3.0.0 (2026-05-07)
+
+### SKILL.md Migration — Native Claude Code Skills Format
+
+**Breaking change** — all 41 commands migrated from flat `commands/devstarter-*.md` to the official Claude Code skills directory format `skills/devstarter-[name]/SKILL.md`. The `commands/` directory is removed. Users upgrading from v2.x must re-run `install.sh` to get the new `~/.claude/skills/` layout.
+
+- **`skills/`** (NEW directory, 41 entries) — each former `commands/devstarter-*.md` is now `skills/devstarter-[name]/SKILL.md`; content unchanged, structure follows Claude Code's official skill discovery pattern
+- **`commands/`** (REMOVED) — replaced entirely by `skills/`
+- **`install.sh`** — Step 3 updated: `mkdir -p ~/.claude/skills`, copies `skills/` recursively; backup check and item list updated from `commands` → `skills`
+- **`update.sh`** — folder loop updated: `commands` → `skills`
+- **`CLAUDE.md`** — project structure, naming convention, and one-command rule updated to reflect `skills/devstarter-X/SKILL.md` format
+
+---
+
 ## v2.6.0 (2026-05-06)
 
 ### Branch Guard — Universal Base Rule

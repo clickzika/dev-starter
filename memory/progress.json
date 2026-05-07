@@ -1,7 +1,15 @@
 {
-  "workflow": "devstarter-change-add",
-  "feature": "Branch Guard — Universal Base Rule",
-  "status": "completed",
-  "completed_at": "2026-05-06",
-  "notes": "Branch Guard (Rule 9/10) added to agent-base and 4 SDLC runbooks. Merged to develop and pushed. Ready for v2.6.0 release."
+  "workflow": "devstarter-change",
+  "status": "in_progress",
+  "feature": "SKILL.md Migration — v3.0.0",
+  "branch": "feature/skill-migration",
+  "last_completed": "T4 — all 4 tasks done: 41 commands migrated, install.sh + update.sh updated, VERSION 3.0.0, CHANGELOG updated",
+  "next": "Gate A4 — feature approval, then merge PR to develop",
+  "tasks": {
+    "T1": "completed",
+    "T2": "completed",
+    "T3": "completed",
+    "T4": "completed"
+  },
+  "updated_at": "2026-05-07"
 }
