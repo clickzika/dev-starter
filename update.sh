@@ -90,6 +90,12 @@ for folder in agents skills sdlc templates; do
   fi
 done
 
+# Migration: remove commands/ if skills/ now exists (v2.x → v3.x)
+if [ -d "$CLAUDE_DIR/skills" ] && [ -d "$CLAUDE_DIR/commands" ]; then
+  rm -rf "$CLAUDE_DIR/commands"
+  echo "  Migrated: commands/ removed (replaced by skills/)"
+fi
+
 # Restore agents/custom/ from backup (never overwrite user custom agents)
 if [ -d "$BACKUP_DIR/agents/custom" ]; then
   mkdir -p "$CLAUDE_DIR/agents/custom"

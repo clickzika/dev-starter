@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.0.1 (2026-05-07)
+
+### Patch — publish.sh + update.sh migration fix
+
+- **`scripts/publish.sh`** — after overlaying new content onto `_release_clean`, now scans for top-level items present in the release branch but absent from current `main` and removes them; fixes `commands/` persisting in the release repo after v3.0.0 migration
+- **`update.sh`** — added v2→v3 migration step: removes `~/.claude/commands/` when `skills/` is present, so existing users get a clean state on next `/devstarter-update`
+
+---
+
 ## v3.0.0 (2026-05-07)
 
 ### SKILL.md Migration — Native Claude Code Skills Format

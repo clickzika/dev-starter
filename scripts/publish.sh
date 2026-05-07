@@ -152,6 +152,15 @@ for FOLDER in "${EXCLUDE_FROM_RELEASE[@]}"; do
   echo -e "  Excluded: $FOLDER/"
 done
 
+# Remove top-level items that exist in _release_clean but NOT in current main
+# (handles deletions like commands/ → skills/ across major versions)
+for ITEM in $(git ls-tree --name-only HEAD); do
+  if ! git ls-tree --name-only main | grep -qx "$ITEM"; then
+    git rm -r --cached "$ITEM" > /dev/null 2>&1 || true
+    echo -e "  Removed (deleted in main): $ITEM"
+  fi
+done
+
 if ! git diff --cached --quiet; then
   git commit -m "release: v$NEW_VERSION — $DESCRIPTION"
 fi
