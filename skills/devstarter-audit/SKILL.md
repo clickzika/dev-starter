@@ -1,5 +1,18 @@
 # /devstarter-audit — Audit & Review Project
 
+## ⚠️ Model Gate — Run Before Anything Else
+
+This workflow requires **Opus** (`claude-opus-4-7`).
+
+Use `AskUserQuestion` immediately:
+- question: "Are you on Opus? If not, run `/model opus` first then re-run `/devstarter-audit`."
+- options: ["Yes, I'm on Opus — proceed", "I need to switch — stopping here"]
+
+If "I need to switch": stop immediately, do not load the SDLC runbook.
+If "Yes, proceed": continue.
+
+---
+
 Read `~/.claude/sdlc/devstarter-audit.md` and audit this project.
 Follow all phases and approval rules in that file.
 

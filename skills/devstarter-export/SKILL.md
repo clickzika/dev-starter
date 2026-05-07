@@ -49,10 +49,10 @@ echo "--- Shared ---"
 [ -f "$HOME/.claude/agents/shared/devstarter-vcs-pm-guide.md" ] && echo "  ✅ vcs-pm-guide.md" || echo "  ❌ MISSING: vcs-pm-guide.md"
 
 echo ""
-echo "--- Commands (3) ---"
+echo "--- Skills (3 checked) ---"
 for f in context export import; do
-  FILE="$HOME/.claude/commands/$f.md"
-  [ -f "$FILE" ] && echo "  ✅ $f.md" || echo "  ❌ MISSING: $f.md"
+  FILE="$HOME/.claude/skills/devstarter-$f/SKILL.md"
+  [ -f "$FILE" ] && echo "  ✅ devstarter-$f/SKILL.md" || echo "  ❌ MISSING: devstarter-$f/SKILL.md"
 done
 
 echo ""
@@ -144,7 +144,7 @@ EXPORT COMPLETE ✅
 
 Contents:
   📁 agents/      — 12 specialist agents + 5 teams + shared guide
-  📁 commands/    — 3 utility commands (context, export, import)
+  📁 skills/      — 41 skill commands (devstarter-*/SKILL.md)
   📁 sdlc/        — 17+ workflow runbooks
   📁 templates/   — CLAUDE.md, project.env, doc portal
   📄 Root files   — USER.md, setup.sh, README.md, LICENSE

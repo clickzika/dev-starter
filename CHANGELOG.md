@@ -1,5 +1,20 @@
 # Changelog
 
+## v3.3.0 (2026-05-07)
+
+### Opus Model Gate + Commands Migration Cleanup + Model ID Update
+
+Three related improvements that complete the model-tier system introduced in v1.8.0 and clean up lingering debt from the v3.0.0 SKILL.md migration.
+
+**What changed:**
+
+- **feat: Opus model gate** — `skills/devstarter-audit/SKILL.md`, `devstarter-consult/SKILL.md`, `devstarter-hotfix/SKILL.md`, `devstarter-incident/SKILL.md`, `devstarter-migrate/SKILL.md`, `devstarter-review/SKILL.md` — added `## ⚠️ Model Gate` section at the top of each; uses `AskUserQuestion` to confirm user is on Opus before loading the SDLC runbook; if "I need to switch" is selected, workflow stops immediately
+- **fix: commands/ migration cleanup** — deleted orphaned `commands/` folder (41 stale .md files left from v3.0.0 migration; content already in `skills/`); fixed 4 stale `commands/` path references in `scripts/dev-setup.sh`, `sdlc/devstarter-doctor.md`, `skills/devstarter-export/SKILL.md`, `skills/devstarter-import/SKILL.md`
+- **chore: Opus model ID updated** — `claude-opus-4-6` → `claude-opus-4-7` in `devstarter-config.yml` + 6 SDLC runbooks (`devstarter-audit.md`, `devstarter-consult.md`, `devstarter-hotfix.md`, `devstarter-incident.md`, `devstarter-migrate.md`, `devstarter-review.md`)
+- **docs: bugfix log** — `docs/bugfix-log.html` created with BUG-2026-05-07-001 entry documenting the commands/ cleanup
+
+---
+
 ## v3.2.0 (2026-05-07)
 
 ### Consult→Change Handoff — Option C
