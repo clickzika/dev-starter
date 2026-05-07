@@ -58,7 +58,7 @@ mkdir -p "$CLAUDE_DIR"
 
 # Check if there are existing files that would be overwritten
 EXISTING_FILES=0
-for check in agents commands sdlc templates devstarter-menu.md USER.md setup.sh; do
+for check in agents skills sdlc templates devstarter-menu.md USER.md setup.sh; do
   if [ -e "$CLAUDE_DIR/$check" ]; then
     EXISTING_FILES=1
     break
@@ -71,7 +71,7 @@ if [ "$EXISTING_FILES" = "1" ]; then
   echo -e "  ${YELLOW}$BACKUP_DIR${RESET}"
   mkdir -p "$BACKUP_DIR"
 
-  for item in agents commands sdlc templates devstarter-menu.md USER.md TEAM.md setup.sh .env.example; do
+  for item in agents skills sdlc templates devstarter-menu.md USER.md TEAM.md setup.sh .env.example; do
     if [ -e "$CLAUDE_DIR/$item" ]; then
       cp -r "$CLAUDE_DIR/$item" "$BACKUP_DIR/" 2>/dev/null || true
     fi
@@ -89,7 +89,7 @@ echo -e "${CYAN}${BOLD}Step 3/4 — Installing files...${RESET}"
 mkdir -p "$CLAUDE_DIR/agents/shared"
 mkdir -p "$CLAUDE_DIR/agents/custom"
 mkdir -p "$CLAUDE_DIR/agents/teams"
-mkdir -p "$CLAUDE_DIR/commands"
+mkdir -p "$CLAUDE_DIR/skills"
 mkdir -p "$CLAUDE_DIR/sdlc"
 mkdir -p "$CLAUDE_DIR/templates/docs"
 
@@ -98,8 +98,8 @@ cp -r "$SOURCE_DIR/agents/"*.md "$CLAUDE_DIR/agents/" 2>/dev/null || true
 cp -r "$SOURCE_DIR/agents/shared/"*.md "$CLAUDE_DIR/agents/shared/" 2>/dev/null || true
 cp -r "$SOURCE_DIR/agents/teams/"*.md "$CLAUDE_DIR/agents/teams/" 2>/dev/null || true
 
-# Copy commands
-cp -r "$SOURCE_DIR/commands/"*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
+# Copy skills
+cp -r "$SOURCE_DIR/skills/"* "$CLAUDE_DIR/skills/" 2>/dev/null || true
 
 # Copy SDLC workflows
 cp -r "$SOURCE_DIR/sdlc/"*.md "$CLAUDE_DIR/sdlc/" 2>/dev/null || true
