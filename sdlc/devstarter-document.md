@@ -87,6 +87,10 @@ Action:   [Created fresh / Updated]
   "revise [notes]" → regenerate with corrections
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate — [filename] complete. Approve to commit and register in index?"
+- options: ["approve", "revise"]
+
 ---
 
 ## FIRST ACTION — Show This Before Anything Else (no inline args)
@@ -109,6 +113,10 @@ Which document do you want to generate?
 
 Or type the doc name: "brd", "api", "schema", "test", "security", "infra", "prototype", "plan", "all"
 ```
+
+Use `AskUserQuestion` with:
+- question: "Which document do you want to generate?"
+- options: ["BRD", "SRS", "API Reference", "DB Schema", "Test Strategy", "Security Design", "Infra Guide", "UI Prototype", "Project Plan", "All documents"]
 
 ---
 
@@ -341,6 +349,10 @@ Agent:    [@agent]
   "revise [notes]" → regenerate with corrections
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate — [filename] ready. Approve to commit and update docs/index.html?"
+- options: ["approve", "revise"]
 
 After approval:
 - `git add docs/[filename].html`

@@ -129,7 +129,11 @@ What do you want to do with this project?
 Or just describe it: "add user management", "fix login bug", "improve test coverage"
 ```
 
-Wait for the user to type 1–5 or a description. Nothing else before this.
+Use `AskUserQuestion` with:
+- question: "What do you want to do with this project?"
+- options: ["Onboard — understand codebase", "Add / fix — add feature or fix bug", "Refactor — improve structure", "Security — security review", "Full setup — docs + GitHub + Notion"]
+
+Wait for the user to select. Nothing else before this.
 
 **Auto-detect (skip asking):**
 - Q1 (project name) → use current folder name
@@ -440,7 +444,11 @@ Next stop after development: Final Gate — Delivery Review
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-When user types "autopilot":
+Use `AskUserQuestion` with:
+- question: "Ready to develop [N] tasks. Run autopilot or step through manually?"
+- options: ["autopilot", "manual"]
+
+When user selects "autopilot":
 1. Write to progress.json:
    ```json
    "autopilot_mode": true,

@@ -437,6 +437,10 @@ Deploy:     [suggested based on stack]
   "change [item]"     → modify specific item
 ```
 
+Use `AskUserQuestion` with:
+- question: "Project summary ready. Approve to proceed to Gate 1 documents?"
+- options: ["approve", "change item"]
+
 **If Q3.1 = 2 (existing API):**
 ```
 📋 PROJECT SUMMARY
@@ -461,6 +465,10 @@ Folder:     Template H
   "approve"           → proceed to Gate 1 documents
   "change [item]"     → modify specific item
 ```
+
+Use `AskUserQuestion` with:
+- question: "Project summary ready. Approve to proceed to Gate 1 documents?"
+- options: ["approve", "change item"]
 
 ---
 

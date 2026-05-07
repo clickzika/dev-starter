@@ -1,8 +1,9 @@
 {
-  "workflow": "devstarter-release",
-  "status": "completed",
-  "completed_at": "2026-05-07",
-  "version": "v3.0.0",
-  "tag": "v3.0.0",
-  "notes": "v3.0.0 released. SKILL.md migration — 41 commands moved to skills/devstarter-*/SKILL.md. GitHub release: https://github.com/clickzika/dev-starter/releases/tag/v3.0.0"
+  "workflow": "devstarter-change-add",
+  "feature": "Consult-to-Change handoff (Option C)",
+  "status": "in_progress",
+  "branch": "feature/consult-change-handoff",
+  "version": "v3.2.0",
+  "started_at": "2026-05-07",
+  "notes": "devstarter-consult.md Step 4 replaced with save + AskUserQuestion handoff. templates/intake/devstarter-intake-consult.md created. VERSION/CHANGELOG/CLAUDE.md/devstarter-config.yml bumped to v3.2.0. Pending: commit + PR."
 }

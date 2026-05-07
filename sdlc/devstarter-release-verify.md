@@ -165,6 +165,10 @@ Manual smoke test: [status]
   "fix [issue]" → fix then re-test
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate 2 — SIT complete. Approve to proceed to UAT?"
+- options: ["SIT approved", "fix issue"]
+
 ### Step 7 — Cleanup local staging
 
 ```bash
@@ -227,11 +231,11 @@ When done:
   "UAT fix [issue]"  → fix then re-deploy UAT
 ```
 
-```
-⛔ GATE 3 — UAT APPROVAL
-User must test and type "UAT approved" to proceed.
-Claude does NOT approve UAT — only the user can.
-```
+Use `AskUserQuestion` with:
+- question: "Gate 3 — UAT complete. Approve to proceed to production deploy?"
+- options: ["UAT approved", "UAT fix issue"]
+
+⛔ GATE 3 — UAT APPROVAL: only the user can approve — Claude does NOT approve UAT.
 
 ### Step 4 — Fix UAT issues (if any)
 
@@ -257,10 +261,11 @@ git push origin main --tags
 
 Then run the deploy strategy (Phase 4) against **production** environment.
 
-```
-⛔ GATE 4 — PRODUCTION DEPLOY APPROVAL (FINAL)
-Type "DEPLOY v[X.Y.Z]" to confirm production release.
-```
+Use `AskUserQuestion` with:
+- question: "Gate 4 — FINAL: Approve production deploy of v[X.Y.Z]?"
+- options: ["DEPLOY v[X.Y.Z]", "cancel — not ready"]
+
+⛔ GATE 4 — wait for explicit deploy approval before touching production.
 
 ---
 
