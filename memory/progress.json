@@ -1,9 +1,8 @@
 {
-  "workflow": "devstarter-change-add",
-  "feature": "Consult-to-Change handoff (Option C)",
+  "workflow": "devstarter-release",
+  "version": "v3.3.0",
   "status": "in_progress",
-  "branch": "feature/consult-change-handoff",
-  "version": "v3.2.0",
+  "phase": "SIT",
   "started_at": "2026-05-07",
-  "notes": "devstarter-consult.md Step 4 replaced with save + AskUserQuestion handoff. templates/intake/devstarter-intake-consult.md created. VERSION/CHANGELOG/CLAUDE.md/devstarter-config.yml bumped to v3.2.0. Pending: commit + PR."
+  "notes": "Release branch: release/v3.3.0. Gate 1 DEV approved. Committing release files. Pending: Gate 2 SIT → Gate 3 UAT → Gate 4 DEPLOY."
 }

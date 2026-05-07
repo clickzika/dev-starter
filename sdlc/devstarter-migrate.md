@@ -1,6 +1,6 @@
 # dev-migrate.md — Migration Workflow
 
-## Model: Opus (`claude-opus-4-6`)
+## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
 ## Instructions for Claude Code
