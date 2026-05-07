@@ -1,6 +1,6 @@
 # dev-hotfix.md — Emergency Production Fix
 
-## Model: Opus (`claude-opus-4-6`)
+## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
 ## How to Use

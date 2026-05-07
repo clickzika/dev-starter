@@ -33,9 +33,7 @@ vcs:
 
 pm:
   type: github-issues      # notion | jira | github-issues | gitlab-issues | linear | trello | none
-  notion_database_id: "339d9f1f-cda1-815b-9b47-c9c6f5a8e54b"
-  notion_board_url: "https://www.notion.so/339d9f1fcda1815b9b47c9c6f5a8e54b"
-
+  
 ci:
   type: github-actions     # github-actions | gitlab-ci | jenkins | azure-pipelines | none
 
@@ -51,7 +49,7 @@ model_management:
   # Model IDs — update here when Anthropic releases new versions
   haiku:  claude-haiku-4-5-20251001    # Fast + cheap — mechanical tasks
   sonnet: claude-sonnet-4-6            # Balanced   — standard dev workflows
-  opus:   claude-opus-4-6              # Most capable — complex reasoning
+  opus:   claude-opus-4-7              # Most capable — complex reasoning
 
   # Switch model in Claude Code: /model haiku | /model sonnet | /model opus
   # Each SDLC runbook also declares its recommended tier in a ## Model: header.
