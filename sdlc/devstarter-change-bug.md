@@ -118,6 +118,10 @@ Risk of fix:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate C1 — Bug analysis ready. Approve to create task and start fix?"
+- options: ["approve", "revise"]
+
 ⛔ GATE C1 — wait for approval before creating tasks or writing any code.
 
 ---

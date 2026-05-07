@@ -65,8 +65,11 @@ What do you want to audit?
 Then: report only / report + fix plan / fix now?
 ```
 
-Wait for the user to respond. Parse audit type(s) and outcome from the reply.
-Nothing else before this prompt.
+Use `AskUserQuestion` with:
+- question: "What do you want to audit?"
+- options: ["Security", "Code Quality", "Performance", "Tests", "Dependencies", "Architecture", "Full audit"]
+
+Parse audit type(s) and outcome from the reply. Nothing else before this prompt.
 
 **Auto-detect (skip asking):**
 - Q1 (project name) → use current folder name
@@ -246,6 +249,10 @@ Please review the full report at docs/audit-report.html
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate 1 — Audit report complete. Approve to proceed to fix planning?"
+- options: ["approve", "revise"]
+
 ⛔ GATE 1 — wait for approval. Do NOT fix anything yet.
 
 ---
@@ -282,6 +289,10 @@ Deferred (Low / Info):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate 2 — Fix plan ready. Approve to begin Sprint 1 fixes?"
+- options: ["approve", "revise"]
+
 ⛔ GATE 2 — wait for plan approval before writing any code.
 
 ---
@@ -306,6 +317,10 @@ Verify the fix is correct before approving.
   "revise [notes]" → adjust the fix
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+Use `AskUserQuestion` with:
+- question: "Fix approval — [fix description]. Approve to commit and move to next fix?"
+- options: ["approve", "revise"]
 
 All fixes use the Revision Protocol from dev-starter.md:
 - Impact analysis before each fix

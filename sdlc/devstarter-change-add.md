@@ -383,6 +383,10 @@ Next stop after development: Gate A4 — Feature Approval
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Ready to develop [N] tasks. Run autopilot or step through manually?"
+- options: ["autopilot", "manual"]
+
 When user types "autopilot":
 1. Write to progress.json:
    ```json

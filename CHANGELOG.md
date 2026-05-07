@@ -1,5 +1,36 @@
 # Changelog
 
+## v3.1.0 (2026-05-07)
+
+### AskUserQuestion at All Gates — Full UX Consistency
+
+All 52 remaining approval gates and mode-picker prompts across every SDLC runbook now use `AskUserQuestion` (arrow-key picker UI) instead of requiring typed input. Users can now select any gate response with arrow keys + Enter throughout the entire DevStarter workflow.
+
+**Files updated:**
+- **`agents/shared/devstarter-agent-base.md`** — Gate UX Rule added: `AskUserQuestion` required at every gate in every workflow; standard and release gate patterns documented
+- **`sdlc/devstarter-change.md`** — FIRST ACTION picker now uses `AskUserQuestion` (Add / Remove / Fix)
+- **`sdlc/devstarter-change-add.md`** — autopilot/manual choice uses `AskUserQuestion`
+- **`sdlc/devstarter-change-bug.md`** — Gate C1 uses `AskUserQuestion`
+- **`sdlc/devstarter-change-remove.md`** — Gates B1, B2, B3 use `AskUserQuestion`
+- **`sdlc/devstarter-audit.md`** — FIRST ACTION picker + Gates 1, 2, per-fix approval use `AskUserQuestion`
+- **`sdlc/devstarter-review.md`** — Mode picker + review outcome use `AskUserQuestion`
+- **`sdlc/devstarter-retrospective.md`** — Retrospective approval gate uses `AskUserQuestion`
+- **`sdlc/devstarter-dependency.md`** — Update approval gate uses `AskUserQuestion`
+- **`sdlc/devstarter-document.md`** — FIRST ACTION picker + both document review gates use `AskUserQuestion`
+- **`sdlc/devstarter-hotfix.md`** — Gates H1, H2 use `AskUserQuestion`
+- **`sdlc/devstarter-rollback.md`** — Gates R0, R1, R2 use `AskUserQuestion`
+- **`sdlc/devstarter-gitsetup.md`** — Gate 1 + develop branch protection prompt use `AskUserQuestion`
+- **`sdlc/devstarter-migrate.md`** — Gates 1, 2, component approval, Gate 7 cutover use `AskUserQuestion`
+- **`sdlc/devstarter-release-prep.md`** — Gate 1 DEV approval uses `AskUserQuestion`
+- **`sdlc/devstarter-release-verify.md`** — Gates 2 (SIT), 3 (UAT), 4 (Production deploy) use `AskUserQuestion`
+- **`sdlc/devstarter-starter.md`** — FIRST ACTION mode picker uses `AskUserQuestion`
+- **`sdlc/devstarter-starter-gates.md`** — Gates 1, 2, 3 (×2), autopilot/manual, Gate 5 use `AskUserQuestion`
+- **`sdlc/devstarter-starter-intake.md`** — Both PROJECT SUMMARY approval gates use `AskUserQuestion`
+- **`sdlc/devstarter-starter-template.md`** — Revision confirmation + re-approval gate use `AskUserQuestion`
+- **`sdlc/devstarter-existing.md`** — FIRST ACTION picker + autopilot/manual choice use `AskUserQuestion`
+
+---
+
 ## v3.0.1 (2026-05-07)
 
 ### Patch — publish.sh + update.sh migration fix

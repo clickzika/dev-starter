@@ -1,8 +1,9 @@
 {
-  "workflow": "devstarter-release",
-  "status": "completed",
+  "workflow": "devstarter-change-add",
+  "feature": "AskUserQuestion at all 52 remaining gates",
+  "status": "in_review",
+  "branch": "feature/ask-user-all-gates",
+  "version": "v3.1.0",
   "completed_at": "2026-05-07",
-  "version": "v3.0.1",
-  "tag": "v3.0.1",
-  "notes": "v3.0.1 released. Patch: publish.sh now strips deleted dirs from release repo; update.sh removes commands/ when skills/ exists. GitHub release: https://github.com/clickzika/dev-starter/releases/tag/v3.0.1"
+  "notes": "All 52 gates across 24 SDLC files updated. Commit babe2ce on feature/ask-user-all-gates. PR pending merge to develop."
 }

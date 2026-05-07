@@ -194,7 +194,11 @@ How do you want to start?
 > _
 ```
 
-Wait for the user to type 1, 2, or 3. Nothing else before this prompt.
+Use `AskUserQuestion` with:
+- question: "Let's build your project. How do you want to start?"
+- options: ["Quick — 8 questions, ready-made stack", "Custom — 15 questions, full control", "Describe — just tell me about it"]
+
+Wait for the user to select. Nothing else before this prompt.
 
 **Special case — inline args:**
 If the user ran `/devstarter-new [some description]` (text after the command),

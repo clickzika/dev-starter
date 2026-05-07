@@ -46,6 +46,10 @@ Use HOTFIX instead if:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate R0 — How do you want to proceed?"
+- options: ["rollback", "hotfix instead"]
+
 ⛔ GATE R0 — explicit decision required.
 
 ---
@@ -93,7 +97,11 @@ If yes — DB rollback must be done MANUALLY (see Phase 4b)
   "choose different version"           → list versions
 ```
 
-⛔ GATE R1 — user must type exact confirmation.
+Use `AskUserQuestion` with:
+- question: "Gate R1 — Confirm rollback to v[X.Y.(Z-1)]?"
+- options: ["confirm rollback", "choose different version"]
+
+⛔ GATE R1 — wait for confirmation before executing rollback.
 
 ---
 
@@ -135,6 +143,10 @@ Steps:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Confirm DB rollback complete: (yes)
 ```
+
+Use `AskUserQuestion` with:
+- question: "Gate R2 — Database rollback status?"
+- options: ["DB rollback complete", "skip (no DB migrations in this version)"]
 
 ⛔ GATE R2 — wait for DB confirmation before proceeding.
 

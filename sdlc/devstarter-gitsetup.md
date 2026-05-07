@@ -89,6 +89,10 @@ Each step is idempotent — already-done items are skipped.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate 1 — Git setup plan ready. Approve to run all phases?"
+- options: ["approve", "cancel"]
+
 ⛔ Wait for approval before proceeding.
 
 ---
@@ -176,7 +180,9 @@ Protect the develop branch too?
   Recommended for teams ≥ 3 — forces all devs to use feature/* branches + PRs.
   Claude agents already use PRs via Gate 4 (PROC-GH-06/07/08).
 
-  "yes" → apply protection   |   "no" → skip (add later via /devstarter-gitsetup protect)
+Use `AskUserQuestion` with:
+- question: "Protect the develop branch? (Recommended for teams ≥ 3)"
+- options: ["yes — protect develop", "no — skip for now"]
 ```
 
 Then → PROC-GH-10 Step 2 based on user answer.

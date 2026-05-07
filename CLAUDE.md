@@ -344,6 +344,8 @@ Every slash command requires:
 | v2.5.0 | /devstarter-gitsetup — standalone git + gitflow setup command (25th command); Branch Guard (Rule 9) enforced in change add + bug flows; config template synced with v2.4.0+ defaults |
 | v2.6.0 | Branch Guard universal — Rule 9 added to agent-base (all 13 agents) + hotfix, release, incident, existing SDLC runbooks; no path can bypass protected-branch enforcement |
 | v3.0.0 | SKILL.md migration — all 41 commands migrated from commands/devstarter-*.md flat format to skills/devstarter-*/SKILL.md directory format; install.sh + update.sh updated; breaking change |
+| v3.0.1 | publish.sh strips deleted dirs from release repo; update.sh auto-migrates commands/ → skills/ for v2→v3 upgrades |
+| v3.1.0 | AskUserQuestion at all 52 remaining gates — full arrow-key picker UX across all SDLC runbooks; Gate UX Rule added to agent-base |
 
 ---
 
