@@ -136,11 +136,11 @@ npm install [package]@[version]
 [ ] No new audit vulnerabilities introduced
 ```
 
-```
-⛔ GATE — Update approval
-Show: what was updated + test results
-Wait for "approve" before merging
-```
+Use `AskUserQuestion` with:
+- question: "Gate — Dependency updates complete. Approve to merge?"
+- options: ["approve", "revise"]
+
+⛔ GATE — wait for approval before merging.
 
 ---
 

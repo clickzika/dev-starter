@@ -195,6 +195,33 @@ Proceeding to Gate 5 — Quality & Delivery Review.
 
 ---
 
+## Gate UX Rule — AskUserQuestion at Every Gate
+
+At **every** approval gate in any SDLC workflow, you MUST call `AskUserQuestion` instead of waiting for the user to type a response. This applies to all gates — approve/revise, DEV approved, SIT approved, UAT approved, DEPLOY, and any other gate keyword.
+
+**Standard gate pattern:**
+```
+Use `AskUserQuestion` with:
+- question: "[Gate name] — [one-line description of what was done and what comes next]?"
+- options: ["approve", "revise"]
+```
+
+**Release gate pattern (domain-specific labels):**
+```
+Use `AskUserQuestion` with:
+- question: "Gate 1 — Pre-release checklist complete. Approve to proceed to SIT?"
+- options: ["DEV approved", "fix [item]"]
+```
+
+**Rules:**
+- Always show the gate summary text block FIRST (context), THEN call AskUserQuestion
+- Keep the question under 100 characters
+- 2 options minimum (approve + revise/fix); add a 3rd only if genuinely needed
+- "Other" is automatically appended by the UI — covers free-text revise notes
+- This rule applies in manual mode; in autopilot mode gates are skipped per Autopilot rules above
+
+---
+
 ## Self-Improvement Protocol
 
 You are designed to grow smarter with every session.

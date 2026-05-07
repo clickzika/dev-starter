@@ -116,7 +116,11 @@ Or just describe it:
   "add dark mode", "remove social login", "fix login redirect"
 ```
 
-Wait for the user to type 1, 2, 3, or a description. Nothing else before this.
+Use `AskUserQuestion` with:
+- question: "What do you want to do?"
+- options: ["Add feature", "Remove feature", "Fix bug"]
+
+Wait for the user to select or type a description. Nothing else before this.
 
 **Special case — inline args:** If the user ran `/devstarter-change [text]`,
 skip this prompt. Extract type + description from the args and proceed directly.

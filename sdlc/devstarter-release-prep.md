@@ -68,3 +68,7 @@ Failed items: [list]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+Use `AskUserQuestion` with:
+- question: "Gate 1 — Pre-release checklist complete. Approve to proceed to SIT?"
+- options: ["DEV approved", "fix item"]
+

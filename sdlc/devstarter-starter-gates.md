@@ -34,6 +34,9 @@ GATE 1 — Discovery                    ← HARD STOP: user must approve before 
   BA → write docs/brd.html (BRD + User Stories + Acceptance Criteria)
   BA + Tech Lead → write docs/srs.html (Software Requirements Specification)
   ──────────────────────────────────────────────────
+  Use `AskUserQuestion` with:
+  - question: "Gate 1 — Discovery docs complete. Approve to proceed to architecture?"
+  - options: ["approve", "revise"]
   ⛔ STOP: Show BRD + SRS → wait for "approve" or "revise [notes]"
 
 GATE 2 — Architecture & Design        ← HARD STOP: user must approve before Gate 3
@@ -149,6 +152,9 @@ GATE 2 — Architecture & Design        ← HARD STOP: user must approve before 
   │ 3. If NO conflicts: proceed to gate         │
   └─────────────────────────────────────────────┘
   ──────────────────────────────────────────────────
+  Use `AskUserQuestion` with:
+  - question: "Gate 2 — Architecture docs complete. Approve to proceed to foundation setup?"
+  - options: ["approve", "revise"]
   ⛔ STOP: Show all 9 docs + conflict resolutions (if any)
           → wait for "approve" or "revise [doc]"
 
@@ -156,6 +162,9 @@ GATE 3 — Foundation + Task Setup      ← HARD STOP: user must approve before 
   PM     → read ~/.claude/sdlc/devstarter-github.md → PROC-GH-04: create labels
   PM     → read ~/.claude/sdlc/devstarter-github.md → PROC-GH-11: create milestones (1 per epic)
   PM     → break tasks into Epic → Feature → Task list → show for approval
+  Use `AskUserQuestion` with:
+  - question: "Gate 3 — Task list ready. Approve to create issues and begin scaffold?"
+  - options: ["task list approved", "revise"]
   ⛔ STOP: Show task list → wait for "task list approved"
 
   After approval:
@@ -172,6 +181,9 @@ GATE 3 — Foundation + Task Setup      ← HARD STOP: user must approve before 
     ✅ [N] Notion tasks created (Status: To Do)
     ✅ Scaffold complete
     ✅ develop branch: [protected — all devs use PRs | unprotected — direct push allowed]
+  Use `AskUserQuestion` with:
+  - question: "Gate 3 — Scaffold complete. Approve to begin feature development?"
+  - options: ["approve", "revise"]
   ⛔ STOP → wait for "approve" or "revise [component]"
 
   ── AUTOPILOT PROMPT (show immediately after Gate 3 approved) ──────────────
@@ -195,7 +207,11 @@ GATE 3 — Foundation + Task Setup      ← HARD STOP: user must approve before 
   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   ```
 
-  When user types "autopilot":
+  Use `AskUserQuestion` with:
+  - question: "Ready to develop [N] sprints / [N] tasks. Run autopilot or step through manually?"
+  - options: ["autopilot", "manual"]
+
+  When user selects "autopilot":
   1. Write to progress.json:
      ```json
      "autopilot_mode": true,
@@ -274,6 +290,9 @@ GATE 5 — Quality & Delivery           ← HARD STOP: user must approve before 
   Docs     → write README, API docs, deployment guide
   PM       → verify all Notion tasks → Done
   ──────────────────────────────────────────────────
+  Use `AskUserQuestion` with:
+  - question: "Gate 5 — Quality review complete. Approve to merge and tag release?"
+  - options: ["approve", "revise"]
   ⛔ STOP: Show test + security report → wait for "approve" to deploy
 
   After approval:

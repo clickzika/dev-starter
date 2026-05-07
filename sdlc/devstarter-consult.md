@@ -27,12 +27,13 @@ Use when you want to **discuss and get advice** without making any changes:
 
 ## CRITICAL RULES
 
-### Rule 1 — READ ONLY, NO CHANGES
+### Rule 1 — CONSULT ONLY (no project changes)
 - Do NOT create branches
-- Do NOT modify any files
+- Do NOT modify **project** files
 - Do NOT create GitHub issues or Notion tasks
 - Do NOT write code
-- This is **consultation only** — analyze, advise, discuss
+- One exception: write `memory/consult-[YYYY-MM-DD]-[slug].md` at Step 4 (intake handoff file only)
+- This is **consultation only** — analyze, advise, discuss; implement only if user picks "implement now"
 
 ### Rule 2 — Read Agent File Before Advising
 Before giving advice, read `~/.claude/agents/[agent].md` for the relevant agent(s).
@@ -131,24 +132,61 @@ Option C: [name] (if applicable)
 👉 Recommended: Option [X]
    Reason: [why this fits best given your project context]
 
-━━━ NEXT STEPS (if you decide to proceed) ━━━
+━━━ NEXT STEPS ━━━
 
-  → /devstarter-change [description]     — to implement as a feature
-  → /fix [description]        — if this is fixing a bug
-  → /[agent] [description]    — to get deeper agent-specific help
+  → Step 4 will save this advice and offer to launch /devstarter-change directly
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 ---
 
-### Step 4 — Follow-up Discussion
+### Step 4 — Save Consultation
 
 After delivering advice, use `ExitPlanMode` tool to return to normal mode.
 
-The user may then:
-- Ask follow-up questions → re-enter plan mode and answer (still no code changes)
-- Say "ทำเลย" or "implement" → suggest the right command: `/devstarter-change [description]`
-- Say "thanks" or move on → end consultation
+Generate the slug from the topic (lowercase, hyphens, max 4 words).
+Save the consultation to disk using the template at `~/.claude/templates/intake/devstarter-intake-consult.md`:
+
+```
+File: memory/consult-[YYYY-MM-DD]-[slug].md
+
+Fill in:
+  - change_type   ← detected from topic (Add/Modify/Fix Bug)
+  - feature_name  ← slug
+  - date          ← today
+  - advisor       ← @agent(s) used
+  - Section 1     ← user's original question + change type
+  - Section 2     ← situation summary, root cause, affected files from analysis
+  - Section 3     ← recommended option, reason, effort, risks
+  - Section 4     ← acceptance criteria derived from NEXT STEPS advice
+```
+
+Then show the INTAKE SUMMARY block from the template (filled in) and use `AskUserQuestion` with:
+- question: "Consultation complete. What would you like to do?"
+- options: ["save advice only", "implement now", "ask follow-up"]
+
+---
+
+**If user picks "implement now":**
+1. Confirm file is saved to `memory/consult-[YYYY-MM-DD]-[slug].md`
+2. Read `~/.claude/sdlc/devstarter-change.md`
+3. Jump directly to Impact Analysis — skip all intake questions (file arg already provides context)
+4. Announce:
+   ```
+   🚀 Launching /devstarter-change with consultation context
+   📂 Intake: memory/consult-[YYYY-MM-DD]-[slug].md
+   ⏭️  Skipping intake — going straight to Impact Analysis
+   ```
+
+**If user picks "save advice only":**
+Show:
+```
+💾 Saved: memory/consult-[YYYY-MM-DD]-[slug].md
+To implement later: /devstarter-change memory/consult-[YYYY-MM-DD]-[slug].md
+```
+
+**If user picks "ask follow-up":**
+Re-enter plan mode, answer the question (still no code changes), then loop back to Step 4.
 
 ---
 
