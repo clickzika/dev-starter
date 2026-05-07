@@ -1,8 +1,8 @@
 {
-  "workflow": "devstarter-change",
+  "workflow": "devstarter-release",
   "status": "completed",
-  "feature": "SKILL.md Migration — v3.0.0",
   "completed_at": "2026-05-07",
-  "pr": "https://github.com/clickzika/dev-starter-dev/pull/10",
-  "notes": "v3.0.0 — 41 commands migrated to skills/devstarter-*/SKILL.md. PR #10 merged to develop."
+  "version": "v3.0.0",
+  "tag": "v3.0.0",
+  "notes": "v3.0.0 released. SKILL.md migration — 41 commands moved to skills/devstarter-*/SKILL.md. GitHub release: https://github.com/clickzika/dev-starter/releases/tag/v3.0.0"
 }
