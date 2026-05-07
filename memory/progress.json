@@ -1,9 +1,16 @@
 {
-  "workflow": "devstarter-change-add",
-  "feature": "Consult-to-Change handoff (Option C)",
+  "workflow": "devstarter-change-bug",
   "status": "in_progress",
-  "branch": "feature/consult-change-handoff",
-  "version": "v3.2.0",
-  "started_at": "2026-05-07",
-  "notes": "devstarter-consult.md Step 4 replaced with save + AskUserQuestion handoff. templates/intake/devstarter-intake-consult.md created. VERSION/CHANGELOG/CLAUDE.md/devstarter-config.yml bumped to v3.2.0. Pending: commit + PR."
+  "gate": "C4",
+  "current_task": "C-PHASE 4: Implement Fix — create fix/14-stale-commands-refs + 5 changes",
+  "completed_tasks": [
+    "C-PHASE 2: Bug Analysis",
+    "C-PHASE 3: GitHub Issue #14 created"
+  ],
+  "next_task": "C-PHASE 5: Bug Fix Documentation (bugfix-log.html)",
+  "files_modified": [],
+  "tasks_this_session": 3,
+  "files_read_this_session": 12,
+  "last_checkpoint": "2026-05-07T00:00:00",
+  "notes": "Fix bug: stale commands/ refs from v3.0.0 migration. GitHub #14. Fix branch: fix/14-stale-commands-refs."
 }
