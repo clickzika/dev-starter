@@ -1,16 +1,8 @@
 {
-  "workflow": "devstarter-change-bug",
+  "workflow": "devstarter-release",
+  "version": "v3.3.0",
   "status": "in_progress",
-  "gate": "C4",
-  "current_task": "C-PHASE 4: Implement Fix — create fix/14-stale-commands-refs + 5 changes",
-  "completed_tasks": [
-    "C-PHASE 2: Bug Analysis",
-    "C-PHASE 3: GitHub Issue #14 created"
-  ],
-  "next_task": "C-PHASE 5: Bug Fix Documentation (bugfix-log.html)",
-  "files_modified": [],
-  "tasks_this_session": 3,
-  "files_read_this_session": 12,
-  "last_checkpoint": "2026-05-07T00:00:00",
-  "notes": "Fix bug: stale commands/ refs from v3.0.0 migration. GitHub #14. Fix branch: fix/14-stale-commands-refs."
+  "phase": "SIT",
+  "started_at": "2026-05-07",
+  "notes": "Release branch: release/v3.3.0. Gate 1 DEV approved. Committing release files. Pending: Gate 2 SIT → Gate 3 UAT → Gate 4 DEPLOY."
 }
