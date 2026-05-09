@@ -239,7 +239,7 @@ gh release create "v$NEW_VERSION" \
   --notes "$CHANGELOG_SECTION
 
 ---
-**Update:** Run \`/update\` in Claude Code to get this version."
+**Update:** Run \`/devstarter-update\` in Claude Code (or \`bash ~/.claude/update.sh\`) to get this version."
 
 # ─── Step 6: Back to develop ─────────────────────────
 echo -e "${CYAN}[6/7] Switching back to develop...${NC}"
@@ -257,5 +257,5 @@ echo -e "  Release: https://github.com/clickzika/dev-starter/releases/tag/v$NEW_
 echo -e "  Branch:  main (updated)"
 echo -e "  Current: develop"
 echo ""
-echo -e "${YELLOW}Users can update with: /update${NC}"
+echo -e "${YELLOW}Users can update with: /devstarter-update  (or: bash ~/.claude/update.sh)${NC}"
 echo ""
