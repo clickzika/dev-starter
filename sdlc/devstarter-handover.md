@@ -1,5 +1,7 @@
 # dev-handover.md — Project Handover
 
+> **TL;DR** — Transfer ownership: knowledge capture + access revocation + rotation · **Lifecycle** Operate · **Gates** 4
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).

@@ -1,5 +1,7 @@
 # OPERATION A — ADD FEATURE
 
+> **TL;DR** — Add a new feature with 4-gate review (impact → docs → tasks → approve) · **Lifecycle** Build · **Gates** 6
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 ---

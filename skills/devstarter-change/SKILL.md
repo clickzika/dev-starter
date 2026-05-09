@@ -49,3 +49,46 @@ If the user invoked this command with a plain text description:
 
 **If no args were provided** (user just typed `/devstarter-change`):
 → Show the quick-picker as the first prompt (see SDLC file FIRST ACTION section).
+
+---
+
+## Quick Mode — `--quick` flag
+
+For trivial / scoped changes that don't need the full multi-agent flow.
+Skips agents not relevant to the detected scope so reading load drops
+from ~3000 lines to ~1000.
+
+```
+/devstarter-change --quick add dark mode toggle to navbar
+/devstarter-change --quick fix login redirect bug
+/devstarter-change --quick small.md
+```
+
+**What `--quick` does:**
+
+1. **Auto-scope detection** — based on description and touched files:
+   - Backend-only (touches `api/` `services/` `db/`) → skip @uxui, @frontend
+   - Frontend-only (touches `frontend/` `components/`) → skip @backend, @dba
+   - Full-stack → no skips (full flow runs)
+   - Bug fix with localized blast radius → skip BRD update; AC inline in PR description
+
+2. **Reduced reading** — Claude reads only the agent files relevant to scope
+   (e.g., backend-only feature: skip reading 700-line uxui agent file)
+
+3. **Reduced doc updates** — only the docs in scope:
+   - Backend-only: `api-reference.html` + `openapi.yaml` + maybe ADR; skip frontend-spec / ux-spec
+   - Frontend-only: `frontend-spec.html` + maybe ADR; skip api-reference / database-design
+   - Bug fix: bugfix-log.html only (no BRD update for tiny bugs)
+
+4. **Doc Quality Preflight** still runs — but only on the docs that ARE
+   updated. Quality bar is the same; surface area is smaller.
+
+**When NOT to use `--quick`:**
+- Feature touches auth / multi-tenancy / schema / billing / external integrations
+  (these always require full ADR + Threat Model + SLO regardless of scope)
+- Cross-cutting refactors
+- New top-level domain (entire bounded context)
+- First feature in a fresh project (use full /devstarter-new + first /devstarter-change)
+
+If `--quick` is supplied for a change that touches an excluded area above,
+the workflow auto-promotes to full mode and prints a warning explaining why.

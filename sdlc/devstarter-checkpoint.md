@@ -1,5 +1,7 @@
 # dev-checkpoint.md — Checkpoint & Auto-Resume Protocol
 
+> **TL;DR** — Auto-resume protocol for rate-limit pauses and crash recovery · **Lifecycle** Reference · **Gates** 0
+
 ## Model: Haiku (`claude-haiku-4-5-20251001`)
 
 ## Purpose

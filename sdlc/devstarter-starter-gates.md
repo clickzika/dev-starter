@@ -1,3 +1,7 @@
+# devstarter-starter-gates.md — Gate Structure for New Project Bootstrap
+
+> **TL;DR** — Gate 0–2 structure definition (sub-file of /devstarter-new) · **Lifecycle** Discovery · **Gates** 3
+
 ## Agent Pipeline & Gate Structure
 
 ```

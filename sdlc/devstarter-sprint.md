@@ -1,5 +1,7 @@
 # dev-sprint.md — Sprint Planning
 
+> **TL;DR** — Sprint planning: backlog refinement, prioritization, task assignment · **Lifecycle** Discovery · **Gates** 1
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).

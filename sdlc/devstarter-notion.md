@@ -1,5 +1,7 @@
 # dev-notion.md — Shared Notion Procedures
 
+> **TL;DR** — Shared Notion procedures (PROC-NT-01..09) for task board and database management · **Lifecycle** Reference · **Gates** 0
+
 ## Purpose
 
 This file contains shared Notion procedures used by all dev workflows.

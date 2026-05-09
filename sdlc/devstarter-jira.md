@@ -1,6 +1,8 @@
 # devstarter-jira.md — Jira Procedures
 # DevStarter — Full Jira Integration (equivalent to devstarter-notion.md)
 
+> **TL;DR** — Jira procedures for project, sprints, issues, and field discovery · **Lifecycle** Reference · **Gates** 0
+
 ## Purpose
 
 All Jira operations used by devstarter-change, devstarter-release, devstarter-sprint,
