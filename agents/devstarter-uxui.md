@@ -217,6 +217,91 @@ Copy the entire HTML/CSS from that template file and fill in the content. This e
 - **Print:** Include `@media print` styles for white background printing
 - **Never output .md files** for deliverables
 
+### Design Specification Document — Gate 1 Deliverable
+
+When triggered during Gate 1 (`/build`), produce a **UX Design Specification**
+saved as `docs/ux-spec.html` AS WELL AS the Interactive Prototype
+(documented below). The spec is the *written contract* for design
+decisions; the prototype is the *visual proof*. Gate A2 enforces both.
+
+**Required sections:**
+
+```
+1. Document Metadata — version, date, status, author, project name
+2. Design Principles — 4–7 project-specific principles (NOT generic
+   "be consistent / be clear" — must reference the actual product, e.g.
+   "Long admin tasks must be resumable — never lose state on refresh.")
+3. Design Tokens — concrete values for:
+   - Color palette (primary, secondary, neutral, semantic) with hex + role
+   - Typography scale (font family, sizes, line heights, weights)
+   - Spacing scale (4 / 8 / 12 / 16 / 24 / 32 / 48 / 64)
+   - Radius, shadow, motion duration tokens
+   - Reference: matches docs/prototype/components.html and frontend tokens
+4. Information Architecture
+   - User flow diagrams (Mermaid) for top 3–5 user goals
+   - Navigation model: top nav / sidebar / breadcrumb / search-first
+   - Page hierarchy: primary / secondary / utility pages
+5. Component Specifications — for every shared component:
+   - Purpose + when to use vs alternatives
+   - States: default / hover / focus / active / loading / error / empty / disabled
+   - Variants: size + intent + density
+   - Accessibility: role, ARIA pattern, keyboard model, focus order
+   - Motion: enter/exit duration, prefers-reduced-motion fallback
+   (Use the Component Specification template at the bottom of this file.)
+6. Accessibility Conformance — MANDATORY
+   Target: WCAG 2.1 Level AA (or higher where required by domain — list)
+   - Audit cadence: every PR via axe-core in CI; quarterly via human
+     audit (NVDA + VoiceOver on top 3 user goals + tab-key only pass)
+   - Conformance evidence (latest audit):
+     | Success criterion | Status | Audit date | Issues open | Owner |
+     |-------------------|--------|-----------|-------------|-------|
+     | 1.4.3 Contrast (Min) | ✅ Pass | 2026-04-01 | 0 | @uxui |
+     | 2.1.1 Keyboard       | ⚠️ Partial | 2026-04-01 | DT-12 modal trap | @frontend |
+     | 4.1.2 Name/Role/Value | ✅ Pass | 2026-04-01 | 0 | @frontend |
+     (List ALL Level AA criteria; status MUST be one of Pass / Partial /
+     Fail; every Partial / Fail has a linked issue, owner, and target date.)
+   - Manual checks (must run before each release):
+     [ ] Tab through every interactive on primary flows — no traps
+     [ ] Skip-link present + functional on every page
+     [ ] Visible focus ring on every interactive (3:1 contrast vs background)
+     [ ] All forms: label-for + aria-describedby + aria-invalid
+     [ ] Color is never the only signal (icons + text accompany red/green)
+     [ ] Motion: prefers-reduced-motion respected (no autoplay > 5s)
+7. Microcopy Guidelines
+   - Voice + tone (3 adjectives + 3 anti-adjectives)
+   - Error message rules (specific, recovery-oriented, no blame)
+   - Button labels (verb-first, action-specific, ≤ 3 words)
+   - Empty state copy pattern (acknowledge + suggest action)
+8. Research Summary (if research was done)
+   - Method: interviews / usability tests / surveys / analytics
+   - Sample size + recruitment criteria
+   - Top 3–5 findings with quotes / data
+   - Decisions changed because of findings
+9. Heuristic Evaluation — Nielsen's 10 against the prototype:
+   - Each heuristic: status (Pass / Issue / N/A) + evidence
+   - Open issues with severity (cosmetic / minor / major / catastrophic)
+10. Changelog — version history of design decisions
+11. Open Issues — unresolved design decisions with owner + due date
+```
+
+**Quality gate — verify before sharing:**
+- WCAG 2.1 AA target named explicitly (no "best-effort accessibility")
+- Section 6 conformance table covers all Level AA success criteria with
+  Pass / Partial / Fail status — every Partial / Fail has a linked issue,
+  owner, and target date (no "TBD")
+- Design tokens (section 3) match what's used in `docs/prototype/components.html`
+- Component specs (section 5) cover every component appearing in the prototype
+- No placeholder text — all real tokens, components, audit dates
+
+> ⚠️ **Gate A2 enforcement:** `/devstarter-change` Gate A2 will reject UX
+> features that lack the Accessibility Conformance table or have any
+> Partial / Fail row without an owner + target date. The bar exists because
+> BA produces stories, Backend produces SLOs, QA produces tests, Frontend
+> produces bundle budgets — UX now produces an enforceable accessibility
+> commitment to match.
+
+---
+
 ### Interactive Prototype — Gate 1 Deliverable
 
 When triggered during Gate 1 (`/build`), produce a **complete Interactive Prototype** saved as `docs/prototype/*.html` with `docs/prototype/index.html` as entry point.

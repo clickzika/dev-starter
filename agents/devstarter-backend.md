@@ -138,7 +138,7 @@ Copy the entire HTML/CSS from that template file and fill in the content. This e
 
 ### API Reference Document — Gate 1 Deliverable
 
-When triggered during Gate 1 (`/build`), produce a **complete API Reference Document** saved as `docs/api-reference.html`.
+When triggered during Gate 1 (`/build`), produce a **complete API Reference Document** saved as `docs/api-reference.html`. Two outputs are mandatory: the HTML reference (for humans) AND a machine-readable spec at `docs/api/openapi.yaml` (for tooling, contract tests, SDK generation).
 
 **Required sections:**
 
@@ -162,10 +162,29 @@ When triggered during Gate 1 (`/build`), produce a **complete API Reference Docu
    - Standard error response format: { error: { code, message, details, requestId } }
    - Complete error code table: HTTP status, error code, description, user-facing message
    - Validation error format with field-level details
-6. Endpoint Reference — for EVERY endpoint:
+6. Service-Level Objectives (SLO/SLI) — MANDATORY
+   Table per endpoint group with concrete numeric targets:
+   | Endpoint group | P50 | P95 | P99 | Availability | Error budget |
+   |----------------|-----|-----|-----|--------------|--------------|
+   | /api/v1/auth/* | 50ms | 200ms | 500ms | 99.95% | 21min/month |
+   | /api/v1/payments/* | 100ms | 400ms | 1000ms | 99.99% | 4.3min/month |
+   - Define SLI: how each metric is measured (Prometheus query / APM dashboard link)
+   - Define burn-rate alerts: 2% budget consumed in 1h fires page; 10% in 6h fires page
+   - Hot-path budget: any endpoint serving > 1 RPS p50 traffic must have SLO defined here
+7. Threat Model — MANDATORY (if endpoint touches auth, money, PII, multi-tenant data, or external integration)
+   STRIDE checklist per endpoint group:
+   - **S**poofing: how is identity verified? (auth method, MFA, token validation)
+   - **T**ampering: how is request integrity ensured? (HTTPS, HMAC, body validation)
+   - **R**epudiation: what audit trail exists? (audit log table, immutability, retention)
+   - **I**nformation disclosure: what could leak? (error messages, response fields, log statements, telemetry)
+   - **D**enial of service: what limits exist? (rate limit, request size, query complexity, timeout)
+   - **E**levation of privilege: how is authorization enforced? (RBAC check location, IDOR prevention, tenant isolation)
+   For each row: identified risk + concrete mitigation + how it's tested
+8. Endpoint Reference — for EVERY endpoint:
    - Method badge (GET/POST/PUT/PATCH/DELETE) + path
    - Description — what it does
    - Auth required: yes/no + required role(s)
+   - SLO row from section 6 it belongs to
    - Request:
      - Path parameters (name, type, required, description)
      - Query parameters (name, type, required, default, description)
@@ -176,18 +195,34 @@ When triggered during Gate 1 (`/build`), produce a **complete API Reference Docu
      - Success response: status code, response body schema, example response JSON
      - Error responses: each possible error with status code, error code, when it happens
    - Notes: idempotency, side effects, webhooks triggered
-7. Webhook Specifications (if applicable)
+9. Webhook Specifications (if applicable)
    - Event types, payload format, delivery guarantees
    - HMAC signature verification
    - Retry policy
-8. WebSocket / Real-time (if applicable)
-   - Connection URL, auth handshake
-   - Event types, message format
-9. SDK & Client Examples
-   - Example requests in: curl, JavaScript (fetch), Python (requests)
-10. Changelog — version history of API changes
-11. Open Issues — any unresolved API design decisions with owner and due date
+10. WebSocket / Real-time (if applicable)
+    - Connection URL, auth handshake
+    - Event types, message format
+11. SDK & Client Examples
+    - Example requests in: curl, JavaScript (fetch), Python (requests)
+12. Changelog — version history of API changes
+13. Open Issues — any unresolved API design decisions with owner and due date
 ```
+
+**Machine-readable spec (mandatory companion file):**
+- Path: `docs/api/openapi.yaml` (or `.json`) — OpenAPI 3.1+
+- Must declare every endpoint, schema, parameter, and security scheme present in the HTML reference
+- Must include `x-slo` extensions referencing section 6 targets per operation:
+  ```yaml
+  paths:
+    /api/v1/payments:
+      post:
+        x-slo:
+          p95_ms: 400
+          p99_ms: 1000
+          availability: 99.99
+        # ...
+  ```
+- Used by: contract tests (Pact / Schemathesis), SDK generation, gateway routing, mock servers
 
 **Quality gate — verify before sharing:**
 - Every endpoint has full request/response schema documented
@@ -195,6 +230,16 @@ When triggered during Gate 1 (`/build`), produce a **complete API Reference Docu
 - Every endpoint has at least one example request and response
 - Error codes are complete and consistent
 - No placeholder text — all real endpoint paths, field names, and types
+- **SLO table populated** with concrete numbers (no `TBD` / `???` / placeholder text) for every endpoint group serving > 1 RPS
+- **Threat Model present** for any endpoint touching auth / money / PII / multi-tenant / external integrations — and every STRIDE row has a concrete mitigation, not "N/A"
+- **OpenAPI spec exists** at `docs/api/openapi.yaml` and validates with `openapi-spec-validator` or `redocly lint`
+- OpenAPI spec includes `x-slo` extension matching section 6 numbers
+- HTML reference and OpenAPI spec do not drift: every operationId in the spec appears in the HTML, and vice versa
+
+> ⚠️ **Gate A2 enforcement:** `/devstarter-change` Gate A2 will reject backend
+> features that lack the SLO table or (where applicable) the Threat Model.
+> The bar exists because BA produces stories, QA produces tests, and TechLead
+> produces ADRs — Backend now produces an enforceable spec to match.
 
 ---
 

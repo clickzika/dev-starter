@@ -1,5 +1,211 @@
 # Changelog
 
+## v3.6.0 — Real Quality Gates (2026-05-09)
+
+> The biggest single release in the v3.5.0 → v3.7.0 audit roadmap. Turns
+> documented quality bars into **enforced** quality gates that auto-block
+> PRs when architectural quality slips. Top-1% engineering teams catch
+> ~80% of architectural regressions automatically — DevStarter now ships
+> the toolkit and wires it into the change workflow.
+>
+> **Bundles in v3.5.1** (router standardization) — see "Router
+> Standardization" section below.
+
+### Architectural Fitness Functions — automated CI quality gates
+
+**New:**
+- `templates/github/fitness-functions.yml` — GitHub Actions workflow with
+  4 fitness checks, stack-aware (Node / Python / Go), tunable via repo
+  variables. Roll-up status check (`Fitness Functions / All checks`) is
+  the single status to require for branch protection.
+  - **Bundle budget** (Node) — `dist/` must stay under threshold (default 500 KB)
+  - **Dependency rules** — depcruise (Node) / import-linter (Python) module-boundary enforcement
+  - **Coverage gate** — line coverage ≥ threshold (default 80%) on Node / Python / Go
+  - **Complexity ceiling** — max cyclomatic complexity per function (default 10)
+- `templates/github/fitness-functions-setup.md` — install + tuning + per-stack config guide
+
+**Wired in:**
+- **`agents/devstarter-techlead.md`** — Architecture Fitness Functions
+  section now references the shipped reference implementation (it was
+  previously aspirational table only)
+- **`sdlc/devstarter-change-add.md`** — pre-Gate A4 verification step:
+  fetches `gh pr checks` for "Fitness Functions / All checks" on each PR;
+  fails the gate if any check failed; offers `/devstarter-debug` or
+  `/devstarter-change fix-bug` route to address blockers
+- **`sdlc/devstarter-github.md`** — new procedure **PROC-GH-17** (Install
+  Fitness Functions CI) parallel to PROC-GH-16 (AutoPR)
+- **`sdlc/devstarter-starter-gates.md`** — Gate 0 now installs fitness
+  functions during new-project bootstrap (after PROC-GH-14 templates)
+- **`sdlc/devstarter-existing.md`** — installs fitness functions when
+  setting up DevStarter on an existing GitHub repo (after PROC-GH-18
+  branch protection)
+
+**Why:** Per the v3.6.0 plan in `~/.claude/plans/synthetic-gliding-clock.md`
+and `memory/consult-2026-05-09-top1-rigor-audit.md`. Previously the
+TechLead spec defined fitness functions in a table but no CI ever ran
+them. With this change the bar is enforced, not documented.
+
+### Backend mandatory deliverable + Gate A2 Doc Quality Preflight
+
+The Backend agent's API Reference Document was already a Gate 1 deliverable
+but lacked enforceable specifics. v3.6.0 adds three required additions:
+
+- **`agents/devstarter-backend.md`** — API Reference Document now requires:
+  - **SLO/SLI table** (section 6) — concrete P50/P95/P99 latency, availability,
+    and error-budget numbers per endpoint group serving > 1 RPS. No `TBD`.
+  - **Threat Model** (section 7) — STRIDE checklist with concrete mitigation
+    + test for each row. Mandatory if endpoint touches auth / money / PII /
+    multi-tenant data / external integrations.
+  - **`docs/api/openapi.yaml`** companion spec (machine-readable) — OpenAPI
+    3.1+ with `x-slo` extensions matching section 6. Validates with
+    `openapi-spec-validator` or `redocly lint`. Used by contract tests, SDK
+    generation, gateway routing.
+  - Quality gate updated: SLO table populated, Threat Model present, spec
+    validates, HTML and OpenAPI don't drift.
+
+- **`sdlc/devstarter-change-add.md`** — Gate A2 promoted from rubber stamp to
+  real quality gate via a **Doc Quality Preflight** that runs before the
+  approve picker appears:
+  - BRD has ≥ 2× Given-When-Then criteria per user story
+  - Schema migration has reversible rollback (DROP / ALTER ... DROP)
+  - OpenAPI spec validates; SLO table populated; Threat Model present
+  - security_design.html updated for auth/data/multi-tenant/external scope
+  - **ADR mandatory** for auth, multi-tenancy, schema, caching, payments,
+    billing, external integrations (the "non-trivial decision" set);
+    `docs/adr/NNNN-<slug>.html` must exist with status=Accepted
+  - Failing rows block the Gate A2 picker — loop back to the agent that
+    owns the failing doc
+
+**Why both ship together:** the Backend agent calls out "Gate A2 will reject
+backend features that lack SLO/Threat Model" so the spec change and the
+gate enforcement are coupled — shipping one without the other would either
+be unenforced docs or unattainable enforcement.
+
+### Frontend mandatory deliverable + Gate A2 enforcement
+
+Same enforcement pattern as Backend, applied to Frontend. Gate A2 will now
+reject frontend features that lack a per-route Bundle Budget row or
+Accessibility Conformance Plan.
+
+- **`agents/devstarter-frontend.md`** — new **Frontend Specification
+  Document** Gate 1 deliverable at `docs/frontend-spec.html`, 13 required
+  sections covering: tech stack, information architecture, component
+  inventory, state architecture, **per-route bundle budget table** (concrete
+  KB numbers per route, no TBD), **WCAG 2.1 AA conformance plan** (axe-core
+  in CI mandatory), testing strategy, browser/device support matrix, build
+  & deploy strategy, design system integration. Quality gate enforces no
+  placeholder text and consistency with `browserslist` + build config.
+
+- **`sdlc/devstarter-change-add.md`** — Doc Quality Preflight check 5b
+  added for any frontend feature touching routes, components, or pages.
+  Gate A2 doc-list now includes `docs/frontend-spec.html`.
+
+**Why:** Frontend was the second of the three "expert agents with no
+enforced deliverable" gap (Backend / Frontend / UX). Now matched to BA's
+BRD and QA's Test Strategy enforcement pattern.
+
+### UX Design Specification + Accessibility Conformance + Gate A2 enforcement
+
+Last of the three "expert agents with no enforced deliverable" gap. The UX
+agent had an Interactive Prototype as Gate 1 deliverable but no *written*
+Design Spec with auditable accessibility commitment.
+
+- **`agents/devstarter-uxui.md`** — new **Design Specification Document**
+  Gate 1 deliverable at `docs/ux-spec.html` with 11 required sections:
+  - Project-specific design principles (no generic platitudes)
+  - Concrete design tokens (color/typography/spacing/radius/motion)
+  - Information architecture + user flow diagrams
+  - Component specifications (states, variants, ARIA pattern, motion)
+  - **WCAG 2.1 AA Conformance** table covering all Level AA success
+    criteria with Pass / Partial / Fail status — every Partial/Fail row
+    has linked issue, owner, target date (no "TBD")
+  - Manual checks list (tab-key only, focus rings, prefers-reduced-motion)
+  - Microcopy guidelines (voice/tone, error rules, button-label pattern)
+  - Research summary, heuristic evaluation (Nielsen 10), changelog, open issues
+
+- **`sdlc/devstarter-change-add.md`** — Doc Quality Preflight check 5c
+  added for any UX-touching feature. Gate A2 doc-list now includes
+  `docs/ux-spec.html`. Drift between design tokens in spec and
+  `docs/prototype/components.html` blocks the gate.
+
+**v3.6.0 status:** All three weak agents (Backend / Frontend / UX) now have
+enforceable Gate 1 deliverables matching BA's BRD and QA's Test Strategy
+pattern. Gate A2 is now a real quality gate, not a rubber stamp.
+
+### TechLead PR Review Checklist wired to Gate A4
+
+The TechLead spec defined a 26-item PR Review Checklist (correctness,
+security, tests, code quality, observability, operations) but it was
+never wired to a merge gate — PRs merged on user "approve" alone.
+
+- **`sdlc/devstarter-change-add.md`** — second pre-Gate A4 step added,
+  runs after fitness functions pass:
+  - TechLead loads each PR diff and evaluates all 26 items
+  - Each item marked ✅ / ❌ / ⚠️ (waiver with rationale + owner +
+    revisit-date in PR description) / `n/a`
+  - Severity classes:
+    - **🔴 BLOCKER (any ❌):** correctness / security / operations →
+      Gate A4 cannot pass; route ❌ items to `/devstarter-change fix-bug`
+      with each finding pre-filled
+    - **🟡 MAJOR (any ❌):** tests / code quality / observability →
+      surfaces in summary; owner can ship-with-debt by adding waiver
+  - Checklist posted as PR comment via `gh pr review --comment`
+- Gate A4 picker now shows the rolled-up checklist counts per category
+  alongside the fitness-function row.
+
+**Why:** Closes the last "documented but unenforced" gap. Combined with
+the fitness functions and the Gate A2 Doc Quality Preflight, every gate
+now has programmatic enforcement, not just human approval.
+
+---
+
+### Sub-PR summary
+
+All five planned sub-PRs landed in develop and ship together as v3.6.0:
+1. ✅ Fitness Functions CI template + workflow wiring (PR #26)
+2. ✅ Backend SLO/Threat-Model/OpenAPI + Gate A2 Doc Quality Preflight + ADR mandate (PR #27)
+3. ✅ Frontend Specification Document + Gate A2 enforcement (PR #28)
+4. ✅ UX Design Specification + WCAG conformance + Gate A2 enforcement (PR #29)
+5. ✅ TechLead PR Review Checklist wired to Gate A4 (PR #30)
+
+Plus **Router Standardization (v3.5.1)** — bundled into this release rather than shipped separately.
+
+---
+
+## Router Standardization (was v3.5.1, now bundled into v3.6.0)
+
+### 17 SKILL.md routers now have decision trees + inline args
+
+All 17 thin SDLC routers were missing a "When to use vs alternatives" section,
+forcing users to read the SDLC runbook to figure out which command applies.
+Sub-PR 4 of the v3.5.0 audit fixes this.
+
+**Updated (17 files, consistent template):**
+
+Tier A — bare 2-liners now have purpose + decision tree + 3 inline args:
+- `/devstarter-sprint`, `/devstarter-release`, `/devstarter-rollback`,
+  `/devstarter-dependency`, `/devstarter-env`, `/devstarter-secrets`,
+  `/devstarter-monitor`, `/devstarter-onboard`, `/devstarter-handover`,
+  `/devstarter-retro`, `/devstarter-menu`
+
+Tier B — preserved existing model gate / inline args, added decision tree:
+- `/devstarter-hotfix`, `/devstarter-incident`, `/devstarter-consult`,
+  `/devstarter-migrate`, `/devstarter-gitsetup`, `/devstarter-review`
+
+**Decision trees disambiguate the common confusions:**
+- hotfix vs rollback vs incident vs change fix-bug
+- env vs secrets vs existing
+- onboard vs handover vs existing
+- consult vs debug vs review vs audit
+- release vs hotfix vs rollback
+- migrate vs change vs consult vs audit
+- review vs audit vs debug
+
+No SDLC runbook content changed; this is pure SKILL.md "shop window" polish
+so users pick the right command without reading the full runbook first.
+
+---
+
 ## v3.5.0 — Cut the Clutter (2026-05-09)
 
 > **Partial release.** First two of four planned v3.5.0 sub-tasks shipped.
