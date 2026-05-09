@@ -1,11 +1,12 @@
 # Changelog
 
-## v3.7.0 — Top-1% Completeness (2026-05-09 — unreleased, in progress)
+## v3.7.0 — Top-1% Completeness (2026-05-09)
 
 > Additive top-up release. v3.6.0 made gates enforce quality. v3.7.0
 > adds the four workflows that top-1% teams have but DevStarter was
 > missing — post-mortem, ADR capture, compliance audit, perf profiling —
-> plus polish (lifecycle headers, TL;DR blocks, quick-start mode).
+> plus polish (lifecycle headers, TL;DR blocks, quick-start mode) and
+> a hardened upgrade path with version-jump migration messaging.
 
 ### /devstarter-postmortem — Blameless Incident Post-Mortem
 
