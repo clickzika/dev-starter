@@ -1,6 +1,8 @@
 # devstarter-vcs-sync.md — Multi-VCS Mirror & Sync
 # DevStarter — Secondary VCS Operations Runbook
 
+> **TL;DR** — Multi-VCS mirror/sync: secondary/tertiary VCS push patterns · **Lifecycle** Reference · **Gates** 0
+
 ## Purpose
 
 Sync changes from the primary VCS to one or more secondary VCS systems.

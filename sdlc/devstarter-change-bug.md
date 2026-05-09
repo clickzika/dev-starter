@@ -1,5 +1,7 @@
 # OPERATION C — FIX BUG
 
+> **TL;DR** — Fix a bug with intake → analysis → fix → review flow · **Lifecycle** Build · **Gates** 2
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 ---

@@ -1,5 +1,7 @@
 # devstarter-doctor.md — Install Health Check
 
+> **TL;DR** — Health-check the DevStarter installation · **Lifecycle** Operate · **Gates** 0
+
 ## Model: Haiku (`claude-haiku-4-5-20251001`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).

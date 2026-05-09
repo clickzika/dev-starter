@@ -42,6 +42,10 @@ Show this menu and ask ONE question:
   13. 🔥 Hotfix (critical production bug)
   14. ⏪ Rollback Production
   15. 🚨 Incident Response
+  25. 📋 Post-Mortem (blameless, after SEV resolved)
+  26. 🏛️  ADR — Architecture Decision Record (standalone)
+  27. ⚡ Profile (proactive performance investigation)
+  28. 🛡️  Compliance (WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001)
 
 ── SETUP & INFRA ──────────────────────────────
   16. 💻 Setup Local Environment
@@ -95,3 +99,7 @@ Route to correct file:
 | 22 | `~/.claude/sdlc/devstarter-doctor.md` |
 | 23 | `~/.claude/sdlc/devstarter-review.md` |
 | 24 | `~/.claude/sdlc/devstarter-debug.md` |
+| 25 | `~/.claude/sdlc/devstarter-postmortem.md` |
+| 26 | `~/.claude/sdlc/devstarter-adr.md` |
+| 27 | `~/.claude/sdlc/devstarter-profile.md` |
+| 28 | `~/.claude/sdlc/devstarter-compliance.md` |

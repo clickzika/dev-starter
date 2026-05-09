@@ -1,5 +1,297 @@
 # Changelog
 
+## v3.7.0 — Top-1% Completeness (2026-05-09)
+
+> Additive top-up release. v3.6.0 made gates enforce quality. v3.7.0
+> adds the four workflows that top-1% teams have but DevStarter was
+> missing — post-mortem, ADR capture, compliance audit, perf profiling —
+> plus polish (lifecycle headers, TL;DR blocks, quick-start mode) and
+> a hardened upgrade path with version-jump migration messaging.
+
+### /devstarter-postmortem — Blameless Incident Post-Mortem
+
+After a SEV-1/SEV-2 incident is resolved, run a structured blameless
+post-mortem. Top-1% engineering practice; previously absent.
+
+**New:**
+- **`skills/devstarter-postmortem/SKILL.md`** — Opus-gated entry, decision
+  tree (vs incident / retro / debug), inline args (no-arg / slug / file)
+- **`sdlc/devstarter-postmortem.md`** — full 9-phase runbook:
+  - Phase 0 — incident intake (slug, severity, timing, impact, repeat?)
+  - Phase 1 — timeline reconstruction from raw evidence (chat, alerts,
+    deploy logs, APM); actor-based rows (engineer / system / alert /
+    customer), never names
+  - Phase 2 — 5 Whys causal analysis pushed past the first plausible
+    "why" to a root cause that targets systems, not humans
+  - Phase 3 — contributing factors across Technical / Process /
+    Observability / Organizational categories
+  - Phase 4 — customer & communications review (what did customers see,
+    when did we tell them, was the comms strategy adequate)
+  - Phase 5 — action items table with mandatory owner + size + priority
+    + target date (vague items are parked in "Open Questions" instead)
+  - Phase 6 — publish at `docs/postmortems/[date]-[slug].html` using
+    standard template; index.html updated
+  - Phase 7 — Blameless Review Gate (7-item checklist enforced before
+    publish — no person named as cause, actions target systems not
+    "be more careful," every Yes contributing factor has a corresponding
+    action item)
+  - Phase 8 — auto-create action item tickets in PM tool
+    (github-issues / notion / jira) with `post-mortem-action` label
+  - Phase 9 — handoff: implement P0 actions via `/devstarter-change`,
+    share with team, or schedule 30-day follow-up
+- **`devstarter-menu.md`** — entry #25 under PRODUCTION
+
+**Why:** v3.6.0 added incident response (`/devstarter-incident`) and sprint
+retro (`/devstarter-retro`) but no post-mortem workflow. Top teams treat
+these as different lenses: incident = response under pressure; retro =
+sprint reflection; post-mortem = causal analysis with prevention actions.
+
+### /devstarter-adr — Architecture Decision Record (Standalone)
+
+Capture an architecture decision *outside* of a feature change. Complements
+the v3.6.0 Gate A2 ADR mandate (which fires inside `/devstarter-change` for
+non-trivial features); this command handles tech-stack picks, library
+evaluations, infra moves, process changes, and superseding prior ADRs.
+
+**New:**
+- **`skills/devstarter-adr/SKILL.md`** — Opus-gated, decision tree (vs
+  change / consult / audit), inline args (no-arg / title / consult file)
+- **`sdlc/devstarter-adr.md`** — full 9-phase runbook:
+  - Phase 0 — intake (decision question, scope, driver, related ADRs)
+  - Phase 1 — Context & Forces table (functional / non-functional /
+    operational / skill / regulatory / strategic / existing)
+  - Phase 2 — ≥ 3 options (status quo always included; pros / cons / cost
+    / operational fit / risk / references each)
+  - Phase 3 — Recommendation referencing the Forces; confidence rating
+    (Low confidence → status = Proposed, not Accepted; revisit scheduled)
+  - Phase 4 — Consequences (positive AND negative AND revisit-triggers;
+    empty negatives list rejected as incomplete analysis)
+  - Phase 5 — Supersedes / Related (auto-search docs/adr/ for conflicts;
+    explicit supersede chain enforced both directions)
+  - Phase 6 — Generate sequential ADR ID (NNNN) + slug
+  - Phase 7 — Save using TechLead ADR template, update docs/adr/index.html
+  - Phase 8 — Approval Gate (Accepted / Proposed / revise)
+  - Phase 9 — Handoff (implement now via /devstarter-change / share /
+    schedule revisit / done)
+- **`devstarter-menu.md`** — entry #26
+
+**Why both ADR paths exist:**
+- `/devstarter-change` Gate A2 (v3.6.0) — *forces* an ADR for non-trivial
+  features so decisions inside features get captured
+- `/devstarter-adr` (this) — *enables* an ADR outside a feature for
+  decisions that don't fit the feature flow (stack picks, infra moves)
+
+### /devstarter-profile — Proactive Performance Investigation
+
+Investigate a performance issue *before* it becomes an incident. Captures
+baseline → profiles to find bottlenecks → ranks by impact → optimization
+roadmap → optional handoff to `/devstarter-change`.
+
+**New:**
+- **`skills/devstarter-profile/SKILL.md`** — Opus-gated, decision tree
+  (vs incident / debug / monitor / audit), inline args
+- **`sdlc/devstarter-profile.md`** — full 7-phase runbook:
+  - Phase 0 — perf intake (area, SLO target, current measurement, trigger)
+  - Pre-Phase 1 guard — STOPS if no measurement is in place; routes to
+    `/devstarter-monitor` first (you can't profile what you don't measure)
+  - Phase 1 — baseline (P50/P95/P99 latency, throughput, error rate, or
+    LCP/FID/CLS for frontend, EXPLAIN ANALYZE for DB, etc.)
+  - Phase 2 — profile data capture (clinic.js / py-spy / pprof / async-
+    profiler / DevTools Performance) saved to `docs/perf/[date]-[slug]/`
+  - Phase 3 — bottleneck inventory ranked by total impact (cost ×
+    frequency); top 1–2 must account for ≥ 70% of cost or profile is too
+    coarse and Phase 2 must redo
+  - Phase 4 — optimization roadmap with impact / effort / risk per fix;
+    classified Quick wins / Worth it / Maybe later
+  - Phase 5 — approval gate (implement now / save roadmap / revise)
+  - Phase 6 — save report at `docs/perf/[date]-[slug]/report.html`;
+    handoff to `/devstarter-change` if "implement now"
+  - Phase 7 — verification (post-implementation re-measurement; if
+    not materially better, revert + loop back to Phase 3)
+- **`devstarter-menu.md`** — entry #27
+
+**Why:** `/devstarter-debug` covers reactive root-cause hunting for bugs;
+`/devstarter-incident` is for active prod crises. Performance work that
+isn't a crisis but matters before it becomes one had no home — perf
+issues silently ate SLO budget. This closes that gap.
+
+### /devstarter-compliance — Framework-specific Compliance Audit
+
+Last of the four new v3.7.0 commands. `/devstarter-audit` covers code/security
+quality and `/devstarter-security` covers OWASP — neither addresses the
+specific frameworks customers and regulators actually ask about. This
+command does, with a checklist + gap report + remediation roadmap +
+(for Type II frameworks) an evidence pack.
+
+**New:**
+- **`skills/devstarter-compliance/SKILL.md`** — Sonnet-tier (template-driven),
+  decision tree (vs audit / security / adr), inline args per framework
+- **`sdlc/devstarter-compliance.md`** — full 6-phase runbook covering
+  six frameworks each with a concrete checklist:
+  - **WCAG 2.1 Level AA** — 38 success criteria across Perceivable /
+    Operable / Understandable / Robust; axe-core preflight recommended
+  - **GDPR** — Lawfulness, Data Subject Rights, Data Handling, Accountability
+    (RoPA, DPIA, breach notification, cross-border transfers)
+  - **HIPAA** — Privacy + Security Rule (Administrative / Physical /
+    Technical) + Breach Notification (60-day/HHS rules)
+  - **SOC 2 Type II** — CC1–CC9 + A/C/PI/P trust services criteria with
+    evidence-pack requirements (artifacts auditors will request)
+  - **PCI-DSS** — 12 core requirements, scope reduction via tokenization
+  - **ISO 27001** — Annex A 93 controls (organizational / people /
+    physical / technological)
+  - Phase 0 — scope (framework, surface, trigger, prior audit, owner)
+  - Phase 1 — run checklist (Pass / Partial / Fail / N/A / Unknown with
+    evidence link per item)
+  - Phase 2 — gap inventory with severity (🔴 Critical / 🟠 High /
+    🟡 Medium / 🟢 Low)
+  - Phase 3 — remediation roadmap (every gap has owner + size + priority
+    + target date; vague items parked in Open Questions)
+  - Phase 4 — evidence pack (SOC 2 / HIPAA / ISO 27001 only) — control
+    → artifact → location → period covered
+  - Phase 5 — publish at `docs/compliance/[framework]-[date].html`;
+    `docs/compliance/index.html` updated; approval gate
+  - Phase 6 — auto-create remediation tickets (per `pm.type`); handoff
+    to `/devstarter-change` for P0 items
+  - Appendix — recommended audit cadence per framework
+- **`devstarter-menu.md`** — entry #28
+
+**Why:** Customers ask "are you SOC 2 compliant?" — the answer needs to
+be backed by a real audit + evidence, not aspirational. This workflow
+produces that.
+
+**v3.7.0 status:** all four new commands shipped (postmortem / adr /
+profile / compliance). Last items pending: Lifecycle Stage / Gates count /
+TL;DR headers across SDLC files + `--quick` flag on `/devstarter-change`.
+
+### TL;DR + Lifecycle Stage + Gates count headers across all SDLC files
+
+Mass-edit applied to all 48 `sdlc/devstarter-*.md` runbooks. Each file now
+opens with a one-line scannable header:
+
+```
+> **TL;DR** — [purpose] · **Lifecycle** [Discovery|Design|Build|Ship|Operate|Reference] · **Gates** [N]
+```
+
+This lets a newcomer pick the right runbook without committing to reading
+the full file. Lifecycle stage classification:
+
+- **Discovery** — audit, consult, existing, gitsetup, sprint, starter,
+  starter-gates, starter-intake
+- **Design** — adr, document, starter-template
+- **Build** — change, change-add, change-bug, change-remove, change-resume,
+  debug, migrate, ml-workflow, review
+- **Ship** — hotfix, release, release-deploy, release-prep, release-verify,
+  rollback
+- **Operate** — autopr, compliance, dependency, doctor, env, handover,
+  incident, monitor, onboarding, postmortem, profile, retrospective,
+  secrets
+- **Reference** — ai-providers, checkpoint, config-sync, github, gitlab,
+  jira, notion, svn, vcs-sync (procedure files loaded by other workflows)
+
+For files that previously lacked a top-level H1 (sub-files of starter +
+release), an H1 was added so the structure is uniform.
+
+### `--quick` flag on `/devstarter-change` — scope-based reading reduction
+
+Cuts newcomer reading load from ~3000 lines to ~1000 for a typical scoped
+change by skipping agents + docs not relevant to the detected scope.
+
+- **`skills/devstarter-change/SKILL.md`** — new "Quick Mode" section
+  explaining usage, scope detection, what gets skipped per scope, and
+  the auto-promotion guards
+- **`sdlc/devstarter-change.md`** — auto-scope detection table + auto-
+  promotion rules (touches auth / multi-tenancy / schema / billing /
+  external integrations → full mode regardless of `--quick`)
+
+**Auto-scope detection:**
+| Detected scope | Skip these agents | Skip these doc updates |
+|---|---|---|
+| Backend-only | @uxui, @frontend, @mobile | frontend-spec, ux-spec, prototype/ |
+| Frontend-only | @backend, @dba, @mobile | api-reference, openapi.yaml, database-design |
+| Mobile-only | @uxui (web), @frontend (web) | frontend-spec (web parts) |
+| Full-stack | (none) | (none) |
+| Bug fix (localized) | @ba (no BRD update for tiny bugs) | brd.html (tiny bugs only) |
+
+**Auto-promotion guards** — these always force full mode even with `--quick`:
+auth, multi-tenancy, schema migrations, billing, payments, external
+integrations, cross-cutting refactors, new bounded contexts. Quality
+bar (Doc Quality Preflight) still runs in quick mode, just on the
+smaller surface.
+
+---
+
+### update.sh enhanced — version-jump migration messaging
+
+`update.sh` now detects when a user is jumping a minor or major version
+boundary (e.g. v3.4 → v3.7) and prints explicit migration notes for each
+crossed boundary:
+
+- **From v3.4 or earlier** — warns that 13 thin agent slash-commands
+  were removed in v3.5; points to `@<alias>` and `/devstarter-agents`
+- **From v3.5 or earlier** — warns that v3.6 Gate A2 + Gate A4 are now
+  enforcement gates (Doc Quality Preflight + Fitness Functions + PR
+  Review Checklist); flags the new `templates/github/fitness-functions.yml`
+- **From v3.6 or earlier** — calls out the 4 new v3.7 commands and the
+  `--quick` flag
+
+Confirms that the `rm -rf + cp -r` pattern in update.sh cleanly removes
+deleted skills / runbooks / templates from prior versions — no stale
+files linger after update. `agents/custom/` is preserved from backup as
+before.
+
+## Upgrade notes (any version → v3.7.0)
+
+### Clean upgrade — what update.sh handles automatically
+
+When `bash ~/.claude/update.sh` runs:
+
+1. **Backs up** user files (CLAUDE.md, USER.md, settings.json,
+   settings.local.json, .env) and the entire `memory/` folder to
+   `~/.claude/.backup/<timestamp>/`
+2. **Wipes + replaces** `agents/`, `skills/`, `sdlc/`, `templates/`
+   entirely (`rm -rf` then `cp -r`) — guaranteeing no stale files
+   from prior versions linger
+3. **Removes** the legacy `commands/` folder if it exists (v2.x → v3.x
+   migration; was already in update.sh)
+4. **Restores** `agents/custom/` from the backup so user-authored
+   custom agents are preserved across the wipe
+5. **Updates** root toolkit files: `update.sh`, `install.sh`, `setup.sh`,
+   `devstarter-menu.md`, `VERSION`, `CHANGELOG.md`
+6. **Restores** user files from the backup so personal config is never
+   touched
+7. **Prints** version-jump migration notes (new in this release) so
+   users see the breaking-change summary without reading the full
+   CHANGELOG
+
+### Manual checks after upgrade from v3.4 or earlier
+
+- If you scripted `/devstarter-pm`, `/devstarter-techlead`, etc. into
+  any tooling, switch to `@pm`, `@techlead` (the agent files are
+  unchanged; only the slash-command wrappers were removed)
+- If you have an existing GitHub project, copy
+  `templates/github/fitness-functions.yml` to `.github/workflows/` and
+  add `Fitness Functions / All checks` as a required status check on
+  protected branches
+- Existing in-progress features may need a docs catch-up before the
+  next `/devstarter-change` Gate A2 — backfill SLO + Threat Model
+  for backend, bundle budget for frontend, WCAG conformance for UX
+
+---
+
+## v3.7.0 status: **COMPLETE — ready to release**
+
+All planned sub-PRs merged to develop:
+1. ✅ `/devstarter-postmortem` — blameless incident post-mortem (PR #32)
+2. ✅ `/devstarter-adr` — standalone ADR capture (PR #33)
+3. ✅ `/devstarter-profile` — proactive performance investigation (PR #34)
+4. ✅ `/devstarter-compliance` — WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001 audits (PR #35)
+5. ✅ TL;DR + Lifecycle + Gates headers across 48 SDLC files (PR #36)
+6. ✅ `--quick` flag on `/devstarter-change` (this PR)
+
+Next: bump VERSION to 3.7.0, finalize CHANGELOG date, run `bash scripts/publish.sh`.
+
+---
+
 ## v3.6.0 — Real Quality Gates (2026-05-09)
 
 > The biggest single release in the v3.5.0 → v3.7.0 audit roadmap. Turns

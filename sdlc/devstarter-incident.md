@@ -1,5 +1,7 @@
 # dev-incident.md — Production Incident Response
 
+> **TL;DR** — Incident response orchestration: triage, comms, escalation, mitigation · **Lifecycle** Operate · **Gates** 0
+
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 

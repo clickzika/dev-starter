@@ -1,5 +1,7 @@
 # RESUME INSTRUCTIONS
 
+> **TL;DR** — Resume a mid-change workflow after interrupt or crash · **Lifecycle** Build · **Gates** 0
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 If resuming mid-change:

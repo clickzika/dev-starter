@@ -1,5 +1,7 @@
 # devstarter-config-sync.md — Sync devstarter-config.yml → .project.env
 
+> **TL;DR** — Sync devstarter-config.yml → .project.env for bash compatibility · **Lifecycle** Reference · **Gates** 0
+
 ## Model: Haiku (`claude-haiku-4-5-20251001`)
 
 ## Purpose

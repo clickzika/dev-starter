@@ -1,5 +1,7 @@
 # dev-monitor.md — Monitoring + Observability Setup
 
+> **TL;DR** — Set up logs / metrics / alerts / dashboards for a service · **Lifecycle** Operate · **Gates** 0
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).

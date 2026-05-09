@@ -1,5 +1,7 @@
 # devstarter-review.md — Interactive Code Review
 
+> **TL;DR** — Interactive 3-reviewer code review (TechLead / QA / Security) · **Lifecycle** Build · **Gates** 0
+
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 

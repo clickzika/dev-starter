@@ -1,3 +1,7 @@
+# devstarter-release-deploy.md — Release Deployment Execution
+
+> **TL;DR** — Release deployment execution (8 deploy strategies A–H) · **Lifecycle** Ship · **Gates** 0 (gates live in parent /devstarter-release)
+
 ## PHASE 3 — Deploy Preparation
 
 ### Step 1 — Environment Variables

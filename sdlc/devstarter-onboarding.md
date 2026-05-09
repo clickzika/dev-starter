@@ -1,5 +1,7 @@
 # dev-onboarding.md — New Member Onboarding
 
+> **TL;DR** — Onboard a new team member with personalized briefing and first PR · **Lifecycle** Operate · **Gates** 0
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
