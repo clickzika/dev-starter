@@ -190,8 +190,104 @@ the full file. Lifecycle stage classification:
 For files that previously lacked a top-level H1 (sub-files of starter +
 release), an H1 was added so the structure is uniform.
 
-**Pending in v3.7.0** (last separate PR):
-- Quick-start mode (`--quick` flag on `/devstarter-change`)
+### `--quick` flag on `/devstarter-change` — scope-based reading reduction
+
+Cuts newcomer reading load from ~3000 lines to ~1000 for a typical scoped
+change by skipping agents + docs not relevant to the detected scope.
+
+- **`skills/devstarter-change/SKILL.md`** — new "Quick Mode" section
+  explaining usage, scope detection, what gets skipped per scope, and
+  the auto-promotion guards
+- **`sdlc/devstarter-change.md`** — auto-scope detection table + auto-
+  promotion rules (touches auth / multi-tenancy / schema / billing /
+  external integrations → full mode regardless of `--quick`)
+
+**Auto-scope detection:**
+| Detected scope | Skip these agents | Skip these doc updates |
+|---|---|---|
+| Backend-only | @uxui, @frontend, @mobile | frontend-spec, ux-spec, prototype/ |
+| Frontend-only | @backend, @dba, @mobile | api-reference, openapi.yaml, database-design |
+| Mobile-only | @uxui (web), @frontend (web) | frontend-spec (web parts) |
+| Full-stack | (none) | (none) |
+| Bug fix (localized) | @ba (no BRD update for tiny bugs) | brd.html (tiny bugs only) |
+
+**Auto-promotion guards** — these always force full mode even with `--quick`:
+auth, multi-tenancy, schema migrations, billing, payments, external
+integrations, cross-cutting refactors, new bounded contexts. Quality
+bar (Doc Quality Preflight) still runs in quick mode, just on the
+smaller surface.
+
+---
+
+### update.sh enhanced — version-jump migration messaging
+
+`update.sh` now detects when a user is jumping a minor or major version
+boundary (e.g. v3.4 → v3.7) and prints explicit migration notes for each
+crossed boundary:
+
+- **From v3.4 or earlier** — warns that 13 thin agent slash-commands
+  were removed in v3.5; points to `@<alias>` and `/devstarter-agents`
+- **From v3.5 or earlier** — warns that v3.6 Gate A2 + Gate A4 are now
+  enforcement gates (Doc Quality Preflight + Fitness Functions + PR
+  Review Checklist); flags the new `templates/github/fitness-functions.yml`
+- **From v3.6 or earlier** — calls out the 4 new v3.7 commands and the
+  `--quick` flag
+
+Confirms that the `rm -rf + cp -r` pattern in update.sh cleanly removes
+deleted skills / runbooks / templates from prior versions — no stale
+files linger after update. `agents/custom/` is preserved from backup as
+before.
+
+## Upgrade notes (any version → v3.7.0)
+
+### Clean upgrade — what update.sh handles automatically
+
+When `bash ~/.claude/update.sh` runs:
+
+1. **Backs up** user files (CLAUDE.md, USER.md, settings.json,
+   settings.local.json, .env) and the entire `memory/` folder to
+   `~/.claude/.backup/<timestamp>/`
+2. **Wipes + replaces** `agents/`, `skills/`, `sdlc/`, `templates/`
+   entirely (`rm -rf` then `cp -r`) — guaranteeing no stale files
+   from prior versions linger
+3. **Removes** the legacy `commands/` folder if it exists (v2.x → v3.x
+   migration; was already in update.sh)
+4. **Restores** `agents/custom/` from the backup so user-authored
+   custom agents are preserved across the wipe
+5. **Updates** root toolkit files: `update.sh`, `install.sh`, `setup.sh`,
+   `devstarter-menu.md`, `VERSION`, `CHANGELOG.md`
+6. **Restores** user files from the backup so personal config is never
+   touched
+7. **Prints** version-jump migration notes (new in this release) so
+   users see the breaking-change summary without reading the full
+   CHANGELOG
+
+### Manual checks after upgrade from v3.4 or earlier
+
+- If you scripted `/devstarter-pm`, `/devstarter-techlead`, etc. into
+  any tooling, switch to `@pm`, `@techlead` (the agent files are
+  unchanged; only the slash-command wrappers were removed)
+- If you have an existing GitHub project, copy
+  `templates/github/fitness-functions.yml` to `.github/workflows/` and
+  add `Fitness Functions / All checks` as a required status check on
+  protected branches
+- Existing in-progress features may need a docs catch-up before the
+  next `/devstarter-change` Gate A2 — backfill SLO + Threat Model
+  for backend, bundle budget for frontend, WCAG conformance for UX
+
+---
+
+## v3.7.0 status: **COMPLETE — ready to release**
+
+All planned sub-PRs merged to develop:
+1. ✅ `/devstarter-postmortem` — blameless incident post-mortem (PR #32)
+2. ✅ `/devstarter-adr` — standalone ADR capture (PR #33)
+3. ✅ `/devstarter-profile` — proactive performance investigation (PR #34)
+4. ✅ `/devstarter-compliance` — WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001 audits (PR #35)
+5. ✅ TL;DR + Lifecycle + Gates headers across 48 SDLC files (PR #36)
+6. ✅ `--quick` flag on `/devstarter-change` (this PR)
+
+Next: bump VERSION to 3.7.0, finalize CHANGELOG date, run `bash scripts/publish.sh`.
 
 ---
 

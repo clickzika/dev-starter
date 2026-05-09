@@ -103,6 +103,42 @@ This rule cannot be skipped in autopilot mode, resume flows, or any other contex
 
 ---
 
+## ⚡ Quick Mode — `--quick` flag
+
+If the user invoked `/devstarter-change --quick ...`, apply scope-based
+agent + doc skips per the algorithm below. This reduces newcomer reading
+load from ~3000 lines to ~1000 for a typical scoped change. Documented
+in detail in `~/.claude/skills/devstarter-change/SKILL.md` (Quick Mode
+section).
+
+**Auto-scope detection (run after intake):**
+
+| Detected scope | Skip these agents | Skip these doc updates |
+|----------------|-------------------|------------------------|
+| Backend-only (api/, services/, db/) | @uxui, @frontend, @mobile | docs/frontend-spec.html, docs/ux-spec.html, docs/prototype/ |
+| Frontend-only (frontend/, components/) | @backend, @dba, @mobile | docs/api-reference.html, docs/api/openapi.yaml, docs/database-design.html |
+| Mobile-only (mobile/, native/) | @uxui (web), @frontend (web) | docs/frontend-spec.html (web parts) |
+| Full-stack | (none — full flow) | (none) |
+| Bug fix (localized) | @ba (no BRD update for tiny bugs) | docs/brd.html (tiny bugs only) |
+
+**Auto-promotion guards** (these scope conditions force full mode even with `--quick`):
+
+- Touches auth, multi-tenancy, schema migrations, billing, payments, or external integrations → full mode (ADR + Threat Model + SLO are mandatory regardless of scope)
+- Cross-cutting refactor → full mode
+- New top-level domain or bounded context → full mode
+
+When auto-promotion fires, print:
+```
+⚠️  --quick disabled for this change — [reason].
+   This scope requires the full agent flow because [auth/schema/etc.].
+```
+
+**Doc Quality Preflight** at Gate A2 still runs in `--quick` mode, but
+only checks the docs that ARE updated for the detected scope. Quality
+bar is unchanged; surface area is smaller.
+
+---
+
 ## ⚡ FIRST ACTION — Show This Before Anything Else
 
 **If no inline args were provided, the very first message to the user MUST be:**
