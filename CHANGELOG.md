@@ -80,9 +80,42 @@ evaluations, infra moves, process changes, and superseding prior ADRs.
 - `/devstarter-adr` (this) — *enables* an ADR outside a feature for
   decisions that don't fit the feature flow (stack picks, infra moves)
 
+### /devstarter-profile — Proactive Performance Investigation
+
+Investigate a performance issue *before* it becomes an incident. Captures
+baseline → profiles to find bottlenecks → ranks by impact → optimization
+roadmap → optional handoff to `/devstarter-change`.
+
+**New:**
+- **`skills/devstarter-profile/SKILL.md`** — Opus-gated, decision tree
+  (vs incident / debug / monitor / audit), inline args
+- **`sdlc/devstarter-profile.md`** — full 7-phase runbook:
+  - Phase 0 — perf intake (area, SLO target, current measurement, trigger)
+  - Pre-Phase 1 guard — STOPS if no measurement is in place; routes to
+    `/devstarter-monitor` first (you can't profile what you don't measure)
+  - Phase 1 — baseline (P50/P95/P99 latency, throughput, error rate, or
+    LCP/FID/CLS for frontend, EXPLAIN ANALYZE for DB, etc.)
+  - Phase 2 — profile data capture (clinic.js / py-spy / pprof / async-
+    profiler / DevTools Performance) saved to `docs/perf/[date]-[slug]/`
+  - Phase 3 — bottleneck inventory ranked by total impact (cost ×
+    frequency); top 1–2 must account for ≥ 70% of cost or profile is too
+    coarse and Phase 2 must redo
+  - Phase 4 — optimization roadmap with impact / effort / risk per fix;
+    classified Quick wins / Worth it / Maybe later
+  - Phase 5 — approval gate (implement now / save roadmap / revise)
+  - Phase 6 — save report at `docs/perf/[date]-[slug]/report.html`;
+    handoff to `/devstarter-change` if "implement now"
+  - Phase 7 — verification (post-implementation re-measurement; if
+    not materially better, revert + loop back to Phase 3)
+- **`devstarter-menu.md`** — entry #27
+
+**Why:** `/devstarter-debug` covers reactive root-cause hunting for bugs;
+`/devstarter-incident` is for active prod crises. Performance work that
+isn't a crisis but matters before it becomes one had no home — perf
+issues silently ate SLO budget. This closes that gap.
+
 **Pending in v3.7.0** (separate PRs):
 - /devstarter-compliance — WCAG / GDPR / HIPAA / SOC2 audits
-- /devstarter-profile — proactive performance investigation
 - Lifecycle Stage / Gates count / TL;DR headers across all SDLC files
 - Quick-start mode (`--quick` flag on `/devstarter-change`)
 

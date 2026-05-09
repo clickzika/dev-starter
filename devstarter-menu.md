@@ -44,6 +44,7 @@ Show this menu and ask ONE question:
   15. 🚨 Incident Response
   25. 📋 Post-Mortem (blameless, after SEV resolved)
   26. 🏛️  ADR — Architecture Decision Record (standalone)
+  27. ⚡ Profile (proactive performance investigation)
 
 ── SETUP & INFRA ──────────────────────────────
   16. 💻 Setup Local Environment
@@ -99,3 +100,4 @@ Route to correct file:
 | 24 | `~/.claude/sdlc/devstarter-debug.md` |
 | 25 | `~/.claude/sdlc/devstarter-postmortem.md` |
 | 26 | `~/.claude/sdlc/devstarter-adr.md` |
+| 27 | `~/.claude/sdlc/devstarter-profile.md` |
