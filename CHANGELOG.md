@@ -1,5 +1,39 @@
 # Changelog
 
+## v3.5.1 — Router Standardization (2026-05-09 — unreleased)
+
+### 17 SKILL.md routers now have decision trees + inline args
+
+All 17 thin SDLC routers were missing a "When to use vs alternatives" section,
+forcing users to read the SDLC runbook to figure out which command applies.
+Sub-PR 4 of the v3.5.0 audit fixes this.
+
+**Updated (17 files, consistent template):**
+
+Tier A — bare 2-liners now have purpose + decision tree + 3 inline args:
+- `/devstarter-sprint`, `/devstarter-release`, `/devstarter-rollback`,
+  `/devstarter-dependency`, `/devstarter-env`, `/devstarter-secrets`,
+  `/devstarter-monitor`, `/devstarter-onboard`, `/devstarter-handover`,
+  `/devstarter-retro`, `/devstarter-menu`
+
+Tier B — preserved existing model gate / inline args, added decision tree:
+- `/devstarter-hotfix`, `/devstarter-incident`, `/devstarter-consult`,
+  `/devstarter-migrate`, `/devstarter-gitsetup`, `/devstarter-review`
+
+**Decision trees disambiguate the common confusions:**
+- hotfix vs rollback vs incident vs change fix-bug
+- env vs secrets vs existing
+- onboard vs handover vs existing
+- consult vs debug vs review vs audit
+- release vs hotfix vs rollback
+- migrate vs change vs consult vs audit
+- review vs audit vs debug
+
+No SDLC runbook content changed; this is pure SKILL.md "shop window" polish
+so users pick the right command without reading the full runbook first.
+
+---
+
 ## v3.5.0 — Cut the Clutter (2026-05-09)
 
 > **Partial release.** First two of four planned v3.5.0 sub-tasks shipped.
