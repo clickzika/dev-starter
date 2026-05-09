@@ -491,6 +491,30 @@ body:  "Feature '[feature name]' — all [N] tasks done. Review and approve to m
 ```
 This alerts the user without requiring them to watch the terminal.
 
+### Pre-Gate A4 — Fitness Functions verification (mandatory)
+
+Before showing the Gate A4 picker, verify CI fitness functions passed on
+each PR. This wires `~/.claude/templates/github/fitness-functions.yml` into
+the merge gate.
+
+For each PR in this feature, run:
+```bash
+gh pr checks <PR_NUMBER> --json name,bucket --jq \
+  '.[] | select(.name | contains("Fitness Functions")) | {name, bucket}'
+```
+
+Decision:
+- **All `Fitness Functions / All checks` rows are `pass`** → ✅ proceed to Gate A4
+- **Any row is `fail`** → ❌ Do NOT show Gate A4. Print the failing fitness
+  check name, the specific metric (bundle KB, coverage %, complexity), the
+  PR/file involved, and route to `/devstarter-debug` or `/devstarter-change
+  fix-bug` to address. Re-run the gate after fix lands.
+- **Workflow not present on the repo** → emit a one-line warning and
+  proceed (some legacy projects don't have it yet); recommend installing
+  per `~/.claude/templates/github/fitness-functions-setup.md`.
+- **Workflow `pending`** → wait up to 5 min via `Monitor`, then re-check.
+  Do not skip.
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⛔ GATE A4 — FEATURE APPROVAL (ALL TASKS)
@@ -502,6 +526,13 @@ PRs:
   #[N] — [task 1 name] — [branch]
   #[N] — [task 2 name] — [branch]
   #[N] — [task 3 name] — [branch]
+
+Fitness Functions (all PRs):
+  ✅ Bundle budget       (within [BUDGET_KB] KB)
+  ✅ Dependency rules    (0 violations)
+  ✅ Coverage gate       ([PCT]% / [THRESHOLD]%)
+  ✅ Complexity ceiling  (≤ [CEILING])
+  (or ⚠️ skipped if workflow not installed on legacy repo — flag for follow-up)
 
 Review findings:
   🔴 Blockers: [N — all fixed before this gate]

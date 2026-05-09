@@ -575,3 +575,36 @@ IMPLEMENTATION:
 - Fail = PR cannot merge (same as failing test)
 - Dashboard: track trends over time (are we getting better or worse?)
 ```
+
+### Reference implementation (DevStarter ships one)
+
+DevStarter provides a working fitness-functions GitHub Actions workflow:
+
+- **Workflow:**  `~/.claude/templates/github/fitness-functions.yml`
+- **Setup doc:** `~/.claude/templates/github/fitness-functions-setup.md`
+
+It implements 4 of the 9 fitness functions listed above, out of the box,
+stack-aware (Node / Python / Go):
+
+| # | Check               | Default threshold      |
+|---|---------------------|------------------------|
+| 1 | Bundle budget       | 500 KB (`BUNDLE_BUDGET_KB`) |
+| 2 | Dependency rules    | 0 violations (depcruise / import-linter — opt-in via config file) |
+| 3 | Coverage gate       | ≥ 80% (`COVERAGE_THRESHOLD`) |
+| 4 | Complexity ceiling  | ≤ 10 cyclomatic (`COMPLEXITY_CEILING`) |
+
+All thresholds are tunable via repository-level GitHub Actions variables —
+no workflow edit needed. A roll-up status check (`Fitness Functions / All
+checks`) is the single status to make required in branch protection.
+
+**For a new project:** `/devstarter-new` and `/devstarter-existing` install
+this workflow and configure branch protection. **For an existing project:**
+follow `~/.claude/templates/github/fitness-functions-setup.md`.
+
+**For change PRs:** `/devstarter-change` Gate A4 verifies the fitness check
+passed on the PR before allowing approve.
+
+The other 5 fitness functions (API contract, dep freshness, security scan,
+response time, DB queries) are project-specific and you should add them
+incrementally as the project matures — start with the 4 ringed by the
+template, then layer the rest based on risk.

@@ -1,6 +1,55 @@
 # Changelog
 
-## v3.5.1 — Router Standardization (2026-05-09 — unreleased)
+## v3.6.0 — Real Quality Gates (2026-05-09 — unreleased, in progress)
+
+> Sprint focus: turn the documented quality bars into **enforced** quality
+> gates that auto-block PRs when architectural quality slips. The audit
+> identified this as the single highest-ROI change in the roadmap — top-1%
+> teams catch ~80% of architectural regressions automatically.
+
+### Architectural Fitness Functions — automated CI quality gates
+
+**New:**
+- `templates/github/fitness-functions.yml` — GitHub Actions workflow with
+  4 fitness checks, stack-aware (Node / Python / Go), tunable via repo
+  variables. Roll-up status check (`Fitness Functions / All checks`) is
+  the single status to require for branch protection.
+  - **Bundle budget** (Node) — `dist/` must stay under threshold (default 500 KB)
+  - **Dependency rules** — depcruise (Node) / import-linter (Python) module-boundary enforcement
+  - **Coverage gate** — line coverage ≥ threshold (default 80%) on Node / Python / Go
+  - **Complexity ceiling** — max cyclomatic complexity per function (default 10)
+- `templates/github/fitness-functions-setup.md` — install + tuning + per-stack config guide
+
+**Wired in:**
+- **`agents/devstarter-techlead.md`** — Architecture Fitness Functions
+  section now references the shipped reference implementation (it was
+  previously aspirational table only)
+- **`sdlc/devstarter-change-add.md`** — pre-Gate A4 verification step:
+  fetches `gh pr checks` for "Fitness Functions / All checks" on each PR;
+  fails the gate if any check failed; offers `/devstarter-debug` or
+  `/devstarter-change fix-bug` route to address blockers
+- **`sdlc/devstarter-github.md`** — new procedure **PROC-GH-17** (Install
+  Fitness Functions CI) parallel to PROC-GH-16 (AutoPR)
+- **`sdlc/devstarter-starter-gates.md`** — Gate 0 now installs fitness
+  functions during new-project bootstrap (after PROC-GH-14 templates)
+- **`sdlc/devstarter-existing.md`** — installs fitness functions when
+  setting up DevStarter on an existing GitHub repo (after PROC-GH-18
+  branch protection)
+
+**Why:** Per the v3.6.0 plan in `~/.claude/plans/synthetic-gliding-clock.md`
+and `memory/consult-2026-05-09-top1-rigor-audit.md`. Previously the
+TechLead spec defined fitness functions in a table but no CI ever ran
+them. With this change the bar is enforced, not documented.
+
+**Pending in v3.6.0** (separate PRs, this release stays open until done):
+- Backend / Frontend / UX agents — add mandatory deliverable templates
+  (API Spec / Component Spec + Bundle Budget / Design Spec + A11y Audit)
+- Mandate ADR at Gate A2 for non-trivial features
+- Wire TechLead PR Review Checklist to Gate A4 (in addition to fitness functions)
+
+---
+
+## v3.5.1 — Router Standardization (2026-05-09 — unreleased, will bundle into v3.6.0)
 
 ### 17 SKILL.md routers now have decision trees + inline args
 
