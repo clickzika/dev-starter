@@ -56,6 +56,7 @@ Show this menu and ask ONE question:
 ── UTILITIES ──────────────────────────────────
   22. 🩺 Doctor (health check)
   23. 🔍 Review (PR / branch / current changes)
+  24. 🐛 Debug (senior dev problem analysis)
 
 ── AGENTS ─────────────────────────────────────
   /devstarter-ba        Business Analyst
@@ -103,3 +104,4 @@ Route to correct file:
 | 21 | `~/.claude/sdlc/devstarter-ml-workflow.md` |
 | 22 | `~/.claude/sdlc/devstarter-doctor.md` |
 | 23 | `~/.claude/sdlc/devstarter-review.md` |
+| 24 | `~/.claude/sdlc/devstarter-debug.md` |
