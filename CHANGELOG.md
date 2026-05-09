@@ -1,6 +1,37 @@
 # Changelog
 
-## v3.7.1 — `/update` alias fix (2026-05-09)
+## v3.7.2 — Fix release announcements (2026-05-09)
+
+> Reverts v3.7.1's approach. Instead of adding a `/update` alias to make
+> the existing wrong messaging "true," v3.7.2 fixes the messaging at
+> the source — `publish.sh` now generates correct release announcements,
+> and the misleading `/update` skill added in v3.7.1 has been removed.
+
+**What changed:**
+
+- **`scripts/publish.sh`** — line 242 (GitHub Release notes generator)
+  and line 260 (post-publish terminal output) updated:
+  - `Run \`/update\`` → `Run \`/devstarter-update\` (or \`bash ~/.claude/update.sh\`)`
+  - This means every future release announcement names the actual
+    command users have on their install.
+- **`skills/update/SKILL.md`** — removed. v3.7.1 added it to make the
+  existing wrong messaging accidentally correct, but the cleaner fix
+  is to fix the source (publish.sh) and avoid skill-namespace
+  pollution.
+
+**Existing GitHub Release notes for v3.5.0–v3.7.1 are also being edited
+in place** (via `gh release edit`) to use the correct command name.
+
+**Net effect:** users see a correct command name in every release
+announcement, and the skill picker stays uncluttered.
+
+**Apology context:** the user explicitly asked for "Option 1" (fix the
+messaging) when given the choice. v3.7.1 mistakenly shipped Option 2
+(add an alias). v3.7.2 reverts that and does Option 1.
+
+---
+
+## v3.7.1 — `/update` alias fix (2026-05-09 — reverted by v3.7.2)
 
 > Patch release. Every release announcement since v3.5.0 told users
 > "Run `/update` in Claude Code to get this version" — but `/update`
