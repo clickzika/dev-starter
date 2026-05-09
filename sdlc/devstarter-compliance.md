@@ -1,5 +1,7 @@
 # devstarter-compliance.md — Compliance Audit (WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS)
 
+> **TL;DR** — Audit against WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001 · **Lifecycle** Operate · **Gates** 1
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 > Template-driven checklist work; deeper reasoning happens in remediation
 > ADRs, not the audit itself.

@@ -162,8 +162,35 @@ produces that.
 profile / compliance). Last items pending: Lifecycle Stage / Gates count /
 TL;DR headers across SDLC files + `--quick` flag on `/devstarter-change`.
 
-**Pending in v3.7.0** (separate PRs):
-- Lifecycle Stage / Gates count / TL;DR headers across all SDLC files
+### TL;DR + Lifecycle Stage + Gates count headers across all SDLC files
+
+Mass-edit applied to all 48 `sdlc/devstarter-*.md` runbooks. Each file now
+opens with a one-line scannable header:
+
+```
+> **TL;DR** — [purpose] · **Lifecycle** [Discovery|Design|Build|Ship|Operate|Reference] · **Gates** [N]
+```
+
+This lets a newcomer pick the right runbook without committing to reading
+the full file. Lifecycle stage classification:
+
+- **Discovery** — audit, consult, existing, gitsetup, sprint, starter,
+  starter-gates, starter-intake
+- **Design** — adr, document, starter-template
+- **Build** — change, change-add, change-bug, change-remove, change-resume,
+  debug, migrate, ml-workflow, review
+- **Ship** — hotfix, release, release-deploy, release-prep, release-verify,
+  rollback
+- **Operate** — autopr, compliance, dependency, doctor, env, handover,
+  incident, monitor, onboarding, postmortem, profile, retrospective,
+  secrets
+- **Reference** — ai-providers, checkpoint, config-sync, github, gitlab,
+  jira, notion, svn, vcs-sync (procedure files loaded by other workflows)
+
+For files that previously lacked a top-level H1 (sub-files of starter +
+release), an H1 was added so the structure is uniform.
+
+**Pending in v3.7.0** (last separate PR):
 - Quick-start mode (`--quick` flag on `/devstarter-change`)
 
 ---

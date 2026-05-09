@@ -1,5 +1,7 @@
 # devstarter-gitsetup.md — Git & Gitflow Setup
 
+> **TL;DR** — Set up git + GitFlow + branch protection + standard labels on a repo · **Lifecycle** Discovery · **Gates** 1
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Agent:** @devstarter-devops (Pompompurin)

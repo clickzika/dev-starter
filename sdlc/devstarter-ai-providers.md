@@ -1,6 +1,8 @@
 # dev-ai-providers.md — Multi-Provider AI Support
 # DevStarter — Provider Selection & Routing Runbook
 
+> **TL;DR** — AI provider selection guide and LiteLLM proxy patterns · **Lifecycle** Reference · **Gates** 0
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 ## How to Use

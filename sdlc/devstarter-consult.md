@@ -1,5 +1,7 @@
 # dev-consult.md — Consultation & Solution Advice
 
+> **TL;DR** — Get expert advice on architecture / strategy without writing code · **Lifecycle** Discovery · **Gates** 1
+
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 

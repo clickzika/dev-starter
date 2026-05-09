@@ -1,5 +1,7 @@
 # dev-retrospective.md — Sprint Retrospective
 
+> **TL;DR** — Sprint retrospective with action items (what worked / didn't / change) · **Lifecycle** Operate · **Gates** 1
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).

@@ -1,5 +1,7 @@
 # dev-secrets.md — Secrets Management
 
+> **TL;DR** — Manage secrets across env-file / Vault / AWS / Azure / GCP backends · **Lifecycle** Operate · **Gates** 0
+
 ## Model: Haiku (`claude-haiku-4-5-20251001`)
 
 ## How to Use

@@ -1,5 +1,7 @@
 # devstarter-profile.md — Proactive Performance Investigation
 
+> **TL;DR** — Proactive performance investigation: baseline → bottleneck → roadmap · **Lifecycle** Operate · **Gates** 1
+
 ## Model: Opus (`claude-opus-4-7`)
 > Performance reasoning + tradeoff analysis required — run `/model opus`.
 

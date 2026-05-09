@@ -1,5 +1,7 @@
 # devstarter-adr.md — Architecture Decision Record (Standalone)
 
+> **TL;DR** — Capture an Architecture Decision Record outside of a feature change · **Lifecycle** Design · **Gates** 1
+
 ## Model: Opus (`claude-opus-4-7`)
 > Trade-off analysis + long-term thinking required — run `/model opus`.
 

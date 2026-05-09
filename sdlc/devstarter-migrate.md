@@ -1,5 +1,7 @@
 # dev-migrate.md — Migration Workflow
 
+> **TL;DR** — Plan and execute a tech-stack migration with strangler-fig + ADR · **Lifecycle** Build · **Gates** 3
+
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 

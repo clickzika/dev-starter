@@ -1,5 +1,7 @@
 # dev-starter.md — Project Spec Intake Template
 
+> **TL;DR** — New project bootstrap (master workflow with 5 gates) · **Lifecycle** Discovery · **Gates** 5 (in starter-gates)
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 ## How to Use This File

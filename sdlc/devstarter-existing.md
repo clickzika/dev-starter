@@ -1,5 +1,7 @@
 # dev-existing.md — Existing Project Onboarding
 
+> **TL;DR** — Set up DevStarter on an existing project (auto-scan, fill gaps) · **Lifecycle** Discovery · **Gates** 1
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 ## Instructions for Claude Code

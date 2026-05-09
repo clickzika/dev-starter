@@ -1,3 +1,7 @@
+# devstarter-starter-intake.md — New Project Discovery Intake
+
+> **TL;DR** — 31 discovery questions and BRD template for new projects (sub-file of /devstarter-new) · **Lifecycle** Discovery · **Gates** 0
+
 ## SECTION 0 — Requirements Intake (ALWAYS run first)
 
 Before asking technical questions, collect project requirements.

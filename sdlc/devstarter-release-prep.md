@@ -1,3 +1,7 @@
+# devstarter-release-prep.md — Pre-release Validation
+
+> **TL;DR** — Pre-release validation: env vars, secrets, DB readiness, smoke checks · **Lifecycle** Ship · **Gates** 1
+
 ## PHASE 1 — Release Scope
 
 **Q1. What version is this?**

@@ -1,5 +1,7 @@
 # devstarter-svn.md — Shared SVN Procedures
 
+> **TL;DR** — Shared SVN procedures for repo, branches, commits, sync · **Lifecycle** Reference · **Gates** 0
+
 **Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
 Read `~/.claude/sdlc/devstarter-github.md` (bottom section) — do not duplicate those definitions here.
 

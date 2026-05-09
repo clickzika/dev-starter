@@ -1,5 +1,7 @@
 # dev-audit.md — Audit & Review Workflow
 
+> **TL;DR** — Audit project for security, quality, dependency hygiene, and doc drift · **Lifecycle** Discovery · **Gates** 4
+
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 

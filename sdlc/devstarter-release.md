@@ -1,5 +1,7 @@
 # dev-release.md — Release Checklist + Deployment
 
+> **TL;DR** — Release + deploy router with DEV → SIT → UAT → DEPLOY gates · **Lifecycle** Ship · **Gates** 4
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).

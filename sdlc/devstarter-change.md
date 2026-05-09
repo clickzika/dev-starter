@@ -1,5 +1,7 @@
 # dev-change.md — Change Management Workflow
 
+> **TL;DR** — Router for Add Feature / Remove Feature / Fix Bug operations · **Lifecycle** Build · **Gates** 0 (gates live in sub-files)
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 ## How to Use

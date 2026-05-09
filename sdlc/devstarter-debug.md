@@ -1,5 +1,7 @@
 # devstarter-debug.md — Senior Dev Problem Analysis
 
+> **TL;DR** — Senior-dev hypothesis-driven investigation with 5 Whys root-cause gate · **Lifecycle** Build · **Gates** 1
+
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
