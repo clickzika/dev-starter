@@ -77,9 +77,31 @@ backend features that lack SLO/Threat Model" so the spec change and the
 gate enforcement are coupled — shipping one without the other would either
 be unenforced docs or unattainable enforcement.
 
-**Pending in v3.6.0** (separate PRs, release stays open until done):
-- Frontend / UX agents — mandatory deliverable templates
-  (Component Spec + Bundle Budget / Design Spec + A11y Audit)
+### Frontend mandatory deliverable + Gate A2 enforcement
+
+Same enforcement pattern as Backend, applied to Frontend. Gate A2 will now
+reject frontend features that lack a per-route Bundle Budget row or
+Accessibility Conformance Plan.
+
+- **`agents/devstarter-frontend.md`** — new **Frontend Specification
+  Document** Gate 1 deliverable at `docs/frontend-spec.html`, 13 required
+  sections covering: tech stack, information architecture, component
+  inventory, state architecture, **per-route bundle budget table** (concrete
+  KB numbers per route, no TBD), **WCAG 2.1 AA conformance plan** (axe-core
+  in CI mandatory), testing strategy, browser/device support matrix, build
+  & deploy strategy, design system integration. Quality gate enforces no
+  placeholder text and consistency with `browserslist` + build config.
+
+- **`sdlc/devstarter-change-add.md`** — Doc Quality Preflight check 5b
+  added for any frontend feature touching routes, components, or pages.
+  Gate A2 doc-list now includes `docs/frontend-spec.html`.
+
+**Why:** Frontend was the second of the three "expert agents with no
+enforced deliverable" gap (Backend / Frontend / UX). Now matched to BA's
+BRD and QA's Test Strategy enforcement pattern.
+
+**Pending in v3.6.0** (separate PR, release stays open until done):
+- UX agent — mandatory Design Spec + Accessibility Audit deliverable
 - Wire TechLead PR Review Checklist to Gate A4 (in addition to fitness functions)
 
 ---

@@ -258,6 +258,14 @@ resolved (⚠️ are non-blocking warnings).
    - For endpoints touching auth/money/PII/multi-tenant/external integrations:
      Threat Model section present with all 6 STRIDE rows populated
 
+5b. **docs/frontend-spec.html** updated — for any frontend feature adding/
+   modifying routes, components, or pages
+   - Section 6 (Performance Budget) has concrete KB numbers per touched route
+     (no `TBD`, no "we'll measure later")
+   - Section 7 (Accessibility Conformance Plan) names WCAG level + audit
+     tooling (axe-core in CI is mandatory)
+   - Section 4 (Component Inventory) appended for every new shared component
+
 6. **docs/security-design.html** updated — for any feature touching auth,
    data scope, multi-tenancy, or external integrations
    - OWASP checklist updated with new feature's risk class
@@ -299,6 +307,7 @@ Documents updated:
   ✏️ docs/database-design.html  — [or "no changes needed"]
   ✏️ docs/api-reference.html     — [or "no changes needed"]
   ✏️ docs/api/openapi.yaml       — [or "no changes needed"]
+  ✏️ docs/frontend-spec.html     — [or "no changes needed"]
   ✏️ docs/prototype/index.html    — [or "no changes needed"]
   ✏️ docs/security-design.html — [or "no changes needed"]
   ✏️ docs/adr/[NNNN]-[slug].html  — [or "no ADR required for this change"]
