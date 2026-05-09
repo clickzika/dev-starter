@@ -59,21 +59,11 @@ Show this menu and ask ONE question:
   24. 🐛 Debug (senior dev problem analysis)
 
 ── AGENTS ─────────────────────────────────────
-  /devstarter-ba        Business Analyst
-  /devstarter-pm        Project Manager
-  /devstarter-techlead  Tech Lead
-  /devstarter-backend   Backend Engineer
-  /devstarter-frontend  Frontend Engineer
-  /devstarter-dba       Database Architect
-  /devstarter-qa        QA Engineer
-  /devstarter-security  Security Engineer
-  /devstarter-devops    DevOps Engineer
-  /devstarter-uxui      UX/UI Designer
-  /devstarter-docs      Technical Writer
-  /devstarter-mobile    Mobile Engineer
-  /devstarter-mlops     MLOps Engineer
+  /devstarter-agents    List all 13 specialist agents (BA, PM, TechLead, …)
+                        Then invoke any of them directly with @<alias> <task>
+                        e.g. @ba, @techlead, @qa, @security
 
-Type the number of your choice, or /devstarter-[agent] [task] to invoke an agent directly:
+Type the number of your choice, or /devstarter-agents to see the agent roster:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 

@@ -1,5 +1,42 @@
 # Changelog
 
+## v3.5.0 — Cut the Clutter (2026-05-09 — unreleased)
+
+### Skills consolidation — 13 thin agent direct-invokes → 1 meta-skill
+
+**⚠️ Breaking change** for users who invoked agents via slash commands. Agents
+themselves are unchanged; only the redundant slash-command wrappers were removed.
+Use `@<alias>` (e.g., `@pm`, `@techlead`, `@qa`) directly in chat — same behavior,
+shorter to type, no skill-picker clutter.
+
+**What changed:**
+
+- **chore: removed 13 thin agent direct-invoke skills** — each was a 6-line
+  passthrough to its agent file:
+  `skills/devstarter-{ba,pm,techlead,backend,frontend,dba,qa,security,devops,uxui,docs,mobile,mlops}/SKILL.md`
+- **feat: `skills/devstarter-agents/SKILL.md`** — single meta-skill that lists
+  the full agent roster (alias, character, role) and supports inline args:
+  `/devstarter-agents`, `/devstarter-agents qa`, `/devstarter-agents pick`
+- **chore: `devstarter-menu.md`** — replaced 13-line AGENTS block with a single
+  pointer to `/devstarter-agents`
+
+**Migration for existing users:**
+
+After running `update.sh`, the slash commands `/devstarter-pm`,
+`/devstarter-techlead`, etc. will not exist. Either:
+- Type `@pm`, `@techlead`, etc. directly in chat (recommended — short alias)
+- Or run `/devstarter-agents` to see the full roster
+
+The agent files at `agents/devstarter-*.md` are unchanged.
+
+**Why:** Per the v3.5.0 audit (`memory/consult-2026-05-09-top1-rigor-audit.md`),
+these 13 wrappers added no logic — they just routed to the agent file. They
+cluttered the skill picker and added no discoverability beyond what `@pm` already
+provides. One meta-skill `/devstarter-agents` lists every agent with aliases and
+example prompts, replacing 13 entries with 1.
+
+---
+
 ## v3.4.0 (2026-05-09)
 
 ### /devstarter-debug — Senior Dev Problem Analysis Workflow
