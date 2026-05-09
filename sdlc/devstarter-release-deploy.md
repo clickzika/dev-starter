@@ -361,6 +361,16 @@ git tag -a vX.Y.Z -m "Release vX.Y.Z"
 
 #### Step 5 — Push to correct remote
 
+> ⚠️ **DevStarter self-release — Step 5 override**
+> If the project has `scripts/publish.sh`, run it instead of the commands below:
+> ```bash
+> bash scripts/publish.sh $VERSION "$DESCRIPTION"
+> ```
+> `publish.sh` strips `docs/` and `memory/` via a `_release_clean` branch before pushing
+> as `release/main`. The two histories are intentionally divergent — a direct
+> `git push release main` will be rejected (non-fast-forward). Do NOT use the
+> generic push commands below for any project that ships a `scripts/publish.sh`.
+
 ```bash
 # Push main branch + tag
 git push $PUSH_REMOTE main
@@ -378,6 +388,8 @@ echo "✅ Released vX.Y.Z → $PUSH_REMOTE/main"
 ```
 
 #### Full script (copy-paste ready)
+
+> ⚠️ **DevStarter self-release:** Use `bash scripts/publish.sh $VERSION "$DESCRIPTION"` instead — see Step 5 override above.
 
 ```bash
 #!/usr/bin/env bash
