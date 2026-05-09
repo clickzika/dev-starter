@@ -1,5 +1,36 @@
 # Changelog
 
+## v3.4.0 (2026-05-09)
+
+### /devstarter-debug — Senior Dev Problem Analysis Workflow
+
+New skill that runs a hypothesis-driven investigation before any code is touched.
+Designed around the top-1% senior engineer mental model: evidence before hypothesis,
+5 Whys root cause confirmation gate, surgical fix plan with exact file:line targeting,
+then handoff to `/devstarter-change fix-bug` — no re-entering requirements.
+
+**What changed:**
+
+- **feat: `skills/devstarter-debug/SKILL.md`** — Opus-gated entry point; supports inline args (no-arg / plain-text description / file path); routes to SDLC runbook
+- **feat: `sdlc/devstarter-debug.md`** — Full 5-phase investigation runbook:
+  - Phase 0: Problem intake (symptom, expected behavior, when it started, environment, reproducibility)
+  - Phase 1: Evidence gathering (error messages, `git log`, `git diff`, log output → Evidence Summary)
+  - Phase 2: Code archaeology (entry point → call chain tracing → data flow mapping → Execution Path Map with suspect locations)
+  - Phase 3: Root Cause Analysis — 5 Whys applied to each hypothesis; scored ✅ Confirmed / ❓ Possible / ❌ Ruled out; **Gate enforced: cannot proceed to Phase 4 without ≥1 Confirmed hypothesis** — loops back to request more evidence if not found
+  - Phase 4: Surgical Fix Plan — exact file:line, before/after code, blast radius analysis (callers, tests, data impact), alternative fix considered and rejected
+  - Phase 5: Save diagnosis to `memory/debug-[YYYY-MM-DD]-[slug].md`; `AskUserQuestion` gate offers "implement now" → jumps to `/devstarter-change fix-bug` with pre-filled context
+- **chore: `devstarter-menu.md`** — entry #24 🐛 Debug added under UTILITIES section; routing table row added
+- **chore: `CLAUDE.md`** — v3.4.0 row added to Recently Shipped table
+
+**Usage:**
+```
+/devstarter-debug                          → intake questions
+/devstarter-debug cart total is wrong      → symptom as inline arg (skip Q1)
+/devstarter-debug memory/bug-report.md    → read file as problem context
+```
+
+---
+
 ## v3.3.0 (2026-05-07)
 
 ### Opus Model Gate + Commands Migration Cleanup + Model ID Update
