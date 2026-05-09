@@ -348,6 +348,7 @@ Every slash command requires:
 | v3.1.0 | AskUserQuestion at all 52 remaining gates — full arrow-key picker UX across all SDLC runbooks; Gate UX Rule added to agent-base |
 | v3.2.0 | Consult→Change handoff — consult saves intake file + AskUserQuestion gate (save/implement now/follow-up); /devstarter-change skips intake when given consult file |
 | v3.3.0 | Opus model gate in 6 SKILL.md files; commands/ migration cleanup (delete orphaned folder + fix 4 refs); Opus model ID → claude-opus-4-7 |
+| v3.4.0 | /devstarter-debug — hypothesis-driven investigation workflow; 5-phase root cause analysis with surgical fix plan; handoff to /devstarter-change |
 
 ---
 
