@@ -1,6 +1,11 @@
 # Changelog
 
-## v3.5.0 — Cut the Clutter (2026-05-09 — unreleased)
+## v3.5.0 — Cut the Clutter (2026-05-09)
+
+> **Partial release.** First two of four planned v3.5.0 sub-tasks shipped.
+> Remaining (deferred to v3.5.1 or v3.6.0 prep): VCS triplication refactor
+> (github/gitlab/svn → common base) and standardize 17 thin SDLC routers.
+> See `memory/consult-2026-05-09-top1-rigor-audit.md` for full roadmap.
 
 ### Skills consolidation — 13 thin agent direct-invokes → 1 meta-skill
 
