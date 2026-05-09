@@ -100,8 +100,35 @@ Accessibility Conformance Plan.
 enforced deliverable" gap (Backend / Frontend / UX). Now matched to BA's
 BRD and QA's Test Strategy enforcement pattern.
 
-**Pending in v3.6.0** (separate PR, release stays open until done):
-- UX agent — mandatory Design Spec + Accessibility Audit deliverable
+### UX Design Specification + Accessibility Conformance + Gate A2 enforcement
+
+Last of the three "expert agents with no enforced deliverable" gap. The UX
+agent had an Interactive Prototype as Gate 1 deliverable but no *written*
+Design Spec with auditable accessibility commitment.
+
+- **`agents/devstarter-uxui.md`** — new **Design Specification Document**
+  Gate 1 deliverable at `docs/ux-spec.html` with 11 required sections:
+  - Project-specific design principles (no generic platitudes)
+  - Concrete design tokens (color/typography/spacing/radius/motion)
+  - Information architecture + user flow diagrams
+  - Component specifications (states, variants, ARIA pattern, motion)
+  - **WCAG 2.1 AA Conformance** table covering all Level AA success
+    criteria with Pass / Partial / Fail status — every Partial/Fail row
+    has linked issue, owner, target date (no "TBD")
+  - Manual checks list (tab-key only, focus rings, prefers-reduced-motion)
+  - Microcopy guidelines (voice/tone, error rules, button-label pattern)
+  - Research summary, heuristic evaluation (Nielsen 10), changelog, open issues
+
+- **`sdlc/devstarter-change-add.md`** — Doc Quality Preflight check 5c
+  added for any UX-touching feature. Gate A2 doc-list now includes
+  `docs/ux-spec.html`. Drift between design tokens in spec and
+  `docs/prototype/components.html` blocks the gate.
+
+**v3.6.0 status:** All three weak agents (Backend / Frontend / UX) now have
+enforceable Gate 1 deliverables matching BA's BRD and QA's Test Strategy
+pattern. Gate A2 is now a real quality gate, not a rubber stamp.
+
+**Last pending in v3.6.0** (separate PR):
 - Wire TechLead PR Review Checklist to Gate A4 (in addition to fitness functions)
 
 ---

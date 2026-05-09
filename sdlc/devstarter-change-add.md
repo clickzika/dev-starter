@@ -266,6 +266,16 @@ resolved (⚠️ are non-blocking warnings).
      tooling (axe-core in CI is mandatory)
    - Section 4 (Component Inventory) appended for every new shared component
 
+5c. **docs/ux-spec.html** updated — for any UX-touching feature (new screens,
+   new components, flow changes, microcopy changes)
+   - Section 6 (Accessibility Conformance) WCAG level named explicitly
+   - Conformance table has Pass / Partial / Fail for every Level AA criterion
+     touched by the change — every Partial / Fail row has issue link + owner
+     + target date (no "TBD")
+   - Section 5 (Component Specifications) appended for every new shared component
+     visible in `docs/prototype/`
+   - Design tokens (section 3) match `docs/prototype/components.html` (no drift)
+
 6. **docs/security-design.html** updated — for any feature touching auth,
    data scope, multi-tenancy, or external integrations
    - OWASP checklist updated with new feature's risk class
@@ -308,6 +318,7 @@ Documents updated:
   ✏️ docs/api-reference.html     — [or "no changes needed"]
   ✏️ docs/api/openapi.yaml       — [or "no changes needed"]
   ✏️ docs/frontend-spec.html     — [or "no changes needed"]
+  ✏️ docs/ux-spec.html           — [or "no changes needed"]
   ✏️ docs/prototype/index.html    — [or "no changes needed"]
   ✏️ docs/security-design.html — [or "no changes needed"]
   ✏️ docs/adr/[NNNN]-[slug].html  — [or "no ADR required for this change"]
