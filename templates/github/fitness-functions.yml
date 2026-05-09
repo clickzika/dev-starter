@@ -1,0 +1,275 @@
+# Architectural Fitness Functions — Automated Quality Gates
+# DevStarter — GitHub Actions Template
+#
+# Setup guide: ~/.claude/templates/github/fitness-functions-setup.md
+#
+# What this does:
+#   On every PR, runs four "fitness function" checks that auto-fail the PR if
+#   architectural quality slips. Top-1% engineering teams treat these as table
+#   stakes — they catch ~80% of architectural regressions before code review.
+#
+#   1. Bundle budget       — frontend bundle must not exceed size threshold
+#   2. Dependency rules    — depcruise/import-linter enforces module boundaries
+#   3. Coverage gate       — test coverage must not drop below threshold
+#   4. Complexity ceiling  — cyclomatic complexity must stay under threshold
+#
+# Stack-aware: auto-detects Node / Python / Go / mixed and runs only the
+# checks relevant to your stack. Each check is opt-out via env var.
+#
+# Required: nothing (everything has sensible defaults)
+# Recommended: tune thresholds in your repo via repository env vars or
+#              .fitness/ config files. See setup doc.
+
+name: Fitness Functions
+
+on:
+  pull_request:
+    branches: [develop, main, uat]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write   # to comment results
+
+# Fitness thresholds — override per-repo via repository env or .fitness/ config
+env:
+  BUNDLE_BUDGET_KB: ${{ vars.BUNDLE_BUDGET_KB || '500' }}
+  BUNDLE_DIST_DIR: ${{ vars.BUNDLE_DIST_DIR || 'dist' }}
+  COVERAGE_THRESHOLD: ${{ vars.COVERAGE_THRESHOLD || '80' }}
+  COMPLEXITY_CEILING: ${{ vars.COMPLEXITY_CEILING || '10' }}
+  # Skip individual checks by setting to '1' in repo vars
+  SKIP_BUNDLE: ${{ vars.SKIP_BUNDLE || '0' }}
+  SKIP_DEPS: ${{ vars.SKIP_DEPS || '0' }}
+  SKIP_COVERAGE: ${{ vars.SKIP_COVERAGE || '0' }}
+  SKIP_COMPLEXITY: ${{ vars.SKIP_COMPLEXITY || '0' }}
+
+jobs:
+  detect-stack:
+    name: Detect stack
+    runs-on: ubuntu-latest
+    outputs:
+      has_node: ${{ steps.scan.outputs.has_node }}
+      has_python: ${{ steps.scan.outputs.has_python }}
+      has_go: ${{ steps.scan.outputs.has_go }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: scan
+        run: |
+          [ -f package.json ] && echo "has_node=true" >> $GITHUB_OUTPUT || echo "has_node=false" >> $GITHUB_OUTPUT
+          ([ -f pyproject.toml ] || [ -f requirements.txt ] || [ -f setup.py ]) && echo "has_python=true" >> $GITHUB_OUTPUT || echo "has_python=false" >> $GITHUB_OUTPUT
+          [ -f go.mod ] && echo "has_go=true" >> $GITHUB_OUTPUT || echo "has_go=false" >> $GITHUB_OUTPUT
+
+  # ─── 1. Bundle Budget ──────────────────────────────────
+  # Node only. Builds the project and fails if bundle exceeds budget.
+  bundle-budget:
+    name: 1. Bundle budget
+    needs: detect-stack
+    if: needs.detect-stack.outputs.has_node == 'true' && env.SKIP_BUNDLE != '1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'npm' }
+      - name: Install
+        run: npm ci --prefer-offline --no-audit
+      - name: Build
+        run: |
+          if npm run | grep -qE '^\s+build\b'; then
+            npm run build
+          else
+            echo "::warning::No 'build' script — skipping bundle check"
+            exit 0
+          fi
+      - name: Check bundle budget
+        run: |
+          DIST="$BUNDLE_DIST_DIR"
+          if [ ! -d "$DIST" ]; then
+            echo "::warning::Build output dir '$DIST' not found — skipping"
+            exit 0
+          fi
+          SIZE_KB=$(du -sk "$DIST" | cut -f1)
+          if [ "$SIZE_KB" -gt "$BUNDLE_BUDGET_KB" ]; then
+            echo "::error title=Bundle budget exceeded::${SIZE_KB}KB > ${BUNDLE_BUDGET_KB}KB budget. Run 'npm run build && du -sh ${DIST}' locally to investigate."
+            exit 1
+          fi
+          echo "✅ Bundle ${SIZE_KB}KB / ${BUNDLE_BUDGET_KB}KB budget"
+
+  # ─── 2. Dependency Rules ───────────────────────────────
+  # Node:   dependency-cruiser (.dependency-cruiser.cjs)
+  # Python: import-linter      (.importlinter)
+  dependency-rules:
+    name: 2. Dependency rules
+    needs: detect-stack
+    if: env.SKIP_DEPS != '1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node — dependency-cruiser
+        if: needs.detect-stack.outputs.has_node == 'true'
+        run: |
+          if [ ! -f .dependency-cruiser.cjs ] && [ ! -f .dependency-cruiser.js ]; then
+            echo "::warning::No .dependency-cruiser config — skipping (see setup doc to enable)"
+            exit 0
+          fi
+          npm ci --prefer-offline --no-audit
+          npx --no-install depcruise --validate src/ || {
+            echo "::error title=Dependency rule violation::Module-boundary rules failed. Run 'npx depcruise --validate src/' locally."
+            exit 1
+          }
+          echo "✅ Dependency rules pass"
+      - name: Python — import-linter
+        if: needs.detect-stack.outputs.has_python == 'true'
+        run: |
+          if [ ! -f .importlinter ] && [ ! -f setup.cfg ]; then
+            echo "::warning::No .importlinter config — skipping"
+            exit 0
+          fi
+          pip install import-linter
+          lint-imports || {
+            echo "::error title=Import contract violation::Module-boundary rules failed."
+            exit 1
+          }
+          echo "✅ Import contracts pass"
+
+  # ─── 3. Coverage Gate ──────────────────────────────────
+  # Fails if coverage drops below COVERAGE_THRESHOLD percent.
+  coverage-gate:
+    name: 3. Coverage gate
+    needs: detect-stack
+    if: env.SKIP_COVERAGE != '1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        if: needs.detect-stack.outputs.has_node == 'true'
+        with: { node-version: '20', cache: 'npm' }
+      - uses: actions/setup-python@v5
+        if: needs.detect-stack.outputs.has_python == 'true'
+        with: { python-version: '3.11' }
+      - uses: actions/setup-go@v5
+        if: needs.detect-stack.outputs.has_go == 'true'
+        with: { go-version: 'stable' }
+
+      - name: Node — vitest/jest coverage
+        if: needs.detect-stack.outputs.has_node == 'true'
+        run: |
+          npm ci --prefer-offline --no-audit
+          npm test -- --coverage --coverageReporters=json-summary || {
+            echo "::error title=Tests failed::Cannot evaluate coverage when tests fail"
+            exit 1
+          }
+          if [ -f coverage/coverage-summary.json ]; then
+            PCT=$(node -e 'console.log(require("./coverage/coverage-summary.json").total.lines.pct)')
+            if awk -v p="$PCT" -v t="$COVERAGE_THRESHOLD" 'BEGIN{exit !(p<t)}'; then
+              echo "::error title=Coverage below threshold::${PCT}% < ${COVERAGE_THRESHOLD}%"
+              exit 1
+            fi
+            echo "✅ Coverage ${PCT}% / ${COVERAGE_THRESHOLD}% threshold"
+          else
+            echo "::warning::No coverage-summary.json — configure jest/vitest to emit json-summary"
+          fi
+
+      - name: Python — pytest --cov-fail-under
+        if: needs.detect-stack.outputs.has_python == 'true'
+        run: |
+          pip install -e . pytest pytest-cov 2>/dev/null || pip install pytest pytest-cov
+          [ -f requirements.txt ] && pip install -r requirements.txt || true
+          pytest --cov --cov-fail-under="$COVERAGE_THRESHOLD" || exit 1
+          echo "✅ Python coverage ≥ ${COVERAGE_THRESHOLD}%"
+
+      - name: Go — go test -cover
+        if: needs.detect-stack.outputs.has_go == 'true'
+        run: |
+          go test -coverprofile=coverage.out ./... || exit 1
+          PCT=$(go tool cover -func=coverage.out | awk '/^total:/ {gsub("%","",$3); print $3}')
+          if awk -v p="$PCT" -v t="$COVERAGE_THRESHOLD" 'BEGIN{exit !(p<t)}'; then
+            echo "::error title=Coverage below threshold::${PCT}% < ${COVERAGE_THRESHOLD}%"
+            exit 1
+          fi
+          echo "✅ Go coverage ${PCT}% / ${COVERAGE_THRESHOLD}%"
+
+  # ─── 4. Complexity Ceiling ─────────────────────────────
+  # Fails if any function exceeds COMPLEXITY_CEILING cyclomatic complexity.
+  complexity-ceiling:
+    name: 4. Complexity ceiling
+    needs: detect-stack
+    if: env.SKIP_COMPLEXITY != '1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node — eslint complexity
+        if: needs.detect-stack.outputs.has_node == 'true'
+        uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'npm' }
+      - name: Node run
+        if: needs.detect-stack.outputs.has_node == 'true'
+        run: |
+          npm ci --prefer-offline --no-audit
+          # Apply complexity rule even if .eslintrc doesn't have it
+          npx --no-install eslint --no-eslintrc --rule "{\"complexity\": [\"error\", $COMPLEXITY_CEILING]}" --ext .js,.jsx,.ts,.tsx src/ || {
+            echo "::error title=Complexity ceiling exceeded::One or more functions exceed cyclomatic complexity ${COMPLEXITY_CEILING}"
+            exit 1
+          }
+          echo "✅ Complexity ≤ ${COMPLEXITY_CEILING}"
+
+      - name: Python — radon
+        if: needs.detect-stack.outputs.has_python == 'true'
+        run: |
+          pip install radon
+          # radon -n B = fail any function with CC > 10 (rank B or worse)
+          # Adjust min_rank based on COMPLEXITY_CEILING (10=B, 20=C, 30=D, 40=E)
+          if [ "$COMPLEXITY_CEILING" -le 10 ]; then RANK=B
+          elif [ "$COMPLEXITY_CEILING" -le 20 ]; then RANK=C
+          else RANK=D; fi
+          OUT=$(radon cc -n "$RANK" src/ 2>/dev/null || true)
+          if [ -n "$OUT" ]; then
+            echo "$OUT"
+            echo "::error title=Complexity ceiling exceeded::Functions above CC ${COMPLEXITY_CEILING} (rank $RANK)"
+            exit 1
+          fi
+          echo "✅ Complexity ≤ ${COMPLEXITY_CEILING}"
+
+      - name: Go — gocyclo
+        if: needs.detect-stack.outputs.has_go == 'true'
+        uses: actions/setup-go@v5
+        with: { go-version: 'stable' }
+      - name: Go run
+        if: needs.detect-stack.outputs.has_go == 'true'
+        run: |
+          go install github.com/fzipp/gocyclo/cmd/gocyclo@latest
+          OUT=$(gocyclo -over "$COMPLEXITY_CEILING" . || true)
+          if [ -n "$OUT" ]; then
+            echo "$OUT"
+            echo "::error title=Complexity ceiling exceeded::Functions above CC ${COMPLEXITY_CEILING}"
+            exit 1
+          fi
+          echo "✅ Complexity ≤ ${COMPLEXITY_CEILING}"
+
+  # ─── Roll-up gate ──────────────────────────────────────
+  # Single required status check for branch protection. Add this job name
+  # ('Fitness Functions / All checks') as a required check.
+  all-checks:
+    name: All checks
+    needs: [bundle-budget, dependency-rules, coverage-gate, complexity-ceiling]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify all fitness functions passed
+        run: |
+          BUNDLE='${{ needs.bundle-budget.result }}'
+          DEPS='${{ needs.dependency-rules.result }}'
+          COV='${{ needs.coverage-gate.result }}'
+          CPLX='${{ needs.complexity-ceiling.result }}'
+          echo "  bundle:     $BUNDLE"
+          echo "  deps:       $DEPS"
+          echo "  coverage:   $COV"
+          echo "  complexity: $CPLX"
+          # 'success' or 'skipped' is OK; 'failure' or 'cancelled' fails the gate
+          for r in "$BUNDLE" "$DEPS" "$COV" "$CPLX"; do
+            case "$r" in
+              success|skipped) ;;
+              *) echo "::error::At least one fitness function failed"; exit 1 ;;
+            esac
+          done
+          echo "✅ All fitness functions pass"

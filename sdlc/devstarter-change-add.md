@@ -227,7 +227,83 @@ Read current file from disk, then add:
 - Updated OWASP checklist items if applicable
 - **Add Revision History row:** CR ID, date, type=ADD, description of security rules added
 
-After all docs updated, show:
+After all docs updated, run the **Doc Quality Preflight** before showing
+the Gate A2 picker. This converts Gate A2 from "did you remember to update
+docs?" into "are docs to spec?"
+
+### Pre-Gate A2 — Doc Quality Preflight (mandatory)
+
+For each updated doc, programmatically verify spec compliance. Show a row
+with ✅ / ❌ / ⚠️ for each check. The picker only appears once all ❌ are
+resolved (⚠️ are non-blocking warnings).
+
+**Universal checks (always run):**
+1. **CLAUDE.md** — feature row added to Recently Shipped or in-progress section
+2. **docs/brd.html** — every new user story has ≥ 2 Given-When-Then
+   acceptance criteria (regex check on page content for `Given ... When
+   ... Then` patterns; count must be ≥ 2 × story count)
+3. **Revision History row** present on every modified doc with current CR ID
+
+**Conditional checks (run only if the feature touches the relevant domain):**
+
+4. **docs/database-design.html** present AND the migration script section
+   includes a reversible rollback (search for `DROP`, `ALTER ... DROP`, or
+   explicit "Rollback:" block) — for any feature with `change_type = data` /
+   schema modification
+
+5. **docs/api-reference.html** updated AND **`docs/api/openapi.yaml`**
+   present AND validates — for any backend feature adding/modifying endpoints
+   - `openapi-spec-validator docs/api/openapi.yaml` exits 0 (or `redocly lint`)
+   - SLO table (section 6) has concrete P50/P95/P99 numbers (no `TBD`)
+   - For endpoints touching auth/money/PII/multi-tenant/external integrations:
+     Threat Model section present with all 6 STRIDE rows populated
+
+5b. **docs/frontend-spec.html** updated — for any frontend feature adding/
+   modifying routes, components, or pages
+   - Section 6 (Performance Budget) has concrete KB numbers per touched route
+     (no `TBD`, no "we'll measure later")
+   - Section 7 (Accessibility Conformance Plan) names WCAG level + audit
+     tooling (axe-core in CI is mandatory)
+   - Section 4 (Component Inventory) appended for every new shared component
+
+5c. **docs/ux-spec.html** updated — for any UX-touching feature (new screens,
+   new components, flow changes, microcopy changes)
+   - Section 6 (Accessibility Conformance) WCAG level named explicitly
+   - Conformance table has Pass / Partial / Fail for every Level AA criterion
+     touched by the change — every Partial / Fail row has issue link + owner
+     + target date (no "TBD")
+   - Section 5 (Component Specifications) appended for every new shared component
+     visible in `docs/prototype/`
+   - Design tokens (section 3) match `docs/prototype/components.html` (no drift)
+
+6. **docs/security-design.html** updated — for any feature touching auth,
+   data scope, multi-tenancy, or external integrations
+   - OWASP checklist updated with new feature's risk class
+
+7. **docs/adr/NNNN-<slug>.html** present — for any feature touching auth,
+   multi-tenancy, schema, caching, payments, billing, or external integrations
+   (the "non-trivial decision" set; mandate added in v3.6.0)
+   - Uses TechLead ADR template
+   - Status: Accepted (not Proposed)
+
+Show the preflight result block:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔎 DOC QUALITY PREFLIGHT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ CLAUDE.md — feature row added
+✅ BRD — [N] stories, [M] GWT acceptance criteria (≥ 2× ratio met)
+✅ Revision History — CR-[ID] row added on [docs touched]
+✅ Schema migration — reversible rollback present (or "n/a — no schema change")
+✅ API spec — openapi.yaml validates; SLO table populated; threat model present
+✅ Security design — OWASP updated (or "n/a — no auth/data scope change")
+✅ ADR — docs/adr/[NNNN]-[slug].html present (or "n/a — trivial change")
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+If any row is ❌: do **not** show the Gate A2 picker. List the failing rows
+with the specific gap (e.g., "BRD has 3 stories but only 4 GWT criteria —
+need ≥ 6"). Loop back to A-PHASE 3 with the agent that owns the failing doc.
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -240,8 +316,14 @@ Documents updated:
   ✏️ docs/brd.html     — [N] new user stories added
   ✏️ docs/database-design.html  — [or "no changes needed"]
   ✏️ docs/api-reference.html     — [or "no changes needed"]
+  ✏️ docs/api/openapi.yaml       — [or "no changes needed"]
+  ✏️ docs/frontend-spec.html     — [or "no changes needed"]
+  ✏️ docs/ux-spec.html           — [or "no changes needed"]
   ✏️ docs/prototype/index.html    — [or "no changes needed"]
   ✏️ docs/security-design.html — [or "no changes needed"]
+  ✏️ docs/adr/[NNNN]-[slug].html  — [or "no ADR required for this change"]
+
+Doc Quality Preflight: ✅ all checks passed (see block above)
 
 Please review all updated documents.
 
@@ -491,6 +573,105 @@ body:  "Feature '[feature name]' — all [N] tasks done. Review and approve to m
 ```
 This alerts the user without requiring them to watch the terminal.
 
+### Pre-Gate A4 — Fitness Functions verification (mandatory)
+
+Before showing the Gate A4 picker, verify CI fitness functions passed on
+each PR. This wires `~/.claude/templates/github/fitness-functions.yml` into
+the merge gate.
+
+For each PR in this feature, run:
+```bash
+gh pr checks <PR_NUMBER> --json name,bucket --jq \
+  '.[] | select(.name | contains("Fitness Functions")) | {name, bucket}'
+```
+
+Decision:
+- **All `Fitness Functions / All checks` rows are `pass`** → ✅ proceed to next pre-gate step
+- **Any row is `fail`** → ❌ Do NOT show Gate A4. Print the failing fitness
+  check name, the specific metric (bundle KB, coverage %, complexity), the
+  PR/file involved, and route to `/devstarter-debug` or `/devstarter-change
+  fix-bug` to address. Re-run the gate after fix lands.
+- **Workflow not present on the repo** → emit a one-line warning and
+  proceed (some legacy projects don't have it yet); recommend installing
+  per `~/.claude/templates/github/fitness-functions-setup.md`.
+- **Workflow `pending`** → wait up to 5 min via `Monitor`, then re-check.
+  Do not skip.
+
+### Pre-Gate A4 — TechLead PR Review Checklist (mandatory)
+
+After fitness functions pass, TechLead runs the 26-item PR Review Checklist
+from `agents/devstarter-techlead.md` against each PR diff and posts the
+findings as a PR comment. Gate A4 cannot proceed if any item in
+**CORRECTNESS / SECURITY / OPERATIONS** is ❌ unmitigated.
+
+For each PR in the feature, TechLead loads the diff and evaluates 26 items
+across 6 categories. Mark each:
+
+| Symbol | Meaning | Behavior |
+|--------|---------|----------|
+| ✅     | Pass    | No action |
+| ❌     | Fail (must fix) | Blocks the gate; route to /devstarter-change fix-bug |
+| ⚠️     | Waiver  | Allowed if a written rationale + owner + revisit-date is added to the PR description under `## Review Waivers` |
+| n/a    | Doesn't apply | Skip (e.g., no DB migration → ops "Rollback is possible" is n/a) |
+
+Severity classes:
+- **🔴 BLOCKER (any ❌):** CORRECTNESS, SECURITY, OPERATIONS — Gate A4 cannot pass
+- **🟡 MAJOR (any ❌):** TESTS, CODE QUALITY, OBSERVABILITY — surface in summary, owner can ship-with-debt by adding waiver
+
+Post the checklist as a PR comment:
+```bash
+gh pr review <PR_NUMBER> --comment --body "$(cat <<EOF
+## TechLead PR Review Checklist
+
+**Correctness**
+- [✅/❌] Happy path correct
+- [✅/❌] Edge cases handled
+- [✅/❌] Errors surfaced not swallowed
+- [✅/❌] No race conditions
+- [✅/❌] Concurrent access safe
+
+**Security**
+- [✅/❌] No secrets in code/logs
+- [✅/❌] Input validated
+- [✅/❌] Auth/authz correct
+- [✅/❌] No new OWASP Top 10 issues
+- [✅/❌] Dependencies not vulnerable
+
+**Tests**
+- [✅/❌] New logic unit tested
+- [✅/❌] Edge cases tested
+- [✅/❌] Integration tests updated
+- [✅/❌] Test names describe behavior
+
+**Code Quality**
+- [✅/❌] Single responsibility
+- [✅/❌] Descriptive names
+- [✅/❌] No unnecessary complexity
+- [✅/❌] No commented-out code
+- [✅/❌] No magic numbers
+
+**Observability**
+- [✅/❌] Structured logging added
+- [✅/❌] No PII in logs
+- [✅/❌] Metrics instrumented
+
+**Operations**
+- [✅/❌] No breaking API changes without versioning
+- [✅/❌] DB migrations backward-compatible
+- [✅/❌] Rollback is possible
+
+**Verdict:** [N] ✅ / [N] ❌ blockers / [N] ⚠️ waivers
+EOF
+)"
+```
+
+Decision:
+- **All BLOCKER items ✅ or ⚠️ (with waiver in PR description):** proceed to Gate A4
+- **Any BLOCKER ❌:** Do NOT show Gate A4. Route to `/devstarter-change fix-bug`
+  for that finding (each ❌ becomes one bug intake). Re-run gate after fix.
+- **MAJOR items have ❌:** surface in Gate A4 summary; owner can choose
+  approve (with ship-as-debt waiver) or revise.
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⛔ GATE A4 — FEATURE APPROVAL (ALL TASKS)
@@ -503,7 +684,25 @@ PRs:
   #[N] — [task 2 name] — [branch]
   #[N] — [task 3 name] — [branch]
 
-Review findings:
+Fitness Functions (all PRs):
+  ✅ Bundle budget       (within [BUDGET_KB] KB)
+  ✅ Dependency rules    (0 violations)
+  ✅ Coverage gate       ([PCT]% / [THRESHOLD]%)
+  ✅ Complexity ceiling  (≤ [CEILING])
+  (or ⚠️ skipped if workflow not installed on legacy repo — flag for follow-up)
+
+TechLead PR Review Checklist (all PRs):
+  Correctness    [N]/5 ✅
+  Security       [N]/5 ✅
+  Tests          [N]/4 ✅
+  Code Quality   [N]/5 ✅
+  Observability  [N]/3 ✅
+  Operations     [N]/3 ✅
+  ─────────────────────────
+  Total          [N]/26 ✅  ([N] ⚠️ waivers, [N] ❌ blockers)
+  → All BLOCKER class (Correctness/Security/Operations) items must be ✅ or ⚠️.
+
+Review findings (combined fitness + TechLead checklist + agent reviews):
   🔴 Blockers: [N — all fixed before this gate]
   🟡 Major:    [N — listed below with recommendations]
   🟢 Minor:    [N — non-blocking suggestions]

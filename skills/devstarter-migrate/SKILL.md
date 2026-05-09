@@ -1,5 +1,7 @@
 # /devstarter-migrate — Migration to New Tech Stack
 
+Plan and execute a tech-stack migration: discovery → ADR → strangler-fig plan → phased rollout → cutover.
+
 ## ⚠️ Model Gate — Run Before Anything Else
 
 This workflow requires **Opus** (`claude-opus-4-7`).
@@ -12,5 +14,20 @@ If "I need to switch": stop immediately, do not load the SDLC runbook.
 If "Yes, proceed": continue.
 
 ---
+
+## When to use vs alternatives
+
+- **Use this** when: replacing a major piece of the stack (e.g., React → Vue, Postgres → MySQL, monolith → services) — multi-phase, cross-team
+- **Use /devstarter-change** instead when: changing a single feature within the existing stack (no stack swap)
+- **Use /devstarter-consult** instead when: you haven't decided to migrate yet (use consult to weigh options first)
+- **Use /devstarter-audit** instead when: assessing what *would* need to migrate (preflight before deciding)
+
+## Inline Args
+
+```
+/devstarter-migrate                          → interactive (from / to / scope intake)
+/devstarter-migrate React Vue                → migrate React → Vue
+/devstarter-migrate Postgres MySQL data      → migrate Postgres → MySQL with data move
+```
 
 Read `~/.claude/sdlc/devstarter-migrate.md` and follow all phases and approval rules.

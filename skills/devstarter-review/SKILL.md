@@ -1,5 +1,7 @@
 # /devstarter-review — Interactive Code Review
 
+Run a structured 3-reviewer pass (TechLead / QA / Security) on a PR / branch / current diff. Outputs Blocker / Major / Minor findings with severity definitions and post-review actions.
+
 ## ⚠️ Model Gate — Run Before Anything Else
 
 This workflow requires **Opus** (`claude-opus-4-7`).
@@ -13,11 +15,18 @@ If "Yes, proceed": continue.
 
 ---
 
-Read `~/.claude/sdlc/devstarter-review.md` and run the review.
+## When to use vs alternatives
+
+- **Use this** when: reviewing a specific *diff* (PR / branch / current changes) before merge
+- **Use /devstarter-audit** instead when: scanning the *whole project* (security + quality + drift), not a single diff
+- **Use /devstarter-debug** instead when: the goal is to *root-cause a bug* (not evaluate a diff)
 
 ## Inline Args
+
 ```
 /devstarter-review          → review current changes (git diff HEAD)
 /devstarter-review #42      → review PR #42
 /devstarter-review branch   → review named branch vs develop
 ```
+
+Read `~/.claude/sdlc/devstarter-review.md` and run the review.
