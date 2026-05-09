@@ -1,5 +1,31 @@
 # Changelog
 
+## v3.7.1 — `/update` alias fix (2026-05-09)
+
+> Patch release. Every release announcement since v3.5.0 told users
+> "Run `/update` in Claude Code to get this version" — but `/update`
+> didn't actually exist as a skill. Only `/devstarter-update` did.
+> Users following the announcement instructions hit "command not
+> found" until they discovered the longer name.
+
+**Fix:**
+
+- **`skills/update/SKILL.md`** (new) — short alias for
+  `/devstarter-update`. Both run `bash ~/.claude/update.sh` and produce
+  identical behavior. After this patch lands, every prior release
+  announcement that says "Run `/update`" becomes truthful for any
+  user who reaches v3.7.1+.
+
+**No other changes.** Same SDLC, same agents, same gates — just the
+alias users were already being told to run.
+
+**Note for users on v3.4.0–v3.7.0:** `/update` still doesn't exist on
+your install yet. To get this fix, run `/devstarter-update` (or
+`bash ~/.claude/update.sh`) once. After that, `/update` will work
+for every future release.
+
+---
+
 ## v3.7.0 — Top-1% Completeness (2026-05-09)
 
 > Additive top-up release. v3.6.0 made gates enforce quality. v3.7.0
