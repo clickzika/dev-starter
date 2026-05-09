@@ -42,6 +42,7 @@ Show this menu and ask ONE question:
   13. 🔥 Hotfix (critical production bug)
   14. ⏪ Rollback Production
   15. 🚨 Incident Response
+  25. 📋 Post-Mortem (blameless, after SEV resolved)
 
 ── SETUP & INFRA ──────────────────────────────
   16. 💻 Setup Local Environment
@@ -95,3 +96,4 @@ Route to correct file:
 | 22 | `~/.claude/sdlc/devstarter-doctor.md` |
 | 23 | `~/.claude/sdlc/devstarter-review.md` |
 | 24 | `~/.claude/sdlc/devstarter-debug.md` |
+| 25 | `~/.claude/sdlc/devstarter-postmortem.md` |

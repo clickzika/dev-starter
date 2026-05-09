@@ -1,5 +1,59 @@
 # Changelog
 
+## v3.7.0 — Top-1% Completeness (2026-05-09 — unreleased, in progress)
+
+> Additive top-up release. v3.6.0 made gates enforce quality. v3.7.0
+> adds the four workflows that top-1% teams have but DevStarter was
+> missing — post-mortem, ADR capture, compliance audit, perf profiling —
+> plus polish (lifecycle headers, TL;DR blocks, quick-start mode).
+
+### /devstarter-postmortem — Blameless Incident Post-Mortem
+
+After a SEV-1/SEV-2 incident is resolved, run a structured blameless
+post-mortem. Top-1% engineering practice; previously absent.
+
+**New:**
+- **`skills/devstarter-postmortem/SKILL.md`** — Opus-gated entry, decision
+  tree (vs incident / retro / debug), inline args (no-arg / slug / file)
+- **`sdlc/devstarter-postmortem.md`** — full 9-phase runbook:
+  - Phase 0 — incident intake (slug, severity, timing, impact, repeat?)
+  - Phase 1 — timeline reconstruction from raw evidence (chat, alerts,
+    deploy logs, APM); actor-based rows (engineer / system / alert /
+    customer), never names
+  - Phase 2 — 5 Whys causal analysis pushed past the first plausible
+    "why" to a root cause that targets systems, not humans
+  - Phase 3 — contributing factors across Technical / Process /
+    Observability / Organizational categories
+  - Phase 4 — customer & communications review (what did customers see,
+    when did we tell them, was the comms strategy adequate)
+  - Phase 5 — action items table with mandatory owner + size + priority
+    + target date (vague items are parked in "Open Questions" instead)
+  - Phase 6 — publish at `docs/postmortems/[date]-[slug].html` using
+    standard template; index.html updated
+  - Phase 7 — Blameless Review Gate (7-item checklist enforced before
+    publish — no person named as cause, actions target systems not
+    "be more careful," every Yes contributing factor has a corresponding
+    action item)
+  - Phase 8 — auto-create action item tickets in PM tool
+    (github-issues / notion / jira) with `post-mortem-action` label
+  - Phase 9 — handoff: implement P0 actions via `/devstarter-change`,
+    share with team, or schedule 30-day follow-up
+- **`devstarter-menu.md`** — entry #25 under PRODUCTION
+
+**Why:** v3.6.0 added incident response (`/devstarter-incident`) and sprint
+retro (`/devstarter-retro`) but no post-mortem workflow. Top teams treat
+these as different lenses: incident = response under pressure; retro =
+sprint reflection; post-mortem = causal analysis with prevention actions.
+
+**Pending in v3.7.0** (separate PRs):
+- /devstarter-adr — standalone ADR capture
+- /devstarter-compliance — WCAG / GDPR / HIPAA / SOC2 audits
+- /devstarter-profile — proactive performance investigation
+- Lifecycle Stage / Gates count / TL;DR headers across all SDLC files
+- Quick-start mode (`--quick` flag on `/devstarter-change`)
+
+---
+
 ## v3.6.0 — Real Quality Gates (2026-05-09)
 
 > The biggest single release in the v3.5.0 → v3.7.0 audit roadmap. Turns
