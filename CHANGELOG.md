@@ -1,5 +1,77 @@
 # Changelog
 
+## v3.5.0 — Cut the Clutter (2026-05-09)
+
+> **Partial release.** First two of four planned v3.5.0 sub-tasks shipped.
+> Remaining (deferred to v3.5.1 or v3.6.0 prep): VCS triplication refactor
+> (github/gitlab/svn → common base) and standardize 17 thin SDLC routers.
+> See `memory/consult-2026-05-09-top1-rigor-audit.md` for full roadmap.
+
+### Skills consolidation — 13 thin agent direct-invokes → 1 meta-skill
+
+**⚠️ Breaking change** for users who invoked agents via slash commands. Agents
+themselves are unchanged; only the redundant slash-command wrappers were removed.
+Use `@<alias>` (e.g., `@pm`, `@techlead`, `@qa`) directly in chat — same behavior,
+shorter to type, no skill-picker clutter.
+
+**What changed:**
+
+- **chore: removed 13 thin agent direct-invoke skills** — each was a 6-line
+  passthrough to its agent file:
+  `skills/devstarter-{ba,pm,techlead,backend,frontend,dba,qa,security,devops,uxui,docs,mobile,mlops}/SKILL.md`
+- **feat: `skills/devstarter-agents/SKILL.md`** — single meta-skill that lists
+  the full agent roster (alias, character, role) and supports inline args:
+  `/devstarter-agents`, `/devstarter-agents qa`, `/devstarter-agents pick`
+- **chore: `devstarter-menu.md`** — replaced 13-line AGENTS block with a single
+  pointer to `/devstarter-agents`
+
+**Migration for existing users:**
+
+After running `update.sh`, the slash commands `/devstarter-pm`,
+`/devstarter-techlead`, etc. will not exist. Either:
+- Type `@pm`, `@techlead`, etc. directly in chat (recommended — short alias)
+- Or run `/devstarter-agents` to see the full roster
+
+The agent files at `agents/devstarter-*.md` are unchanged.
+
+**Why:** Per the v3.5.0 audit (`memory/consult-2026-05-09-top1-rigor-audit.md`),
+these 13 wrappers added no logic — they just routed to the agent file. They
+cluttered the skill picker and added no discoverability beyond what `@pm` already
+provides. One meta-skill `/devstarter-agents` lists every agent with aliases and
+example prompts, replacing 13 entries with 1.
+
+### Code review polish — severity bar + post-review actions
+
+- **`sdlc/devstarter-review.md`** — added concrete Severity Definitions
+  (🔴 BLOCKER / 🟡 MAJOR / 🟢 MINOR with specific criteria each), wired
+  the post-review action loop to:
+  - `gh pr review --approve` for Mode A approvals
+  - `gh pr review --comment` to push findings as PR comments
+  - `/devstarter-change fix-bug` for "fix blockers" path with each finding
+    pre-filled as a separate bug intake
+  - "explain finding" path with impact, failure mode, fix pattern, test
+- Added "When to use vs alternatives" comparison to clarify boundaries with
+  `/devstarter-audit` (full project) and `/devstarter-debug` (root-cause hunt)
+
+### Handover access revocation — concrete per-VCS / per-PM commands
+
+- **`sdlc/devstarter-handover.md`** — Gate 4 access revocation expanded from
+  "Revoke (GitHub, Notion, .env)" to a concrete checklist:
+  - VCS revoke commands per `vcs.type` (github / gitlab / svn)
+  - PM revoke steps per `pm.type` (notion / jira / linear)
+  - Mandatory secret rotation rule (cached creds persist after access removal)
+  - CI/CD secret stores, monitoring/on-call, chat, cloud IAM, DNS
+- Added "When to use vs alternatives" header (vs `/devstarter-onboard` and
+  `/devstarter-existing`) so users pick the right command upfront
+
+### Onboarding clarity
+
+- **`sdlc/devstarter-onboarding.md`** — added "When to use vs alternatives"
+  header to disambiguate from `/devstarter-handover` (transfer of ownership)
+  and `/devstarter-existing` (first-time DevStarter setup, no team change)
+
+---
+
 ## v3.4.0 (2026-05-09)
 
 ### /devstarter-debug — Senior Dev Problem Analysis Workflow
