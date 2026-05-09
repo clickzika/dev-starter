@@ -37,10 +37,11 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 │   ├── devstarter-docs.md          ← Technical writing, API docs, runbooks
 │   └── devstarter-mlops.md         ← ML pipelines, model serving, drift monitoring
 │
-├── skills/ (41 Claude Code skills)
+├── skills/ (42 Claude Code skills)
 │   ├── devstarter-new/SKILL.md     ← /devstarter-new — start new project
 │   ├── devstarter-change/SKILL.md  ← /devstarter-change — add feature / fix bug
 │   ├── devstarter-release/SKILL.md ← /devstarter-release — deploy pipeline
+│   ├── devstarter-debug/SKILL.md   ← /devstarter-debug — senior dev problem analysis
 │   ├── devstarter-context/SKILL.md ← /devstarter-context — refresh CLAUDE.md
 │   └── ...                         ← 37 more skills
 │
