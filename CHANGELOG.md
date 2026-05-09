@@ -45,8 +45,42 @@ retro (`/devstarter-retro`) but no post-mortem workflow. Top teams treat
 these as different lenses: incident = response under pressure; retro =
 sprint reflection; post-mortem = causal analysis with prevention actions.
 
+### /devstarter-adr — Architecture Decision Record (Standalone)
+
+Capture an architecture decision *outside* of a feature change. Complements
+the v3.6.0 Gate A2 ADR mandate (which fires inside `/devstarter-change` for
+non-trivial features); this command handles tech-stack picks, library
+evaluations, infra moves, process changes, and superseding prior ADRs.
+
+**New:**
+- **`skills/devstarter-adr/SKILL.md`** — Opus-gated, decision tree (vs
+  change / consult / audit), inline args (no-arg / title / consult file)
+- **`sdlc/devstarter-adr.md`** — full 9-phase runbook:
+  - Phase 0 — intake (decision question, scope, driver, related ADRs)
+  - Phase 1 — Context & Forces table (functional / non-functional /
+    operational / skill / regulatory / strategic / existing)
+  - Phase 2 — ≥ 3 options (status quo always included; pros / cons / cost
+    / operational fit / risk / references each)
+  - Phase 3 — Recommendation referencing the Forces; confidence rating
+    (Low confidence → status = Proposed, not Accepted; revisit scheduled)
+  - Phase 4 — Consequences (positive AND negative AND revisit-triggers;
+    empty negatives list rejected as incomplete analysis)
+  - Phase 5 — Supersedes / Related (auto-search docs/adr/ for conflicts;
+    explicit supersede chain enforced both directions)
+  - Phase 6 — Generate sequential ADR ID (NNNN) + slug
+  - Phase 7 — Save using TechLead ADR template, update docs/adr/index.html
+  - Phase 8 — Approval Gate (Accepted / Proposed / revise)
+  - Phase 9 — Handoff (implement now via /devstarter-change / share /
+    schedule revisit / done)
+- **`devstarter-menu.md`** — entry #26
+
+**Why both ADR paths exist:**
+- `/devstarter-change` Gate A2 (v3.6.0) — *forces* an ADR for non-trivial
+  features so decisions inside features get captured
+- `/devstarter-adr` (this) — *enables* an ADR outside a feature for
+  decisions that don't fit the feature flow (stack picks, infra moves)
+
 **Pending in v3.7.0** (separate PRs):
-- /devstarter-adr — standalone ADR capture
 - /devstarter-compliance — WCAG / GDPR / HIPAA / SOC2 audits
 - /devstarter-profile — proactive performance investigation
 - Lifecycle Stage / Gates count / TL;DR headers across all SDLC files

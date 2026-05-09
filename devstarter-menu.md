@@ -43,6 +43,7 @@ Show this menu and ask ONE question:
   14. ⏪ Rollback Production
   15. 🚨 Incident Response
   25. 📋 Post-Mortem (blameless, after SEV resolved)
+  26. 🏛️  ADR — Architecture Decision Record (standalone)
 
 ── SETUP & INFRA ──────────────────────────────
   16. 💻 Setup Local Environment
@@ -97,3 +98,4 @@ Route to correct file:
 | 23 | `~/.claude/sdlc/devstarter-review.md` |
 | 24 | `~/.claude/sdlc/devstarter-debug.md` |
 | 25 | `~/.claude/sdlc/devstarter-postmortem.md` |
+| 26 | `~/.claude/sdlc/devstarter-adr.md` |
