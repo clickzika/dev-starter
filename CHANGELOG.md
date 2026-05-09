@@ -128,8 +128,45 @@ Design Spec with auditable accessibility commitment.
 enforceable Gate 1 deliverables matching BA's BRD and QA's Test Strategy
 pattern. Gate A2 is now a real quality gate, not a rubber stamp.
 
-**Last pending in v3.6.0** (separate PR):
-- Wire TechLead PR Review Checklist to Gate A4 (in addition to fitness functions)
+### TechLead PR Review Checklist wired to Gate A4
+
+The TechLead spec defined a 26-item PR Review Checklist (correctness,
+security, tests, code quality, observability, operations) but it was
+never wired to a merge gate — PRs merged on user "approve" alone.
+
+- **`sdlc/devstarter-change-add.md`** — second pre-Gate A4 step added,
+  runs after fitness functions pass:
+  - TechLead loads each PR diff and evaluates all 26 items
+  - Each item marked ✅ / ❌ / ⚠️ (waiver with rationale + owner +
+    revisit-date in PR description) / `n/a`
+  - Severity classes:
+    - **🔴 BLOCKER (any ❌):** correctness / security / operations →
+      Gate A4 cannot pass; route ❌ items to `/devstarter-change fix-bug`
+      with each finding pre-filled
+    - **🟡 MAJOR (any ❌):** tests / code quality / observability →
+      surfaces in summary; owner can ship-with-debt by adding waiver
+  - Checklist posted as PR comment via `gh pr review --comment`
+- Gate A4 picker now shows the rolled-up checklist counts per category
+  alongside the fitness-function row.
+
+**Why:** Closes the last "documented but unenforced" gap. Combined with
+the fitness functions and the Gate A2 Doc Quality Preflight, every gate
+now has programmatic enforcement, not just human approval.
+
+---
+
+## v3.6.0 status: **COMPLETE — ready to release**
+
+All five planned sub-PRs merged to develop:
+1. ✅ Fitness Functions CI template + workflow wiring (PR #26)
+2. ✅ Backend SLO/Threat-Model/OpenAPI + Gate A2 Doc Quality Preflight + ADR mandate (PR #27)
+3. ✅ Frontend Specification Document + Gate A2 enforcement (PR #28)
+4. ✅ UX Design Specification + WCAG conformance + Gate A2 enforcement (PR #29)
+5. ✅ TechLead PR Review Checklist wired to Gate A4 (this PR)
+
+Bundles in: v3.5.1 router standardization (held from earlier today).
+
+Next: bump VERSION to 3.6.0, finalize CHANGELOG date, run `bash scripts/publish.sh`.
 
 ---
 

@@ -586,7 +586,7 @@ gh pr checks <PR_NUMBER> --json name,bucket --jq \
 ```
 
 Decision:
-- **All `Fitness Functions / All checks` rows are `pass`** → ✅ proceed to Gate A4
+- **All `Fitness Functions / All checks` rows are `pass`** → ✅ proceed to next pre-gate step
 - **Any row is `fail`** → ❌ Do NOT show Gate A4. Print the failing fitness
   check name, the specific metric (bundle KB, coverage %, complexity), the
   PR/file involved, and route to `/devstarter-debug` or `/devstarter-change
@@ -596,6 +596,81 @@ Decision:
   per `~/.claude/templates/github/fitness-functions-setup.md`.
 - **Workflow `pending`** → wait up to 5 min via `Monitor`, then re-check.
   Do not skip.
+
+### Pre-Gate A4 — TechLead PR Review Checklist (mandatory)
+
+After fitness functions pass, TechLead runs the 26-item PR Review Checklist
+from `agents/devstarter-techlead.md` against each PR diff and posts the
+findings as a PR comment. Gate A4 cannot proceed if any item in
+**CORRECTNESS / SECURITY / OPERATIONS** is ❌ unmitigated.
+
+For each PR in the feature, TechLead loads the diff and evaluates 26 items
+across 6 categories. Mark each:
+
+| Symbol | Meaning | Behavior |
+|--------|---------|----------|
+| ✅     | Pass    | No action |
+| ❌     | Fail (must fix) | Blocks the gate; route to /devstarter-change fix-bug |
+| ⚠️     | Waiver  | Allowed if a written rationale + owner + revisit-date is added to the PR description under `## Review Waivers` |
+| n/a    | Doesn't apply | Skip (e.g., no DB migration → ops "Rollback is possible" is n/a) |
+
+Severity classes:
+- **🔴 BLOCKER (any ❌):** CORRECTNESS, SECURITY, OPERATIONS — Gate A4 cannot pass
+- **🟡 MAJOR (any ❌):** TESTS, CODE QUALITY, OBSERVABILITY — surface in summary, owner can ship-with-debt by adding waiver
+
+Post the checklist as a PR comment:
+```bash
+gh pr review <PR_NUMBER> --comment --body "$(cat <<EOF
+## TechLead PR Review Checklist
+
+**Correctness**
+- [✅/❌] Happy path correct
+- [✅/❌] Edge cases handled
+- [✅/❌] Errors surfaced not swallowed
+- [✅/❌] No race conditions
+- [✅/❌] Concurrent access safe
+
+**Security**
+- [✅/❌] No secrets in code/logs
+- [✅/❌] Input validated
+- [✅/❌] Auth/authz correct
+- [✅/❌] No new OWASP Top 10 issues
+- [✅/❌] Dependencies not vulnerable
+
+**Tests**
+- [✅/❌] New logic unit tested
+- [✅/❌] Edge cases tested
+- [✅/❌] Integration tests updated
+- [✅/❌] Test names describe behavior
+
+**Code Quality**
+- [✅/❌] Single responsibility
+- [✅/❌] Descriptive names
+- [✅/❌] No unnecessary complexity
+- [✅/❌] No commented-out code
+- [✅/❌] No magic numbers
+
+**Observability**
+- [✅/❌] Structured logging added
+- [✅/❌] No PII in logs
+- [✅/❌] Metrics instrumented
+
+**Operations**
+- [✅/❌] No breaking API changes without versioning
+- [✅/❌] DB migrations backward-compatible
+- [✅/❌] Rollback is possible
+
+**Verdict:** [N] ✅ / [N] ❌ blockers / [N] ⚠️ waivers
+EOF
+)"
+```
+
+Decision:
+- **All BLOCKER items ✅ or ⚠️ (with waiver in PR description):** proceed to Gate A4
+- **Any BLOCKER ❌:** Do NOT show Gate A4. Route to `/devstarter-change fix-bug`
+  for that finding (each ❌ becomes one bug intake). Re-run gate after fix.
+- **MAJOR items have ❌:** surface in Gate A4 summary; owner can choose
+  approve (with ship-as-debt waiver) or revise.
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -616,7 +691,18 @@ Fitness Functions (all PRs):
   ✅ Complexity ceiling  (≤ [CEILING])
   (or ⚠️ skipped if workflow not installed on legacy repo — flag for follow-up)
 
-Review findings:
+TechLead PR Review Checklist (all PRs):
+  Correctness    [N]/5 ✅
+  Security       [N]/5 ✅
+  Tests          [N]/4 ✅
+  Code Quality   [N]/5 ✅
+  Observability  [N]/3 ✅
+  Operations     [N]/3 ✅
+  ─────────────────────────
+  Total          [N]/26 ✅  ([N] ⚠️ waivers, [N] ❌ blockers)
+  → All BLOCKER class (Correctness/Security/Operations) items must be ✅ or ⚠️.
+
+Review findings (combined fitness + TechLead checklist + agent reviews):
   🔴 Blockers: [N — all fixed before this gate]
   🟡 Major:    [N — listed below with recommendations]
   🟢 Minor:    [N — non-blocking suggestions]
