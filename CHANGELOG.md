@@ -114,8 +114,55 @@ roadmap → optional handoff to `/devstarter-change`.
 isn't a crisis but matters before it becomes one had no home — perf
 issues silently ate SLO budget. This closes that gap.
 
+### /devstarter-compliance — Framework-specific Compliance Audit
+
+Last of the four new v3.7.0 commands. `/devstarter-audit` covers code/security
+quality and `/devstarter-security` covers OWASP — neither addresses the
+specific frameworks customers and regulators actually ask about. This
+command does, with a checklist + gap report + remediation roadmap +
+(for Type II frameworks) an evidence pack.
+
+**New:**
+- **`skills/devstarter-compliance/SKILL.md`** — Sonnet-tier (template-driven),
+  decision tree (vs audit / security / adr), inline args per framework
+- **`sdlc/devstarter-compliance.md`** — full 6-phase runbook covering
+  six frameworks each with a concrete checklist:
+  - **WCAG 2.1 Level AA** — 38 success criteria across Perceivable /
+    Operable / Understandable / Robust; axe-core preflight recommended
+  - **GDPR** — Lawfulness, Data Subject Rights, Data Handling, Accountability
+    (RoPA, DPIA, breach notification, cross-border transfers)
+  - **HIPAA** — Privacy + Security Rule (Administrative / Physical /
+    Technical) + Breach Notification (60-day/HHS rules)
+  - **SOC 2 Type II** — CC1–CC9 + A/C/PI/P trust services criteria with
+    evidence-pack requirements (artifacts auditors will request)
+  - **PCI-DSS** — 12 core requirements, scope reduction via tokenization
+  - **ISO 27001** — Annex A 93 controls (organizational / people /
+    physical / technological)
+  - Phase 0 — scope (framework, surface, trigger, prior audit, owner)
+  - Phase 1 — run checklist (Pass / Partial / Fail / N/A / Unknown with
+    evidence link per item)
+  - Phase 2 — gap inventory with severity (🔴 Critical / 🟠 High /
+    🟡 Medium / 🟢 Low)
+  - Phase 3 — remediation roadmap (every gap has owner + size + priority
+    + target date; vague items parked in Open Questions)
+  - Phase 4 — evidence pack (SOC 2 / HIPAA / ISO 27001 only) — control
+    → artifact → location → period covered
+  - Phase 5 — publish at `docs/compliance/[framework]-[date].html`;
+    `docs/compliance/index.html` updated; approval gate
+  - Phase 6 — auto-create remediation tickets (per `pm.type`); handoff
+    to `/devstarter-change` for P0 items
+  - Appendix — recommended audit cadence per framework
+- **`devstarter-menu.md`** — entry #28
+
+**Why:** Customers ask "are you SOC 2 compliant?" — the answer needs to
+be backed by a real audit + evidence, not aspirational. This workflow
+produces that.
+
+**v3.7.0 status:** all four new commands shipped (postmortem / adr /
+profile / compliance). Last items pending: Lifecycle Stage / Gates count /
+TL;DR headers across SDLC files + `--quick` flag on `/devstarter-change`.
+
 **Pending in v3.7.0** (separate PRs):
-- /devstarter-compliance — WCAG / GDPR / HIPAA / SOC2 audits
 - Lifecycle Stage / Gates count / TL;DR headers across all SDLC files
 - Quick-start mode (`--quick` flag on `/devstarter-change`)
 
