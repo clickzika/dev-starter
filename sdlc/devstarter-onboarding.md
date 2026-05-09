@@ -12,6 +12,15 @@ claude
 > Read ~/.claude/devstarter-onboarding.md and onboard [Name] as [Role]
 ```
 
+## When to use vs alternatives
+
+- **Use /devstarter-onboard** when: a NEW person is joining the team for
+  the first time. Output: personalized briefing + access setup + first-PR plan.
+- **Use /devstarter-handover** instead when: an existing owner is transferring
+  ownership to someone else (knowledge transfer + revocation, not setup).
+- **Use /devstarter-existing** instead when: the project is new to *you* but
+  not new to the team (first-time DevStarter setup on a repo, no team change).
+
 ---
 
 ## ⚠️ CRITICAL RULES
