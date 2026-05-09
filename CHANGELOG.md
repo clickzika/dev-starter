@@ -1,11 +1,15 @@
 # Changelog
 
-## v3.6.0 — Real Quality Gates (2026-05-09 — unreleased, in progress)
+## v3.6.0 — Real Quality Gates (2026-05-09)
 
-> Sprint focus: turn the documented quality bars into **enforced** quality
-> gates that auto-block PRs when architectural quality slips. The audit
-> identified this as the single highest-ROI change in the roadmap — top-1%
-> teams catch ~80% of architectural regressions automatically.
+> The biggest single release in the v3.5.0 → v3.7.0 audit roadmap. Turns
+> documented quality bars into **enforced** quality gates that auto-block
+> PRs when architectural quality slips. Top-1% engineering teams catch
+> ~80% of architectural regressions automatically — DevStarter now ships
+> the toolkit and wires it into the change workflow.
+>
+> **Bundles in v3.5.1** (router standardization) — see "Router
+> Standardization" section below.
 
 ### Architectural Fitness Functions — automated CI quality gates
 
@@ -155,22 +159,20 @@ now has programmatic enforcement, not just human approval.
 
 ---
 
-## v3.6.0 status: **COMPLETE — ready to release**
+### Sub-PR summary
 
-All five planned sub-PRs merged to develop:
+All five planned sub-PRs landed in develop and ship together as v3.6.0:
 1. ✅ Fitness Functions CI template + workflow wiring (PR #26)
 2. ✅ Backend SLO/Threat-Model/OpenAPI + Gate A2 Doc Quality Preflight + ADR mandate (PR #27)
 3. ✅ Frontend Specification Document + Gate A2 enforcement (PR #28)
 4. ✅ UX Design Specification + WCAG conformance + Gate A2 enforcement (PR #29)
-5. ✅ TechLead PR Review Checklist wired to Gate A4 (this PR)
+5. ✅ TechLead PR Review Checklist wired to Gate A4 (PR #30)
 
-Bundles in: v3.5.1 router standardization (held from earlier today).
-
-Next: bump VERSION to 3.6.0, finalize CHANGELOG date, run `bash scripts/publish.sh`.
+Plus **Router Standardization (v3.5.1)** — bundled into this release rather than shipped separately.
 
 ---
 
-## v3.5.1 — Router Standardization (2026-05-09 — unreleased, will bundle into v3.6.0)
+## Router Standardization (was v3.5.1, now bundled into v3.6.0)
 
 ### 17 SKILL.md routers now have decision trees + inline args
 
