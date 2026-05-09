@@ -227,7 +227,65 @@ Read current file from disk, then add:
 - Updated OWASP checklist items if applicable
 - **Add Revision History row:** CR ID, date, type=ADD, description of security rules added
 
-After all docs updated, show:
+After all docs updated, run the **Doc Quality Preflight** before showing
+the Gate A2 picker. This converts Gate A2 from "did you remember to update
+docs?" into "are docs to spec?"
+
+### Pre-Gate A2 — Doc Quality Preflight (mandatory)
+
+For each updated doc, programmatically verify spec compliance. Show a row
+with ✅ / ❌ / ⚠️ for each check. The picker only appears once all ❌ are
+resolved (⚠️ are non-blocking warnings).
+
+**Universal checks (always run):**
+1. **CLAUDE.md** — feature row added to Recently Shipped or in-progress section
+2. **docs/brd.html** — every new user story has ≥ 2 Given-When-Then
+   acceptance criteria (regex check on page content for `Given ... When
+   ... Then` patterns; count must be ≥ 2 × story count)
+3. **Revision History row** present on every modified doc with current CR ID
+
+**Conditional checks (run only if the feature touches the relevant domain):**
+
+4. **docs/database-design.html** present AND the migration script section
+   includes a reversible rollback (search for `DROP`, `ALTER ... DROP`, or
+   explicit "Rollback:" block) — for any feature with `change_type = data` /
+   schema modification
+
+5. **docs/api-reference.html** updated AND **`docs/api/openapi.yaml`**
+   present AND validates — for any backend feature adding/modifying endpoints
+   - `openapi-spec-validator docs/api/openapi.yaml` exits 0 (or `redocly lint`)
+   - SLO table (section 6) has concrete P50/P95/P99 numbers (no `TBD`)
+   - For endpoints touching auth/money/PII/multi-tenant/external integrations:
+     Threat Model section present with all 6 STRIDE rows populated
+
+6. **docs/security-design.html** updated — for any feature touching auth,
+   data scope, multi-tenancy, or external integrations
+   - OWASP checklist updated with new feature's risk class
+
+7. **docs/adr/NNNN-<slug>.html** present — for any feature touching auth,
+   multi-tenancy, schema, caching, payments, billing, or external integrations
+   (the "non-trivial decision" set; mandate added in v3.6.0)
+   - Uses TechLead ADR template
+   - Status: Accepted (not Proposed)
+
+Show the preflight result block:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔎 DOC QUALITY PREFLIGHT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ CLAUDE.md — feature row added
+✅ BRD — [N] stories, [M] GWT acceptance criteria (≥ 2× ratio met)
+✅ Revision History — CR-[ID] row added on [docs touched]
+✅ Schema migration — reversible rollback present (or "n/a — no schema change")
+✅ API spec — openapi.yaml validates; SLO table populated; threat model present
+✅ Security design — OWASP updated (or "n/a — no auth/data scope change")
+✅ ADR — docs/adr/[NNNN]-[slug].html present (or "n/a — trivial change")
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+If any row is ❌: do **not** show the Gate A2 picker. List the failing rows
+with the specific gap (e.g., "BRD has 3 stories but only 4 GWT criteria —
+need ≥ 6"). Loop back to A-PHASE 3 with the agent that owns the failing doc.
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -240,8 +298,12 @@ Documents updated:
   ✏️ docs/brd.html     — [N] new user stories added
   ✏️ docs/database-design.html  — [or "no changes needed"]
   ✏️ docs/api-reference.html     — [or "no changes needed"]
+  ✏️ docs/api/openapi.yaml       — [or "no changes needed"]
   ✏️ docs/prototype/index.html    — [or "no changes needed"]
   ✏️ docs/security-design.html — [or "no changes needed"]
+  ✏️ docs/adr/[NNNN]-[slug].html  — [or "no ADR required for this change"]
+
+Doc Quality Preflight: ✅ all checks passed (see block above)
 
 Please review all updated documents.
 

@@ -41,10 +41,45 @@ and `memory/consult-2026-05-09-top1-rigor-audit.md`. Previously the
 TechLead spec defined fitness functions in a table but no CI ever ran
 them. With this change the bar is enforced, not documented.
 
-**Pending in v3.6.0** (separate PRs, this release stays open until done):
-- Backend / Frontend / UX agents — add mandatory deliverable templates
-  (API Spec / Component Spec + Bundle Budget / Design Spec + A11y Audit)
-- Mandate ADR at Gate A2 for non-trivial features
+### Backend mandatory deliverable + Gate A2 Doc Quality Preflight
+
+The Backend agent's API Reference Document was already a Gate 1 deliverable
+but lacked enforceable specifics. v3.6.0 adds three required additions:
+
+- **`agents/devstarter-backend.md`** — API Reference Document now requires:
+  - **SLO/SLI table** (section 6) — concrete P50/P95/P99 latency, availability,
+    and error-budget numbers per endpoint group serving > 1 RPS. No `TBD`.
+  - **Threat Model** (section 7) — STRIDE checklist with concrete mitigation
+    + test for each row. Mandatory if endpoint touches auth / money / PII /
+    multi-tenant data / external integrations.
+  - **`docs/api/openapi.yaml`** companion spec (machine-readable) — OpenAPI
+    3.1+ with `x-slo` extensions matching section 6. Validates with
+    `openapi-spec-validator` or `redocly lint`. Used by contract tests, SDK
+    generation, gateway routing.
+  - Quality gate updated: SLO table populated, Threat Model present, spec
+    validates, HTML and OpenAPI don't drift.
+
+- **`sdlc/devstarter-change-add.md`** — Gate A2 promoted from rubber stamp to
+  real quality gate via a **Doc Quality Preflight** that runs before the
+  approve picker appears:
+  - BRD has ≥ 2× Given-When-Then criteria per user story
+  - Schema migration has reversible rollback (DROP / ALTER ... DROP)
+  - OpenAPI spec validates; SLO table populated; Threat Model present
+  - security_design.html updated for auth/data/multi-tenant/external scope
+  - **ADR mandatory** for auth, multi-tenancy, schema, caching, payments,
+    billing, external integrations (the "non-trivial decision" set);
+    `docs/adr/NNNN-<slug>.html` must exist with status=Accepted
+  - Failing rows block the Gate A2 picker — loop back to the agent that
+    owns the failing doc
+
+**Why both ship together:** the Backend agent calls out "Gate A2 will reject
+backend features that lack SLO/Threat Model" so the spec change and the
+gate enforcement are coupled — shipping one without the other would either
+be unenforced docs or unattainable enforcement.
+
+**Pending in v3.6.0** (separate PRs, release stays open until done):
+- Frontend / UX agents — mandatory deliverable templates
+  (Component Spec + Bundle Budget / Design Spec + A11y Audit)
 - Wire TechLead PR Review Checklist to Gate A4 (in addition to fitness functions)
 
 ---
