@@ -15,7 +15,8 @@ Set up git + GitFlow on a repo: branches (main/uat/develop), branch protection, 
 | _(none)_ | Interactive — show setup plan and ask to confirm before running |
 | `full` | Run all phases without confirmation prompts |
 | `branches` | Phase 3 only — create/verify gitflow branches |
-| `protect` | Phase 4 only — apply branch protection rules |
+| `protect` | Phase 4 + 4.5 only — branch protection + post-merge cleanup config |
+| `cleanup` | Phase 4.5 only — enable delete_branch_on_merge + global fetch.prune (+ optional `git sweep` alias) |
 | `labels` | Phase 5 only — create standard GitHub labels |
 
 Read `~/.claude/sdlc/devstarter-gitsetup.md` and follow all phases.
