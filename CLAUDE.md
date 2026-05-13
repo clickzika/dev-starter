@@ -10,7 +10,7 @@ Name: DevStarter
 Description: A complete development workflow system for Claude Code. Drop it into ~/.claude/ and get a full software team — 13 specialist AI agents, 24 slash commands, 28+ SDLC runbooks, and battle-tested templates — ready to build any project from scratch.
 Repository: https://github.com/clickzika/dev-starter-dev
 Notion Board: https://www.notion.so/339d9f1fcda1815b9b47c9c6f5a8e54b
-Version: 1.7.0
+Version: 3.8.0
 Status: Active development — IDLE (v1.5.0 shipped)
 Created: 2026-03-22
 Branch Strategy: GitFlow (main / develop / feature/* / hotfix/*)
@@ -349,6 +349,7 @@ Every slash command requires:
 | v3.2.0 | Consult→Change handoff — consult saves intake file + AskUserQuestion gate (save/implement now/follow-up); /devstarter-change skips intake when given consult file |
 | v3.3.0 | Opus model gate in 6 SKILL.md files; commands/ migration cleanup (delete orphaned folder + fix 4 refs); Opus model ID → claude-opus-4-7 |
 | v3.4.0 | /devstarter-debug — hypothesis-driven investigation workflow; 5-phase root cause analysis with surgical fix plan; handoff to /devstarter-change |
+| v3.8.0 | /devstarter-gitsetup Phase 4.5 — post-merge branch cleanup (delete_branch_on_merge + fetch.prune + optional git sweep alias); new `cleanup` inline arg |
 
 ---
 
