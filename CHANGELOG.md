@@ -1,5 +1,56 @@
 # Changelog
 
+## v3.8.0 — Post-merge branch cleanup in gitsetup (2026-05-13)
+
+> New gitsetup phase that eliminates stale feature branches automatically
+> after every PR merge — both on the remote (GitHub auto-delete) and in
+> the local clone (global `fetch.prune`). Removes a recurring chore from
+> the per-PR workflow.
+
+**What changed:**
+
+- **`sdlc/devstarter-gitsetup.md`** — new **Phase 4.5 — Post-Merge
+  Branch Cleanup**, inserted between Phase 4 (branch protection) and
+  Phase 5 (labels). Idempotent — every step checks current state first.
+  Phase steps:
+  1. Enable `delete_branch_on_merge=true` on the GitHub repo via
+     `gh api -X PATCH` (deletes the head branch on every PR merge).
+  2. Enable `git config --global fetch.prune true` (auto-removes stale
+     `origin/feature/*` tracking refs on every `git fetch`/`git pull`).
+  3. Offer optional `git sweep` alias for batch local cleanup. Bash
+     form for Git Bash / Git for Windows / macOS / Linux, plus inline
+     PowerShell command for pure-PowerShell users without sh on PATH.
+  4. Print per-merge workflow reminder + rollback commands.
+- **`skills/devstarter-gitsetup/SKILL.md`** — new `cleanup` inline
+  arg runs Phase 4.5 in isolation (`/devstarter-gitsetup cleanup`).
+  Also documents that `protect` now runs Phase 4 + 4.5.
+- **`sdlc/devstarter-gitsetup.md`** — Gate 1 setup plan and Phase 6
+  summary updated to mention the new cleanup status block.
+
+**Per-merge workflow after the new config lands:**
+
+```bash
+git checkout develop && git pull   # remote branch already gone, stale refs pruned
+git branch -d feature/<slug>       # safe — refuses unmerged work
+```
+
+**Squash-merge caveat:** squash-merged branches show as "unmerged" to
+git, so `git branch -d` refuses them. Use `git branch -D` once you're
+sure the squash landed, or query `gh pr list --state merged` to
+identify landed branches programmatically.
+
+**Validation:** applied to `clickzika/dev-starter-dev` during the
+consultation that produced this change. The very next `git fetch`
+pruned 30+ accumulated stale `origin/feature/*` and `origin/fix/*`
+tracking refs in one shot.
+
+**Net effect:** new DevStarter projects (and any existing project
+that re-runs `/devstarter-gitsetup cleanup`) ship with automatic
+post-merge branch hygiene out of the box. No more `git fetch --prune`
+muscle memory, no more "Delete branch" button clicking after PR merges.
+
+---
+
 ## v3.7.2 — Fix release announcements (2026-05-09)
 
 > Reverts v3.7.1's approach. Instead of adding a `/update` alias to make
