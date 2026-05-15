@@ -16,7 +16,7 @@ const YELLOW = '\x1b[33m';
 const RESET = '\x1b[0m';
 
 const DIRS_TO_COPY = ['agents', 'skills', 'sdlc', 'templates'];
-const FILES_TO_COPY = ['devstarter-menu.md', 'USER.md', 'setup.sh', 'install.sh'];
+const FILES_TO_COPY = ['devstarter-menu.md', 'USER.md', 'setup.sh', 'install.sh', 'update.sh'];
 
 function log(msg) { process.stdout.write(msg + '\n'); }
 function ok(msg) { log(`${GREEN}✅ ${msg}${RESET}`); }
@@ -82,8 +82,7 @@ function main() {
   // Attempt to run setup.sh
   const setupSh = path.join(CLAUDE_DIR, 'setup.sh');
   if (fs.existsSync(setupSh)) {
-    const isWin = process.platform === 'win32';
-    const shell = isWin ? 'bash' : 'bash';
+    const shell = 'bash';
     log('Running setup wizard...');
     log('');
     const result = spawnSync(shell, [setupSh], { stdio: 'inherit' });
