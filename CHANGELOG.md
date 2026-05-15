@@ -1,5 +1,35 @@
 # Changelog
 
+## v3.9.2 — Clean install + update; remove unused files (2026-05-15)
+
+> install.sh and update.sh now wipe all DevStarter-owned files before
+> installing fresh — no stale files survive version bumps. User-owned
+> files (CLAUDE.md, USER.md, settings.json, .env, memory/, agents/custom/)
+> are always preserved. Dead migration code and stale breaking-change notes
+> removed from update.sh. npm users can now self-update.
+
+**What changed:**
+
+- **`install.sh`** — wipe-first approach: removes all DevStarter-owned
+  dirs (agents/, skills/, sdlc/, templates/, scripts/) and known root
+  files before copying fresh. Saves user-owned files to a temp dir and
+  restores them after install. Eliminates the stale-file problem where
+  old skills or runbooks deleted from the repo survived reinstalls.
+- **`update.sh`** — adds `rm -f` for DevStarter-owned root files before
+  replacement (previously only the 4 main dirs got rm-rf'd). Removes
+  dead v2→v3 migration block (commands/ removal — no user is still on
+  v2.x). Removes hardcoded breaking-change notes for v3.4–v3.6 that
+  referenced non-existent features; users now directed to CHANGELOG.
+- **`bin/devstarter.js`** — adds `update.sh` to `FILES_TO_COPY` so
+  npm-installed users (`npx devstarter init`) can run
+  `bash ~/.claude/update.sh` to self-update. Removes duplicate
+  `isWin ? 'bash' : 'bash'` dead branch.
+- **`statusline.sh` + `statusline-command.sh`** — moved from repo root
+  to `scripts/` (dev contributor tools with no install path — were
+  orphaned in root, not shipped to users).
+
+---
+
 ## v3.9.1 — Compaction refactor + 3 bug fixes (2026-05-15)
 
 > Swept every .md file in the project (agents/, sdlc/, skills/, templates/, root)
