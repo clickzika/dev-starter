@@ -1,7 +1,7 @@
 {
   "name": "devstarter",
-  "version": "3.8.0",
-  "description": "Complete development workflow system for Claude Code — 13 AI agents, 28 workflow runbooks, battle-tested SDLC templates",
+  "version": "3.9.0",
+  "description": "Complete development workflow system for Claude Code — 13 AI agents, 48+ workflow runbooks, battle-tested SDLC templates",
   "bin": {
     "devstarter": "./bin/devstarter.js"
   },

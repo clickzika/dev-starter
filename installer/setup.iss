@@ -15,7 +15,7 @@
 
 ; Read version from VERSION file at build time (set via CI env var or hardcoded here)
 #ifndef AppVersion
-  #define AppVersion "3.8.0"
+  #define AppVersion "3.9.0"
 #endif
 
 [Setup]
