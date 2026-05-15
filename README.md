@@ -1,6 +1,6 @@
-# Dev Starter V1
+# DevStarter
 
-A complete development workflow system for **Claude Code**. Drop it into `~/.claude/` and get a full software team — 13 specialized AI agents, 28 workflow runbooks, and battle-tested templates — ready to build any project from scratch.
+A complete development workflow system for **Claude Code**. Drop it into `~/.claude/` and get a full software team — 13 specialized AI agents, 48 workflow runbooks, and battle-tested templates — ready to build any project from scratch.
 
 ## What's Inside
 
@@ -8,7 +8,7 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 ~/.claude/
 ├── devstarter-menu.md              ← Entry point: pick a workflow
 │
-├── sdlc/ (28 workflow runbooks)
+├── sdlc/ (48 workflow runbooks)
 │   ├── devstarter-starter.md       ← New project (Gate 1–5 full lifecycle)
 │   ├── devstarter-change.md        ← Add/remove features, fix bugs
 │   ├── devstarter-ml-workflow.md   ← AI/ML project workflow
@@ -37,7 +37,7 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 │   ├── devstarter-docs.md          ← Technical writing, API docs, runbooks
 │   └── devstarter-mlops.md         ← ML pipelines, model serving, drift monitoring
 │
-├── skills/ (42 Claude Code skills)
+├── skills/ (34 Claude Code skills)
 │   ├── devstarter-new/SKILL.md     ← /devstarter-new — start new project
 │   ├── devstarter-change/SKILL.md  ← /devstarter-change — add feature / fix bug
 │   ├── devstarter-release/SKILL.md ← /devstarter-release — deploy pipeline
@@ -99,6 +99,16 @@ The setup wizard asks:
 - 3 profile questions (experience, skills, language)
 - Auto-configures permissions in `settings.json` (merges, won't overwrite)
 
+### Update (existing install)
+
+```bash
+bash ~/.claude/update.sh
+```
+
+Pulls latest from GitHub, replaces all DevStarter files, preserves your `CLAUDE.md`, `USER.md`, `.env`, `memory/`, and `agents/custom/`.
+
+Or from inside Claude Code: `/devstarter-update`
+
 ### Start Building
 
 ```bash
@@ -107,7 +117,7 @@ claude
 > /devstarter-new           # or go directly — start a new project
 ```
 
-## Slash Commands (24)
+## Slash Commands
 
 Every workflow has a shortcut — no need to remember file paths:
 
