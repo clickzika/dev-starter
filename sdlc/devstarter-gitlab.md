@@ -2,9 +2,6 @@
 
 > **TL;DR** — Shared GitLab procedures (PROC-GL-01..18) mirroring GitHub patterns · **Lifecycle** Reference · **Gates** 0
 
-**Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
-Read `~/.claude/sdlc/devstarter-vcs-common.md` — do not duplicate those definitions here.
-
 ## Purpose
 
 This file contains GitLab-specific procedures (`glab` CLI) used by all DevStarter workflows

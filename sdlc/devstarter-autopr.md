@@ -1,5 +1,4 @@
 # dev-autopr.md — Autonomous PR Review
-# DevStarter — GitHub Actions + Claude AI Runbook
 
 > **TL;DR** — Setup Claude AI autonomous PR review on GitHub Actions · **Lifecycle** Operate · **Gates** 0
 
