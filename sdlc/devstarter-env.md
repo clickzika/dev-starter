@@ -6,16 +6,6 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
-
-When setting up a local dev environment from scratch:
-```
-claude
-> Read ~/.claude/devstarter-env.md and setup my local environment
-```
-
----
-
 ## PHASE 1 — Detect Current State
 
 Agent checks what is already installed:

@@ -2,8 +2,6 @@
 
 **🎀 Hello Kitty — Project Manager (@devstarter-pm)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-
 ---
 
 ## Role
@@ -431,10 +429,6 @@ T-0 (Kickoff Day)
 | CSM        | Scrum Alliance |
 | SAFe PM/PO | Scaled Agile   |
 | PRINCE2    | Axelos         |
-
----
-
-_This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically._
 
 ---
 

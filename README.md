@@ -72,7 +72,22 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 
 ## Quick Start
 
-### Option A — One Command (recommended)
+### Option A — npm (Mac / Linux / Windows, requires Node.js 18+)
+
+```bash
+npx devstarter init
+```
+
+Installs all agents, skills, and SDLC runbooks to `~/.claude/` in one command.
+No git clone needed. Auto-runs setup wizard after install.
+
+### Option B — Windows Installer EXE
+
+Download **DevStarter-Setup.exe** from the [Releases page](https://github.com/clickzika/dev-starter/releases/latest).
+
+Double-click to install — no terminal required. Wizard runs automatically after install.
+
+### Option C — Bash (Mac / Linux / Git Bash on Windows)
 
 ```bash
 git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/install.sh
@@ -84,7 +99,7 @@ git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/insta
 
 This will: clone → backup existing files → copy to `~/.claude/` → run setup wizard.
 
-### Option B — Manual Install
+### Option D — Manual Install
 
 ```bash
 git clone https://github.com/clickzika/dev-starter.git
@@ -193,88 +208,6 @@ develop ──→ Local Test ──→ uat ──→ User Test ──→ main �
 ⛔ "UAT approved"    → proceed to Production
 ⛔ "DEPLOY v[X.Y.Z]" → deploy
 ```
-
-## New in v1.2.0
-
-### Multi-VCS Support (GitHub + GitLab + SVN simultaneously)
-One project, multiple VCS systems — primary does all the work, secondaries get mirrored automatically:
-
-```bash
-# .project.env
-VCS_TYPE=github          # primary — PRs, issues, CI all here
-VCS_SECONDARY_1=gitlab   # mirror — pushed after every merge
-VCS_SECONDARY_2=svn      # archive — git-svn dcommit after every merge
-VCS_SYNC_BRANCHES=main develop
-```
-
-After every `devstarter-change` merge, agents run the mirror automatically.
-Manual on-demand sync: `/devstarter-vcs-sync`
-
-### Jira Full Sprint Management (on par with Notion)
-Full Jira parity — 9 procedures covering the complete sprint lifecycle:
-
-```bash
-# .project.env
-PM_TYPE=jira
-JIRA_URL=https://company.atlassian.net
-JIRA_PROJECT=PROJ
-JIRA_BOARD_ID=1
-
-# Sprint planning → sprint close, all automated:
-# PROC-JR-01: Create project + board
-# PROC-JR-02: Create sprint    PROC-JR-05: Start sprint
-# PROC-JR-03: Create issues    PROC-JR-06: Close sprint + velocity
-# PROC-JR-04: Status transitions (To Do → In Progress → In Review → Done)
-# PROC-JR-07: Link PRs to issues
-# PROC-JR-08: Create Epics     PROC-JR-09: Bulk create issues
-```
-
----
-
-## New in v1.1.0
-
-### MLOps Agent + AI/ML Project Templates
-Build production ML systems with the new `@devstarter-mlops` agent:
-- Experiment tracking (MLflow/W&B), DVC data versioning, model registry
-- FastAPI serving endpoints, BentoML deployment, Triton inference
-- Data drift detection, Prometheus metrics, automated retraining pipelines
-- LLM/RAG pipeline setup with vector databases (Qdrant, Pinecone)
-
-```
-> /devstarter-menu → option 18 (AI/ML project)
-> /devstarter-menu → option 19 (ML workflow)
-```
-
-### GitHub Actions Autonomous PR Review
-Every PR automatically reviewed by Claude — no human prompting needed:
-
-```bash
-cp ~/.claude/templates/github/claude-pr-review.yml .github/workflows/
-gh secret set ANTHROPIC_API_KEY --body "sk-ant-..."
-# Done — Claude reviews every PR in ~30 seconds (~$0.003/review)
-```
-
-### Multi-Provider AI Support via LiteLLM
-Remove provider lock-in with a single proxy that routes to Claude, GPT-4, Gemini, or local Ollama:
-
-```bash
-cp ~/.claude/templates/litellm/litellm-config.yaml ./
-litellm --config litellm-config.yaml --port 4000
-# Your app calls localhost:4000 — switch providers by changing one env var
-```
-
-### Enterprise Secrets Management
-SOC 2 / ISO 27001 ready — templates for every major cloud:
-- AWS Secrets Manager — auto-rotation, ECS/EKS injection, Terraform
-- Azure Key Vault — Managed Identity, Container Apps, federated OIDC
-- GCP Secret Manager — Workload Identity, Cloud Run, per-version tracking
-- HashiCorp Vault — dynamic DB credentials, multi-auth, full audit log
-
-```
-> /devstarter-secrets → choose Phase 6 (enterprise backend)
-```
-
----
 
 ## Usage Examples
 

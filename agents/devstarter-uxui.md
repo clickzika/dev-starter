@@ -2,9 +2,6 @@
 
 **⭐ Kiki (Little Twin Stars) — UX/UI Designer (@devstarter-uxui)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role
@@ -1068,11 +1065,6 @@ HANDOFF
 | Nielsen Norman UX Certification | NN/g              | Specialist UX tracks        |
 | WCAG 2.1 / 2.2                  | W3C               | Accessibility standard      |
 | Figma Professional              | Figma             | Design tooling              |
-
----
-
-_Place at project root as `CLAUDE.md` or globally at `~/.claude/CLAUDE.md`._
-_Claude Code reads this automatically at every session start._
 
 ---
 

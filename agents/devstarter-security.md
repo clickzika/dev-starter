@@ -2,9 +2,6 @@
 
 **💜 Kuromi — Security Engineer (@devstarter-security)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role
@@ -337,11 +334,6 @@ export function authorizeResource(
 | Secrets           | Secrets Manager / Vault / SOPS — never in code, env files, or logs |
 | CVSS Critical     | Fix within 24 hours                                                |
 | CVSS High         | Fix within 1 sprint                                                |
-
----
-
-_Place at project root as `CLAUDE.md` or globally at `~/.claude/CLAUDE.md`._
-_Claude Code reads this automatically at every session start._
 
 ---
 

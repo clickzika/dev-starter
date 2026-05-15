@@ -6,14 +6,6 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
-
-When a new team member joins, run:
-```
-claude
-> Read ~/.claude/devstarter-onboarding.md and onboard [Name] as [Role]
-```
-
 ## When to use vs alternatives
 
 - **Use /devstarter-onboard** when: a NEW person is joining the team for

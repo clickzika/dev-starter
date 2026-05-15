@@ -1,6 +1,4 @@
-# ML Starter Stack
-# DevStarter — AI/ML Project Template
-# Use for: Learning projects, prototypes, solo data scientists, small datasets
+# ML Starter Stack — Learning projects, prototypes, solo data scientists, small datasets
 
 ---
 

@@ -1,7 +1,12 @@
 #!/bin/bash
 # install.sh — One-command installer for Dev Starter V1
 #
-# Usage (run from anywhere):
+# Prefer a simpler install? Try:
+#   npm:     npx devstarter init
+#   Windows: Download DevStarter-Setup.exe from GitHub Releases
+#            https://github.com/clickzika/dev-starter/releases/latest
+#
+# Bash install (Mac / Linux / Git Bash on Windows):
 #   curl -sL https://raw.githubusercontent.com/clickzika/dev-starter/main/install.sh | bash
 #
 # Or if you already cloned:
@@ -51,34 +56,40 @@ else
 fi
 echo ""
 
-# ─── Step 2: Backup existing ~/.claude/ if needed ────
+# ─── Step 2: Wipe DevStarter dirs, save user files ──
 echo -e "${CYAN}${BOLD}Step 2/4 — Preparing ~/.claude/...${RESET}"
 
 mkdir -p "$CLAUDE_DIR"
 
-# Check if there are existing files that would be overwritten
-EXISTING_FILES=0
-for check in agents skills sdlc templates devstarter-menu.md USER.md setup.sh; do
-  if [ -e "$CLAUDE_DIR/$check" ]; then
-    EXISTING_FILES=1
-    break
+# Save user-owned files to temp before wipe
+SAVE_DIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'devstarter-save')"
+REINSTALL=0
+
+for f in USER.md CLAUDE.md settings.json settings.local.json .env; do
+  if [ -f "$CLAUDE_DIR/$f" ]; then
+    cp "$CLAUDE_DIR/$f" "$SAVE_DIR/" 2>/dev/null && REINSTALL=1
   fi
 done
+if [ -d "$CLAUDE_DIR/memory" ]; then
+  cp -r "$CLAUDE_DIR/memory" "$SAVE_DIR/" 2>/dev/null && REINSTALL=1
+fi
+if [ -d "$CLAUDE_DIR/agents/custom" ]; then
+  mkdir -p "$SAVE_DIR/agents"
+  cp -r "$CLAUDE_DIR/agents/custom" "$SAVE_DIR/agents/" 2>/dev/null && REINSTALL=1
+fi
 
-if [ "$EXISTING_FILES" = "1" ]; then
-  BACKUP_DIR="$CLAUDE_DIR/backups/pre-install-$(date +%Y%m%d-%H%M%S)"
-  echo -e "  ${YELLOW}Existing files found — backing up to:${RESET}"
-  echo -e "  ${YELLOW}$BACKUP_DIR${RESET}"
-  mkdir -p "$BACKUP_DIR"
+# Wipe DevStarter-owned dirs and root files
+for dir in agents skills sdlc templates scripts; do
+  rm -rf "$CLAUDE_DIR/$dir"
+done
+for f in devstarter-menu.md update.sh install.sh setup.sh README.md LICENSE .gitignore VERSION CHANGELOG.md .env.example; do
+  rm -f "$CLAUDE_DIR/$f"
+done
 
-  for item in agents skills sdlc templates devstarter-menu.md USER.md TEAM.md setup.sh .env.example; do
-    if [ -e "$CLAUDE_DIR/$item" ]; then
-      cp -r "$CLAUDE_DIR/$item" "$BACKUP_DIR/" 2>/dev/null || true
-    fi
-  done
-  echo -e "  ${GREEN}✅ Backup saved${RESET}"
+if [ "$REINSTALL" = "1" ]; then
+  echo -e "  ${GREEN}✅ Reinstall — user files preserved${RESET}"
 else
-  echo -e "  ${GREEN}✅ Clean install — no existing files${RESET}"
+  echo -e "  ${GREEN}✅ Fresh install${RESET}"
 fi
 echo ""
 
@@ -128,6 +139,22 @@ cp "$SOURCE_DIR/USER.md" "$CLAUDE_DIR/" 2>/dev/null || true
 # Count installed files
 FILE_COUNT=$(find "$CLAUDE_DIR" -name "*.md" -o -name "*.html" -o -name "*.sh" -o -name "*.template" | wc -l | tr -d ' ')
 echo -e "  ${GREEN}✅ $FILE_COUNT files installed to ~/.claude/${RESET}"
+
+# Restore user-owned files and agents/custom/
+for f in USER.md CLAUDE.md settings.json settings.local.json .env; do
+  if [ -f "$SAVE_DIR/$f" ]; then
+    cp "$SAVE_DIR/$f" "$CLAUDE_DIR/" 2>/dev/null || true
+  fi
+done
+if [ -d "$SAVE_DIR/memory" ]; then
+  rm -rf "$CLAUDE_DIR/memory"
+  cp -r "$SAVE_DIR/memory" "$CLAUDE_DIR/memory" 2>/dev/null || true
+fi
+if [ -d "$SAVE_DIR/agents/custom" ]; then
+  mkdir -p "$CLAUDE_DIR/agents/custom"
+  cp -r "$SAVE_DIR/agents/custom/." "$CLAUDE_DIR/agents/custom/" 2>/dev/null || true
+fi
+rm -rf "$SAVE_DIR"
 echo ""
 
 # ─── Step 4: Run setup.sh ────────────────────────────

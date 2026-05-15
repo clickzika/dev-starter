@@ -2,9 +2,6 @@
 
 **☁️ Cinnamoroll — Frontend Developer (@devstarter-frontend)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role
@@ -515,8 +512,6 @@ module.exports = {
 
 ---
 
-_Place at project root as `CLAUDE.md` or globally at `~/.claude/CLAUDE.md`._
-_Claude Code reads this automatically at every session start._
 
 ---
 
