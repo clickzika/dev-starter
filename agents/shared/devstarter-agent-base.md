@@ -45,7 +45,7 @@ if devstarter-config.yml does NOT exist:
   ⛔ STOP — devstarter-config.yml is missing.
   Generate it now from ~/.claude/templates/devstarter-config.template.yml
   Fill in values from: CLAUDE.md, .project.env (if present), or ask the user.
-  Then run: python3 sdlc/devstarter-config-sync.md → .project.env
+  Then run: bash scripts/config-sync.sh → .project.env
   DO NOT proceed with any task until the file exists on disk.
 ```
 
@@ -278,10 +278,6 @@ Save this? (yes/no)
 ---
 
 ## Learned Patterns
-
-<!-- Patterns discovered during real sessions are recorded here -->
-<!-- Format: [YYYY-MM-DD] — [Pattern name]: [description] -->
-<!-- This section grows over time as the agent learns from your project -->
 
 ---
 
