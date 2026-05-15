@@ -105,6 +105,7 @@ DevStarter/
 │   ├── devstarter-context/SKILL.md
 │   ├── devstarter-export/SKILL.md
 │   ├── devstarter-import/SKILL.md
+│   ├── devstarter-update/SKILL.md
 │   ├── devstarter-consult/SKILL.md
 │   ├── devstarter-doctor/SKILL.md
 │   ├── devstarter-review/SKILL.md

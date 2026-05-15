@@ -39,4 +39,5 @@ Quick reference for all 25 slash commands. Each entry lists the command, its pur
 | `/devstarter-retro` | Sprint Retrospective | `sdlc/devstarter-retrospective.md` |
 | `/devstarter-consult` | Consult & Advise | `sdlc/devstarter-consult.md` |
 | `/devstarter-menu` | Project Launcher Menu | `devstarter-menu.md` |
+| `/devstarter-update` | Update DevStarter | Runs `bash ~/.claude/update.sh` |
 

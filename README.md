@@ -107,6 +107,8 @@ bash ~/.claude/update.sh
 
 Pulls latest from GitHub, replaces all DevStarter files, preserves your `CLAUDE.md`, `USER.md`, `.env`, `memory/`, and `agents/custom/`.
 
+Or from inside Claude Code: `/devstarter-update`
+
 ### Start Building
 
 ```bash
