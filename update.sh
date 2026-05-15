@@ -20,9 +20,9 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 echo ""
-echo -e "${CYAN}═══════════════════════════════════════════${NC}"
+echo -e "${CYAN}-------------------------------------------${NC}"
 echo -e "${CYAN}  Dev Starter — Update                     ${NC}"
-echo -e "${CYAN}═══════════════════════════════════════════${NC}"
+echo -e "${CYAN}-------------------------------------------${NC}"
 echo ""
 
 # ─── Step 1: Check current version ──────────────────
@@ -133,9 +133,9 @@ fi
 echo -e "${CYAN}[4/4] Cleaning up...${NC}"
 rm -rf "$TMP_DIR"
 
-echo -e "${GREEN}═══════════════════════════════════════════${NC}"
+echo -e "${GREEN}-------------------------------------------${NC}"
 echo -e "${GREEN}  Updated: $CURRENT_VERSION → $LATEST_VERSION${NC}"
-echo -e "${GREEN}═══════════════════════════════════════════${NC}"
+echo -e "${GREEN}-------------------------------------------${NC}"
 echo ""
 echo -e "  Backup:    $BACKUP_DIR"
 echo -e "  Changelog: $CLAUDE_DIR/CHANGELOG.md"
