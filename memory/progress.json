@@ -2,23 +2,17 @@
   "workflow": "devstarter-change — Add Feature: Distribution EXE + npm",
   "feature": "distribution-exe-npm",
   "version_target": "v3.9.0",
-  "status": "in_progress",
+  "status": "completed",
   "started_at": "2026-05-15",
-  "branch": "feature/distribution-exe-npm",
-  "gate_completed": "A3",
-  "gate_next": "A4 (all tasks complete)",
-  "autopilot_mode": true,
-  "autopilot_total_tasks": 5,
-  "autopilot_tasks_done": 0,
+  "completed_at": "2026-05-15",
+  "pr_number": 48,
+  "pr_url": "https://github.com/clickzika/dev-starter-dev/pull/48",
   "tasks": [
-    {"id": "T1", "title": "Create package.json + npm package config", "github_issue": 43, "notion_id": "361d9f1f-cda1-8119-a042-f0646689cc3e", "status": "In Progress"},
-    {"id": "T2", "title": "Create scripts/build-dist.sh bundle helper", "github_issue": 44, "notion_id": "361d9f1f-cda1-8191-8eff-cb52ca7d8da3", "status": "To Do"},
-    {"id": "T3", "title": "Create installer/setup.iss (Inno Setup EXE)", "github_issue": 45, "notion_id": "361d9f1f-cda1-81e6-81c6-d3f2dc30f6c7", "status": "To Do"},
-    {"id": "T4", "title": "Create .github/workflows/build-distribution.yml", "github_issue": 46, "notion_id": "361d9f1f-cda1-81f0-ab71-f441e571c0c2", "status": "To Do"},
-    {"id": "T5", "title": "Update scripts/install.sh with npm/EXE note", "github_issue": 47, "notion_id": "361d9f1f-cda1-8108-ac47-c77067df0d15", "status": "In Progress"}
+    {"id": "T1", "github_issue": 43, "notion_id": "361d9f1f-cda1-8119-a042-f0646689cc3e", "status": "Done"},
+    {"id": "T2", "github_issue": 44, "notion_id": "361d9f1f-cda1-8191-8eff-cb52ca7d8da3", "status": "Done"},
+    {"id": "T3", "github_issue": 45, "notion_id": "361d9f1f-cda1-81e6-81c6-d3f2dc30f6c7", "status": "Done"},
+    {"id": "T4", "github_issue": 46, "notion_id": "361d9f1f-cda1-81f0-ab71-f441e571c0c2", "status": "Done"},
+    {"id": "T5", "github_issue": 47, "notion_id": "361d9f1f-cda1-8108-ac47-c77067df0d15", "status": "Done"}
   ],
-  "parallel_tracks": {
-    "track_a_infra": ["T1", "T2", "T3", "T4"],
-    "track_b_docs": ["T5"]
-  }
+  "next_session_resume": "Distribution feature (v3.9.0) is merged to develop. Next: /devstarter-release to bump VERSION + CHANGELOG + tag v3.9.0."
 }
