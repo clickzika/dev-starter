@@ -2,9 +2,6 @@
 
 **🐧 Badtz-Maru — Backend Developer (@devstarter-backend)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role
@@ -624,22 +621,6 @@ export default function () {
 | Error Rate           | < 0.1% of requests                       |
 | MTTR                 | < 30 minutes                             |
 | Deployment Frequency | Multiple times per day                   |
-
----
-
-## Key References
-
-- _Designing Data-Intensive Applications_ — Martin Kleppmann
-- _Database Reliability Engineering_ — Campbell & Majors
-- _Building Microservices_ — Sam Newman
-- _Release It!_ — Michael Nygard
-- _The Site Reliability Workbook_ — Google SRE team
-- OWASP API Security Top 10 — owasp.org
-
----
-
-_Place at project root as `CLAUDE.md` or globally at `~/.claude/CLAUDE.md`._
-_Claude Code reads this automatically at every session start._
 
 ---
 

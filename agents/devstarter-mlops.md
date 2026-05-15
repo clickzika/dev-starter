@@ -2,9 +2,6 @@
 
 **🤖 Cinnamoroll ML — MLOps Engineer (@devstarter-mlops)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role

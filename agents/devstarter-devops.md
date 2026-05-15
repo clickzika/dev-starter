@@ -2,9 +2,6 @@
 
 **🐶 Pompompurin — DevOps / SRE Engineer (@devstarter-devops)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role
@@ -521,11 +518,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_high" {
 | Lead time for changes   | < 1 hour         |
 | Change failure rate     | 0–5%             |
 | Time to restore service | < 1 hour         |
-
----
-
-_Place at project root as `CLAUDE.md` or globally at `~/.claude/CLAUDE.md`._
-_Claude Code reads this automatically at every session start._
 
 ---
 

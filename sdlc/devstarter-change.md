@@ -38,18 +38,9 @@ Read `~/.claude/sdlc/devstarter-checkpoint.md` and follow the protocol:
 STOP at every gate. Show output. Wait for "approve" or "revise [notes]".
 Never proceed without explicit approval.
 
-### Rule 2 — Read Agent File Before Doing Any Work
-Before any agent produces output, MUST read `~/.claude/agents/[agent].md` first.
-The agent file defines format, template, standards, and quality gate for every deliverable.
-
-### Rule 2 — Always Read From Files First
-Before doing anything:
-```
-📂 Reading from disk:
-- CLAUDE.md ✓
-- memory/progress.json ✓
-- docs/[relevant].html ✓
-```
+### Rule 2 — Always Read First
+Before any agent produces output, read `~/.claude/agents/[agent].md` (defines format, template, quality gate).
+Before doing anything, read from disk: `CLAUDE.md`, `memory/progress.json`, `docs/[relevant].html`.
 Never rely on chat history.
 
 ### Rule 3 — Save Before Handing Off

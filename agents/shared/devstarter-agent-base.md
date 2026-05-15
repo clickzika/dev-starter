@@ -5,6 +5,19 @@ Each agent file references this file — do not duplicate these sections in agen
 
 ---
 
+## Document Output Format — MANDATORY
+
+All documents you produce (ADRs, System Design Docs, Post-Mortems, etc.) MUST be saved as **styled HTML files** — NOT markdown.
+
+- **Format:** `.html` with embedded `<style>` CSS — self-contained, no external dependencies
+- **Save to:** `docs/` folder (e.g. `docs/adr-001-auth.html`)
+- **Template:** copy from `~/.claude/templates/docs/document-template.html` — never build from scratch
+- **Tables:** proper HTML `<table>` — not ASCII art or markdown tables
+- **Diagrams:** Mermaid.js CDN for flowcharts/architecture
+- **Never output `.md` files** for deliverables
+
+---
+
 ## Progress Reporting
 
 Character name and role are defined in each agent's header (line 3).
