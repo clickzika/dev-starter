@@ -24,9 +24,9 @@ CLAUDE_DIR="$HOME/.claude"
 TMP_DIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'devstarter')"
 
 echo ""
-echo -e "${BOLD}╔══════════════════════════════════════════════╗${RESET}"
-echo -e "${BOLD}║   Dev Starter V1 — One-Command Installer     ║${RESET}"
-echo -e "${BOLD}╚══════════════════════════════════════════════════╝${RESET}"
+echo -e "${BOLD}-------------------------------------------${RESET}"
+echo -e "${BOLD}  DevStarter — Installer${RESET}"
+echo -e "${BOLD}-------------------------------------------${RESET}"
 echo ""
 
 # ─── Step 0: Check git is available ──────────────────
@@ -168,9 +168,9 @@ if [ -d "$TMP_DIR/dev-starter" ]; then
 fi
 
 echo ""
-echo -e "${GREEN}${BOLD}╔══════════════════════════════════════════════╗${RESET}"
-echo -e "${GREEN}${BOLD}║         ✅ Installation Complete!             ║${RESET}"
-echo -e "${GREEN}${BOLD}╚══════════════════════════════════════════════════╝${RESET}"
+echo -e "${GREEN}${BOLD}-------------------------------------------${RESET}"
+echo -e "${GREEN}${BOLD}  Installation Complete!${RESET}"
+echo -e "${GREEN}${BOLD}-------------------------------------------${RESET}"
 echo ""
 echo -e "  To start:"
 echo -e "  ${CYAN}claude${RESET}"
