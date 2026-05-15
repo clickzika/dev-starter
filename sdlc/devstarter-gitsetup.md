@@ -8,16 +8,7 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.*`, `branch_protection.*`).
 
-## How to Use
-
-Run in any existing project that needs git + gitflow configured or re-applied:
-```
-claude
-> /devstarter-gitsetup
-```
-
-Idempotent — safe to re-run on a repo already partially configured.
-Each step checks current state before making changes.
+Idempotent — safe to re-run on a repo already partially configured. Each step checks current state before making changes.
 
 ---
 

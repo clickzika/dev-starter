@@ -7,16 +7,6 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
-
-When production is having issues (outage, degradation, security breach):
-```
-claude
-> Read ~/.claude/devstarter-incident.md and start incident response
-```
-
----
-
 ## Incident Severity Levels
 
 | Level | Definition | Response Time | Example |

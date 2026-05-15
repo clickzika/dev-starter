@@ -5,19 +5,7 @@
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
-## How to Use
-
-Place at `~/.claude/sdlc/devstarter-debug.md`
-
-Use when you have a bug or unexpected behavior and do NOT yet know
-where in the code to fix it. This workflow runs a hypothesis-driven
-investigation that ends with a precise root cause + surgical fix plan.
-
-```
-/devstarter-debug                          → start with intake questions
-/devstarter-debug login fails silently     → use as problem description
-/devstarter-debug memory/bug-report.md    → read file as problem context
-```
+Use when you have a bug and do NOT yet know where in the code it lives. Ends with a precise root cause + surgical fix plan.
 
 ---
 

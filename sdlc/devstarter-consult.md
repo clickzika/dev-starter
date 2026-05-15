@@ -7,23 +7,8 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
-
-Place at `~/.claude/sdlc/devstarter-consult.md`
-
 Use when you want to **discuss and get advice** without making any changes:
-- Architecture decisions
-- Technology choices
-- Performance strategies
-- Bug investigation approach
-- Design patterns
-- Trade-off analysis
-
-```
-/devstarter-consult ระบบ payment ควรออกแบบยังไง
-/devstarter-consult เลือก Redis vs RabbitMQ สำหรับ job queue
-/devstarter-consult login ช้ามาก จะแก้ยังไงดี
-```
+architecture decisions · technology choices · performance strategies · design patterns · trade-off analysis.
 
 ---
 

@@ -350,6 +350,7 @@ Every slash command requires:
 | v3.3.0 | Opus model gate in 6 SKILL.md files; commands/ migration cleanup (delete orphaned folder + fix 4 refs); Opus model ID → claude-opus-4-7 |
 | v3.4.0 | /devstarter-debug — hypothesis-driven investigation workflow; 5-phase root cause analysis with surgical fix plan; handoff to /devstarter-change |
 | v3.8.0 | /devstarter-gitsetup Phase 4.5 — post-merge branch cleanup (delete_branch_on_merge + fetch.prune + optional git sweep alias); new `cleanup` inline arg |
+| v3.9.0 | [x] Distribution — Windows EXE installer (Inno Setup) + npm package (`npx devstarter init`); professional cross-platform distribution replacing raw bash-only install |
 
 ---
 

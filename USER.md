@@ -3,7 +3,6 @@
 ## Purpose
 
 This file tells all agents how to calibrate their output depth.
-Place at `~/.claude/USER.md` for global use.
 All agents read this file at session start.
 
 **Quick setup:** Run `bash ~/.claude/setup.sh` — it asks 3 questions and fills this file automatically.

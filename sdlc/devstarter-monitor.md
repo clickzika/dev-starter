@@ -6,16 +6,6 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
-
-When setting up monitoring for a deployed project:
-```
-claude
-> Read ~/.claude/devstarter-monitor.md and setup monitoring for this project
-```
-
----
-
 ## PHASE 1 — What to Monitor
 
 Agent reads CLAUDE.md to understand tech stack, then asks:

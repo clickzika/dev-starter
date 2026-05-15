@@ -2,9 +2,6 @@
 
 **🐸 Keroppi — QA Engineer (@devstarter-qa)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role
@@ -519,11 +516,6 @@ jobs:
 | Exit criteria   | Written before sprint starts — not negotiated at release time                  |
 | Escape rate     | Target: < 5% of bugs found post-release vs total bugs found                    |
 | CI gate         | PR blocked if: unit fail / E2E fail / axe Critical-Serious / ZAP High-Critical |
-
----
-
-_Place at project root as `CLAUDE.md` or globally at `~/.claude/CLAUDE.md`._
-_Claude Code reads this automatically at every session start._
 
 ---
 

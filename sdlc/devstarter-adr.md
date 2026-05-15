@@ -7,7 +7,7 @@
 
 **Config:** Read `devstarter-config.yml` for project settings.
 
-## How to Use
+## When to Use
 
 Capture an architecture decision **outside** of a feature change. For
 ADRs created *during* a feature change, that's already enforced via

@@ -6,16 +6,6 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
-
-At the start of each sprint:
-```
-claude
-> Read ~/.claude/devstarter-sprint.md and plan sprint [N]
-```
-
----
-
 ## PHASE 1 — Collect Sprint Context
 
 Agent reads automatically:

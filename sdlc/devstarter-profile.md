@@ -7,17 +7,7 @@
 
 **Config:** Read `devstarter-config.yml` for project settings.
 
-## How to Use
-
-Investigate a performance issue *before* it becomes an incident. Different
-from `/devstarter-debug` (correctness bug) and `/devstarter-incident`
-(active production crisis).
-
-```
-/devstarter-profile                                  → interactive intake
-/devstarter-profile checkout-page-slow              → use as area slug
-/devstarter-profile memory/apm-trace-2026-05-09.md  → read profile data as context
-```
+Investigate a performance issue *before* it becomes an incident. Different from `/devstarter-debug` (correctness bug) and `/devstarter-incident` (active production crisis).
 
 Common triggers:
 - APM dashboard shows P95 climbing over a week

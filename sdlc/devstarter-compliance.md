@@ -8,11 +8,7 @@
 
 **Config:** Read `devstarter-config.yml` for project settings.
 
-## How to Use
-
-Run a compliance audit for a specific framework. Outputs a gap report,
-remediation roadmap with owners + dates, and (for SOC 2 / HIPAA) an
-evidence pack for external auditors.
+Outputs: gap report, remediation roadmap with owners + dates, and (for SOC 2 / HIPAA) an evidence pack for external auditors.
 
 ```
 /devstarter-compliance                       → interactive (pick framework + scope)

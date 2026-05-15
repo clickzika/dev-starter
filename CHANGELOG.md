@@ -1,5 +1,78 @@
 # Changelog
 
+## v3.9.2 — Clean install + update; remove unused files (2026-05-15)
+
+> install.sh and update.sh now wipe all DevStarter-owned files before
+> installing fresh — no stale files survive version bumps. User-owned
+> files (CLAUDE.md, USER.md, settings.json, .env, memory/, agents/custom/)
+> are always preserved. Dead migration code and stale breaking-change notes
+> removed from update.sh. npm users can now self-update.
+
+**What changed:**
+
+- **`install.sh`** — wipe-first approach: removes all DevStarter-owned
+  dirs (agents/, skills/, sdlc/, templates/, scripts/) and known root
+  files before copying fresh. Saves user-owned files to a temp dir and
+  restores them after install. Eliminates the stale-file problem where
+  old skills or runbooks deleted from the repo survived reinstalls.
+- **`update.sh`** — adds `rm -f` for DevStarter-owned root files before
+  replacement (previously only the 4 main dirs got rm-rf'd). Removes
+  dead v2→v3 migration block (commands/ removal — no user is still on
+  v2.x). Removes hardcoded breaking-change notes for v3.4–v3.6 that
+  referenced non-existent features; users now directed to CHANGELOG.
+- **`bin/devstarter.js`** — adds `update.sh` to `FILES_TO_COPY` so
+  npm-installed users (`npx devstarter init`) can run
+  `bash ~/.claude/update.sh` to self-update. Removes duplicate
+  `isWin ? 'bash' : 'bash'` dead branch.
+- **`statusline.sh` + `statusline-command.sh`** — moved from repo root
+  to `scripts/` (dev contributor tools with no install path — were
+  orphaned in root, not shipped to users).
+
+---
+
+## v3.9.1 — Compaction refactor + 3 bug fixes (2026-05-15)
+
+> Swept every .md file in the project (agents/, sdlc/, skills/, templates/, root)
+> to remove non-functional bloat: duplicate title headers, stale "How to Use"
+> invocation blocks, "installed globally" footers, and changelog content embedded
+> in README. Found and fixed 3 runtime bugs along the way.
+
+**What changed:**
+
+- **`agents/*.md`** (13 agents) — removed 3-liner "installed globally" headers,
+  "_Place at project root_" footers, duplicate ADR templates, cert/book references
+- **`sdlc/*.md`** (23 files) — removed `## How to Use` blocks, condensed Rules
+  0–3 in `starter.md`, fixed duplicate Rule 2 in `change.md`
+- **`sdlc/devstarter-autopr.md`** — removed duplicate title header line 2
+- **`sdlc/devstarter-jira.md`** — removed duplicate title header line 2
+- **`sdlc/devstarter-github.md`** — removed dangling reference to
+  nonexistent `devstarter-vcs-common.md`
+- **`sdlc/devstarter-gitlab.md`** — same dangling reference removed
+- **`templates/github/claude-pr-review-setup.md`** — removed duplicate title header
+- **`templates/litellm/provider-setup.md`** — removed duplicate title header
+- **`templates/stacks/ml-starter.md`** — merged 3 title lines into 1
+- **`templates/stacks/ml-standard.md`** — merged 3 title lines into 1
+- **`USER.md`** — removed "Place at `~/.claude/USER.md`" footer (users already
+  reading from that path)
+- **`README.md`** — removed embedded "New in v1.1.0" and "New in v1.2.0"
+  sections (~82 lines of stale changelog content)
+- **`agents/shared/devstarter-vcs-pm-guide.md`** — removed duplicate `---`
+  divider between Step 4 and Step 5
+
+**Bug fixes:**
+
+- **`agents/shared/devstarter-agent-base.md`** — Config Guard referenced
+  `python3 sdlc/devstarter-config-sync.md` (Python can't run a .md file).
+  Fixed to `bash scripts/config-sync.sh`
+- **`scripts/dev-setup.sh`** — backup and symlink loops referenced `commands/`
+  (deleted in v3.0.0) and never symlinked `skills/`. Contributors using
+  dev-setup.sh couldn't get live edits to `skills/*/SKILL.md` reflected in
+  `~/.claude/`. Fixed both loops to use `skills/` and drop the stale `commands/`
+- **`installer/setup.iss`** + **`package.json`** — version strings still read
+  `3.8.0` after the v3.9.0 distribution release. Bumped both to `3.9.0`
+
+---
+
 ## v3.8.0 — Post-merge branch cleanup in gitsetup (2026-05-13)
 
 > New gitsetup phase that eliminates stale feature branches automatically

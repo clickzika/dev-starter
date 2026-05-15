@@ -2,9 +2,6 @@
 
 > **TL;DR** — Shared GitHub procedures (PROC-GH-01..18) for repo, branches, issues, PRs, releases · **Lifecycle** Reference · **Gates** 0
 
-**Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
-Read `~/.claude/sdlc/devstarter-vcs-common.md` — do not duplicate those definitions here.
-
 ## Purpose
 
 This file contains GitHub-specific procedures (`gh` CLI) used by all DevStarter workflows.

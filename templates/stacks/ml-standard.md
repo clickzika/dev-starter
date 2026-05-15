@@ -1,6 +1,4 @@
-# ML Standard Stack
-# DevStarter — AI/ML Project Template
-# Use for: Production ML systems, team projects, continuous retraining, SLA-bound serving
+# ML Standard Stack — Production ML: team projects, continuous retraining, SLA-bound serving
 
 ---
 
