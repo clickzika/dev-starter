@@ -5,16 +5,6 @@
 
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
-## How to Use
-
-When a project uses AI features (LLMs, embeddings, image generation):
-```
-/new (select AI_PROVIDER in project setup)
-/change add LiteLLM multi-provider support
-```
-
----
-
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
 

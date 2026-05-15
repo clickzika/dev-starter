@@ -6,14 +6,6 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
-
-When a team member leaves or transfers ownership:
-```
-claude
-> Read ~/.claude/devstarter-handover.md and prepare handover from [Name] to [Name]
-```
-
 ## When to use vs alternatives
 
 - **Use /devstarter-handover** when: an existing owner is transferring ownership

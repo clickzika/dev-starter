@@ -6,16 +6,6 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
-
-When a production deploy causes problems and needs to be reverted:
-```
-claude
-> Read ~/.claude/devstarter-rollback.md and rollback production
-```
-
----
-
 ## ⚠️ ROLLBACK RULES
 
 1. Rollback is a last resort — try hotfix first if fix is < 30 min

@@ -7,18 +7,7 @@
 
 **Config:** Read `devstarter-config.yml` for all project settings.
 
-## How to Use
-
-Run AFTER a SEV-1 / SEV-2 incident has been declared resolved. This workflow
-is intentionally separate from sprint retro (`/devstarter-retro`) because
-post-mortems require a different lens: timeline reconstruction, causal
-analysis, and concrete prevention actions — not "what went well."
-
-```
-/devstarter-postmortem                                  → interactive intake
-/devstarter-postmortem checkout-down 2026-05-09         → name + date inline
-/devstarter-postmortem memory/incident-2026-05-09.md   → read incident notes as context
-```
+Run AFTER a SEV-1 / SEV-2 incident is resolved. Intentionally separate from `/devstarter-retro` — post-mortems need timeline reconstruction, causal analysis, and prevention actions.
 
 ---
 

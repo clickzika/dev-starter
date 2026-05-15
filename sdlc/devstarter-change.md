@@ -4,19 +4,7 @@
 
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
-## How to Use
-
-Place at `~/.claude/devstarter-change.md`
-
-Use when a project already exists and you need to:
-- Add a new feature
-- Remove an existing feature
-- Fix a bug
-
-```
-claude
-> Read ~/.claude/devstarter-change.md and help me make a change
-```
+Use for: add feature · remove feature · fix bug (routes to sub-files per selection).
 
 ---
 
