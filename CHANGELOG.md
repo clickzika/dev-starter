@@ -1,5 +1,48 @@
 # Changelog
 
+## v3.9.1 — Compaction refactor + 3 bug fixes (2026-05-15)
+
+> Swept every .md file in the project (agents/, sdlc/, skills/, templates/, root)
+> to remove non-functional bloat: duplicate title headers, stale "How to Use"
+> invocation blocks, "installed globally" footers, and changelog content embedded
+> in README. Found and fixed 3 runtime bugs along the way.
+
+**What changed:**
+
+- **`agents/*.md`** (13 agents) — removed 3-liner "installed globally" headers,
+  "_Place at project root_" footers, duplicate ADR templates, cert/book references
+- **`sdlc/*.md`** (23 files) — removed `## How to Use` blocks, condensed Rules
+  0–3 in `starter.md`, fixed duplicate Rule 2 in `change.md`
+- **`sdlc/devstarter-autopr.md`** — removed duplicate title header line 2
+- **`sdlc/devstarter-jira.md`** — removed duplicate title header line 2
+- **`sdlc/devstarter-github.md`** — removed dangling reference to
+  nonexistent `devstarter-vcs-common.md`
+- **`sdlc/devstarter-gitlab.md`** — same dangling reference removed
+- **`templates/github/claude-pr-review-setup.md`** — removed duplicate title header
+- **`templates/litellm/provider-setup.md`** — removed duplicate title header
+- **`templates/stacks/ml-starter.md`** — merged 3 title lines into 1
+- **`templates/stacks/ml-standard.md`** — merged 3 title lines into 1
+- **`USER.md`** — removed "Place at `~/.claude/USER.md`" footer (users already
+  reading from that path)
+- **`README.md`** — removed embedded "New in v1.1.0" and "New in v1.2.0"
+  sections (~82 lines of stale changelog content)
+- **`agents/shared/devstarter-vcs-pm-guide.md`** — removed duplicate `---`
+  divider between Step 4 and Step 5
+
+**Bug fixes:**
+
+- **`agents/shared/devstarter-agent-base.md`** — Config Guard referenced
+  `python3 sdlc/devstarter-config-sync.md` (Python can't run a .md file).
+  Fixed to `bash scripts/config-sync.sh`
+- **`scripts/dev-setup.sh`** — backup and symlink loops referenced `commands/`
+  (deleted in v3.0.0) and never symlinked `skills/`. Contributors using
+  dev-setup.sh couldn't get live edits to `skills/*/SKILL.md` reflected in
+  `~/.claude/`. Fixed both loops to use `skills/` and drop the stale `commands/`
+- **`installer/setup.iss`** + **`package.json`** — version strings still read
+  `3.8.0` after the v3.9.0 distribution release. Bumped both to `3.9.0`
+
+---
+
 ## v3.8.0 — Post-merge branch cleanup in gitsetup (2026-05-13)
 
 > New gitsetup phase that eliminates stale feature branches automatically
