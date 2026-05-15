@@ -1,5 +1,25 @@
 # Changelog
 
+## v3.9.3 — Remove npm + EXE distribution; bash install only (2026-05-15)
+
+> Reverts the v3.9.0 distribution experiment. npm package and Windows EXE
+> installer added complexity without solving the auth/distribution problems.
+> Bash install (`curl | bash` or `git clone + bash install.sh`) remains
+> the single supported installation method.
+
+**What changed:**
+
+- **`bin/devstarter.js`** — removed (npm entry point)
+- **`installer/setup.iss`** — removed (Inno Setup Windows EXE script)
+- **`package.json`** — removed
+- **`scripts/build-dist.sh`** — removed (dist bundler for npm/EXE)
+- **`.github/workflows/build-distribution.yml`** — removed (CI for EXE/npm builds)
+- **`install.sh`** — removed npm/EXE alternative lines from header comment
+- **`README.md`** — replaced 4-option install section (npm/EXE/bash/manual)
+  with single bash install section
+
+---
+
 ## v3.9.2 — Clean install + update; remove unused files (2026-05-15)
 
 > install.sh and update.sh now wipe all DevStarter-owned files before

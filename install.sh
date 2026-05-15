@@ -1,12 +1,7 @@
 #!/bin/bash
-# install.sh — One-command installer for Dev Starter V1
+# install.sh — One-command installer for DevStarter
 #
-# Prefer a simpler install? Try:
-#   npm:     npx devstarter init
-#   Windows: Download DevStarter-Setup.exe from GitHub Releases
-#            https://github.com/clickzika/dev-starter/releases/latest
-#
-# Bash install (Mac / Linux / Git Bash on Windows):
+# Mac / Linux / Git Bash on Windows:
 #   curl -sL https://raw.githubusercontent.com/clickzika/dev-starter/main/install.sh | bash
 #
 # Or if you already cloned:
