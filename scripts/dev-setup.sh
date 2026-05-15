@@ -49,7 +49,7 @@ BACKUP_DIR="$CLAUDE_DIR/.backup/dev-setup-$(date +%Y%m%d_%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 BACKED_UP=0
-for d in agents commands sdlc templates; do
+for d in agents skills sdlc templates commands; do
   if [ -d "$CLAUDE_DIR/$d" ] && [ ! -L "$CLAUDE_DIR/$d" ]; then
     mv "$CLAUDE_DIR/$d" "$BACKUP_DIR/$d"
     echo -e "  Backed up: $d/"
@@ -76,7 +76,7 @@ echo ""
 
 # ─── Step 2: Create folder symlinks ─────────────────
 echo -e "${CYAN}[2/4] Symlinking folders...${NC}"
-for d in agents commands sdlc templates; do
+for d in agents skills sdlc templates; do
   if [ -L "$CLAUDE_DIR/$d" ]; then
     rm "$CLAUDE_DIR/$d"
   fi
