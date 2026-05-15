@@ -1,5 +1,18 @@
 # Changelog
 
+## v3.9.4 — README refresh (2026-05-15)
+
+> Corrects stale counts and adds update instructions.
+
+**What changed:**
+
+- **`README.md`** — title `Dev Starter V1` → `DevStarter`; runbook
+  count `28` → `48`; skill count `42` → `34` (actual); removed stale
+  `(24)` from Slash Commands heading; added **Update** section with
+  `bash ~/.claude/update.sh` and `/devstarter-update`
+
+---
+
 ## v3.9.3 — Remove npm + EXE distribution; bash install only (2026-05-15)
 
 > Reverts the v3.9.0 distribution experiment. npm package and Windows EXE
