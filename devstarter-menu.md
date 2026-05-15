@@ -61,6 +61,7 @@ Show this menu and ask ONE question:
   22. 🩺 Doctor (health check)
   23. 🔍 Review (PR / branch / current changes)
   24. 🐛 Debug (senior dev problem analysis)
+  29. 🔄 Update DevStarter — `/devstarter-update` or `bash ~/.claude/update.sh`
 
 ── AGENTS ─────────────────────────────────────
   /devstarter-agents    List all 13 specialist agents (BA, PM, TechLead, …)
@@ -103,3 +104,4 @@ Route to correct file:
 | 26 | `~/.claude/sdlc/devstarter-adr.md` |
 | 27 | `~/.claude/sdlc/devstarter-profile.md` |
 | 28 | `~/.claude/sdlc/devstarter-compliance.md` |
+| 29 | Run `bash ~/.claude/update.sh` |

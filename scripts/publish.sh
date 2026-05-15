@@ -152,13 +152,14 @@ for FOLDER in "${EXCLUDE_FROM_RELEASE[@]}"; do
   echo -e "  Excluded: $FOLDER/"
 done
 
-# Remove top-level items that exist in _release_clean but NOT in current main
-# (handles deletions like commands/ → skills/ across major versions)
-for ITEM in $(git ls-tree --name-only HEAD); do
-  if ! git ls-tree --name-only main | grep -qx "$ITEM"; then
-    git rm -r --cached "$ITEM" > /dev/null 2>&1 || true
-    echo -e "  Removed (deleted in main): $ITEM"
-  fi
+# Remove files/dirs that exist in _release_clean but NOT in current main
+# Uses recursive ls-tree so subdirectory deletions (e.g. skills/update/) are caught
+comm -23 \
+  <(git ls-tree -r --name-only HEAD | sort) \
+  <(git ls-tree -r --name-only main | sort) \
+| while read -r DELETED_FILE; do
+  git rm --cached "$DELETED_FILE" > /dev/null 2>&1 || true
+  echo -e "  Removed (deleted in main): $DELETED_FILE"
 done
 
 if ! git diff --cached --quiet; then
@@ -239,7 +240,7 @@ gh release create "v$NEW_VERSION" \
   --notes "$CHANGELOG_SECTION
 
 ---
-**Update:** Run \`/devstarter-update\` in Claude Code (or \`bash ~/.claude/update.sh\`) to get this version."
+**Update:** Run \`bash ~/.claude/update.sh\` to get this version."
 
 # ─── Step 6: Back to develop ─────────────────────────
 echo -e "${CYAN}[6/7] Switching back to develop...${NC}"
@@ -257,5 +258,5 @@ echo -e "  Release: https://github.com/clickzika/dev-starter/releases/tag/v$NEW_
 echo -e "  Branch:  main (updated)"
 echo -e "  Current: develop"
 echo ""
-echo -e "${YELLOW}Users can update with: /devstarter-update  (or: bash ~/.claude/update.sh)${NC}"
+echo -e "${YELLOW}Users can update with: bash ~/.claude/update.sh${NC}"
 echo ""

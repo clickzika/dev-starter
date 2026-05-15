@@ -1,5 +1,27 @@
 # Changelog
 
+## v3.9.6 — /devstarter-update restored + menu entry + publish fix (2026-05-15)
+
+> `/devstarter-update` skill re-added after being removed in v3.9.5.
+> Menu entry #29 added for discoverability. Fixed a long-standing bug
+> in publish.sh where subdirectory deletions (e.g. `skills/update/`)
+> were never removed from the public release repo.
+
+**What changed:**
+
+- **`skills/devstarter-update/SKILL.md`** — restored; runs
+  `bash ~/.claude/update.sh` from inside Claude Code
+- **`devstarter-menu.md`** — new entry **#29 Update DevStarter**
+  showing both `/devstarter-update` and `bash ~/.claude/update.sh`
+- **`scripts/publish.sh`** — fixed deletion check: was top-level only
+  (`git ls-tree --name-only`), now recursive (`git ls-tree -r`).
+  `skills/update/` has been orphaned in the public release repo since
+  v3.7.2 because of this bug — this release purges it
+- **`skills/devstarter-registry/SKILL.md`** — restored update entry
+- **`README.md`** — restored `/devstarter-update` mention in update section
+
+---
+
 ## v3.9.4 — README refresh (2026-05-15)
 
 > Corrects stale counts and adds update instructions.
