@@ -1,17 +1,24 @@
 {
-  "workflow": "devstarter-consult + devstarter-change (v3.5.0 cut clutter)",
-  "version": "v3.5.0-unreleased",
+  "workflow": "devstarter-change — Add Feature: Distribution EXE + npm",
+  "feature": "distribution-exe-npm",
+  "version_target": "v3.9.0",
   "status": "in_progress",
-  "last_session": "2026-05-09",
-  "completed_in_session": [
-    "PR #21 — fix: Strategy I Step 5 publish.sh override (v3.4.0 fix)",
-    "PR #22 — feat: cut 13 thin agent skills + add /devstarter-agents meta-skill",
-    "PR #23 — feat: polish review/handover/onboarding SDLC files"
+  "started_at": "2026-05-15",
+  "branch": "feature/distribution-exe-npm",
+  "gate_completed": "A3",
+  "gate_next": "A4 (all tasks complete)",
+  "autopilot_mode": true,
+  "autopilot_total_tasks": 5,
+  "autopilot_tasks_done": 0,
+  "tasks": [
+    {"id": "T1", "title": "Create package.json + npm package config", "github_issue": 43, "notion_id": "361d9f1f-cda1-8119-a042-f0646689cc3e", "status": "In Progress"},
+    {"id": "T2", "title": "Create scripts/build-dist.sh bundle helper", "github_issue": 44, "notion_id": "361d9f1f-cda1-8191-8eff-cb52ca7d8da3", "status": "To Do"},
+    {"id": "T3", "title": "Create installer/setup.iss (Inno Setup EXE)", "github_issue": 45, "notion_id": "361d9f1f-cda1-81e6-81c6-d3f2dc30f6c7", "status": "To Do"},
+    {"id": "T4", "title": "Create .github/workflows/build-distribution.yml", "github_issue": 46, "notion_id": "361d9f1f-cda1-81f0-ab71-f441e571c0c2", "status": "To Do"},
+    {"id": "T5", "title": "Update scripts/install.sh with npm/EXE note", "github_issue": 47, "notion_id": "361d9f1f-cda1-8108-ac47-c77067df0d15", "status": "In Progress"}
   ],
-  "remaining_v3_5_0": [
-    "Sub-PR 3 — Refactor VCS triplication (github/gitlab/svn → vcs-common.md, ~1500 LoC reduction)",
-    "Sub-PR 4 — Standardize 17 thin SDLC routers with template (decision tree + inline args)"
-  ],
-  "next_session_resume": "Read memory/consult-2026-05-09-top1-rigor-audit.md and ~/.claude/plans/synthetic-gliding-clock.md for full v3.5.0/v3.6.0/v3.7.0 roadmap. Pick up with sub-PR 3 (VCS refactor) or sub-PR 4 (router standardization).",
-  "notes": "v3.5.0 NOT released yet — VERSION still 3.4.0. Release after sub-PR 3 + 4 merge (or ship partial v3.5.0 with just the cuts that landed today)."
+  "parallel_tracks": {
+    "track_a_infra": ["T1", "T2", "T3", "T4"],
+    "track_b_docs": ["T5"]
+  }
 }

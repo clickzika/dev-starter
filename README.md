@@ -72,7 +72,22 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 
 ## Quick Start
 
-### Option A — One Command (recommended)
+### Option A — npm (Mac / Linux / Windows, requires Node.js 18+)
+
+```bash
+npx devstarter init
+```
+
+Installs all agents, skills, and SDLC runbooks to `~/.claude/` in one command.
+No git clone needed. Auto-runs setup wizard after install.
+
+### Option B — Windows Installer EXE
+
+Download **DevStarter-Setup.exe** from the [Releases page](https://github.com/clickzika/dev-starter/releases/latest).
+
+Double-click to install — no terminal required. Wizard runs automatically after install.
+
+### Option C — Bash (Mac / Linux / Git Bash on Windows)
 
 ```bash
 git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/install.sh
@@ -84,7 +99,7 @@ git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/insta
 
 This will: clone → backup existing files → copy to `~/.claude/` → run setup wizard.
 
-### Option B — Manual Install
+### Option D — Manual Install
 
 ```bash
 git clone https://github.com/clickzika/dev-starter.git
