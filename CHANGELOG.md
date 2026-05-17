@@ -1,5 +1,29 @@
 # Changelog
 
+## v4.4.0 — Hybrid Hooks System (2026-05-17)
+
+### New
+- `scripts/hooks/session-start.js` — load memory/progress.json + MEMORY.md at session start
+- `scripts/hooks/pre-compact.js` — log compaction event to memory/compaction-log.txt
+- `scripts/hooks/post-edit-accumulator.js` — track edited JS/TS/Go/Python/Rust files for batch Stop processing
+- `scripts/hooks/stop-format-typecheck.js` — batch format (prettier/biome/black/ruff/gofmt/rustfmt) + tsc on Stop
+- `scripts/hooks/stop-check-console-log.js` — warn on debug statements in modified JS/TS/Go/Python files
+- `scripts/install-hooks.js` — Node.js merger: installs DevStarter hooks into ~/.claude/settings.json without overwriting existing hooks
+- `templates/hooks/hooks.json` — Claude Code hooks config template
+
+### Changes
+- `install.sh` — `--hooks` flag: copies hook scripts + merges settings.json; tip shown if hooks not installed
+- Hooks support JS/TS (prettier/biome/tsc), Python (ruff/black), Go (gofmt), Rust (rustfmt)
+- Debug log detection covers: `console.log` (JS/TS), `print()` (Python), `fmt.Println/Printf` (Go)
+
+### Usage
+```bash
+bash install.sh --hooks                      # install + activate hooks
+bash install.sh --profile full --hooks       # full profile + hooks
+# or manually:
+node ~/.claude/scripts/install-hooks.js ~/.claude/scripts/hooks ~/.claude/settings.json ~/.claude/templates/hooks/hooks.json
+```
+
 ## v4.3.1 — ECC Context Templates (2026-05-17)
 
 ### New
