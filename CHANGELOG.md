@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.5.1 — ECC Final Gaps: node rules, hooks README, prompt-defense (2026-05-17)
+
+### New
+- `rules/devstarter/node.md` — Node.js/CommonJS rules: hook development, error handling, testing, stdin safety
+- `templates/hooks/README.md` — DevStarter hooks install guide: formatters, debug detection, custom hook authoring
+
+### Updated
+- `rules/devstarter/common/security.md` — added Prompt Injection Defense section (role hijacking, unicode tricks, urgency/authority signals)
+
 ## v4.5.0 — ECC Skills Port: 4 agents + 2 workflows (2026-05-17)
 
 ### New Agents (full profile)
