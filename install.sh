@@ -23,10 +23,12 @@ BRANCH="main"
 CLAUDE_DIR="$HOME/.claude"
 TMP_DIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'devstarter')"
 
-# ─── Parse --profile argument ─────────────────────
-# Usage: bash install.sh --profile minimal|standard|full
-# Default: standard
+# ─── Parse arguments ──────────────────────────────
+# Usage: bash install.sh [--profile minimal|standard|full] [--hooks]
+# Default profile: standard
+# --hooks: also install Node.js lifecycle hooks into ~/.claude/settings.json
 PROFILE="standard"
+INSTALL_HOOKS=0
 PREV_ARG=""
 for arg in "$@"; do
   if [ "$PREV_ARG" = "--profile" ]; then
@@ -35,6 +37,9 @@ for arg in "$@"; do
   case "$arg" in
     --profile=minimal|--profile=standard|--profile=full)
       PROFILE="${arg#*=}"
+      ;;
+    --hooks)
+      INSTALL_HOOKS=1
       ;;
   esac
   PREV_ARG="$arg"
@@ -53,6 +58,9 @@ echo ""
 echo -e "${BOLD}-------------------------------------------${RESET}"
 echo -e "${BOLD}  DevStarter — Installer${RESET}"
 echo -e "${BOLD}  Profile: ${YELLOW}${PROFILE}${RESET}"
+if [ "$INSTALL_HOOKS" = "1" ]; then
+echo -e "${BOLD}  Hooks:   ${YELLOW}enabled${RESET}"
+fi
 echo -e "${BOLD}-------------------------------------------${RESET}"
 echo ""
 
@@ -172,7 +180,10 @@ cp -r "$SOURCE_DIR/templates/"* "$CLAUDE_DIR/templates/" 2>/dev/null || true
 
 # Copy scripts
 mkdir -p "$CLAUDE_DIR/scripts"
+mkdir -p "$CLAUDE_DIR/scripts/hooks"
 cp -r "$SOURCE_DIR/scripts/"*.sh "$CLAUDE_DIR/scripts/" 2>/dev/null || true
+cp "$SOURCE_DIR/scripts/install-hooks.js" "$CLAUDE_DIR/scripts/" 2>/dev/null || true
+cp "$SOURCE_DIR/scripts/hooks/"*.js "$CLAUDE_DIR/scripts/hooks/" 2>/dev/null || true
 
 # Copy root files (never overwrite .env if exists)
 cp "$SOURCE_DIR/devstarter-menu.md" "$CLAUDE_DIR/" 2>/dev/null || true
@@ -209,8 +220,27 @@ fi
 rm -rf "$SAVE_DIR"
 echo ""
 
-# ─── Step 4: Run setup.sh ────────────────────────────
-echo -e "${CYAN}${BOLD}Step 4/4 — Running setup wizard...${RESET}"
+# ─── Step 4 (optional): Install hooks ───────────────
+if [ "$INSTALL_HOOKS" = "1" ]; then
+  echo -e "${CYAN}${BOLD}Step 4/5 — Installing hooks...${RESET}"
+  if command -v node &>/dev/null; then
+    node "$CLAUDE_DIR/scripts/install-hooks.js" \
+      "$CLAUDE_DIR/scripts/hooks" \
+      "$CLAUDE_DIR/settings.json" \
+      "$CLAUDE_DIR/templates/hooks/hooks.json" && \
+    echo -e "  ${GREEN}✅ Hooks merged into ~/.claude/settings.json${RESET}" || \
+    echo -e "  ${YELLOW}⚠️  Hook merge failed — check Node.js version (need 18+)${RESET}"
+  else
+    echo -e "  ${YELLOW}⚠️  node not found. Install Node.js 18+ and run:${RESET}"
+    echo -e "  ${CYAN}node ~/.claude/scripts/install-hooks.js ~/.claude/scripts/hooks ~/.claude/settings.json ~/.claude/templates/hooks/hooks.json${RESET}"
+  fi
+  echo ""
+fi
+
+# ─── Step 5: Run setup.sh ────────────────────────────
+SETUP_STEP="Step 4/4"
+[ "$INSTALL_HOOKS" = "1" ] && SETUP_STEP="Step 5/5"
+echo -e "${CYAN}${BOLD}${SETUP_STEP} — Running setup wizard...${RESET}"
 echo ""
 
 # Make setup.sh executable
@@ -233,3 +263,8 @@ echo -e "  To start:"
 echo -e "  ${CYAN}claude${RESET}"
 echo -e "  ${CYAN}> Read ~/.claude/devstarter-menu.md and help me get started${RESET}"
 echo ""
+if [ "$INSTALL_HOOKS" = "0" ]; then
+echo -e "  ${YELLOW}Tip: Run with --hooks to enable lifecycle hooks (format, typecheck, memory):${RESET}"
+echo -e "  ${CYAN}bash install.sh --hooks${RESET}"
+echo ""
+fi
