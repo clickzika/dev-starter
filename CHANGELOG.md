@@ -1,5 +1,10 @@
 # Changelog
 
+## v4.6.2 — README overhaul (2026-05-18)
+
+### Docs
+- `README.md` — full rewrite to reflect v4.6.1 state: 83 agents, profile-based install, hooks, 29 MCP configs, 18 language rules, uninstall, all 30+ slash commands, team-packs + agent-disambiguation pointers
+
 ## v4.6.1 — Uninstall script (2026-05-18)
 
 ### New
