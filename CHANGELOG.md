@@ -1,5 +1,37 @@
 # Changelog
 
+## v4.1.0 — Phase 2+3: Profile install + 5 extended agents (2026-05-17)
+
+### Phase 2 — Profile-based install
+
+`install.sh` now accepts `--profile minimal|standard|full` (default: `standard`).
+
+```bash
+bash install.sh --profile minimal   # 7 core agents, no language rules
+bash install.sh --profile standard  # all 13 agents + rules (default)
+bash install.sh --profile full      # standard + 5 extended agents
+```
+
+| Profile | Agents | Language rules |
+|---------|--------|----------------|
+| minimal | 7 (pm, techlead, ba, backend, frontend, qa, security) | No |
+| standard | 13 original | Yes |
+| full | 13 + 5 extended | Yes |
+
+- **`install.sh`** — `--profile` flag parsing + profile-aware agent copy
+- **`templates/devstarter-config.template.yml`** — `devstarter.install_profile` field added
+- **`devstarter-menu.md`** — AGENTS section shows standard vs extended roster
+
+### Phase 3 — 5 Extended Agents (full profile)
+
+- **`agents/devstarter-architect.md`** — Hangyodon. System design from first principles: service boundaries, data architecture, failure modes, ADRs. Works upstream of @techlead.
+- **`agents/devstarter-datascience.md`** — Chococat. EDA, statistical analysis, A/B testing, ML modeling, reproducible notebooks. Distinct from @mlops (pipelines).
+- **`agents/devstarter-sre.md`** — Mocha. SLI/SLO/error budgets, incident response, runbooks, chaos engineering, capacity planning.
+- **`agents/devstarter-api.md`** — Pekkle. Contract-first API design: REST, GraphQL, gRPC, AsyncAPI, OpenAPI specs, versioning, consumer-driven contract tests.
+- **`agents/devstarter-performance.md`** — Spottie. Profiling, load testing, query optimization, frontend Core Web Vitals, performance budgets.
+
+---
+
 ## v4.0.1 — Additional language rules + MSSQL MCP config (2026-05-17)
 
 - **`rules/devstarter/csharp.md`** — C# rules: null safety, async/await, ASP.NET Core, EF Core, xUnit

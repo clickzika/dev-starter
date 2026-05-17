@@ -65,9 +65,14 @@ Show this menu and ask ONE question:
   29. 🔄 Update DevStarter — `/devstarter-update` or `bash ~/.claude/update.sh`
 
 ── AGENTS ─────────────────────────────────────
-  /devstarter-agents    List all 13 specialist agents (BA, PM, TechLead, …)
+  /devstarter-agents    List all specialist agents (BA, PM, TechLead, …)
                         Then invoke any of them directly with @<alias> <task>
                         e.g. @ba, @techlead, @qa, @security
+
+  Standard (13):  @pm @techlead @ba @backend @frontend @dba @qa
+                  @security @devops @uxui @docs @mobile @mlops
+  Extended (full profile only):
+                  @architect @datascience @sre @api @performance
 
 Type the number of your choice, or /devstarter-agents to see the agent roster:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
