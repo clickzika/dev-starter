@@ -174,7 +174,7 @@ DevStarter/
 │   └── progress.json           ← Workflow checkpoint (always read first)
 │
 ├── devstarter-menu.md          ← Entry point (30 workflow options)
-├── VERSION                     ← Current version (4.1.0)
+├── VERSION                     ← Current version (4.2.0)
 ├── CHANGELOG.md                ← Full release history
 ├── README.md                   ← User-facing documentation
 ├── USER.md                     ← User config (skill level, preferences)
@@ -234,6 +234,7 @@ Do NOT create files without the `devstarter-` prefix (except root files: CLAUDE.
 
 **Extended agents (full profile only — `bash install.sh --profile full`)**
 
+Domain Specialists:
 | Agent | Short Alias | Character | Role |
 |-------|-------------|-----------|------|
 | @devstarter-architect | @architect | Hangyodon | System design, service boundaries, ADRs |
@@ -241,6 +242,57 @@ Do NOT create files without the `devstarter-` prefix (except root files: CLAUDE.
 | @devstarter-sre | @sre | Mocha | SLI/SLO, error budgets, incident response, runbooks |
 | @devstarter-api | @api | Pekkle | Contract-first REST/GraphQL/gRPC/OpenAPI design |
 | @devstarter-performance | @performance | Spottie | Profiling, load testing, Core Web Vitals, perf budgets |
+
+Code Reviewers:
+| Agent | Short Alias | Role |
+|-------|-------------|------|
+| @devstarter-code-reviewer | @code-reviewer | Generic code review (all languages) |
+| @devstarter-typescript-reviewer | @ts-reviewer | TypeScript/JS/React review |
+| @devstarter-python-reviewer | @py-reviewer | Python review |
+| @devstarter-go-reviewer | @go-reviewer | Go review |
+| @devstarter-java-reviewer | @java-reviewer | Java/Spring review |
+| @devstarter-csharp-reviewer | @csharp-reviewer | C#/.NET review |
+| @devstarter-rust-reviewer | @rust-reviewer | Rust review |
+| @devstarter-kotlin-reviewer | @kotlin-reviewer | Kotlin/Android review |
+| @devstarter-swift-reviewer | @swift-reviewer | Swift/iOS review |
+| @devstarter-flutter-reviewer | @flutter-reviewer | Flutter/Dart review |
+| @devstarter-cpp-reviewer | @cpp-reviewer | C++ review |
+| @devstarter-django-reviewer | @django-reviewer | Django review |
+| @devstarter-fastapi-reviewer | @fastapi-reviewer | FastAPI review |
+| @devstarter-fsharp-reviewer | @fsharp-reviewer | F# review |
+| @devstarter-mle-reviewer | @mle-reviewer | ML/Data science review |
+
+Build Resolvers:
+| Agent | Short Alias | Role |
+|-------|-------------|------|
+| @devstarter-build-resolver | @build-resolver | Generic build error resolution |
+| @devstarter-typescript-build-resolver | @ts-build-resolver | TypeScript/Node build errors |
+| @devstarter-go-build-resolver | @go-build-resolver | Go/module build errors |
+| @devstarter-java-build-resolver | @java-build-resolver | Java/Kotlin/Gradle/Maven build errors |
+| @devstarter-rust-build-resolver | @rust-build-resolver | Rust/Cargo build errors |
+| @devstarter-swift-build-resolver | @swift-build-resolver | Swift/Xcode/SPM build errors |
+| @devstarter-flutter-build-resolver | @flutter-build-resolver | Flutter/Dart build errors |
+| @devstarter-django-build-resolver | @django-build-resolver | Django/Python build errors |
+| @devstarter-pytorch-build-resolver | @pytorch-build-resolver | PyTorch/TensorFlow/ML env errors |
+| @devstarter-cpp-build-resolver | @cpp-build-resolver | C++/CMake/Make build errors |
+
+Specialist Agents:
+| Agent | Short Alias | Role |
+|-------|-------------|------|
+| @devstarter-planner | @planner | Task decomposition & sprint planning |
+| @devstarter-tdd-guide | @tdd | Test-driven development coaching |
+| @devstarter-refactor | @refactor | Safe code refactoring |
+| @devstarter-code-explorer | @explorer | Codebase navigation & mapping |
+| @devstarter-code-simplifier | @simplifier | Complexity reduction |
+| @devstarter-database-reviewer | @db-reviewer | DB schema & query review |
+| @devstarter-security-reviewer | @security-reviewer | Security-focused code review |
+| @devstarter-a11y-architect | @a11y | Accessibility design & review |
+| @devstarter-network-architect | @network-architect | Network & API topology |
+| @devstarter-seo | @seo | Technical SEO review |
+| @devstarter-silent-failure-hunter | @silent-failure | Swallowed errors & silent failures |
+| @devstarter-type-analyzer | @type-analyzer | Type system analysis |
+| @devstarter-pr-analyzer | @pr-analyzer | PR health & merge readiness |
+| @devstarter-chief-of-staff | @chief | Multi-agent coordination |
 
 **Short aliases** — each agent has a thin alias file at `agents/[shortname].md` so you can type `@pm` instead of `@devstarter-pm`. Aliases mirror the full agent; Claude Code resolves them by filename.
 

@@ -40,7 +40,31 @@ Use `AskUserQuestion` with:
   - `postgres` — PostgreSQL schema + query assistance (needs DATABASE_URL)
   - `mssql` — Microsoft SQL Server schema + queries (needs MSSQL_SERVER/DB/USER/PASSWORD)
   - `sqlite` — SQLite database access (needs SQLITE_DB_PATH)
-  - `brave-search` — Web search from Claude Code (needs BRAVE_API_KEY)
+  - `brave-search` — Web search via Brave API (needs BRAVE_API_KEY)
+  - `jira` — Jira issues, sprints, project management (needs JIRA_URL/EMAIL/TOKEN)
+  - `firecrawl` — Web scraping and crawling (needs FIRECRAWL_API_KEY)
+  - `supabase` — Supabase DB + auth + storage (needs SUPABASE_URL/KEY)
+  - `memory` — Persistent knowledge graph memory (no creds)
+  - `omega-memory` — Enhanced multi-strategy memory (no creds)
+  - `longhand` — Note-taking and knowledge capture (no creds)
+  - `sequential-thinking` — Structured step-by-step reasoning (no creds)
+  - `vercel` — Vercel deployments + domains + env vars (needs VERCEL_TOKEN)
+  - `railway` — Railway project + service deployments (needs RAILWAY_TOKEN)
+  - `cloudflare` — Cloudflare Workers, KV, D1, R2 (needs CLOUDFLARE_ACCOUNT_ID/API_TOKEN)
+  - `clickhouse` — ClickHouse analytics database (needs CLICKHOUSE_HOST/USER/PASSWORD)
+  - `exa-search` — AI-powered semantic web search (needs EXA_API_KEY)
+  - `context7` — Library docs lookup in chat (needs CONTEXT7_API_KEY)
+  - `magic-ui` — Magic UI component generation (no creds)
+  - `filesystem` — Local filesystem read/write (no creds — uses current dir)
+  - `playwright` — Browser automation + scraping (no creds)
+  - `fal-ai` — AI image/video generation (needs FAL_KEY)
+  - `browserbase` — Cloud browser automation (needs BROWSERBASE_API_KEY/PROJECT_ID)
+  - `browser-use` — Local browser control agent (needs OPENAI_API_KEY)
+  - `devfleet` — DevFleet local server (must be running on :18801)
+  - `token-optimizer` — Token usage optimization (no creds)
+  - `laraplugins` — Laravel plugin discovery (no creds — HTTP)
+  - `confluence` — Atlassian Confluence pages + spaces (needs CONFLUENCE_BASE_URL/EMAIL/TOKEN)
+  - `evalview` — AI evaluation and benchmarking (needs OPENAI_API_KEY)
 
 ---
 
@@ -68,6 +92,30 @@ For each selected server, verify the required env var is set:
 | mssql | `MSSQL_SERVER`, `MSSQL_DATABASE`, `MSSQL_USER`, `MSSQL_PASSWORD` (port defaults 1433, encrypt defaults true) |
 | sqlite | `SQLITE_DB_PATH` |
 | brave-search | `BRAVE_API_KEY` |
+| jira | `JIRA_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN` |
+| firecrawl | `FIRECRAWL_API_KEY` |
+| supabase | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` |
+| memory | *(none)* |
+| omega-memory | *(none)* |
+| longhand | *(none)* |
+| sequential-thinking | *(none)* |
+| vercel | `VERCEL_TOKEN` |
+| railway | `RAILWAY_TOKEN` |
+| cloudflare | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` |
+| clickhouse | `CLICKHOUSE_HOST`, `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD` |
+| exa-search | `EXA_API_KEY` |
+| context7 | `CONTEXT7_API_KEY` |
+| magic-ui | *(none)* |
+| filesystem | *(none — uses project directory)* |
+| playwright | *(none)* |
+| fal-ai | `FAL_KEY` |
+| browserbase | `BROWSERBASE_API_KEY`, `BROWSERBASE_PROJECT_ID` |
+| browser-use | `OPENAI_API_KEY` |
+| devfleet | *(none — local HTTP server must run on :18801)* |
+| token-optimizer | *(none)* |
+| laraplugins | *(none — HTTP endpoint)* |
+| confluence | `CONFLUENCE_BASE_URL`, `CONFLUENCE_EMAIL`, `CONFLUENCE_API_TOKEN` |
+| evalview | `OPENAI_API_KEY` |
 
 For each missing var, show:
 ```
@@ -149,5 +197,29 @@ All templates live at `~/.claude/templates/mcp/`:
 | `mssql.json` | Microsoft SQL Server | `MSSQL_SERVER`, `MSSQL_DATABASE`, `MSSQL_USER`, `MSSQL_PASSWORD` |
 | `sqlite.json` | SQLite | `SQLITE_DB_PATH` |
 | `brave-search.json` | Brave Search | `BRAVE_API_KEY` |
+| `jira.json` | Jira | `JIRA_URL`, `JIRA_EMAIL`, `JIRA_API_TOKEN` |
+| `firecrawl.json` | Firecrawl | `FIRECRAWL_API_KEY` |
+| `supabase.json` | Supabase | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` |
+| `memory.json` | Memory (knowledge graph) | *(none)* |
+| `omega-memory.json` | Omega Memory | *(none)* |
+| `longhand.json` | Longhand Notes | *(none)* |
+| `sequential-thinking.json` | Sequential Thinking | *(none)* |
+| `vercel.json` | Vercel | `VERCEL_TOKEN` |
+| `railway.json` | Railway | `RAILWAY_TOKEN` |
+| `cloudflare.json` | Cloudflare (Workers/KV/D1/R2) | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` |
+| `clickhouse.json` | ClickHouse | `CLICKHOUSE_HOST`, `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD` |
+| `exa-search.json` | Exa Search | `EXA_API_KEY` |
+| `context7.json` | Context7 | `CONTEXT7_API_KEY` |
+| `magic-ui.json` | Magic UI | *(none)* |
+| `filesystem.json` | Filesystem | *(none)* |
+| `playwright.json` | Playwright | *(none)* |
+| `fal-ai.json` | Fal AI | `FAL_KEY` |
+| `browserbase.json` | Browserbase | `BROWSERBASE_API_KEY`, `BROWSERBASE_PROJECT_ID` |
+| `browser-use.json` | Browser Use | `OPENAI_API_KEY` |
+| `devfleet.json` | DevFleet | *(local :18801)* |
+| `token-optimizer.json` | Token Optimizer | *(none)* |
+| `laraplugins.json` | LaraPlugins | *(none — HTTP)* |
+| `confluence.json` | Confluence | `CONFLUENCE_BASE_URL`, `CONFLUENCE_EMAIL`, `CONFLUENCE_API_TOKEN` |
+| `evalview.json` | EvalView | `OPENAI_API_KEY` |
 
 Full setup instructions: `~/.claude/templates/mcp/mcp-setup.md`

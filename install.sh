@@ -136,7 +136,7 @@ cp -r "$SOURCE_DIR/agents/teams/"*.md "$CLAUDE_DIR/agents/teams/" 2>/dev/null ||
 # standard: all 13 original agents (no extended)
 # full:     all 13 + 5 extended (architect, datascience, sre, api, performance)
 CORE_AGENTS="devstarter-pm devstarter-techlead devstarter-ba devstarter-backend devstarter-frontend devstarter-qa devstarter-security"
-EXTENDED_AGENTS="devstarter-architect devstarter-datascience devstarter-sre devstarter-api devstarter-performance"
+EXTENDED_AGENTS="devstarter-architect devstarter-datascience devstarter-sre devstarter-api devstarter-performance devstarter-code-reviewer devstarter-typescript-reviewer devstarter-python-reviewer devstarter-go-reviewer devstarter-java-reviewer devstarter-csharp-reviewer devstarter-rust-reviewer devstarter-kotlin-reviewer devstarter-swift-reviewer devstarter-flutter-reviewer devstarter-cpp-reviewer devstarter-django-reviewer devstarter-fastapi-reviewer devstarter-fsharp-reviewer devstarter-mle-reviewer devstarter-build-resolver devstarter-typescript-build-resolver devstarter-go-build-resolver devstarter-java-build-resolver devstarter-rust-build-resolver devstarter-swift-build-resolver devstarter-flutter-build-resolver devstarter-django-build-resolver devstarter-pytorch-build-resolver devstarter-cpp-build-resolver devstarter-planner devstarter-tdd-guide devstarter-refactor devstarter-code-explorer devstarter-code-simplifier devstarter-database-reviewer devstarter-security-reviewer devstarter-a11y-architect devstarter-network-architect devstarter-seo devstarter-silent-failure-hunter devstarter-type-analyzer devstarter-pr-analyzer devstarter-chief-of-staff"
 
 if [ "$PROFILE" = "minimal" ]; then
   for agent in $CORE_AGENTS; do
