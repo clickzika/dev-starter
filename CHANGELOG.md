@@ -1,5 +1,17 @@
 # Changelog
 
+## v4.0.1 — Additional language rules + MSSQL MCP config (2026-05-17)
+
+- **`rules/devstarter/csharp.md`** — C# rules: null safety, async/await, ASP.NET Core, EF Core, xUnit
+- **`rules/devstarter/react.md`** — React rules: functional components, hooks, React Query, RTL testing
+- **`rules/devstarter/flutter.md`** — Flutter/Dart rules: null safety, Riverpod/Bloc, widget splitting, feature structure
+- **`rules/devstarter/angular.md`** — Angular rules: OnPush, signals, RxJS, standalone components, reactive forms
+- **`templates/mcp/mssql.json`** — Microsoft SQL Server MCP config (community `mcp-server-mssql`)
+- **`templates/mcp/mcp-setup.md`** — added MSSQL setup instructions + Azure SQL example
+- **`sdlc/devstarter-mcp.md`** — mssql added to picker + env var table
+
+---
+
 ## v4.0.0 — ECC Integration Phase 1: Language Rules + MCP Configs (2026-05-17)
 
 > Absorbed the best capabilities from "everything-claude-code" (ECC) into

@@ -38,6 +38,7 @@ Use `AskUserQuestion` with:
 - options:
   - `github` — GitHub repos, issues, PRs, code search (needs GITHUB_TOKEN)
   - `postgres` — PostgreSQL schema + query assistance (needs DATABASE_URL)
+  - `mssql` — Microsoft SQL Server schema + queries (needs MSSQL_SERVER/DB/USER/PASSWORD)
   - `sqlite` — SQLite database access (needs SQLITE_DB_PATH)
   - `brave-search` — Web search from Claude Code (needs BRAVE_API_KEY)
 
@@ -64,6 +65,7 @@ For each selected server, verify the required env var is set:
 |--------|-----------------|
 | github | `GITHUB_TOKEN` |
 | postgres | `DATABASE_URL` |
+| mssql | `MSSQL_SERVER`, `MSSQL_DATABASE`, `MSSQL_USER`, `MSSQL_PASSWORD` |
 | sqlite | `SQLITE_DB_PATH` |
 | brave-search | `BRAVE_API_KEY` |
 
@@ -144,6 +146,7 @@ All templates live at `~/.claude/templates/mcp/`:
 |------|--------|-----------------|
 | `github.json` | GitHub | `GITHUB_TOKEN` |
 | `postgres.json` | PostgreSQL | `DATABASE_URL` |
+| `mssql.json` | Microsoft SQL Server | `MSSQL_SERVER`, `MSSQL_DATABASE`, `MSSQL_USER`, `MSSQL_PASSWORD` |
 | `sqlite.json` | SQLite | `SQLITE_DB_PATH` |
 | `brave-search.json` | Brave Search | `BRAVE_API_KEY` |
 
