@@ -92,6 +92,7 @@ Show this menu and ask ONE question:
                   @healthcare-reviewer @homelab-architect @harmonyos-resolver
                   @gan-planner @gan-generator @gan-evaluator
                   @oss-forker @oss-sanitizer @oss-packager
+                  @laravel-reviewer @hookify-rules @agent-auditor @rules-distiller
 
 Type the number of your choice, or /devstarter-agents to see the agent roster:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -131,3 +132,5 @@ Route to correct file:
 | 28 | `~/.claude/sdlc/devstarter-compliance.md` |
 | 29 | Run `bash ~/.claude/update.sh` |
 | 30 | `~/.claude/sdlc/devstarter-mcp.md` |
+| 31 | `~/.claude/sdlc/devstarter-verification-loop.md` |
+| 32 | `~/.claude/sdlc/devstarter-council.md` |

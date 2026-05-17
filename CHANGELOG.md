@@ -1,5 +1,22 @@
 # Changelog
 
+## v4.5.0 — ECC Skills Port: 4 agents + 2 workflows (2026-05-17)
+
+### New Agents (full profile)
+- **laravel-reviewer** — Laravel architecture (controller/service/action), N+1, mass assignment, query optimization, policy/gate auth, migrations, test coverage
+- **hookify-rules** — convert markdown rule files to Claude Code hook JSON (bash/file/stop/prompt events); shows diff + gate before writing
+- **agent-auditor** — 12-layer multi-agent system diagnostic (system prompt → session history → memory → tools → answer shaping → persistence); failure pattern detection
+- **rules-distiller** — scan agents/skills for cross-cutting principles (2+ file threshold), produce append/revise/new-section verdicts, never auto-modifies rules files
+
+### New SDLC Runbooks + Skills
+- `/devstarter-verification-loop` — 6-phase quality gate: build → typecheck → lint → tests (80% threshold) → security scan → diff review; supports Node/TS/Go/Python/Rust/Flutter/Java/PHP; continuous mode opt-in
+- `/devstarter-council` — 4-voice deliberation (Architect/Skeptic/Pragmatist/Critic) for ambiguous decisions; parallel subagents, bias guardrails, saves to memory for /devstarter-change handoff; Opus model
+
+### Updated
+- `install.sh` EXTENDED_AGENTS — includes laravel-reviewer, hookify-rules, agent-auditor, rules-distiller
+- `devstarter-menu.md` — verification-loop (#31), council (#32), 4 new agent aliases
+- `CLAUDE.md` — agent table updated
+
 ## v4.4.0 — Hybrid Hooks System (2026-05-17)
 
 ### New

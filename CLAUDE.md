@@ -315,6 +315,10 @@ Specialist Agents:
 | @devstarter-opensource-forker | @oss-forker | Strip secrets, prep for open-source |
 | @devstarter-opensource-sanitizer | @oss-sanitizer | Verify fork is clean before release |
 | @devstarter-opensource-packager | @oss-packager | Generate README/CLAUDE.md/setup.sh |
+| @devstarter-laravel-reviewer | @laravel-reviewer | Laravel/PHP architecture, security, N+1, test review |
+| @devstarter-hookify-rules | @hookify-rules | Convert markdown rules → Claude Code hook JSON |
+| @devstarter-agent-auditor | @agent-auditor | 12-layer multi-agent system diagnostic |
+| @devstarter-rules-distiller | @rules-distiller | Extract cross-cutting rules from agents/skills (2+ files) |
 
 **Short aliases** — each agent has a thin alias file at `agents/[shortname].md` so you can type `@pm` instead of `@devstarter-pm`. Aliases mirror the full agent; Claude Code resolves them by filename.
 
@@ -438,6 +442,11 @@ Every slash command requires:
 | v4.0.0 | ECC Integration Phase 1 — language rules (TypeScript, Python, Go, Java), MCP configs (GitHub, PostgreSQL, SQLite, Brave Search), /devstarter-mcp command |
 | v4.0.1 | Language rules extended — C#, React, Flutter, Angular; MSSQL MCP config added |
 | v4.1.0 | Profile-based install (--profile minimal/standard/full) + 5 extended agents (architect, datascience, sre, api, performance) |
+| v4.2.0 | ECC full absorption — 29 MCP configs, 17 language rules, 40 extended agents |
+| v4.3.0 | ECC gap fill — 22 agents, 15 rule files (golang/dart/cpp subdirs), MCP accuracy fixes |
+| v4.3.1 | ECC context templates — dev.md / research.md / review.md in templates/contexts/ |
+| v4.4.0 | Hybrid hooks system — 5 Node.js hooks (session-start, pre-compact, accumulator, format, console-log), --hooks install flag |
+| v4.5.0 | ECC skills port — 4 agents (laravel-reviewer, hookify-rules, agent-auditor, rules-distiller) + 2 SDLC runbooks (/devstarter-verification-loop, /devstarter-council) |
 
 ---
 
