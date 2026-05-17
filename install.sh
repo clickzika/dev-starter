@@ -74,7 +74,7 @@ if [ -d "$CLAUDE_DIR/agents/custom" ]; then
 fi
 
 # Wipe DevStarter-owned dirs and root files
-for dir in agents skills sdlc templates scripts; do
+for dir in agents skills sdlc templates scripts rules; do
   rm -rf "$CLAUDE_DIR/$dir"
 done
 for f in devstarter-menu.md update.sh install.sh setup.sh README.md LICENSE .gitignore VERSION CHANGELOG.md .env.example; do
@@ -98,6 +98,7 @@ mkdir -p "$CLAUDE_DIR/agents/teams"
 mkdir -p "$CLAUDE_DIR/skills"
 mkdir -p "$CLAUDE_DIR/sdlc"
 mkdir -p "$CLAUDE_DIR/templates/docs"
+mkdir -p "$CLAUDE_DIR/rules"
 
 # Copy agents
 cp -r "$SOURCE_DIR/agents/"*.md "$CLAUDE_DIR/agents/" 2>/dev/null || true
@@ -106,6 +107,9 @@ cp -r "$SOURCE_DIR/agents/teams/"*.md "$CLAUDE_DIR/agents/teams/" 2>/dev/null ||
 
 # Copy skills
 cp -r "$SOURCE_DIR/skills/"* "$CLAUDE_DIR/skills/" 2>/dev/null || true
+
+# Copy language rules
+cp -r "$SOURCE_DIR/rules/"* "$CLAUDE_DIR/rules/" 2>/dev/null || true
 
 # Copy SDLC workflows
 cp -r "$SOURCE_DIR/sdlc/"*.md "$CLAUDE_DIR/sdlc/" 2>/dev/null || true

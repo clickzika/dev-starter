@@ -351,6 +351,7 @@ Every slash command requires:
 | v3.4.0 | /devstarter-debug — hypothesis-driven investigation workflow; 5-phase root cause analysis with surgical fix plan; handoff to /devstarter-change |
 | v3.8.0 | /devstarter-gitsetup Phase 4.5 — post-merge branch cleanup (delete_branch_on_merge + fetch.prune + optional git sweep alias); new `cleanup` inline arg |
 | v3.9.0–3.9.2 | Compaction refactor, clean installer (wipe-first), npm/EXE distribution added then reverted — bash install only |
+| v4.0.0 | ECC Integration Phase 1 — language-specific rules (rules/devstarter/), MCP server config templates (templates/mcp/), new /devstarter-mcp command |
 
 ---
 

@@ -61,6 +61,7 @@ Show this menu and ask ONE question:
   22. 🩺 Doctor (health check)
   23. 🔍 Review (PR / branch / current changes)
   24. 🐛 Debug (senior dev problem analysis)
+  30. 🔌 MCP Setup — `/devstarter-mcp`
   29. 🔄 Update DevStarter — `/devstarter-update` or `bash ~/.claude/update.sh`
 
 ── AGENTS ─────────────────────────────────────
@@ -105,3 +106,4 @@ Route to correct file:
 | 27 | `~/.claude/sdlc/devstarter-profile.md` |
 | 28 | `~/.claude/sdlc/devstarter-compliance.md` |
 | 29 | Run `bash ~/.claude/update.sh` |
+| 30 | `~/.claude/sdlc/devstarter-mcp.md` |

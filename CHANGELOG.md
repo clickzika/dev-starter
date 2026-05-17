@@ -1,5 +1,49 @@
 # Changelog
 
+## v4.0.0 — ECC Integration Phase 1: Language Rules + MCP Configs (2026-05-17)
+
+> Absorbed the best capabilities from "everything-claude-code" (ECC) into
+> DevStarter natively, without requiring ECC installation or causing conflicts.
+> DevStarter remains the single source of truth in `~/.claude/`.
+
+**What changed:**
+
+- **`rules/devstarter/typescript.md`** — TypeScript coding rules: strict types,
+  no `any`, no non-null assertions, import grouping, async patterns
+- **`rules/devstarter/python.md`** — Python coding rules: PEP 8, full type hints,
+  async patterns, pytest conventions
+- **`rules/devstarter/go.md`** — Go coding rules: error wrapping, interface design,
+  concurrency with context, table-driven tests
+- **`rules/devstarter/java.md`** — Java coding rules: null safety with Optional,
+  Spring DI via constructor, specific exception handling, JUnit 5 + AssertJ
+- **`templates/mcp/github.json`** — GitHub MCP server config template
+- **`templates/mcp/postgres.json`** — PostgreSQL MCP server config template
+- **`templates/mcp/sqlite.json`** — SQLite MCP server config template
+- **`templates/mcp/brave-search.json`** — Brave Search MCP server config template
+- **`templates/mcp/mcp-setup.md`** — full MCP setup guide with env var instructions
+- **`skills/devstarter-mcp/SKILL.md`** — new `/devstarter-mcp` command
+- **`sdlc/devstarter-mcp.md`** — MCP server selection + activation runbook
+- **`devstarter-menu.md`** — new entry #30 MCP Setup
+- **`install.sh`** — now copies `rules/` to `~/.claude/rules/` on install
+- **`update.sh`** — now updates `rules/` on upgrade
+
+**How to use language rules:**
+
+Language rules are automatically installed to `~/.claude/rules/devstarter/`.
+Claude Code loads rules from `~/.claude/rules/` automatically. Users can also
+copy specific rules into their project's `.claude/rules/` for project-specific enforcement.
+
+**How to use MCP configs:**
+
+```
+> /devstarter-mcp
+```
+
+Select servers interactively. Config merged into `~/.claude/mcp.json`.
+Restart Claude Code to activate.
+
+---
+
 ## v3.9.6 — /devstarter-update restored + menu entry + publish fix (2026-05-15)
 
 > `/devstarter-update` skill re-added after being removed in v3.9.5.
