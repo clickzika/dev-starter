@@ -173,8 +173,8 @@ DevStarter/
 ├── memory/
 │   └── progress.json           ← Workflow checkpoint (always read first)
 │
-├── devstarter-menu.md          ← Entry point (20 workflow options)
-├── VERSION                     ← Current version (1.4.1)
+├── devstarter-menu.md          ← Entry point (30 workflow options)
+├── VERSION                     ← Current version (4.1.0)
 ├── CHANGELOG.md                ← Full release history
 ├── README.md                   ← User-facing documentation
 ├── USER.md                     ← User config (skill level, preferences)
@@ -231,6 +231,16 @@ Do NOT create files without the `devstarter-` prefix (except root files: CLAUDE.
 | @devstarter-docs | @docs | Gudetama | Technical writing, API docs |
 | @devstarter-mobile | @mobile | Aggretsuko | Flutter, React Native |
 | @devstarter-mlops | @mlops | (new) | ML pipelines, model serving |
+
+**Extended agents (full profile only — `bash install.sh --profile full`)**
+
+| Agent | Short Alias | Character | Role |
+|-------|-------------|-----------|------|
+| @devstarter-architect | @architect | Hangyodon | System design, service boundaries, ADRs |
+| @devstarter-datascience | @datascience | Chococat | EDA, A/B testing, ML modeling, notebooks |
+| @devstarter-sre | @sre | Mocha | SLI/SLO, error budgets, incident response, runbooks |
+| @devstarter-api | @api | Pekkle | Contract-first REST/GraphQL/gRPC/OpenAPI design |
+| @devstarter-performance | @performance | Spottie | Profiling, load testing, Core Web Vitals, perf budgets |
 
 **Short aliases** — each agent has a thin alias file at `agents/[shortname].md` so you can type `@pm` instead of `@devstarter-pm`. Aliases mirror the full agent; Claude Code resolves them by filename.
 
@@ -351,7 +361,9 @@ Every slash command requires:
 | v3.4.0 | /devstarter-debug — hypothesis-driven investigation workflow; 5-phase root cause analysis with surgical fix plan; handoff to /devstarter-change |
 | v3.8.0 | /devstarter-gitsetup Phase 4.5 — post-merge branch cleanup (delete_branch_on_merge + fetch.prune + optional git sweep alias); new `cleanup` inline arg |
 | v3.9.0–3.9.2 | Compaction refactor, clean installer (wipe-first), npm/EXE distribution added then reverted — bash install only |
-| v4.0.0 | ECC Integration Phase 1 — language-specific rules (rules/devstarter/), MCP server config templates (templates/mcp/), new /devstarter-mcp command |
+| v4.0.0 | ECC Integration Phase 1 — language rules (TypeScript, Python, Go, Java), MCP configs (GitHub, PostgreSQL, SQLite, Brave Search), /devstarter-mcp command |
+| v4.0.1 | Language rules extended — C#, React, Flutter, Angular; MSSQL MCP config added |
+| v4.1.0 | Profile-based install (--profile minimal/standard/full) + 5 extended agents (architect, datascience, sre, api, performance) |
 
 ---
 

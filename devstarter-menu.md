@@ -43,9 +43,6 @@ Show this menu and ask ONE question:
   14. ⏪ Rollback Production
   15. 🚨 Incident Response
   25. 📋 Post-Mortem (blameless, after SEV resolved)
-  26. 🏛️  ADR — Architecture Decision Record (standalone)
-  27. ⚡ Profile (proactive performance investigation)
-  28. 🛡️  Compliance (WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001)
 
 ── SETUP & INFRA ──────────────────────────────
   16. 💻 Setup Local Environment
@@ -61,8 +58,13 @@ Show this menu and ask ONE question:
   22. 🩺 Doctor (health check)
   23. 🔍 Review (PR / branch / current changes)
   24. 🐛 Debug (senior dev problem analysis)
-  30. 🔌 MCP Setup — `/devstarter-mcp`
   29. 🔄 Update DevStarter — `/devstarter-update` or `bash ~/.claude/update.sh`
+  30. 🔌 MCP Setup — `/devstarter-mcp`
+
+── ENGINEERING PRACTICE ───────────────────────
+  26. 🏛️  ADR — Architecture Decision Record (standalone)
+  27. ⚡ Profile (proactive performance investigation)
+  28. 🛡️  Compliance (WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001)
 
 ── AGENTS ─────────────────────────────────────
   /devstarter-agents    List all specialist agents (BA, PM, TechLead, …)

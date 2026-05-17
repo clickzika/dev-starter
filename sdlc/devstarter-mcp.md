@@ -65,7 +65,7 @@ For each selected server, verify the required env var is set:
 |--------|-----------------|
 | github | `GITHUB_TOKEN` |
 | postgres | `DATABASE_URL` |
-| mssql | `MSSQL_SERVER`, `MSSQL_DATABASE`, `MSSQL_USER`, `MSSQL_PASSWORD` |
+| mssql | `MSSQL_SERVER`, `MSSQL_DATABASE`, `MSSQL_USER`, `MSSQL_PASSWORD` (port defaults 1433, encrypt defaults true) |
 | sqlite | `SQLITE_DB_PATH` |
 | brave-search | `BRAVE_API_KEY` |
 
