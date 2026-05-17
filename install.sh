@@ -23,9 +23,36 @@ BRANCH="main"
 CLAUDE_DIR="$HOME/.claude"
 TMP_DIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'devstarter')"
 
+# ─── Parse --profile argument ─────────────────────
+# Usage: bash install.sh --profile minimal|standard|full
+# Default: standard
+PROFILE="standard"
+PREV_ARG=""
+for arg in "$@"; do
+  if [ "$PREV_ARG" = "--profile" ]; then
+    PROFILE="$arg"
+  fi
+  case "$arg" in
+    --profile=minimal|--profile=standard|--profile=full)
+      PROFILE="${arg#*=}"
+      ;;
+  esac
+  PREV_ARG="$arg"
+done
+
+# Validate profile value
+case "$PROFILE" in
+  minimal|standard|full) ;;
+  *)
+    echo -e "${RED}❌ Unknown profile: $PROFILE. Use: minimal | standard | full${RESET}"
+    exit 1
+    ;;
+esac
+
 echo ""
 echo -e "${BOLD}-------------------------------------------${RESET}"
 echo -e "${BOLD}  DevStarter — Installer${RESET}"
+echo -e "${BOLD}  Profile: ${YELLOW}${PROFILE}${RESET}"
 echo -e "${BOLD}-------------------------------------------${RESET}"
 echo ""
 
@@ -100,21 +127,47 @@ mkdir -p "$CLAUDE_DIR/sdlc"
 mkdir -p "$CLAUDE_DIR/templates/docs"
 mkdir -p "$CLAUDE_DIR/rules"
 
-# Copy agents
-cp -r "$SOURCE_DIR/agents/"*.md "$CLAUDE_DIR/agents/" 2>/dev/null || true
+# Copy shared agent base (always — all profiles)
 cp -r "$SOURCE_DIR/agents/shared/"*.md "$CLAUDE_DIR/agents/shared/" 2>/dev/null || true
 cp -r "$SOURCE_DIR/agents/teams/"*.md "$CLAUDE_DIR/agents/teams/" 2>/dev/null || true
 
-# Copy skills
+# Copy agents based on profile
+# minimal:  7 core agents (pm, techlead, ba, backend, frontend, qa, security)
+# standard: all 13 original agents (no extended)
+# full:     all 13 + 5 extended (architect, datascience, sre, api, performance)
+CORE_AGENTS="devstarter-pm devstarter-techlead devstarter-ba devstarter-backend devstarter-frontend devstarter-qa devstarter-security"
+EXTENDED_AGENTS="devstarter-architect devstarter-datascience devstarter-sre devstarter-api devstarter-performance"
+
+if [ "$PROFILE" = "minimal" ]; then
+  for agent in $CORE_AGENTS; do
+    cp "$SOURCE_DIR/agents/$agent.md" "$CLAUDE_DIR/agents/" 2>/dev/null || true
+  done
+elif [ "$PROFILE" = "full" ]; then
+  cp -r "$SOURCE_DIR/agents/"*.md "$CLAUDE_DIR/agents/" 2>/dev/null || true
+else
+  # standard — all original agents, skip extended
+  for agent_file in "$SOURCE_DIR/agents/"*.md; do
+    agent_name=$(basename "$agent_file" .md)
+    is_extended=0
+    for ext in $EXTENDED_AGENTS; do
+      [ "$agent_name" = "$ext" ] && is_extended=1 && break
+    done
+    [ "$is_extended" = "0" ] && cp "$agent_file" "$CLAUDE_DIR/agents/" 2>/dev/null || true
+  done
+fi
+
+# Copy skills (all profiles)
 cp -r "$SOURCE_DIR/skills/"* "$CLAUDE_DIR/skills/" 2>/dev/null || true
 
-# Copy language rules
-cp -r "$SOURCE_DIR/rules/"* "$CLAUDE_DIR/rules/" 2>/dev/null || true
+# Copy language rules (standard + full only — minimal skips for leaner context)
+if [ "$PROFILE" != "minimal" ]; then
+  cp -r "$SOURCE_DIR/rules/"* "$CLAUDE_DIR/rules/" 2>/dev/null || true
+fi
 
-# Copy SDLC workflows
+# Copy SDLC workflows (all profiles)
 cp -r "$SOURCE_DIR/sdlc/"*.md "$CLAUDE_DIR/sdlc/" 2>/dev/null || true
 
-# Copy templates
+# Copy templates (all profiles)
 cp -r "$SOURCE_DIR/templates/"* "$CLAUDE_DIR/templates/" 2>/dev/null || true
 
 # Copy scripts
@@ -137,7 +190,7 @@ cp "$SOURCE_DIR/USER.md" "$CLAUDE_DIR/" 2>/dev/null || true
 
 # Count installed files
 FILE_COUNT=$(find "$CLAUDE_DIR" -name "*.md" -o -name "*.html" -o -name "*.sh" -o -name "*.template" | wc -l | tr -d ' ')
-echo -e "  ${GREEN}✅ $FILE_COUNT files installed to ~/.claude/${RESET}"
+echo -e "  ${GREEN}✅ $FILE_COUNT files installed to ~/.claude/ [profile: ${PROFILE}]${RESET}"
 
 # Restore user-owned files and agents/custom/
 for f in USER.md CLAUDE.md settings.json settings.local.json .env; do
