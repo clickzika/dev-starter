@@ -74,7 +74,18 @@ Show this menu and ask ONE question:
   Standard (13):  @pm @techlead @ba @backend @frontend @dba @qa
                   @security @devops @uxui @docs @mobile @mlops
   Extended (full profile only):
-                  @architect @datascience @sre @api @performance
+    Domain:       @architect @datascience @sre @api @performance
+    Reviewers:    @code-reviewer @ts-reviewer @py-reviewer @go-reviewer
+                  @java-reviewer @csharp-reviewer @rust-reviewer @kotlin-reviewer
+                  @swift-reviewer @flutter-reviewer @cpp-reviewer
+                  @django-reviewer @fastapi-reviewer @fsharp-reviewer @mle-reviewer
+    Build:        @build-resolver @ts-build-resolver @go-build-resolver
+                  @java-build-resolver @rust-build-resolver @swift-build-resolver
+                  @flutter-build-resolver @django-build-resolver
+                  @pytorch-build-resolver @cpp-build-resolver
+    Specialists:  @planner @tdd @refactor @explorer @simplifier
+                  @db-reviewer @security-reviewer @a11y @network-architect
+                  @seo @silent-failure @type-analyzer @pr-analyzer @chief
 
 Type the number of your choice, or /devstarter-agents to see the agent roster:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

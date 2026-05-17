@@ -1,5 +1,53 @@
 # Changelog
 
+## v4.2.0 — ECC Full Absorption: 29 MCPs, 17 language rules, 40 new agents (2026-05-17)
+
+### MCP Templates (29 total, 24 new)
+
+Added 24 new MCP server configs to `templates/mcp/`:
+jira, firecrawl, supabase, memory, omega-memory, longhand, sequential-thinking, vercel, railway, cloudflare (4-in-1: workers/kv/d1/r2), clickhouse, exa-search, context7, magic-ui, filesystem, playwright, fal-ai, browserbase, browser-use, devfleet, token-optimizer, laraplugins, confluence, evalview.
+
+- **`sdlc/devstarter-mcp.md`** — picker expanded from 5 to 29 servers; env var table updated
+- **`templates/mcp/mcp-setup.md`** — setup docs for all 29 servers
+
+### Language Rules (17 total, 9 new)
+
+Added 9 language rule files to `rules/devstarter/`:
+- `rust.md` — ownership, error handling, async, safety, testing
+- `kotlin.md` — null safety, coroutines, flow, data classes, testing
+- `swift.md` — optionals, Swift concurrency, SwiftUI, Codable, testing
+- `php.md` — strict types, error handling, Laravel idioms, testing
+- `ruby.md` — frozen string literal, null handling, Rails best practices, RSpec
+- `web.md` — semantic HTML, CSS, vanilla JS, accessibility, Core Web Vitals
+- `arkts.md` — HarmonyOS ArkTS, reactive state, threading, testing
+- `fsharp.md` — functional style, DU types, Result/Option, modules, testing
+- `perl.md` — strict/warnings, references, modules, testing
+
+### Common Rules (new directory)
+
+Added `rules/devstarter/common/` with 10 cross-language rule files:
+agents.md, code-review.md, coding-style.md, development-workflow.md, git-workflow.md, hooks.md, patterns.md, performance.md, security.md, testing.md
+
+### 15 Code Reviewer Agents (full profile)
+
+Language-specific code reviewers: code-reviewer (generic), typescript-reviewer, python-reviewer, go-reviewer, java-reviewer, csharp-reviewer, rust-reviewer, kotlin-reviewer, swift-reviewer, flutter-reviewer, cpp-reviewer, django-reviewer, fastapi-reviewer, fsharp-reviewer, mle-reviewer.
+
+### 10 Build Resolver Agents (full profile)
+
+Build failure resolvers: build-resolver (generic), typescript-build-resolver, go-build-resolver, java-build-resolver, rust-build-resolver, swift-build-resolver, flutter-build-resolver, django-build-resolver, pytorch-build-resolver, cpp-build-resolver.
+
+### 14 Specialist Agents (full profile)
+
+planner, tdd-guide, refactor, code-explorer, code-simplifier, database-reviewer, security-reviewer, a11y-architect, network-architect, seo, silent-failure-hunter, type-analyzer, pr-analyzer, chief-of-staff.
+
+### Wiring Updates
+
+- **`install.sh`** — EXTENDED_AGENTS expanded to include all 39 extended agents (5 + 15 reviewers + 10 build resolvers + 14 specialists)
+- **`devstarter-menu.md`** — AGENTS section shows all 4 categories of extended agents
+- **`CLAUDE.md`** — agent tables updated with all extended agents; version → 4.2.0
+
+---
+
 ## v4.1.0 — Phase 2+3: Profile install + 5 extended agents (2026-05-17)
 
 ### Phase 2 — Profile-based install
