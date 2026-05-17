@@ -81,11 +81,17 @@ Show this menu and ask ONE question:
                   @django-reviewer @fastapi-reviewer @fsharp-reviewer @mle-reviewer
     Build:        @build-resolver @ts-build-resolver @go-build-resolver
                   @java-build-resolver @rust-build-resolver @swift-build-resolver
-                  @flutter-build-resolver @django-build-resolver
-                  @pytorch-build-resolver @cpp-build-resolver
-    Specialists:  @planner @tdd @refactor @explorer @simplifier
+                  @flutter-build-resolver @dart-build-resolver @kotlin-build-resolver
+                  @django-build-resolver @pytorch-build-resolver @cpp-build-resolver
+    Specialists:  @planner @tdd @refactor @explorer @simplifier @code-architect
                   @db-reviewer @security-reviewer @a11y @network-architect
-                  @seo @silent-failure @type-analyzer @pr-analyzer @chief
+                  @network-config-reviewer @network-troubleshooter
+                  @seo @silent-failure @type-analyzer @pr-analyzer @pr-test-analyzer @chief
+                  @comment-analyzer @conversation-analyzer @doc-updater @docs-lookup
+                  @e2e-runner @harness-optimizer @loop-operator
+                  @healthcare-reviewer @homelab-architect @harmonyos-resolver
+                  @gan-planner @gan-generator @gan-evaluator
+                  @oss-forker @oss-sanitizer @oss-packager
 
 Type the number of your choice, or /devstarter-agents to see the agent roster:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

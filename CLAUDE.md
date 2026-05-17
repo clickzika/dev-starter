@@ -174,7 +174,7 @@ DevStarter/
 │   └── progress.json           ← Workflow checkpoint (always read first)
 │
 ├── devstarter-menu.md          ← Entry point (30 workflow options)
-├── VERSION                     ← Current version (4.2.0)
+├── VERSION                     ← Current version (4.3.0)
 ├── CHANGELOG.md                ← Full release history
 ├── README.md                   ← User-facing documentation
 ├── USER.md                     ← User config (skill level, preferences)
@@ -272,6 +272,8 @@ Build Resolvers:
 | @devstarter-rust-build-resolver | @rust-build-resolver | Rust/Cargo build errors |
 | @devstarter-swift-build-resolver | @swift-build-resolver | Swift/Xcode/SPM build errors |
 | @devstarter-flutter-build-resolver | @flutter-build-resolver | Flutter/Dart build errors |
+| @devstarter-dart-build-resolver | @dart-build-resolver | Dart analysis & pub errors |
+| @devstarter-kotlin-build-resolver | @kotlin-build-resolver | Kotlin/Gradle build errors |
 | @devstarter-django-build-resolver | @django-build-resolver | Django/Python build errors |
 | @devstarter-pytorch-build-resolver | @pytorch-build-resolver | PyTorch/TensorFlow/ML env errors |
 | @devstarter-cpp-build-resolver | @cpp-build-resolver | C++/CMake/Make build errors |
@@ -284,15 +286,35 @@ Specialist Agents:
 | @devstarter-refactor | @refactor | Safe code refactoring |
 | @devstarter-code-explorer | @explorer | Codebase navigation & mapping |
 | @devstarter-code-simplifier | @simplifier | Complexity reduction |
+| @devstarter-code-architect | @code-architect | Feature blueprint & implementation plan |
 | @devstarter-database-reviewer | @db-reviewer | DB schema & query review |
 | @devstarter-security-reviewer | @security-reviewer | Security-focused code review |
 | @devstarter-a11y-architect | @a11y | Accessibility design & review |
 | @devstarter-network-architect | @network-architect | Network & API topology |
+| @devstarter-network-config-reviewer | @network-config-reviewer | Router/switch config review |
+| @devstarter-network-troubleshooter | @network-troubleshooter | Network connectivity diagnosis |
 | @devstarter-seo | @seo | Technical SEO review |
 | @devstarter-silent-failure-hunter | @silent-failure | Swallowed errors & silent failures |
 | @devstarter-type-analyzer | @type-analyzer | Type system analysis |
 | @devstarter-pr-analyzer | @pr-analyzer | PR health & merge readiness |
+| @devstarter-pr-test-analyzer | @pr-test-analyzer | PR test coverage quality |
 | @devstarter-chief-of-staff | @chief | Multi-agent coordination |
+| @devstarter-comment-analyzer | @comment-analyzer | Code comment quality & rot detection |
+| @devstarter-conversation-analyzer | @conversation-analyzer | Hook opportunity discovery |
+| @devstarter-doc-updater | @doc-updater | Proactive documentation updates |
+| @devstarter-docs-lookup | @docs-lookup | Live library docs via Context7 |
+| @devstarter-e2e-runner | @e2e-runner | E2E test generation & execution |
+| @devstarter-harness-optimizer | @harness-optimizer | Claude Code config optimization |
+| @devstarter-loop-operator | @loop-operator | Autonomous loop monitoring & control |
+| @devstarter-healthcare-reviewer | @healthcare-reviewer | Clinical safety & PHI compliance (Opus) |
+| @devstarter-homelab-architect | @homelab-architect | Home & small-lab network design |
+| @devstarter-harmonyos-app-resolver | @harmonyos-resolver | HarmonyOS/ArkTS development & fixes |
+| @devstarter-gan-planner | @gan-planner | GAN harness — expand prompt to spec |
+| @devstarter-gan-generator | @gan-generator | GAN harness — implement & iterate |
+| @devstarter-gan-evaluator | @gan-evaluator | GAN harness — browser test & score |
+| @devstarter-opensource-forker | @oss-forker | Strip secrets, prep for open-source |
+| @devstarter-opensource-sanitizer | @oss-sanitizer | Verify fork is clean before release |
+| @devstarter-opensource-packager | @oss-packager | Generate README/CLAUDE.md/setup.sh |
 
 **Short aliases** — each agent has a thin alias file at `agents/[shortname].md` so you can type `@pm` instead of `@devstarter-pm`. Aliases mirror the full agent; Claude Code resolves them by filename.
 

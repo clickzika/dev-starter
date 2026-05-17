@@ -48,10 +48,10 @@ Use `AskUserQuestion` with:
   - `omega-memory` — Enhanced multi-strategy memory (no creds)
   - `longhand` — Note-taking and knowledge capture (no creds)
   - `sequential-thinking` — Structured step-by-step reasoning (no creds)
-  - `vercel` — Vercel deployments + domains + env vars (needs VERCEL_TOKEN)
+  - `vercel` — Vercel deployments + projects (HTTP, no creds)
   - `railway` — Railway project + service deployments (needs RAILWAY_TOKEN)
-  - `cloudflare` — Cloudflare Workers, KV, D1, R2 (needs CLOUDFLARE_ACCOUNT_ID/API_TOKEN)
-  - `clickhouse` — ClickHouse analytics database (needs CLICKHOUSE_HOST/USER/PASSWORD)
+  - `cloudflare` — 4 Cloudflare servers: docs, workers-builds, workers-bindings, observability (HTTP, no creds)
+  - `clickhouse` — ClickHouse Cloud analytics queries (HTTP, no creds)
   - `exa-search` — AI-powered semantic web search (needs EXA_API_KEY)
   - `context7` — Library docs lookup in chat (needs CONTEXT7_API_KEY)
   - `magic-ui` — Magic UI component generation (no creds)
@@ -99,10 +99,10 @@ For each selected server, verify the required env var is set:
 | omega-memory | *(none)* |
 | longhand | *(none)* |
 | sequential-thinking | *(none)* |
-| vercel | `VERCEL_TOKEN` |
+| vercel | *(none — HTTP endpoint)* |
 | railway | `RAILWAY_TOKEN` |
-| cloudflare | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` |
-| clickhouse | `CLICKHOUSE_HOST`, `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD` |
+| cloudflare | *(none — 4 HTTP endpoints: docs/builds/bindings/observability)* |
+| clickhouse | *(none — HTTP endpoint mcp.clickhouse.cloud)* |
 | exa-search | `EXA_API_KEY` |
 | context7 | `CONTEXT7_API_KEY` |
 | magic-ui | *(none)* |
@@ -204,10 +204,10 @@ All templates live at `~/.claude/templates/mcp/`:
 | `omega-memory.json` | Omega Memory | *(none)* |
 | `longhand.json` | Longhand Notes | *(none)* |
 | `sequential-thinking.json` | Sequential Thinking | *(none)* |
-| `vercel.json` | Vercel | `VERCEL_TOKEN` |
+| `vercel.json` | Vercel | *(none — HTTP)* |
 | `railway.json` | Railway | `RAILWAY_TOKEN` |
-| `cloudflare.json` | Cloudflare (Workers/KV/D1/R2) | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` |
-| `clickhouse.json` | ClickHouse | `CLICKHOUSE_HOST`, `CLICKHOUSE_USER`, `CLICKHOUSE_PASSWORD` |
+| `cloudflare.json` | Cloudflare (docs/builds/bindings/observability) | *(none — 4 HTTP endpoints)* |
+| `clickhouse.json` | ClickHouse Cloud | *(none — HTTP)* |
 | `exa-search.json` | Exa Search | `EXA_API_KEY` |
 | `context7.json` | Context7 | `CONTEXT7_API_KEY` |
 | `magic-ui.json` | Magic UI | *(none)* |

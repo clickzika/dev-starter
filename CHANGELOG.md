@@ -1,5 +1,42 @@
 # Changelog
 
+## v4.3.0 — ECC Gap Fill: 22 agents, 15 rule files, MCP accuracy fixes (2026-05-17)
+
+### MCP Config Accuracy Fixes
+- `sdlc/devstarter-mcp.md` — corrected vercel (HTTP, no token), clickhouse (HTTP, no creds), cloudflare (4 HTTP endpoints: docs/builds/bindings/observability) env var entries
+- Jira config already uses correct `uvx mcp-atlassian==0.21.0` command
+
+### 22 New Agents (full profile)
+- **code-architect** — codebase-pattern-aware feature blueprint & implementation plan
+- **comment-analyzer** — code comment accuracy, rot detection, comment quality
+- **conversation-analyzer** — analyze session transcripts to find hook opportunities
+- **dart-build-resolver** — Dart analysis, pub conflicts, build_runner errors
+- **kotlin-build-resolver** — Kotlin compiler, Gradle, KMP build failures
+- **doc-updater** — proactive README/API doc/codemap updates after code changes
+- **docs-lookup** — live library documentation via Context7 MCP
+- **e2e-runner** — Playwright E2E test generation, maintenance & execution
+- **harness-optimizer** — Claude Code settings, hooks, MCP configuration optimization
+- **loop-operator** — monitor & safely intervene in autonomous agent loops
+- **pr-test-analyzer** — PR test coverage quality (distinct from pr-analyzer)
+- **network-config-reviewer** — Cisco/Juniper router & switch config review
+- **network-troubleshooter** — OSI-layer network connectivity diagnosis
+- **healthcare-reviewer** — clinical safety, PHI/HIPAA compliance (Opus model)
+- **homelab-architect** — home & small-lab network design with staged rollout
+- **harmonyos-app-resolver** — HarmonyOS/ArkTS V2 state, Navigation, API fixes
+- **gan-planner** — GAN harness: expand one-liner to full product spec
+- **gan-generator** — GAN harness: implement features, iterate on feedback
+- **gan-evaluator** — GAN harness: Playwright browser testing & rubric scoring
+- **opensource-forker** — strip secrets/PII/internal refs for open-source release
+- **opensource-sanitizer** — verify fork is fully clean before public release
+- **opensource-packager** — generate README, setup.sh, CLAUDE.md, LICENSE, templates
+
+### Language Rule Directories (15 new files)
+- `rules/devstarter/dart/` — coding-style, hooks, patterns, security, testing
+- `rules/devstarter/cpp/` — coding-style, hooks, patterns, security, testing
+- `rules/devstarter/golang/` — coding-style, hooks, patterns, security, testing
+
+---
+
 ## v4.2.0 — ECC Full Absorption: 29 MCPs, 17 language rules, 40 new agents (2026-05-17)
 
 ### MCP Templates (29 total, 24 new)
