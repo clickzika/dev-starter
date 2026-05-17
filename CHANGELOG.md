@@ -1,5 +1,11 @@
 # Changelog
 
+## v4.3.1 — ECC Context Templates (2026-05-17)
+
+### New
+- `templates/contexts/` — 3 behavior-mode context files adapted from ECC (dev.md, research.md, review.md)
+- DevStarter integration hints added to each context (relevant slash commands, agents)
+
 ## v4.3.0 — ECC Gap Fill: 22 agents, 15 rule files, MCP accuracy fixes (2026-05-17)
 
 ### MCP Config Accuracy Fixes
