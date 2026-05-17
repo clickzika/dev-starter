@@ -112,7 +112,7 @@ fi
 for dir in agents skills sdlc templates scripts rules; do
   rm -rf "$CLAUDE_DIR/$dir"
 done
-for f in devstarter-menu.md update.sh install.sh setup.sh README.md LICENSE .gitignore VERSION CHANGELOG.md .env.example; do
+for f in devstarter-menu.md update.sh install.sh uninstall.sh setup.sh README.md LICENSE .gitignore VERSION CHANGELOG.md .env.example; do
   rm -f "$CLAUDE_DIR/$f"
 done
 
@@ -183,6 +183,7 @@ mkdir -p "$CLAUDE_DIR/scripts"
 mkdir -p "$CLAUDE_DIR/scripts/hooks"
 cp -r "$SOURCE_DIR/scripts/"*.sh "$CLAUDE_DIR/scripts/" 2>/dev/null || true
 cp "$SOURCE_DIR/scripts/install-hooks.js" "$CLAUDE_DIR/scripts/" 2>/dev/null || true
+cp "$SOURCE_DIR/scripts/uninstall-hooks.js" "$CLAUDE_DIR/scripts/" 2>/dev/null || true
 cp "$SOURCE_DIR/scripts/hooks/"*.js "$CLAUDE_DIR/scripts/hooks/" 2>/dev/null || true
 
 # Copy root files (never overwrite .env if exists)
@@ -190,6 +191,7 @@ cp "$SOURCE_DIR/devstarter-menu.md" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/.env.example" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/setup.sh" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/update.sh" "$CLAUDE_DIR/" 2>/dev/null || true
+cp "$SOURCE_DIR/uninstall.sh" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/README.md" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/LICENSE" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/.gitignore" "$CLAUDE_DIR/" 2>/dev/null || true

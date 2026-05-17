@@ -1,5 +1,23 @@
 # Changelog
 
+## v4.6.1 — Uninstall script (2026-05-18)
+
+### New
+- `uninstall.sh` — Remove DevStarter from `~/.claude/` with preview + confirmation
+- `scripts/uninstall-hooks.js` — Node.js hook remover: strips DevStarter hooks from settings.json without touching other hooks
+
+### Flags
+- `bash uninstall.sh` — interactive, shows preview, asks confirmation
+- `bash uninstall.sh --yes` — skip confirmation
+- `bash uninstall.sh --purge` — also removes USER.md, CLAUDE.md, memory/
+- `bash uninstall.sh --hooks-only` — only remove DevStarter hooks from settings.json
+
+### Always preserved on uninstall
+USER.md · CLAUDE.md · settings.json (hooks cleaned) · .env · mcp.json · memory/ · agents/custom/
+
+### Changes
+- `install.sh` — deploys uninstall.sh + uninstall-hooks.js; adds uninstall.sh to wipe list on reinstall
+
 ## v4.6.0 — Consolidation: go rules merge, team packs, disambiguation guide (2026-05-17)
 
 ### Fixed
