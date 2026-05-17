@@ -95,6 +95,46 @@ export BRAVE_API_KEY=BSA_yourkey
 
 ---
 
+### mssql.json — Microsoft SQL Server MCP Server
+
+Gives Claude Code read access to a SQL Server database for schema inspection and query assistance.
+
+> **Note:** Uses community package `mcp-server-mssql`. Verify the latest package name at npmjs.com before use.
+
+**Requires:**
+- `MSSQL_SERVER` — hostname or IP (e.g. `localhost` or `myserver.database.windows.net`)
+- `MSSQL_DATABASE` — database name
+- `MSSQL_USER` — SQL login username
+- `MSSQL_PASSWORD` — SQL login password
+- `MSSQL_PORT` — default `1433`
+- `MSSQL_ENCRYPT` — default `true` (required for Azure SQL)
+
+**Set env vars:**
+```bash
+export MSSQL_SERVER=localhost
+export MSSQL_DATABASE=MyDatabase
+export MSSQL_USER=sa
+export MSSQL_PASSWORD=YourPassword
+export MSSQL_PORT=1433
+export MSSQL_ENCRYPT=false   # set true for Azure SQL
+```
+
+**Azure SQL connection example:**
+```bash
+export MSSQL_SERVER=myserver.database.windows.net
+export MSSQL_DATABASE=MyDatabase
+export MSSQL_USER=myadmin
+export MSSQL_PASSWORD=YourPassword
+export MSSQL_ENCRYPT=true
+```
+
+**Capabilities:**
+- List tables, views, stored procedures
+- Describe schema and column types
+- Run SELECT queries (read-only)
+
+---
+
 ## Merging multiple configs
 
 If you want multiple MCP servers active at once, merge the `mcpServers` objects:
