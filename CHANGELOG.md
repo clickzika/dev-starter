@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.6.0 — Consolidation: go rules merge, team packs, disambiguation guide (2026-05-17)
+
+### Fixed
+- `rules/devstarter/go.md` — merged all content from `rules/devstarter/golang/` (5 files: coding-style, hooks, patterns, security, testing) into single canonical file; deleted redundant `golang/` directory
+
+### New
+- `templates/team-packs.md` — 13 pre-defined agent team configs for common scenarios (web API, full-stack, mobile, ML, code review, incident, open-source release, GAN harness, homelab, build triage, quality gate, docs sprint, architecture decision)
+- `templates/agent-disambiguation.md` — when-to-use-which guide for all commonly confused agent pairs: techlead/architect/code-architect, pm/planner/sprint, security/security-reviewer, docs/doc-updater/docs-lookup, code-reviewer vs specialists, devops/sre, consult/council/adr, audit/review/doctor, incident/rollback/postmortem, datascience/mlops/mle-reviewer, 4 network agents
+
 ## v4.5.1 — ECC Final Gaps: node rules, hooks README, prompt-defense (2026-05-17)
 
 ### New
