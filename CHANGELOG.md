@@ -1,5 +1,261 @@
 # Changelog
 
+## v4.6.1 — Uninstall script (2026-05-18)
+
+### New
+- `uninstall.sh` — Remove DevStarter from `~/.claude/` with preview + confirmation
+- `scripts/uninstall-hooks.js` — Node.js hook remover: strips DevStarter hooks from settings.json without touching other hooks
+
+### Flags
+- `bash uninstall.sh` — interactive, shows preview, asks confirmation
+- `bash uninstall.sh --yes` — skip confirmation
+- `bash uninstall.sh --purge` — also removes USER.md, CLAUDE.md, memory/
+- `bash uninstall.sh --hooks-only` — only remove DevStarter hooks from settings.json
+
+### Always preserved on uninstall
+USER.md · CLAUDE.md · settings.json (hooks cleaned) · .env · mcp.json · memory/ · agents/custom/
+
+### Changes
+- `install.sh` — deploys uninstall.sh + uninstall-hooks.js; adds uninstall.sh to wipe list on reinstall
+
+## v4.6.0 — Consolidation: go rules merge, team packs, disambiguation guide (2026-05-17)
+
+### Fixed
+- `rules/devstarter/go.md` — merged all content from `rules/devstarter/golang/` (5 files: coding-style, hooks, patterns, security, testing) into single canonical file; deleted redundant `golang/` directory
+
+### New
+- `templates/team-packs.md` — 13 pre-defined agent team configs for common scenarios (web API, full-stack, mobile, ML, code review, incident, open-source release, GAN harness, homelab, build triage, quality gate, docs sprint, architecture decision)
+- `templates/agent-disambiguation.md` — when-to-use-which guide for all commonly confused agent pairs: techlead/architect/code-architect, pm/planner/sprint, security/security-reviewer, docs/doc-updater/docs-lookup, code-reviewer vs specialists, devops/sre, consult/council/adr, audit/review/doctor, incident/rollback/postmortem, datascience/mlops/mle-reviewer, 4 network agents
+
+## v4.5.1 — ECC Final Gaps: node rules, hooks README, prompt-defense (2026-05-17)
+
+### New
+- `rules/devstarter/node.md` — Node.js/CommonJS rules: hook development, error handling, testing, stdin safety
+- `templates/hooks/README.md` — DevStarter hooks install guide: formatters, debug detection, custom hook authoring
+
+### Updated
+- `rules/devstarter/common/security.md` — added Prompt Injection Defense section (role hijacking, unicode tricks, urgency/authority signals)
+
+## v4.5.0 — ECC Skills Port: 4 agents + 2 workflows (2026-05-17)
+
+### New Agents (full profile)
+- **laravel-reviewer** — Laravel architecture (controller/service/action), N+1, mass assignment, query optimization, policy/gate auth, migrations, test coverage
+- **hookify-rules** — convert markdown rule files to Claude Code hook JSON (bash/file/stop/prompt events); shows diff + gate before writing
+- **agent-auditor** — 12-layer multi-agent system diagnostic (system prompt → session history → memory → tools → answer shaping → persistence); failure pattern detection
+- **rules-distiller** — scan agents/skills for cross-cutting principles (2+ file threshold), produce append/revise/new-section verdicts, never auto-modifies rules files
+
+### New SDLC Runbooks + Skills
+- `/devstarter-verification-loop` — 6-phase quality gate: build → typecheck → lint → tests (80% threshold) → security scan → diff review; supports Node/TS/Go/Python/Rust/Flutter/Java/PHP; continuous mode opt-in
+- `/devstarter-council` — 4-voice deliberation (Architect/Skeptic/Pragmatist/Critic) for ambiguous decisions; parallel subagents, bias guardrails, saves to memory for /devstarter-change handoff; Opus model
+
+### Updated
+- `install.sh` EXTENDED_AGENTS — includes laravel-reviewer, hookify-rules, agent-auditor, rules-distiller
+- `devstarter-menu.md` — verification-loop (#31), council (#32), 4 new agent aliases
+- `CLAUDE.md` — agent table updated
+
+## v4.4.0 — Hybrid Hooks System (2026-05-17)
+
+### New
+- `scripts/hooks/session-start.js` — load memory/progress.json + MEMORY.md at session start
+- `scripts/hooks/pre-compact.js` — log compaction event to memory/compaction-log.txt
+- `scripts/hooks/post-edit-accumulator.js` — track edited JS/TS/Go/Python/Rust files for batch Stop processing
+- `scripts/hooks/stop-format-typecheck.js` — batch format (prettier/biome/black/ruff/gofmt/rustfmt) + tsc on Stop
+- `scripts/hooks/stop-check-console-log.js` — warn on debug statements in modified JS/TS/Go/Python files
+- `scripts/install-hooks.js` — Node.js merger: installs DevStarter hooks into ~/.claude/settings.json without overwriting existing hooks
+- `templates/hooks/hooks.json` — Claude Code hooks config template
+
+### Changes
+- `install.sh` — `--hooks` flag: copies hook scripts + merges settings.json; tip shown if hooks not installed
+- Hooks support JS/TS (prettier/biome/tsc), Python (ruff/black), Go (gofmt), Rust (rustfmt)
+- Debug log detection covers: `console.log` (JS/TS), `print()` (Python), `fmt.Println/Printf` (Go)
+
+### Usage
+```bash
+bash install.sh --hooks                      # install + activate hooks
+bash install.sh --profile full --hooks       # full profile + hooks
+# or manually:
+node ~/.claude/scripts/install-hooks.js ~/.claude/scripts/hooks ~/.claude/settings.json ~/.claude/templates/hooks/hooks.json
+```
+
+## v4.3.1 — ECC Context Templates (2026-05-17)
+
+### New
+- `templates/contexts/` — 3 behavior-mode context files adapted from ECC (dev.md, research.md, review.md)
+- DevStarter integration hints added to each context (relevant slash commands, agents)
+
+## v4.3.0 — ECC Gap Fill: 22 agents, 15 rule files, MCP accuracy fixes (2026-05-17)
+
+### MCP Config Accuracy Fixes
+- `sdlc/devstarter-mcp.md` — corrected vercel (HTTP, no token), clickhouse (HTTP, no creds), cloudflare (4 HTTP endpoints: docs/builds/bindings/observability) env var entries
+- Jira config already uses correct `uvx mcp-atlassian==0.21.0` command
+
+### 22 New Agents (full profile)
+- **code-architect** — codebase-pattern-aware feature blueprint & implementation plan
+- **comment-analyzer** — code comment accuracy, rot detection, comment quality
+- **conversation-analyzer** — analyze session transcripts to find hook opportunities
+- **dart-build-resolver** — Dart analysis, pub conflicts, build_runner errors
+- **kotlin-build-resolver** — Kotlin compiler, Gradle, KMP build failures
+- **doc-updater** — proactive README/API doc/codemap updates after code changes
+- **docs-lookup** — live library documentation via Context7 MCP
+- **e2e-runner** — Playwright E2E test generation, maintenance & execution
+- **harness-optimizer** — Claude Code settings, hooks, MCP configuration optimization
+- **loop-operator** — monitor & safely intervene in autonomous agent loops
+- **pr-test-analyzer** — PR test coverage quality (distinct from pr-analyzer)
+- **network-config-reviewer** — Cisco/Juniper router & switch config review
+- **network-troubleshooter** — OSI-layer network connectivity diagnosis
+- **healthcare-reviewer** — clinical safety, PHI/HIPAA compliance (Opus model)
+- **homelab-architect** — home & small-lab network design with staged rollout
+- **harmonyos-app-resolver** — HarmonyOS/ArkTS V2 state, Navigation, API fixes
+- **gan-planner** — GAN harness: expand one-liner to full product spec
+- **gan-generator** — GAN harness: implement features, iterate on feedback
+- **gan-evaluator** — GAN harness: Playwright browser testing & rubric scoring
+- **opensource-forker** — strip secrets/PII/internal refs for open-source release
+- **opensource-sanitizer** — verify fork is fully clean before public release
+- **opensource-packager** — generate README, setup.sh, CLAUDE.md, LICENSE, templates
+
+### Language Rule Directories (15 new files)
+- `rules/devstarter/dart/` — coding-style, hooks, patterns, security, testing
+- `rules/devstarter/cpp/` — coding-style, hooks, patterns, security, testing
+- `rules/devstarter/golang/` — coding-style, hooks, patterns, security, testing
+
+---
+
+## v4.2.0 — ECC Full Absorption: 29 MCPs, 17 language rules, 40 new agents (2026-05-17)
+
+### MCP Templates (29 total, 24 new)
+
+Added 24 new MCP server configs to `templates/mcp/`:
+jira, firecrawl, supabase, memory, omega-memory, longhand, sequential-thinking, vercel, railway, cloudflare (4-in-1: workers/kv/d1/r2), clickhouse, exa-search, context7, magic-ui, filesystem, playwright, fal-ai, browserbase, browser-use, devfleet, token-optimizer, laraplugins, confluence, evalview.
+
+- **`sdlc/devstarter-mcp.md`** — picker expanded from 5 to 29 servers; env var table updated
+- **`templates/mcp/mcp-setup.md`** — setup docs for all 29 servers
+
+### Language Rules (17 total, 9 new)
+
+Added 9 language rule files to `rules/devstarter/`:
+- `rust.md` — ownership, error handling, async, safety, testing
+- `kotlin.md` — null safety, coroutines, flow, data classes, testing
+- `swift.md` — optionals, Swift concurrency, SwiftUI, Codable, testing
+- `php.md` — strict types, error handling, Laravel idioms, testing
+- `ruby.md` — frozen string literal, null handling, Rails best practices, RSpec
+- `web.md` — semantic HTML, CSS, vanilla JS, accessibility, Core Web Vitals
+- `arkts.md` — HarmonyOS ArkTS, reactive state, threading, testing
+- `fsharp.md` — functional style, DU types, Result/Option, modules, testing
+- `perl.md` — strict/warnings, references, modules, testing
+
+### Common Rules (new directory)
+
+Added `rules/devstarter/common/` with 10 cross-language rule files:
+agents.md, code-review.md, coding-style.md, development-workflow.md, git-workflow.md, hooks.md, patterns.md, performance.md, security.md, testing.md
+
+### 15 Code Reviewer Agents (full profile)
+
+Language-specific code reviewers: code-reviewer (generic), typescript-reviewer, python-reviewer, go-reviewer, java-reviewer, csharp-reviewer, rust-reviewer, kotlin-reviewer, swift-reviewer, flutter-reviewer, cpp-reviewer, django-reviewer, fastapi-reviewer, fsharp-reviewer, mle-reviewer.
+
+### 10 Build Resolver Agents (full profile)
+
+Build failure resolvers: build-resolver (generic), typescript-build-resolver, go-build-resolver, java-build-resolver, rust-build-resolver, swift-build-resolver, flutter-build-resolver, django-build-resolver, pytorch-build-resolver, cpp-build-resolver.
+
+### 14 Specialist Agents (full profile)
+
+planner, tdd-guide, refactor, code-explorer, code-simplifier, database-reviewer, security-reviewer, a11y-architect, network-architect, seo, silent-failure-hunter, type-analyzer, pr-analyzer, chief-of-staff.
+
+### Wiring Updates
+
+- **`install.sh`** — EXTENDED_AGENTS expanded to include all 39 extended agents (5 + 15 reviewers + 10 build resolvers + 14 specialists)
+- **`devstarter-menu.md`** — AGENTS section shows all 4 categories of extended agents
+- **`CLAUDE.md`** — agent tables updated with all extended agents; version → 4.2.0
+
+---
+
+## v4.1.0 — Phase 2+3: Profile install + 5 extended agents (2026-05-17)
+
+### Phase 2 — Profile-based install
+
+`install.sh` now accepts `--profile minimal|standard|full` (default: `standard`).
+
+```bash
+bash install.sh --profile minimal   # 7 core agents, no language rules
+bash install.sh --profile standard  # all 13 agents + rules (default)
+bash install.sh --profile full      # standard + 5 extended agents
+```
+
+| Profile | Agents | Language rules |
+|---------|--------|----------------|
+| minimal | 7 (pm, techlead, ba, backend, frontend, qa, security) | No |
+| standard | 13 original | Yes |
+| full | 13 + 5 extended | Yes |
+
+- **`install.sh`** — `--profile` flag parsing + profile-aware agent copy
+- **`templates/devstarter-config.template.yml`** — `devstarter.install_profile` field added
+- **`devstarter-menu.md`** — AGENTS section shows standard vs extended roster
+
+### Phase 3 — 5 Extended Agents (full profile)
+
+- **`agents/devstarter-architect.md`** — Hangyodon. System design from first principles: service boundaries, data architecture, failure modes, ADRs. Works upstream of @techlead.
+- **`agents/devstarter-datascience.md`** — Chococat. EDA, statistical analysis, A/B testing, ML modeling, reproducible notebooks. Distinct from @mlops (pipelines).
+- **`agents/devstarter-sre.md`** — Mocha. SLI/SLO/error budgets, incident response, runbooks, chaos engineering, capacity planning.
+- **`agents/devstarter-api.md`** — Pekkle. Contract-first API design: REST, GraphQL, gRPC, AsyncAPI, OpenAPI specs, versioning, consumer-driven contract tests.
+- **`agents/devstarter-performance.md`** — Spottie. Profiling, load testing, query optimization, frontend Core Web Vitals, performance budgets.
+
+---
+
+## v4.0.1 — Additional language rules + MSSQL MCP config (2026-05-17)
+
+- **`rules/devstarter/csharp.md`** — C# rules: null safety, async/await, ASP.NET Core, EF Core, xUnit
+- **`rules/devstarter/react.md`** — React rules: functional components, hooks, React Query, RTL testing
+- **`rules/devstarter/flutter.md`** — Flutter/Dart rules: null safety, Riverpod/Bloc, widget splitting, feature structure
+- **`rules/devstarter/angular.md`** — Angular rules: OnPush, signals, RxJS, standalone components, reactive forms
+- **`templates/mcp/mssql.json`** — Microsoft SQL Server MCP config (community `mcp-server-mssql`)
+- **`templates/mcp/mcp-setup.md`** — added MSSQL setup instructions + Azure SQL example
+- **`sdlc/devstarter-mcp.md`** — mssql added to picker + env var table
+
+---
+
+## v4.0.0 — ECC Integration Phase 1: Language Rules + MCP Configs (2026-05-17)
+
+> Absorbed the best capabilities from "everything-claude-code" (ECC) into
+> DevStarter natively, without requiring ECC installation or causing conflicts.
+> DevStarter remains the single source of truth in `~/.claude/`.
+
+**What changed:**
+
+- **`rules/devstarter/typescript.md`** — TypeScript coding rules: strict types,
+  no `any`, no non-null assertions, import grouping, async patterns
+- **`rules/devstarter/python.md`** — Python coding rules: PEP 8, full type hints,
+  async patterns, pytest conventions
+- **`rules/devstarter/go.md`** — Go coding rules: error wrapping, interface design,
+  concurrency with context, table-driven tests
+- **`rules/devstarter/java.md`** — Java coding rules: null safety with Optional,
+  Spring DI via constructor, specific exception handling, JUnit 5 + AssertJ
+- **`templates/mcp/github.json`** — GitHub MCP server config template
+- **`templates/mcp/postgres.json`** — PostgreSQL MCP server config template
+- **`templates/mcp/sqlite.json`** — SQLite MCP server config template
+- **`templates/mcp/brave-search.json`** — Brave Search MCP server config template
+- **`templates/mcp/mcp-setup.md`** — full MCP setup guide with env var instructions
+- **`skills/devstarter-mcp/SKILL.md`** — new `/devstarter-mcp` command
+- **`sdlc/devstarter-mcp.md`** — MCP server selection + activation runbook
+- **`devstarter-menu.md`** — new entry #30 MCP Setup
+- **`install.sh`** — now copies `rules/` to `~/.claude/rules/` on install
+- **`update.sh`** — now updates `rules/` on upgrade
+
+**How to use language rules:**
+
+Language rules are automatically installed to `~/.claude/rules/devstarter/`.
+Claude Code loads rules from `~/.claude/rules/` automatically. Users can also
+copy specific rules into their project's `.claude/rules/` for project-specific enforcement.
+
+**How to use MCP configs:**
+
+```
+> /devstarter-mcp
+```
+
+Select servers interactively. Config merged into `~/.claude/mcp.json`.
+Restart Claude Code to activate.
+
+---
+
 ## v3.9.6 — /devstarter-update restored + menu entry + publish fix (2026-05-15)
 
 > `/devstarter-update` skill re-added after being removed in v3.9.5.
