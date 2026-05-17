@@ -14,6 +14,12 @@ project:
   type: app                # app | api | framework | library | mobile | ml
   language: typescript     # typescript | python | go | java | etc.
 
+devstarter:
+  install_profile: standard  # minimal | standard | full
+  # minimal:  7 core agents, no language rules
+  # standard: all 13 original agents + language rules (default)
+  # full:     standard + 5 extended agents (architect, datascience, sre, api, performance)
+
 vcs:
   type: github             # github | gitlab | svn | none
 

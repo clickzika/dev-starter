@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "fal-ai": {
+      "command": "npx",
+      "args": ["-y", "fal-ai-mcp-server"],
+      "env": {
+        "FAL_KEY": "${FAL_KEY}"
+      }
+    }
+  }
+}
