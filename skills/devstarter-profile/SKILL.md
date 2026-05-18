@@ -32,3 +32,22 @@ If "Yes, proceed": continue.
 ```
 
 Read `~/.claude/sdlc/devstarter-profile.md` and run all phases (intake → baseline → profile → bottleneck inventory → optimization roadmap → approval gate → save + handoff → verification).
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-profile` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — Run a proactive performance investigation
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read `sdlc/devstarter-profile.md` from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start' or describe your request
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.

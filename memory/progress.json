@@ -1,18 +1,15 @@
 {
-  "workflow": "devstarter-change — Add Feature: Distribution EXE + npm",
-  "feature": "distribution-exe-npm",
-  "version_target": "v3.9.0",
-  "status": "completed",
-  "started_at": "2026-05-15",
-  "completed_at": "2026-05-15",
-  "pr_number": 48,
-  "pr_url": "https://github.com/clickzika/dev-starter-dev/pull/48",
+  "workflow": "devstarter-change — Add Feature: Multi-AI Support Phase 1",
+  "feature": "multi-ai-support",
+  "version_target": "v4.7.0",
+  "status": "in_progress",
+  "started_at": "2026-05-18",
+  "branch": "feature/multi-ai-support",
   "tasks": [
-    {"id": "T1", "github_issue": 43, "notion_id": "361d9f1f-cda1-8119-a042-f0646689cc3e", "status": "Done"},
-    {"id": "T2", "github_issue": 44, "notion_id": "361d9f1f-cda1-8191-8eff-cb52ca7d8da3", "status": "Done"},
-    {"id": "T3", "github_issue": 45, "notion_id": "361d9f1f-cda1-81e6-81c6-d3f2dc30f6c7", "status": "Done"},
-    {"id": "T4", "github_issue": 46, "notion_id": "361d9f1f-cda1-81f0-ab71-f441e571c0c2", "status": "Done"},
-    {"id": "T5", "github_issue": 47, "notion_id": "361d9f1f-cda1-8108-ac47-c77067df0d15", "status": "Done"}
+    {"id": "T1", "github_issue": 55, "notion_id": "364d9f1f-cda1-8177-a106-d1452273becf", "status": "In Progress", "description": "Add Universal Prompt blocks to all 51 SKILL.md files"},
+    {"id": "T2", "github_issue": 57, "notion_id": "364d9f1f-cda1-8181-bc52-ff5b901216c6", "status": "To Do", "description": "Create docs/multi-ai-guide.md"},
+    {"id": "T3", "github_issue": 58, "notion_id": "364d9f1f-cda1-8190-a338-c9510511337b", "status": "To Do", "description": "Update README.md"},
+    {"id": "T4", "github_issue": 59, "notion_id": "364d9f1f-cda1-814f-aae4-cae65425bf93", "status": "To Do", "description": "Expand ai.provider enum in devstarter-config.yml template"}
   ],
-  "next_session_resume": "Distribution feature (v3.9.0) is merged to develop. Next: /devstarter-release to bump VERSION + CHANGELOG + tag v3.9.0."
+  "next_session_resume": "T1 in progress — adding Universal Prompt blocks to SKILL.md files. Continue from where left off."
 }

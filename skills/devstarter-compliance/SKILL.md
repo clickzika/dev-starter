@@ -22,3 +22,22 @@ Run a structured audit against a specific compliance framework. Outputs a gap re
 ```
 
 Read `~/.claude/sdlc/devstarter-compliance.md` and run all phases (scope → checklist → gap inventory → remediation roadmap → evidence pack → publish → tickets + handoff).
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-compliance` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — Run a compliance audit (WCAG, GDPR, HIPAA, SOC 2, PCI-DSS, ISO 27001)
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read `sdlc/devstarter-compliance.md` from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start' or describe your request
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.

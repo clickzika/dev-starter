@@ -17,3 +17,22 @@ Copies the selected config to `~/.claude/mcp.json` (or merges with existing).
 Read `~/.claude/sdlc/devstarter-mcp.md` and follow the MCP setup workflow.
 
 ARGUMENTS: {{args}}
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-mcp` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — Set up and configure MCP servers for AI tool integrations
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read `sdlc/devstarter-mcp.md` from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start' or describe your request
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.
