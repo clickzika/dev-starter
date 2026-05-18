@@ -1,17 +1,18 @@
 {
-  "workflow": "devstarter-change — Add Feature: Multi-AI Support Phase 1",
-  "feature": "multi-ai-support",
-  "version_target": "v4.7.0",
+  "workflow": "devstarter-change — Add Feature: Multi-AI Support Phase 2",
+  "feature": "multi-ai-phase2",
+  "version_target": "v5.0.0",
   "status": "completed",
   "started_at": "2026-05-18",
   "completed_at": "2026-05-18",
-  "pr_number": 60,
-  "pr_url": "https://github.com/clickzika/dev-starter-dev/pull/60",
+  "pr_number": 66,
+  "pr_url": "https://github.com/clickzika/dev-starter-dev/pull/66",
   "tasks": [
-    {"id": "T1", "github_issue": 55, "notion_id": "364d9f1f-cda1-8177-a106-d1452273becf", "status": "Done"},
-    {"id": "T2", "github_issue": 57, "notion_id": "364d9f1f-cda1-8181-bc52-ff5b901216c6", "status": "Done"},
-    {"id": "T3", "github_issue": 58, "notion_id": "364d9f1f-cda1-8190-a338-c9510511337b", "status": "Done"},
-    {"id": "T4", "github_issue": 59, "notion_id": "364d9f1f-cda1-814f-aae4-cae65425bf93", "status": "Done"}
+    {"id": "P2-T1", "github_issue": 61, "notion_id": "364d9f1f-cda1-8173-b1d8-c39aad72ea73", "status": "Done"},
+    {"id": "P2-T2", "github_issue": 62, "notion_id": "364d9f1f-cda1-81e4-bdb1-fd4672832331", "status": "Done"},
+    {"id": "P2-T3", "github_issue": 63, "notion_id": "364d9f1f-cda1-8195-9379-f0d9b4878e7f", "status": "Done"},
+    {"id": "P2-T4", "github_issue": 64, "notion_id": "364d9f1f-cda1-816c-8d44-d883d1e07fe4", "status": "Done"},
+    {"id": "P2-T5", "github_issue": 65, "notion_id": "364d9f1f-cda1-81da-a51a-f8e10a00c21a", "status": "Done"}
   ],
-  "next_session_resume": "Multi-AI Phase 1 merged to develop (PR #60). Next: /devstarter-release to bump VERSION + CHANGELOG + tag v4.7.0. Phase 2 (install abstraction) tracked in memory/consult-2026-05-18-multi-ai-support.md."
+  "next_session_resume": "Multi-AI Phase 1+2 merged to develop (PR #60, #66). Next: /devstarter-release to tag v5.0.0 (major — provider-detect install). Manual QA recommended: full AI_PROVIDER=codex bash install.sh end-to-end on a clean machine."
 }
