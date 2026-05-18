@@ -7,6 +7,15 @@
 
 set -euo pipefail
 
+# --force: re-copy files even when versions match (repairs a partial/failed
+# prior update — e.g. an older update.sh that lagged the file list).
+FORCE=0
+for arg in "$@"; do
+  case "$arg" in
+    --force|-f) FORCE=1 ;;
+  esac
+done
+
 REPO_URL="https://github.com/clickzika/dev-starter.git"
 BRANCH="main"
 # Resolve install dir (provider-aware). update.sh lives at the install root.
@@ -55,9 +64,10 @@ LATEST_VERSION=$(cat "$TMP_DIR/VERSION")
 echo -e "${YELLOW}Latest version:${NC}  $LATEST_VERSION"
 
 # ─── Step 3: Check if update needed ─────────────────
-if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ] && [ "$FORCE" = "0" ]; then
   echo ""
   echo -e "${GREEN}Already up to date! ($CURRENT_VERSION)${NC}"
+  echo -e "${YELLOW}(Run with --force to re-copy files anyway — repairs a partial update.)${NC}"
   rm -rf "$TMP_DIR"
   exit 0
 fi
@@ -90,8 +100,9 @@ echo -e "${GREEN}  Backup saved to: $BACKUP_DIR${NC}"
 # ─── Step 5: Copy new files ─────────────────────────
 echo -e "${CYAN}[2/4] Installing new files...${NC}"
 
-# Folders to update (overwrite with latest)
-for folder in agents skills sdlc templates rules; do
+# Folders to update (overwrite with latest). scripts/ is DevStarter-owned —
+# must be refreshed so resolver/hooks helpers stay in sync (fixes #68).
+for folder in agents skills sdlc templates rules scripts; do
   if [ -d "$TMP_DIR/$folder" ]; then
     rm -rf "$CLAUDE_DIR/$folder"
     cp -r "$TMP_DIR/$folder" "$CLAUDE_DIR/$folder"
