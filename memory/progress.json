@@ -1,18 +1,18 @@
 {
-  "workflow": "devstarter-change — Add Feature: Distribution EXE + npm",
-  "feature": "distribution-exe-npm",
-  "version_target": "v3.9.0",
+  "workflow": "devstarter-change — Add Feature: Multi-AI Support Phase 2",
+  "feature": "multi-ai-phase2",
+  "version_target": "v5.0.0",
   "status": "completed",
-  "started_at": "2026-05-15",
-  "completed_at": "2026-05-15",
-  "pr_number": 48,
-  "pr_url": "https://github.com/clickzika/dev-starter-dev/pull/48",
+  "started_at": "2026-05-18",
+  "completed_at": "2026-05-18",
+  "pr_number": 66,
+  "pr_url": "https://github.com/clickzika/dev-starter-dev/pull/66",
   "tasks": [
-    {"id": "T1", "github_issue": 43, "notion_id": "361d9f1f-cda1-8119-a042-f0646689cc3e", "status": "Done"},
-    {"id": "T2", "github_issue": 44, "notion_id": "361d9f1f-cda1-8191-8eff-cb52ca7d8da3", "status": "Done"},
-    {"id": "T3", "github_issue": 45, "notion_id": "361d9f1f-cda1-81e6-81c6-d3f2dc30f6c7", "status": "Done"},
-    {"id": "T4", "github_issue": 46, "notion_id": "361d9f1f-cda1-81f0-ab71-f441e571c0c2", "status": "Done"},
-    {"id": "T5", "github_issue": 47, "notion_id": "361d9f1f-cda1-8108-ac47-c77067df0d15", "status": "Done"}
+    {"id": "P2-T1", "github_issue": 61, "notion_id": "364d9f1f-cda1-8173-b1d8-c39aad72ea73", "status": "Done"},
+    {"id": "P2-T2", "github_issue": 62, "notion_id": "364d9f1f-cda1-81e4-bdb1-fd4672832331", "status": "Done"},
+    {"id": "P2-T3", "github_issue": 63, "notion_id": "364d9f1f-cda1-8195-9379-f0d9b4878e7f", "status": "Done"},
+    {"id": "P2-T4", "github_issue": 64, "notion_id": "364d9f1f-cda1-816c-8d44-d883d1e07fe4", "status": "Done"},
+    {"id": "P2-T5", "github_issue": 65, "notion_id": "364d9f1f-cda1-81da-a51a-f8e10a00c21a", "status": "Done"}
   ],
-  "next_session_resume": "Distribution feature (v3.9.0) is merged to develop. Next: /devstarter-release to bump VERSION + CHANGELOG + tag v3.9.0."
+  "next_session_resume": "Multi-AI Phase 1+2 merged to develop (PR #60, #66). Next: /devstarter-release to tag v5.0.0 (major — provider-detect install). Manual QA recommended: full AI_PROVIDER=codex bash install.sh end-to-end on a clean machine."
 }

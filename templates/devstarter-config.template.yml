@@ -91,11 +91,19 @@ secrets:
   # gcp:     backend_region: us-central1
 
 ai:
-  provider: claude         # claude | litellm | openai | gemini | local
+  provider: claude         # claude | litellm | openai | gemini | codex | copilot | local
   model: claude-sonnet-4-6
+  # claude:   native Claude Code integration (default)
+  # litellm:  LiteLLM proxy — route to any provider (see templates/litellm/)
+  # openai:   OpenAI ChatGPT / GPT-4 via API
+  # gemini:   Google Gemini via API
+  # codex:    GitHub Copilot / Codex (use Universal Prompts in each SKILL.md)
+  # copilot:  GitHub Copilot Chat (same as codex)
+  # local:    local LLM via Ollama or similar
   # For LiteLLM proxy:
   # provider: litellm
   # provider_url: http://localhost:4000
+  # For non-Claude AI tools: see docs/multi-ai-guide.md
 
 team:
   skill_level: intermediate  # beginner | intermediate | advanced | expert

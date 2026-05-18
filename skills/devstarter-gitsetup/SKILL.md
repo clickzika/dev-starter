@@ -20,3 +20,22 @@ Set up git + GitFlow on a repo: branches (main/uat/develop), branch protection, 
 | `labels` | Phase 5 only — create standard GitHub labels |
 
 Read `~/.claude/sdlc/devstarter-gitsetup.md` and follow all phases.
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-gitsetup` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — Initialize Git, Gitflow, branch protection, and remotes
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read `sdlc/devstarter-gitsetup.md` from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start' or describe your request
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.

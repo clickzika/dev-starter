@@ -20,7 +20,7 @@ RESET='\033[0m'
 
 REPO_URL="https://github.com/clickzika/dev-starter.git"
 BRANCH="main"
-CLAUDE_DIR="$HOME/.claude"
+# CLAUDE_DIR is resolved after Step 1 (provider-aware — see devstarter-resolve-home.sh)
 TMP_DIR="$(mktemp -d 2>/dev/null || mktemp -d -t 'devstarter')"
 
 # ─── Parse arguments ──────────────────────────────
@@ -86,8 +86,18 @@ else
 fi
 echo ""
 
+# ─── Resolve install dir (provider-aware) ────────────
+# AI_PROVIDER unset/claude → $HOME/.claude (unchanged). Else → $HOME/.<provider>.
+. "$SOURCE_DIR/scripts/devstarter-resolve-home.sh"
+devstarter_resolve_home
+CLAUDE_DIR="$DEVSTARTER_HOME"
+if [ "$DEVSTARTER_PROVIDER" != "claude" ]; then
+  echo -e "${BOLD}  AI Provider: ${YELLOW}${DEVSTARTER_PROVIDER}${RESET} → installing to ${CYAN}${CLAUDE_DIR}${RESET}"
+  echo ""
+fi
+
 # ─── Step 2: Wipe DevStarter dirs, save user files ──
-echo -e "${CYAN}${BOLD}Step 2/4 — Preparing ~/.claude/...${RESET}"
+echo -e "${CYAN}${BOLD}Step 2/4 — Preparing ${CLAUDE_DIR}/...${RESET}"
 
 mkdir -p "$CLAUDE_DIR"
 
@@ -112,7 +122,7 @@ fi
 for dir in agents skills sdlc templates scripts rules; do
   rm -rf "$CLAUDE_DIR/$dir"
 done
-for f in devstarter-menu.md update.sh install.sh uninstall.sh setup.sh README.md LICENSE .gitignore VERSION CHANGELOG.md .env.example; do
+for f in devstarter-menu.md devstarter-invoke.sh update.sh install.sh uninstall.sh setup.sh README.md LICENSE .gitignore VERSION CHANGELOG.md .env.example; do
   rm -f "$CLAUDE_DIR/$f"
 done
 
@@ -188,6 +198,7 @@ cp "$SOURCE_DIR/scripts/hooks/"*.js "$CLAUDE_DIR/scripts/hooks/" 2>/dev/null || 
 
 # Copy root files (never overwrite .env if exists)
 cp "$SOURCE_DIR/devstarter-menu.md" "$CLAUDE_DIR/" 2>/dev/null || true
+cp "$SOURCE_DIR/devstarter-invoke.sh" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/.env.example" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/setup.sh" "$CLAUDE_DIR/" 2>/dev/null || true
 cp "$SOURCE_DIR/update.sh" "$CLAUDE_DIR/" 2>/dev/null || true
@@ -201,9 +212,15 @@ cp "$SOURCE_DIR/CHANGELOG.md" "$CLAUDE_DIR/" 2>/dev/null || true
 # Copy USER.md template (setup.sh will overwrite with wizard answers)
 cp "$SOURCE_DIR/USER.md" "$CLAUDE_DIR/" 2>/dev/null || true
 
+# Non-Claude providers: emit a neutral PROJECT.md context file (Claude Code
+# reads CLAUDE.md automatically; other AIs need a pointed-to context file).
+if [ "$DEVSTARTER_PROVIDER" != "claude" ] && [ ! -f "$CLAUDE_DIR/PROJECT.md" ]; then
+  cp "$SOURCE_DIR/templates/PROJECT.md.template" "$CLAUDE_DIR/PROJECT.md" 2>/dev/null || true
+fi
+
 # Count installed files
 FILE_COUNT=$(find "$CLAUDE_DIR" -name "*.md" -o -name "*.html" -o -name "*.sh" -o -name "*.template" | wc -l | tr -d ' ')
-echo -e "  ${GREEN}✅ $FILE_COUNT files installed to ~/.claude/ [profile: ${PROFILE}]${RESET}"
+echo -e "  ${GREEN}✅ $FILE_COUNT files installed to ${CLAUDE_DIR}/ [profile: ${PROFILE}]${RESET}"
 
 # Restore user-owned files and agents/custom/
 for f in USER.md CLAUDE.md settings.json settings.local.json .env; do
@@ -223,6 +240,14 @@ rm -rf "$SAVE_DIR"
 echo ""
 
 # ─── Step 4 (optional): Install hooks ───────────────
+# Hooks are Claude Code lifecycle events (SessionStart/PostToolUse/Stop).
+# They have no effect under other AI tools, so skip them for non-claude providers.
+if [ "$INSTALL_HOOKS" = "1" ] && [ "$DEVSTARTER_PROVIDER" != "claude" ]; then
+  echo -e "${YELLOW}  ⚠️  --hooks ignored: lifecycle hooks are Claude Code-only "
+  echo -e "      (provider is '${DEVSTARTER_PROVIDER}'). See docs/multi-ai-guide.md.${RESET}"
+  echo ""
+  INSTALL_HOOKS=0
+fi
 if [ "$INSTALL_HOOKS" = "1" ]; then
   echo -e "${CYAN}${BOLD}Step 4/5 — Installing hooks...${RESET}"
   if command -v node &>/dev/null; then
@@ -230,11 +255,11 @@ if [ "$INSTALL_HOOKS" = "1" ]; then
       "$CLAUDE_DIR/scripts/hooks" \
       "$CLAUDE_DIR/settings.json" \
       "$CLAUDE_DIR/templates/hooks/hooks.json" && \
-    echo -e "  ${GREEN}✅ Hooks merged into ~/.claude/settings.json${RESET}" || \
+    echo -e "  ${GREEN}✅ Hooks merged into ${CLAUDE_DIR}/settings.json${RESET}" || \
     echo -e "  ${YELLOW}⚠️  Hook merge failed — check Node.js version (need 18+)${RESET}"
   else
     echo -e "  ${YELLOW}⚠️  node not found. Install Node.js 18+ and run:${RESET}"
-    echo -e "  ${CYAN}node ~/.claude/scripts/install-hooks.js ~/.claude/scripts/hooks ~/.claude/settings.json ~/.claude/templates/hooks/hooks.json${RESET}"
+    echo -e "  ${CYAN}node ${CLAUDE_DIR}/scripts/install-hooks.js ${CLAUDE_DIR}/scripts/hooks ${CLAUDE_DIR}/settings.json ${CLAUDE_DIR}/templates/hooks/hooks.json${RESET}"
   fi
   echo ""
 fi
@@ -261,12 +286,20 @@ echo -e "${GREEN}${BOLD}-------------------------------------------${RESET}"
 echo -e "${GREEN}${BOLD}  Installation Complete!${RESET}"
 echo -e "${GREEN}${BOLD}-------------------------------------------${RESET}"
 echo ""
-echo -e "  To start:"
-echo -e "  ${CYAN}claude${RESET}"
-echo -e "  ${CYAN}> Read ~/.claude/devstarter-menu.md and help me get started${RESET}"
-echo ""
-if [ "$INSTALL_HOOKS" = "0" ]; then
-echo -e "  ${YELLOW}Tip: Run with --hooks to enable lifecycle hooks (format, typecheck, memory):${RESET}"
-echo -e "  ${CYAN}bash install.sh --hooks${RESET}"
-echo ""
+if [ "$DEVSTARTER_PROVIDER" = "claude" ]; then
+  echo -e "  To start:"
+  echo -e "  ${CYAN}claude${RESET}"
+  echo -e "  ${CYAN}> Read ${CLAUDE_DIR}/devstarter-menu.md and help me get started${RESET}"
+  echo ""
+  if [ "$INSTALL_HOOKS" = "0" ]; then
+  echo -e "  ${YELLOW}Tip: Run with --hooks to enable lifecycle hooks (format, typecheck, memory):${RESET}"
+  echo -e "  ${CYAN}bash install.sh --hooks${RESET}"
+  echo ""
+  fi
+else
+  echo -e "  To start with ${YELLOW}${DEVSTARTER_PROVIDER}${RESET}:"
+  echo -e "  ${CYAN}bash ${CLAUDE_DIR}/devstarter-invoke.sh menu${RESET}"
+  echo -e "  Or copy a Universal Prompt from ${CYAN}${CLAUDE_DIR}/skills/${RESET} into your AI."
+  echo -e "  Setup guide: ${CYAN}${CLAUDE_DIR}/docs/multi-ai-guide.md${RESET}"
+  echo ""
 fi

@@ -1,6 +1,6 @@
 # DevStarter
 
-A complete development workflow system for **Claude Code**. Drop it into `~/.claude/` and get a full software team — 83 AI agents, 43+ slash commands, 30 SDLC runbooks, 29 MCP server configs, 18 language rule sets, and battle-tested templates — ready to build any project from scratch.
+A complete development workflow system for **Claude Code** — and any other AI tool (Copilot, Gemini, ChatGPT, Cursor). Drop it into `~/.claude/` and get a full software team — 83 AI agents, 51 slash commands, 30 SDLC runbooks, 29 MCP server configs, 18 language rule sets, and battle-tested templates — ready to build any project from scratch.
 
 ## What's Inside
 
@@ -69,6 +69,9 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 │   └── uninstall-hooks.js          ← Remove DevStarter hooks from settings.json
 │
 ├── uninstall.sh                    ← Clean uninstaller
+├── devstarter-invoke.sh            ← Universal runner (non-Claude AI tools)
+├── scripts/devstarter-resolve-home.sh ← Provider→install-dir resolver
+├── templates/PROJECT.md.template   ← AI-neutral project context file
 ├── .env.example                    ← Global secrets template
 ├── USER.md                         ← Developer skill profile (agent calibration)
 └── setup.sh                        ← First-time setup wizard
@@ -285,9 +288,31 @@ develop → DEV test → UAT branch → UAT test → main → Production
 > /devstarter-hotfix
 ```
 
+## Works with Other AI Tools
+
+DevStarter is built for Claude Code but the **SDLC content is AI-agnostic**. You can use any workflow with Copilot, Gemini, ChatGPT, Cursor, or any other AI.
+
+Every skill file (`skills/devstarter-*/SKILL.md`) ends with a **🌐 Universal Prompt** block — copy it into your AI tool to start the workflow without Claude Code.
+
+**Provider-aware install (v5.0.0+):**
+```bash
+AI_PROVIDER=codex bash install.sh    # → ~/.codex/  (hooks skipped, PROJECT.md generated)
+bash install.sh                      # → ~/.claude/ (unchanged default)
+```
+Then: `bash ~/.codex/devstarter-invoke.sh menu` to list workflows as copy-paste prompts.
+
+**Setup guide for non-Claude AI tools:** [`docs/multi-ai-guide.md`](docs/multi-ai-guide.md)
+
+| Feature | Claude Code | Other AIs |
+|---------|-------------|-----------|
+| All 51 workflows | ✅ slash commands | ✅ Universal Prompt (copy-paste) |
+| All 83 agents | ✅ `@agent-name` | ✅ paste agent file as context |
+| Gate-based approvals | ✅ automatic | ✅ AI stops and waits |
+| Hooks, MCP, slash commands | ✅ | ❌ Claude Code only |
+
 ## Requirements
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
+- **Claude Code** (recommended) or any AI tool with file-context support
 - Git
 - GitHub CLI (`gh`) — for repo automation
 - Node.js 18+ — required for lifecycle hooks (optional otherwise)
