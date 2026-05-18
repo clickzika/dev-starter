@@ -1,6 +1,6 @@
 # DevStarter
 
-A complete development workflow system for **Claude Code** — and any other AI tool. Drop it into `~/.claude/` and get a full software team — 83 AI agents, 43+ slash commands, 30 SDLC runbooks, 29 MCP server configs, 18 language rule sets, and battle-tested templates — ready to build any project from scratch.
+A complete development workflow system for **Claude Code** — and any other AI tool (Copilot, Gemini, ChatGPT, Cursor). Drop it into `~/.claude/` and get a full software team — 83 AI agents, 51 slash commands, 30 SDLC runbooks, 29 MCP server configs, 18 language rule sets, and battle-tested templates — ready to build any project from scratch.
 
 ## What's Inside
 
@@ -69,6 +69,9 @@ A complete development workflow system for **Claude Code** — and any other AI 
 │   └── uninstall-hooks.js          ← Remove DevStarter hooks from settings.json
 │
 ├── uninstall.sh                    ← Clean uninstaller
+├── devstarter-invoke.sh            ← Universal runner (non-Claude AI tools)
+├── scripts/devstarter-resolve-home.sh ← Provider→install-dir resolver
+├── templates/PROJECT.md.template   ← AI-neutral project context file
 ├── .env.example                    ← Global secrets template
 ├── USER.md                         ← Developer skill profile (agent calibration)
 └── setup.sh                        ← First-time setup wizard
