@@ -291,6 +291,13 @@ DevStarter is built for Claude Code but the **SDLC content is AI-agnostic**. You
 
 Every skill file (`skills/devstarter-*/SKILL.md`) ends with a **🌐 Universal Prompt** block — copy it into your AI tool to start the workflow without Claude Code.
 
+**Provider-aware install (v5.0.0+):**
+```bash
+AI_PROVIDER=codex bash install.sh    # → ~/.codex/  (hooks skipped, PROJECT.md generated)
+bash install.sh                      # → ~/.claude/ (unchanged default)
+```
+Then: `bash ~/.codex/devstarter-invoke.sh menu` to list workflows as copy-paste prompts.
+
 **Setup guide for non-Claude AI tools:** [`docs/multi-ai-guide.md`](docs/multi-ai-guide.md)
 
 | Feature | Claude Code | Other AIs |

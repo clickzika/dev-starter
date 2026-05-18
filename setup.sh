@@ -11,10 +11,22 @@ YELLOW='\033[0;33m'
 RED='\033[0;31m'
 RESET='\033[0m'
 
-ENV_FILE="$HOME/.claude/.env"
+# Resolve install dir (provider-aware). setup.sh is installed at the root of
+# the install dir and invoked as "$CLAUDE_DIR/setup.sh".
+_SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null || echo ".")" && pwd)"
+if [ -f "$_SETUP_DIR/scripts/devstarter-resolve-home.sh" ]; then
+  . "$_SETUP_DIR/scripts/devstarter-resolve-home.sh"
+  devstarter_resolve_home
+  CLAUDE_DIR="$DEVSTARTER_HOME"
+else
+  CLAUDE_DIR="${AI_PROVIDER:+$HOME/.$AI_PROVIDER}"
+  CLAUDE_DIR="${CLAUDE_DIR:-$HOME/.claude}"
+fi
+
+ENV_FILE="$CLAUDE_DIR/.env"
 
 # Temp dir — must work for both Git Bash (curl) and Windows Node.js
-TMP_D="$HOME/.claude/.tmp"
+TMP_D="$CLAUDE_DIR/.tmp"
 mkdir -p "$TMP_D"
 # Convert to Windows path if running in Git Bash/MSYS (Node.js needs C:/Users/... not /c/Users/...)
 if command -v cygpath &>/dev/null; then
@@ -162,7 +174,7 @@ echo -e "${CYAN}Setting up auto-approve permissions for common commands...${RESE
 echo -e "${YELLOW}This prevents Claude from asking 'Allow?' for every command.${RESET}"
 echo ""
 
-SETTINGS_FILE="$HOME/.claude/settings.json"
+SETTINGS_FILE="$CLAUDE_DIR/settings.json"
 SETTINGS_FILE_NODE="$TMP_D_NODE/../settings.json"
 
 # Create settings.json if doesn't exist
@@ -300,7 +312,7 @@ case "$DEFAULT_LEVEL" in
 esac
 
 # Generate USER.md using Node.js for reliable string handling
-USER_FILE="$HOME/.claude/USER.md"
+USER_FILE="$CLAUDE_DIR/USER.md"
 if command -v cygpath &>/dev/null; then
   USER_FILE_NODE="$(cygpath -m "$USER_FILE")"
 else
@@ -464,7 +476,7 @@ echo -e "  Language:      ${CYAN}${RESP_LANG}${RESET}"
 echo ""
 
 # ─── Write .env ───────────────────────────────────────
-mkdir -p "$HOME/.claude"
+mkdir -p "$CLAUDE_DIR"
 
 cat > "$ENV_FILE" << EOF
 # Claude Code Global Config
@@ -486,15 +498,20 @@ echo -e "${GREEN}${BOLD}╔═════════════════�
 echo -e "${GREEN}${BOLD}║            ✅ Setup Complete!             ║${RESET}"
 echo -e "${GREEN}${BOLD}╚══════════════════════════════════════════╝${RESET}"
 echo ""
-echo -e "  📄 Config saved to: ${CYAN}~/.claude/.env${RESET}"
-echo -e "  👤 Profile:         ${CYAN}~/.claude/USER.md (${DEFAULT_LEVEL})${RESET}"
-echo -e "  🔓 Permissions:     ${CYAN}~/.claude/settings.json${RESET}"
+echo -e "  📄 Config saved to: ${CYAN}${ENV_FILE}${RESET}"
+echo -e "  👤 Profile:         ${CYAN}${USER_FILE} (${DEFAULT_LEVEL})${RESET}"
+echo -e "  🔓 Permissions:     ${CYAN}${SETTINGS_FILE}${RESET}"
 echo -e "  📁 Projects folder: ${CYAN}${PROJECTS_ROOT}${RESET}"
 echo -e "  🐙 GitHub user:     ${CYAN}${GITHUB_USERNAME}${RESET}"
 echo -e "  📋 Notion parent:   ${CYAN}${NOTION_PARENT_PAGE}${RESET}"
 echo ""
 echo -e "${BOLD}🚀 Ready to start a project:${RESET}"
 echo ""
-echo "  claude"
-echo "  > Read ~/.claude/devstarter-menu.md and help me get started"
+if [ "${DEVSTARTER_PROVIDER:-claude}" = "claude" ]; then
+  echo "  claude"
+  echo "  > Read ${CLAUDE_DIR}/devstarter-menu.md and help me get started"
+else
+  echo "  bash ${CLAUDE_DIR}/devstarter-invoke.sh menu"
+  echo "  (or copy a Universal Prompt from ${CLAUDE_DIR}/skills/ into ${DEVSTARTER_PROVIDER})"
+fi
 echo ""

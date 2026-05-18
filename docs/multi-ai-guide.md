@@ -27,6 +27,36 @@ Non-Claude AI users access it via the **Universal Prompt** blocks in each skill 
 
 ## Step 1 — Install DevStarter
 
+### Provider-aware install (v5.0.0+)
+
+Set `AI_PROVIDER` to install into a dedicated directory for your AI tool:
+
+```bash
+AI_PROVIDER=codex  bash install.sh     # installs to ~/.codex/
+AI_PROVIDER=gemini bash install.sh     # installs to ~/.gemini/
+bash install.sh                        # no var → ~/.claude/ (unchanged)
+```
+
+What changes for non-Claude providers:
+- Install dir is `~/.<provider>/` instead of `~/.claude/`
+- Lifecycle hooks are **skipped** (they are Claude Code-only; `--hooks` is ignored with a notice)
+- A neutral **`PROJECT.md`** context file is generated (point your AI at it instead of `CLAUDE.md`)
+- A **`devstarter-invoke.sh`** helper is installed for copy-paste prompts:
+
+```bash
+bash ~/.codex/devstarter-invoke.sh menu        # list all workflows
+bash ~/.codex/devstarter-invoke.sh change      # print the prompt for /devstarter-change
+```
+
+When uninstalling or updating a non-Claude install, pass the same variable:
+
+```bash
+AI_PROVIDER=codex bash ~/.codex/update.sh
+AI_PROVIDER=codex bash ~/.codex/uninstall.sh
+```
+
+### Standard install
+
 Run the installer (Mac/Linux):
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/clickzika/dev-starter-dev/main/install.sh)
