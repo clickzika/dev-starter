@@ -1,5 +1,11 @@
 # Changelog
 
+## v5.0.1 — Fix: update.sh propagates scripts/ (2026-05-18)
+
+### Fixed
+- `update.sh` — `scripts/` was missing from the folder-update list, so `scripts/devstarter-resolve-home.sh` (v5.0.0 Phase 2) never reached installs via `update.sh` — only fresh `install.sh`. Provider-detect was dead on the upgrade path. (#68)
+- `update.sh` — added `--force` / `-f` flag to bypass the version-equal early-exit, enabling repair of a partial/failed prior update.
+
 ## v5.0.0 — Multi-AI Support Phase 2: provider-detect install (2026-05-18)
 
 ### New
