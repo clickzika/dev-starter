@@ -1,5 +1,35 @@
 # Changelog
 
+## v5.0.0 — Multi-AI Support Phase 2: provider-detect install (2026-05-18)
+
+### New
+- `scripts/devstarter-resolve-home.sh` — resolves install dir from `AI_PROVIDER`. Unset/`claude` → `~/.claude/` (unchanged); else `~/.<provider>/`. Sanitizes input (lowercase, strips path-traversal chars).
+- `devstarter-invoke.sh` — universal runner for non-Claude AI tools. `menu` lists workflows; `<name>` prints the copy-paste Universal Prompt block.
+- `templates/PROJECT.md.template` — AI-neutral project context file (non-Claude analogue of `CLAUDE.md`).
+
+### Changed
+- `install.sh` — sources resolver after clone, installs to resolved dir, shows provider banner, emits `PROJECT.md` for non-claude providers.
+- `install.sh` — lifecycle hooks skipped for non-claude providers (Claude Code-only); `--hooks` ignored with a notice.
+- `uninstall.sh` / `update.sh` / `setup.sh` — provider-aware (resolve install dir from own root location + `AI_PROVIDER`); `update.sh` preserves `PROJECT.md`.
+
+### Breaking
+- `AI_PROVIDER` env var now controls install directory. Default behavior (unset) is unchanged — `~/.claude/` byte-identical to v4.x. Major bump for the structural install-path change.
+
+### Migration
+- Existing `~/.claude/` installs: no action needed. Run `bash ~/.claude/update.sh` as usual.
+- New non-Claude installs: `AI_PROVIDER=codex bash install.sh`. See `docs/multi-ai-guide.md`.
+
+## v4.7.0 — Multi-AI Support Phase 1: Universal Prompts (2026-05-18)
+
+### New
+- `🌐 Universal Prompt` block appended to all 51 `skills/devstarter-*/SKILL.md` files. Non-Claude AI users (Copilot, Gemini, ChatGPT, Cursor) copy the block to invoke any workflow without Claude Code.
+- `docs/multi-ai-guide.md` — per-AI setup guide (Copilot, Gemini, ChatGPT, Cursor, Windsurf) + feature comparison matrix.
+- `scripts/add-universal-prompts.py` — idempotent generator for the prompt blocks.
+
+### Changed
+- `README.md` — "Works with Other AI Tools" section + matrix; intro updated.
+- `templates/devstarter-config.template.yml` — `ai.provider` enum expanded: `claude | litellm | openai | gemini | codex | copilot | local`.
+
 ## v4.6.2 — README overhaul (2026-05-18)
 
 ### Docs
