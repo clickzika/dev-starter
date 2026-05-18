@@ -31,3 +31,22 @@ If "Yes, proceed": continue.
 ```
 
 Read `~/.claude/sdlc/devstarter-postmortem.md` and run all phases (intake → timeline → 5 Whys → contributing factors → action items → publish → tickets → handoff).
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-postmortem` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — Run a blameless post-mortem with 5 Whys root cause analysis
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read `sdlc/devstarter-postmortem.md` from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start' or describe your request
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.

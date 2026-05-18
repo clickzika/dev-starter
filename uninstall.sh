@@ -38,7 +38,18 @@ YELLOW='\033[0;33m'
 RED='\033[0;31m'
 RESET='\033[0m'
 
-CLAUDE_DIR="$HOME/.claude"
+# Resolve install dir (provider-aware). This script lives at the root of the
+# install dir, so its own location is authoritative; the resolver also honors
+# $AI_PROVIDER for the curl-piped case.
+_UNINST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null || echo ".")" && pwd)"
+if [ -f "$_UNINST_DIR/scripts/devstarter-resolve-home.sh" ]; then
+  . "$_UNINST_DIR/scripts/devstarter-resolve-home.sh"
+  devstarter_resolve_home
+  CLAUDE_DIR="$DEVSTARTER_HOME"
+else
+  CLAUDE_DIR="${AI_PROVIDER:+$HOME/.$AI_PROVIDER}"
+  CLAUDE_DIR="${CLAUDE_DIR:-$HOME/.claude}"
+fi
 YES=0
 PURGE=0
 HOOKS_ONLY=0

@@ -105,3 +105,22 @@ CLAUDE.md updated:
 Last scanned: [YYYY-MM-DD]
 All agents will use updated context in next session.
 ```
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-context` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — Refresh and sync project context across all docs and memory
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read `sdlc/devstarter-context.md` from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start' or describe your request
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.

@@ -16,3 +16,22 @@ Onboard a new person joining the team — access setup, personalized briefing, f
 ```
 
 Read `~/.claude/sdlc/devstarter-onboarding.md` and follow all phases.
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-onboard` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — Onboard a new team member with docs, access, and orientation
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read `sdlc/devstarter-onboarding.md` from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start' or describe your request
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.

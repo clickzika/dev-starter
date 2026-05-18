@@ -56,3 +56,22 @@ quality gates from the agent file.
 /devstarter-agents qa          → list + immediately load @qa for the next task
 /devstarter-agents pick        → show agents and ask which one to invoke
 ```
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-agents` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — List all specialist agents and their capabilities
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read `agents/` from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start'
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.

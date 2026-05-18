@@ -9,7 +9,16 @@ set -euo pipefail
 
 REPO_URL="https://github.com/clickzika/dev-starter.git"
 BRANCH="main"
-CLAUDE_DIR="$HOME/.claude"
+# Resolve install dir (provider-aware). update.sh lives at the install root.
+_UPD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null || echo ".")" && pwd)"
+if [ -f "$_UPD_DIR/scripts/devstarter-resolve-home.sh" ]; then
+  . "$_UPD_DIR/scripts/devstarter-resolve-home.sh"
+  devstarter_resolve_home
+  CLAUDE_DIR="$DEVSTARTER_HOME"
+else
+  CLAUDE_DIR="${AI_PROVIDER:+$HOME/.$AI_PROVIDER}"
+  CLAUDE_DIR="${CLAUDE_DIR:-$HOME/.claude}"
+fi
 TMP_DIR="$(mktemp -d)"
 
 # Colors
@@ -63,7 +72,7 @@ BACKUP_DIR="$CLAUDE_DIR/.backup/$(date +%Y%m%d_%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup files that user may have customized
-for f in CLAUDE.md USER.md settings.json settings.local.json .env; do
+for f in CLAUDE.md PROJECT.md USER.md settings.json settings.local.json .env; do
   if [ -f "$CLAUDE_DIR/$f" ]; then
     cp "$CLAUDE_DIR/$f" "$BACKUP_DIR/$f"
     echo "  Backed up: $f"
@@ -100,12 +109,12 @@ else
 fi
 
 # Wipe DevStarter-owned root files before replacing
-for f in update.sh install.sh setup.sh devstarter-menu.md VERSION CHANGELOG.md README.md LICENSE .gitignore .env.example; do
+for f in update.sh install.sh uninstall.sh setup.sh devstarter-menu.md devstarter-invoke.sh VERSION CHANGELOG.md README.md LICENSE .gitignore .env.example; do
   rm -f "$CLAUDE_DIR/$f"
 done
 
 # Copy DevStarter-owned root files from latest
-for f in update.sh install.sh setup.sh devstarter-menu.md VERSION CHANGELOG.md; do
+for f in update.sh install.sh uninstall.sh setup.sh devstarter-menu.md devstarter-invoke.sh VERSION CHANGELOG.md; do
   if [ -f "$TMP_DIR/$f" ]; then
     cp "$TMP_DIR/$f" "$CLAUDE_DIR/$f"
     echo "  Updated: $f"
@@ -116,7 +125,7 @@ done
 echo -e "${CYAN}[3/4] Preserving your settings...${NC}"
 
 # Never overwrite these user files
-for f in CLAUDE.md USER.md settings.json settings.local.json .env; do
+for f in CLAUDE.md PROJECT.md USER.md settings.json settings.local.json .env; do
   if [ -f "$BACKUP_DIR/$f" ]; then
     cp "$BACKUP_DIR/$f" "$CLAUDE_DIR/$f"
     echo "  Preserved: $f"

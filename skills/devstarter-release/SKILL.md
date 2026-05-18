@@ -17,3 +17,22 @@ Standard release flow: develop → SIT → UAT → main → deploy + tag.
 ```
 
 Read `~/.claude/sdlc/devstarter-release.md` and follow all phases and gate approvals (DEV → SIT → UAT → DEPLOY).
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-release` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — Release and deploy: develop → SIT → UAT → main → tag
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read `sdlc/devstarter-release.md` from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start' or describe your request
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.
