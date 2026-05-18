@@ -448,7 +448,7 @@ Every slash command requires:
 | v4.4.0 | Hybrid hooks system — 5 Node.js hooks (session-start, pre-compact, accumulator, format, console-log), --hooks install flag |
 | v4.5.0 | ECC skills port — 4 agents (laravel-reviewer, hookify-rules, agent-auditor, rules-distiller) + 2 SDLC runbooks (/devstarter-verification-loop, /devstarter-council) |
 | v4.6.2 | Version bump (shipped) |
-| v4.7.0 | 🚧 Multi-AI Support Phase 1 — Universal Prompt blocks in all SKILL.md files, docs/multi-ai-guide.md, README multi-AI section |
+| v4.7.0 | Multi-AI Support Phase 1 — Universal Prompt blocks in all 51 SKILL.md files, docs/multi-ai-guide.md, README multi-AI section |
 
 ---
 
