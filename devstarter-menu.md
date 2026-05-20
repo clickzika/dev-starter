@@ -66,6 +66,12 @@ Show this menu and ask ONE question:
   27. ⚡ Profile (proactive performance investigation)
   28. 🛡️  Compliance (WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001)
 
+── DIRECT-INVOKE SKILLS (no SDLC gates) ───────
+  33. 🧠 Debug Mantra — `/devstarter-debug-mantra` (4-step debugging discipline)
+  34. 📝 Bug Post-Mortem — `/devstarter-bug-postmortem` (engineering RCA writeup; different from #25 incident)
+  35. 🔬 Scrutinize — `/devstarter-scrutinize` (outsider review of plan / PR / diff)
+  36. 📢 Management Talk — `/devstarter-management-talk` (rewrite for leadership / Slack / standup / email)
+
 ── AGENTS ─────────────────────────────────────
   /devstarter-agents    List all specialist agents (BA, PM, TechLead, …)
                         Then invoke any of them directly with @<alias> <task>
@@ -134,3 +140,7 @@ Route to correct file:
 | 30 | `~/.claude/sdlc/devstarter-mcp.md` |
 | 31 | `~/.claude/sdlc/devstarter-verification-loop.md` |
 | 32 | `~/.claude/sdlc/devstarter-council.md` |
+| 33 | `~/.claude/skills/devstarter-debug-mantra/SKILL.md` (direct-invoke) |
+| 34 | `~/.claude/skills/devstarter-bug-postmortem/SKILL.md` (direct-invoke) |
+| 35 | `~/.claude/skills/devstarter-scrutinize/SKILL.md` (direct-invoke) |
+| 36 | `~/.claude/skills/devstarter-management-talk/SKILL.md` (direct-invoke) |

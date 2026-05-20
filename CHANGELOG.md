@@ -1,5 +1,27 @@
 # Changelog
 
+## v5.1.0 — Port 9arm-skills engineering practice skills (2026-05-20)
+
+### New skills (4)
+- `skills/devstarter-debug-mantra/` — four-step debugging discipline (reproduce → trace fail path → falsify hypothesis → cross-reference breadcrumbs). Recited verbatim at session start, applied in order before any fix.
+- `skills/devstarter-bug-postmortem/` — canonical engineering record of a fixed bug (root cause, mechanism, fix, validation, slip-through analysis). Engineer-audience, code identifiers welcome. Distinct from `/devstarter-postmortem` (blameless incident workflow).
+- `skills/devstarter-scrutinize/` — outsider-perspective end-to-end review of a plan, PR, or code change. Questions intent before line-by-line review, traces actual code path not just diff.
+- `skills/devstarter-management-talk/` — rewrite engineer-to-engineer content for engineering-org leadership across channels (JIRA / Slack / standup / email / meeting talking-points).
+
+### Changed
+- `devstarter-menu.md` — new "DIRECT-INVOKE SKILLS" section with entries 33–36 + route table additions.
+- `sdlc/devstarter-debug.md` — wired into the two new debug-cycle skills:
+  - **Rule 6** added — recite the four-step debug mantra verbatim and map steps to phases 1–4.
+  - **Phase 0 Step 0.0** — mantra recital block before intake questions.
+  - **Phase 5.4** — new option *"write bug post-mortem (after fix lands)"* + post-`/devstarter-change` prompt to invoke `/devstarter-bug-postmortem` once all four required inputs (repro, root cause, fix, validation) are satisfied.
+
+### Attribution
+- Ported from `9arm-skills` @ commit `d714cb8` (skills/engineering/debug-mantra, post-mortem, scrutinize; skills/productivity/management-talk). `post-mortem` renamed to `devstarter-bug-postmortem` to avoid collision with existing `devstarter-postmortem` (incident workflow). Each ported SKILL.md carries an upstream attribution comment.
+
+### Notes
+- These are direct-invoke skills (no SDLC runbook, no gates). Suitable for daily engineering practice rather than full workflow orchestration.
+- Universal Prompt blocks added per v4.7.0 Phase 1 parity — invokable from non-Claude AI tools.
+
 ## v5.0.1 — Fix: update.sh propagates scripts/ (2026-05-18)
 
 ### Fixed
