@@ -1,5 +1,22 @@
 # Changelog
 
+## v5.2.0 — Branch Guard hook + Bilingual PDF export (2026-05-23)
+
+### New
+- `scripts/hooks/pre-edit-branch-guard.js` — PreToolUse hook that enforces Branch Guard technically: blocks Edit/Write on `main`, `uat`, and any `release/*` branch. Runs on every file edit, checks current git branch, exits non-zero with a clear error message if on a protected branch. (CR-2026-05-23-001)
+- Bilingual (EN/TH) support for all generated HTML documents — every template now ships with `<span class="lang-en">` / `<span class="lang-th">` content pairs, a language toggle button in the topbar, Google Fonts Sarabun for Thai rendering, and `localStorage` persistence. (CR-2026-05-23-002)
+- PDF export button on all HTML documents — `window.print()` + `@media print` CSS: hides sidebar/buttons, full-width layout, page-break rules. Zero dependencies, searchable PDFs. (CR-2026-05-23-002)
+
+### Changed
+- `templates/docs/document-template.html` — added Sarabun font link, `.lang-btn`/`.pdf-btn` CSS, `.lang-en`/`.lang-th` CSS rules, `[data-lang="th"]` font selector, `@media print` enhancements, PDF + lang buttons in topbar, `toggleLang()` JS + IIFE.
+- `templates/docs/devstarter-change-plan-template.html` — same bilingual + PDF additions as base template.
+- `templates/docs/devstarter-change-summary-template.html` — same bilingual + PDF additions as base template.
+- `templates/docs/devstarter-change-mgmt-template.html` — same bilingual + PDF additions; mgmt-specific `page-break-inside:avoid` on `.exec-hero` and `.ba-card` preserved.
+- `agents/shared/devstarter-agent-base.md` — added "Bilingual Content Rule — MANDATORY" section: every generated document must contain EN + TH spans for all text blocks; static UI chrome stays English-only; code/paths not translated.
+- `sdlc/devstarter-change.md` — Rule 8 updated with bilingual content bullet (mandatory EN+TH span format, reference to agent-base rule).
+- `docs/feature/branch-guard-hook/plan.html`, `summary.html`, `mgmt-brief.html` — fully regenerated with bilingual EN/TH content and PDF export support.
+- `sdlc/devstarter-change.md` — HTML plan, summary, and management brief documents added to fix and feature workflows.
+
 ## v5.1.0 — Port 9arm-skills engineering practice skills (2026-05-20)
 
 ### New skills (4)
