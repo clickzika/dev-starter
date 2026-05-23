@@ -1,19 +1,13 @@
 # dev-audit.md — Audit & Review Workflow
 
+> **TL;DR** — Audit project for security, quality, dependency hygiene, and doc drift · **Lifecycle** Discovery · **Gates** 4
+
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## Instructions for Claude Code
-
-This workflow audits an existing codebase for code quality,
-security vulnerabilities, performance issues, test coverage,
-documentation gaps, and technical debt.
-
 Follow all phases in order. Do NOT skip any phase.
-
----
 
 ## ⚠️ CRITICAL RULES
 

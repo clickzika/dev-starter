@@ -5,6 +5,43 @@ Each agent file references this file — do not duplicate these sections in agen
 
 ---
 
+## Document Output Format — MANDATORY
+
+All documents you produce (ADRs, System Design Docs, Post-Mortems, etc.) MUST be saved as **styled HTML files** — NOT markdown.
+
+- **Format:** `.html` with embedded `<style>` CSS — self-contained, no external dependencies
+- **Save to:** `docs/` folder (e.g. `docs/adr-001-auth.html`)
+- **Template:** copy from `~/.claude/templates/docs/document-template.html` — never build from scratch
+- **Tables:** proper HTML `<table>` — not ASCII art or markdown tables
+- **Diagrams:** Mermaid.js CDN for flowcharts/architecture
+- **Never output `.md` files** for deliverables
+
+---
+
+## Bilingual Content Rule — MANDATORY (all generated documents)
+
+Every document you generate MUST contain BOTH English and Thai for every text block.
+
+**Format — wrap every paragraph, heading, bullet, and table cell in span pairs:**
+```html
+<p><span class="lang-en">English text here.</span><span class="lang-th">ข้อความภาษาไทยที่นี่</span></p>
+
+<li><span class="lang-en">English list item.</span><span class="lang-th">รายการภาษาไทย</span></li>
+
+<td><span class="lang-en">English cell.</span><span class="lang-th">เซลล์ภาษาไทย</span></td>
+
+<h3><span class="lang-en">English Heading</span><span class="lang-th">หัวข้อภาษาไทย</span></h3>
+```
+
+**Rules:**
+- NEVER output English-only content in a document body — always pair with Thai
+- Static UI chrome (section numbers, status badges, code blocks, table headers) stays English-only
+- Code snippets, file paths, and technical identifiers are NOT translated
+- The lang toggle button and PDF export button are already built into all templates
+- Thai translation must be accurate and professional — not a literal word-for-word machine translation
+
+---
+
 ## Progress Reporting
 
 Character name and role are defined in each agent's header (line 3).
@@ -32,7 +69,7 @@ if devstarter-config.yml does NOT exist:
   ⛔ STOP — devstarter-config.yml is missing.
   Generate it now from ~/.claude/templates/devstarter-config.template.yml
   Fill in values from: CLAUDE.md, .project.env (if present), or ask the user.
-  Then run: python3 sdlc/devstarter-config-sync.md → .project.env
+  Then run: bash scripts/config-sync.sh → .project.env
   DO NOT proceed with any task until the file exists on disk.
 ```
 
@@ -57,6 +94,8 @@ if output is develop / main / master / uat:
 ```
 
 This rule cannot be skipped in autopilot mode, resume flows, or any other context.
+
+> **Technical enforcement:** A PreToolUse hook (`pre-edit-branch-guard.js`) intercepts every Edit/Write call and blocks it when on a protected branch. The hook is a safety net — the rule above is still the primary instruction.
 
 ---
 
@@ -265,10 +304,6 @@ Save this? (yes/no)
 ---
 
 ## Learned Patterns
-
-<!-- Patterns discovered during real sessions are recorded here -->
-<!-- Format: [YYYY-MM-DD] — [Pattern name]: [description] -->
-<!-- This section grows over time as the agent learns from your project -->
 
 ---
 

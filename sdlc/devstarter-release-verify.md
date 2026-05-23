@@ -1,3 +1,7 @@
+# devstarter-release-verify.md — SIT/UAT Verification + Post-Deploy Checks
+
+> **TL;DR** — System integration testing, UAT, and post-deploy verification (rollback readiness) · **Lifecycle** Ship · **Gates** 3
+
 ## PHASE 5 — SIT (System Integration Testing)
 
 Before deploying to production, run the full app locally in **production mode** to catch issues early.

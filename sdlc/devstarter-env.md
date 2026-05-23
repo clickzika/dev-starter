@@ -1,18 +1,10 @@
 # dev-env.md — Local Development Environment Setup
 
+> **TL;DR** — Setup local development environment (runtimes, Docker, .env, IDE) · **Lifecycle** Operate · **Gates** 0
+
 ## Model: Haiku (`claude-haiku-4-5-20251001`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
-
-## How to Use
-
-When setting up a local dev environment from scratch:
-```
-claude
-> Read ~/.claude/devstarter-env.md and setup my local environment
-```
-
----
 
 ## PHASE 1 — Detect Current State
 

@@ -1,7 +1,6 @@
 # devstarter-gitlab.md — Shared GitLab Procedures
 
-**Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
-Read `~/.claude/sdlc/devstarter-vcs-common.md` — do not duplicate those definitions here.
+> **TL;DR** — Shared GitLab procedures (PROC-GL-01..18) mirroring GitHub patterns · **Lifecycle** Reference · **Gates** 0
 
 ## Purpose
 

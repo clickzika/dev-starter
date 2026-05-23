@@ -1,6 +1,6 @@
-# Dev Starter V1
+# DevStarter
 
-A complete development workflow system for **Claude Code**. Drop it into `~/.claude/` and get a full software team — 13 specialized AI agents, 28 workflow runbooks, and battle-tested templates — ready to build any project from scratch.
+A complete development workflow system for **Claude Code** — and any other AI tool (Copilot, Gemini, ChatGPT, Cursor). Drop it into `~/.claude/` and get a full software team — 83 AI agents, 51 slash commands, 30 SDLC runbooks, 29 MCP server configs, 18 language rule sets, and battle-tested templates — ready to build any project from scratch.
 
 ## What's Inside
 
@@ -8,108 +8,136 @@ A complete development workflow system for **Claude Code**. Drop it into `~/.cla
 ~/.claude/
 ├── devstarter-menu.md              ← Entry point: pick a workflow
 │
-├── sdlc/ (28 workflow runbooks)
+├── agents/ (83 agents)
+│   ├── [13 core agents]            ← All profiles
+│   ├── [5 domain specialists]      ← full profile
+│   ├── [15 code reviewers]         ← full profile
+│   ├── [12 build resolvers]        ← full profile
+│   └── [38 specialist agents]      ← full profile
+│
+├── skills/ (43+ slash commands)
+│   ├── devstarter-new/SKILL.md
+│   ├── devstarter-change/SKILL.md
+│   ├── devstarter-debug/SKILL.md
+│   ├── devstarter-consult/SKILL.md
+│   └── ...
+│
+├── sdlc/ (30 workflow runbooks)
 │   ├── devstarter-starter.md       ← New project (Gate 1–5 full lifecycle)
 │   ├── devstarter-change.md        ← Add/remove features, fix bugs
-│   ├── devstarter-ml-workflow.md   ← AI/ML project workflow
-│   ├── devstarter-ai-providers.md  ← Multi-provider AI routing
-│   ├── devstarter-autopr.md        ← Autonomous PR review setup
-│   ├── devstarter-github.md        ← GitHub procedures (PROC-GH-01 to GH-17)
-│   ├── devstarter-gitlab.md        ← GitLab procedures (PROC-GL-01 to GL-17)
-│   ├── devstarter-svn.md           ← SVN procedures + git-svn bridge (PROC-SV-01 to SV-13)
-│   ├── devstarter-jira.md          ← Full Jira sprint management (PROC-JR-01 to JR-09)
-│   ├── devstarter-vcs-sync.md      ← Multi-VCS mirror & sync
-│   ├── devstarter-audit.md         ← Audit & review
-│   └── ...                         ← 17 more runbooks
+│   ├── devstarter-verification-loop.md ← Build/type/lint/test/security gate
+│   ├── devstarter-council.md       ← Multi-voice architecture decision
+│   └── ...
 │
-├── agents/ (13 agents)
-│   ├── devstarter-techlead.md      ← Architecture, AI/LLM design decisions
-│   ├── devstarter-backend.md       ← API, services, server-side
-│   ├── devstarter-frontend.md      ← UI components, state, responsive
-│   ├── devstarter-mobile.md        ← Flutter, React Native, Swift, Kotlin
-│   ├── devstarter-dba.md           ← Schema design, queries, migrations
-│   ├── devstarter-devops.md        ← CI/CD, infra, Docker, cloud, OIDC secrets
-│   ├── devstarter-qa.md            ← Testing strategy & automation
-│   ├── devstarter-security.md      ← OWASP, auth, enterprise secrets compliance
-│   ├── devstarter-pm.md            ← Sprint planning, tracking, stakeholders
-│   ├── devstarter-ba.md            ← Requirements, user stories, BRD
-│   ├── devstarter-uxui.md          ← Design system, prototypes, wireframes
-│   ├── devstarter-docs.md          ← Technical writing, API docs, runbooks
-│   └── devstarter-mlops.md         ← ML pipelines, model serving, drift monitoring
-│
-├── skills/ (42 Claude Code skills)
-│   ├── devstarter-new/SKILL.md     ← /devstarter-new — start new project
-│   ├── devstarter-change/SKILL.md  ← /devstarter-change — add feature / fix bug
-│   ├── devstarter-release/SKILL.md ← /devstarter-release — deploy pipeline
-│   ├── devstarter-debug/SKILL.md   ← /devstarter-debug — senior dev problem analysis
-│   ├── devstarter-context/SKILL.md ← /devstarter-context — refresh CLAUDE.md
-│   └── ...                         ← 37 more skills
+├── rules/ (18 language rule sets)
+│   ├── typescript.md / python.md / go.md / rust.md
+│   ├── java.md / csharp.md / react.md / flutter.md
+│   ├── angular.md / laravel.md / kotlin.md / swift.md
+│   ├── dart.md / cpp.md / fsharp.md / node.md
+│   ├── devstarter/                 ← DevStarter contributor rules
+│   └── common/                     ← Shared cross-language rules
 │
 ├── templates/
-│   ├── CLAUDE.md.template          ← Project context file template
-│   ├── project.env.template        ← Per-project config (AI_PROVIDER, SECRETS_BACKEND)
+│   ├── mcp/                        ← 29 MCP server configs
+│   │   ├── github.json             ← GitHub MCP
+│   │   ├── postgresql.json         ← PostgreSQL MCP
+│   │   ├── brave-search.json       ← Brave Search MCP
+│   │   └── ...                     ← 26 more
+│   ├── contexts/                   ← Behavior-mode files
+│   │   ├── dev.md                  ← Code-first mode
+│   │   ├── research.md             ← Explore before acting
+│   │   └── review.md               ← PR / security pass
+│   ├── hooks/                      ← Hooks config + docs
+│   │   ├── hooks.json              ← Claude Code hooks template
+│   │   └── README.md               ← Hooks guide
+│   ├── team-packs.md               ← 13 pre-built agent group configs
+│   ├── agent-disambiguation.md     ← When to use which agent
 │   ├── stacks/                     ← ML project stack templates
-│   │   ├── ml-starter.md           ← ML starter (scikit-learn + MLflow)
-│   │   └── ml-standard.md          ← ML production (PyTorch + BentoML + monitoring)
 │   ├── secrets/                    ← Enterprise secrets templates
-│   │   ├── vault-setup.md          ← HashiCorp Vault setup + app integration
-│   │   ├── vault-config.hcl        ← Vault config template
-│   │   ├── aws-secrets-setup.md    ← AWS Secrets Manager + rotation + Terraform
-│   │   ├── azure-keyvault-setup.md ← Azure Key Vault + Managed Identity
-│   │   └── gcp-secretmanager.md    ← GCP Secret Manager + Workload Identity
 │   ├── litellm/                    ← Multi-provider AI templates
-│   │   ├── litellm-config.yaml     ← LiteLLM proxy config (Claude+OpenAI+Gemini)
-│   │   └── provider-setup.md       ← Provider selection + app integration guide
-│   ├── github/                     ← GitHub automation templates
-│   │   ├── claude-pr-review.yml    ← GitHub Actions: auto AI PR review
-│   │   └── claude-pr-review-setup.md ← Setup guide + customization
+│   ├── github/                     ← GitHub Actions templates
 │   └── docs/                       ← HTML documentation templates
 │
-├── .env.example             ← Global secrets template (GitHub, Notion, AI providers)
-├── USER.md                  ← Developer skill profile (agent calibration)
-└── setup.sh                 ← First-time setup script
+├── scripts/
+│   ├── hooks/                      ← 5 Node.js lifecycle hooks
+│   │   ├── session-start.js        ← Load memory + progress on start
+│   │   ├── pre-compact.js          ← Log compaction events
+│   │   ├── post-edit-accumulator.js← Track edited files per session
+│   │   ├── stop-format-typecheck.js← Auto-format + type-check on stop
+│   │   └── stop-check-console-log.js ← Warn on debug statements
+│   ├── install-hooks.js            ← Merge hooks into settings.json
+│   └── uninstall-hooks.js          ← Remove DevStarter hooks from settings.json
+│
+├── uninstall.sh                    ← Clean uninstaller
+├── devstarter-invoke.sh            ← Universal runner (non-Claude AI tools)
+├── scripts/devstarter-resolve-home.sh ← Provider→install-dir resolver
+├── templates/PROJECT.md.template   ← AI-neutral project context file
+├── .env.example                    ← Global secrets template
+├── USER.md                         ← Developer skill profile (agent calibration)
+└── setup.sh                        ← First-time setup wizard
 ```
 
 ## Quick Start
 
-### Option A — One Command (recommended)
+### Install — Bash (Mac / Linux / Git Bash on Windows)
 
 ```bash
-git clone https://github.com/clickzika/dev-starter.git && bash dev-starter/install.sh
+# Standard install (13 core agents, all slash commands)
+curl -sL https://raw.githubusercontent.com/clickzika/dev-starter/main/install.sh | bash
+
+# Or if you cloned:
+bash install.sh
 ```
 
 > **Windows users:** Open **Git Bash** (not PowerShell/CMD).
-> Right-click desktop → "Git Bash Here", or search "Git Bash" in Start menu.
-> Git Bash is installed automatically with [Git for Windows](https://git-scm.com).
+> Right-click desktop → "Git Bash Here", or search "Git Bash" in Start.
+> Git Bash installs automatically with [Git for Windows](https://git-scm.com).
 
-This will: clone → backup existing files → copy to `~/.claude/` → run setup wizard.
-
-### Option B — Manual Install
+### Install Profiles
 
 ```bash
-git clone https://github.com/clickzika/dev-starter.git
-cp -r dev-starter/* ~/.claude/
-bash ~/.claude/setup.sh
+# minimal — 7 core agents, no language rules (leaner context)
+bash install.sh --profile minimal
+
+# standard — 13 core agents + all skills + language rules (default)
+bash install.sh --profile standard
+
+# full — all 83 agents including code reviewers, build resolvers, specialists
+bash install.sh --profile full
+
+# Add lifecycle hooks (auto-format, type-check, memory load)
+bash install.sh --hooks
+bash install.sh --profile full --hooks
 ```
 
-The setup wizard asks:
-- GitHub username + CLI auth
-- PM tool: Notion API key or Jira URL + token (both optional)
-- Secondary VCS: GitLab / Bitbucket / SVN / Azure DevOps (optional)
-- 3 profile questions (experience, skills, language)
-- Auto-configures permissions in `settings.json` (merges, won't overwrite)
+### Update (existing install)
+
+```bash
+bash ~/.claude/update.sh
+```
+
+Pulls latest, replaces all DevStarter files, preserves your `CLAUDE.md`, `USER.md`, `.env`, `memory/`, and `agents/custom/`.
+
+Or from inside Claude Code: `/devstarter-update`
+
+### Uninstall
+
+```bash
+bash ~/.claude/uninstall.sh              # interactive, keeps your files
+bash ~/.claude/uninstall.sh --yes        # skip confirmation
+bash ~/.claude/uninstall.sh --purge      # also remove USER.md, CLAUDE.md, memory/
+bash ~/.claude/uninstall.sh --hooks-only # only remove hooks from settings.json
+```
 
 ### Start Building
 
 ```bash
 claude
 > /devstarter-menu          # show launcher menu
-> /devstarter-new           # or go directly — start a new project
+> /devstarter-new           # start a new project
 ```
 
-## Slash Commands (24)
-
-Every workflow has a shortcut — no need to remember file paths:
+## Slash Commands
 
 | Category | Command | What it does |
 |----------|---------|-------------|
@@ -117,76 +145,111 @@ Every workflow has a shortcut — no need to remember file paths:
 | **Setup** | `/devstarter-new` | New project (full 5-gate lifecycle) |
 | | `/devstarter-existing` | Setup existing project |
 | | `/devstarter-migrate` | Migration to new tech stack |
-| | `/devstarter-audit` | Audit & review project |
+| | `/devstarter-gitsetup` | Git + GitFlow + branch protection setup |
+| | `/devstarter-mcp` | Activate MCP server configs |
 | **Daily** | `/devstarter-change` | Add/remove feature, fix bug |
-| | `/devstarter-document` | Generate or regenerate docs (brd, api, schema, test, security, infra, prototype, all) |
+| | `/devstarter-debug` | Root-cause analysis + fix plan |
+| | `/devstarter-consult` | Architecture / strategy advice |
+| | `/devstarter-review` | PR / diff / file review |
+| | `/devstarter-document` | Generate docs (brd, api, schema, test, security, all) |
 | | `/devstarter-sprint` | Sprint planning |
 | | `/devstarter-dependency` | Update dependencies |
+| | `/devstarter-verification-loop` | Build/type/lint/test/security gate |
+| **Decision** | `/devstarter-council` | Multi-voice architecture decision (Opus) |
+| | `/devstarter-audit` | Full project audit |
+| | `/devstarter-doctor` | Diagnose DevStarter health |
 | **Team** | `/devstarter-onboard` | Onboard new member |
 | | `/devstarter-handover` | Handover project |
 | | `/devstarter-retro` | Sprint retrospective |
-| **Production** | `/devstarter-release` | Release + deploy (DEV → SIT → UAT → DEPLOY) |
+| **Production** | `/devstarter-release` | Release + deploy (DEV → UAT → Production) |
 | | `/devstarter-hotfix` | Critical production bug fix |
 | | `/devstarter-rollback` | Rollback production |
 | | `/devstarter-incident` | Incident response |
 | **Infra** | `/devstarter-env` | Setup local environment |
 | | `/devstarter-secrets` | Secrets management |
 | | `/devstarter-monitor` | Setup monitoring |
-| | `/devstarter-vcs-sync` | Mirror to secondary VCS (GitLab/Bitbucket/SVN/Azure) |
-| **PM** | `/devstarter-jira` | Jira full sprint management (PROC-JR-01 to JR-09) |
+| | `/devstarter-vcs-sync` | Mirror to secondary VCS |
 | **Utility** | `/devstarter-context` | Refresh CLAUDE.md from codebase |
-| | `/devstarter-export` | Backup everything to zip |
+| | `/devstarter-export` | Backup to zip |
 | | `/devstarter-import` | Restore from zip |
+| | `/devstarter-update` | Update DevStarter |
 
-## Agents (13 Specialists)
+## Agents
 
-Each agent has domain-specific behavior rules, output templates, standards reference tables, quality gate checklists, and anti-pattern warnings.
+### Core (all profiles)
 
-| Agent | Character | Specialty |
-|-------|-----------|-----------|
-| `@devstarter-techlead` | 🐧 Tuxedo Sam | Architecture, ADRs, AI/LLM design |
-| `@devstarter-backend` | 🐧 Badtz-Maru | APIs, services, server-side |
-| `@devstarter-frontend` | ☁️ Cinnamoroll | React/Vue/Svelte, TypeScript |
-| `@devstarter-mobile` | 🐭 Aggretsuko | Flutter, React Native, Swift |
-| `@devstarter-dba` | 🐶 Pochacco | Schema, queries, migrations |
-| `@devstarter-devops` | 🐶 Pompompurin | CI/CD, Docker, cloud, OIDC |
-| `@devstarter-qa` | 🐸 Keroppi | Testing, Playwright, k6 |
-| `@devstarter-security` | 💜 Kuromi | OWASP, enterprise secrets |
-| `@devstarter-pm` | 🎀 Hello Kitty | Sprints, GitHub+Notion+Jira |
-| `@devstarter-ba` | 🎀 My Melody | Requirements, BRD, SRS |
-| `@devstarter-uxui` | ⭐ Kiki | Design system, prototypes |
-| `@devstarter-docs` | 🥚 Gudetama | Technical writing, API docs |
-| `@devstarter-mlops` | 🤖 MLOps | ML pipelines, serving, drift |
+| Agent | Short alias | Specialty |
+|-------|-------------|-----------|
+| `@devstarter-techlead` | `@techlead` | Architecture, ADRs, AI/LLM design |
+| `@devstarter-backend` | `@backend` | APIs, services, server-side |
+| `@devstarter-frontend` | `@frontend` | React/Vue/Svelte, TypeScript |
+| `@devstarter-mobile` | `@mobile` | Flutter, React Native, Swift |
+| `@devstarter-dba` | `@dba` | Schema, queries, migrations |
+| `@devstarter-devops` | `@devops` | CI/CD, Docker, cloud, OIDC |
+| `@devstarter-qa` | `@qa` | Testing, Playwright, k6 |
+| `@devstarter-security` | `@security` | OWASP, enterprise secrets |
+| `@devstarter-pm` | `@pm` | Sprints, GitHub + Notion + Jira |
+| `@devstarter-ba` | `@ba` | Requirements, BRD, SRS |
+| `@devstarter-uxui` | `@uxui` | Design system, prototypes |
+| `@devstarter-docs` | `@docs` | Technical writing, API docs |
+| `@devstarter-mlops` | `@mlops` | ML pipelines, serving, drift |
 
-Invoke any agent directly:
+### Extended (full profile only — `bash install.sh --profile full`)
 
-```
-> Read ~/.claude/agents/devstarter-mlops.md and help me set up a training pipeline
-> Read ~/.claude/agents/devstarter-security.md and review my secrets setup
-> Read ~/.claude/agents/devstarter-techlead.md and write an AI provider ADR
-```
+**Domain specialists**: `@architect` `@datascience` `@sre` `@api` `@performance`
 
-Or use `/devstarter-new` and the system orchestrates all agents automatically through the 5-gate build process.
+**Code reviewers**: `@code-reviewer` `@ts-reviewer` `@py-reviewer` `@go-reviewer` `@java-reviewer` `@csharp-reviewer` `@rust-reviewer` `@kotlin-reviewer` `@swift-reviewer` `@flutter-reviewer` `@cpp-reviewer` `@django-reviewer` `@fastapi-reviewer` `@fsharp-reviewer` `@mle-reviewer` `@laravel-reviewer`
+
+**Build resolvers**: `@build-resolver` `@ts-build-resolver` `@go-build-resolver` `@java-build-resolver` `@rust-build-resolver` `@swift-build-resolver` `@flutter-build-resolver` `@dart-build-resolver` `@kotlin-build-resolver` `@django-build-resolver` `@pytorch-build-resolver` `@cpp-build-resolver`
+
+**Specialists**: `@planner` `@tdd` `@refactor` `@explorer` `@simplifier` `@code-architect` `@db-reviewer` `@security-reviewer` `@a11y` `@network-architect` `@seo` `@silent-failure` `@type-analyzer` `@pr-analyzer` `@pr-test-analyzer` `@chief` `@doc-updater` `@docs-lookup` `@e2e-runner` `@harness-optimizer` `@loop-operator` `@hookify-rules` `@agent-auditor` `@rules-distiller` + network, healthcare, homelab, GAN harness, open-source pipeline agents
+
+See `templates/agent-disambiguation.md` for when to use which agent.
+See `templates/team-packs.md` for pre-built group configs (Web API, Full-stack, ML/AI, Incident Response, etc.).
+
+## MCP Server Configs
+
+29 ready-to-use MCP server configs in `templates/mcp/`. Activate with `/devstarter-mcp`.
+
+Includes: GitHub, PostgreSQL, SQLite, MySQL, MongoDB, Redis, Brave Search, Puppeteer, Filesystem, Slack, Notion, Linear, Jira, Sentry, Datadog, AWS S3, Google Drive, Stripe, Twilio, and more.
+
+## Language Rules
+
+18 rule sets automatically loaded as context when working in those languages. Installed to `~/.claude/rules/`.
+
+TypeScript · Python · Go · Rust · Java · C# · React · Flutter · Angular · Laravel · Kotlin · Swift · Dart · C++ · F# · Node.js · plus shared `common/` rules (security, performance, testing) and DevStarter contributor rules.
+
+## Lifecycle Hooks (optional)
+
+Install with `bash install.sh --hooks`. Requires Node.js 18+.
+
+| Hook | When | What it does |
+|------|------|-------------|
+| `session-start.js` | Claude Code opens | Loads `memory/progress.json` + memory index |
+| `pre-compact.js` | Context compaction | Logs event to `memory/compaction-log.txt` |
+| `post-edit-accumulator.js` | After file edit/write | Tracks changed files for formatter |
+| `stop-format-typecheck.js` | Claude stops responding | Runs formatter + type-checker on changed files |
+| `stop-check-console-log.js` | Claude stops responding | Warns on leftover debug statements |
+
+Hooks are self-contained (no external dependencies). Remove anytime: `bash ~/.claude/uninstall.sh --hooks-only`
 
 ## The 5-Gate Build Process
 
-When you start a new project with `/devstarter-new`:
-
 ```
 Gate 0: Setup          → GitHub repo, Notion board, branch strategy (auto)
-Gate 1: Discovery      → Requirements (Q1–Q26), CLAUDE.md, BRD, SRS
+Gate 1: Discovery      → Requirements, CLAUDE.md, BRD, SRS
 Gate 2: Architecture   → DB schema, API design, security, UI prototype
-Gate 3: Foundation     → Task breakdown, GitHub Issues, Notion tasks, scaffold
+Gate 3: Foundation     → Task breakdown, GitHub Issues, scaffold
 Gate 4: Development    → Feature-by-feature with PR review per feature
 Gate 5: Quality        → Testing, security audit, performance
 ```
 
+Every gate requires explicit approval before proceeding.
+
 ## Release Flow
 
-After Gate 5, use `/devstarter-release` for the full deployment pipeline:
-
 ```
-develop ──→ Local Test ──→ uat ──→ User Test ──→ main ──→ Production
+develop → DEV test → UAT branch → UAT test → main → Production
 
 ⛔ "DEV approved"    → proceed to SIT
 ⛔ "SIT approved"    → proceed to UAT
@@ -194,166 +257,65 @@ develop ──→ Local Test ──→ uat ──→ User Test ──→ main �
 ⛔ "DEPLOY v[X.Y.Z]" → deploy
 ```
 
-## New in v1.2.0
-
-### Multi-VCS Support (GitHub + GitLab + SVN simultaneously)
-One project, multiple VCS systems — primary does all the work, secondaries get mirrored automatically:
-
-```bash
-# .project.env
-VCS_TYPE=github          # primary — PRs, issues, CI all here
-VCS_SECONDARY_1=gitlab   # mirror — pushed after every merge
-VCS_SECONDARY_2=svn      # archive — git-svn dcommit after every merge
-VCS_SYNC_BRANCHES=main develop
-```
-
-After every `devstarter-change` merge, agents run the mirror automatically.
-Manual on-demand sync: `/devstarter-vcs-sync`
-
-### Jira Full Sprint Management (on par with Notion)
-Full Jira parity — 9 procedures covering the complete sprint lifecycle:
-
-```bash
-# .project.env
-PM_TYPE=jira
-JIRA_URL=https://company.atlassian.net
-JIRA_PROJECT=PROJ
-JIRA_BOARD_ID=1
-
-# Sprint planning → sprint close, all automated:
-# PROC-JR-01: Create project + board
-# PROC-JR-02: Create sprint    PROC-JR-05: Start sprint
-# PROC-JR-03: Create issues    PROC-JR-06: Close sprint + velocity
-# PROC-JR-04: Status transitions (To Do → In Progress → In Review → Done)
-# PROC-JR-07: Link PRs to issues
-# PROC-JR-08: Create Epics     PROC-JR-09: Bulk create issues
-```
-
----
-
-## New in v1.1.0
-
-### MLOps Agent + AI/ML Project Templates
-Build production ML systems with the new `@devstarter-mlops` agent:
-- Experiment tracking (MLflow/W&B), DVC data versioning, model registry
-- FastAPI serving endpoints, BentoML deployment, Triton inference
-- Data drift detection, Prometheus metrics, automated retraining pipelines
-- LLM/RAG pipeline setup with vector databases (Qdrant, Pinecone)
-
-```
-> /devstarter-menu → option 18 (AI/ML project)
-> /devstarter-menu → option 19 (ML workflow)
-```
-
-### GitHub Actions Autonomous PR Review
-Every PR automatically reviewed by Claude — no human prompting needed:
-
-```bash
-cp ~/.claude/templates/github/claude-pr-review.yml .github/workflows/
-gh secret set ANTHROPIC_API_KEY --body "sk-ant-..."
-# Done — Claude reviews every PR in ~30 seconds (~$0.003/review)
-```
-
-### Multi-Provider AI Support via LiteLLM
-Remove provider lock-in with a single proxy that routes to Claude, GPT-4, Gemini, or local Ollama:
-
-```bash
-cp ~/.claude/templates/litellm/litellm-config.yaml ./
-litellm --config litellm-config.yaml --port 4000
-# Your app calls localhost:4000 — switch providers by changing one env var
-```
-
-### Enterprise Secrets Management
-SOC 2 / ISO 27001 ready — templates for every major cloud:
-- AWS Secrets Manager — auto-rotation, ECS/EKS injection, Terraform
-- Azure Key Vault — Managed Identity, Container Apps, federated OIDC
-- GCP Secret Manager — Workload Identity, Cloud Run, per-version tracking
-- HashiCorp Vault — dynamic DB credentials, multi-auth, full audit log
-
-```
-> /devstarter-secrets → choose Phase 6 (enterprise backend)
-```
-
----
-
 ## Usage Examples
 
-### Example 1 — Build a new web app from scratch
-```
-claude
-> /devstarter-new
-# Answer 26 questions about your project
-# Claude creates: CLAUDE.md, BRD, SRS, DB design, API, prototype...
-# Approve each gate → Claude builds feature by feature
-# /devstarter-release when done → DEV → SIT → UAT → Production
-```
-
-### Example 2 — Add a feature to existing project
-```
-claude
-> /devstarter-change
-# Claude reads CLAUDE.md, asks what to change
-# Creates feature branch → implements → PR → review → merge
-```
-
-### Example 3 — Critical bug in production
-```
-claude
-> /devstarter-hotfix
-# Claude branches from main → fixes → PR to main
-# After merge: backports to uat + develop automatically
-```
-
-### Example 4 — Plan next sprint
-```
-claude
-> /devstarter-sprint
-# Claude reads Notion or Jira backlog → proposes sprint tasks
-# Assigns to sprint → shows sprint board
-```
-
-### Example 5 — Release to production
-```
-claude
-> /devstarter-release
-# Gate 1: "DEV approved"     → checklist passed
-# Gate 2: "SIT approved"     → automated tests passed
-# Gate 3: "UAT approved"     → user tested and approved
-# Gate 4: "DEPLOY v1.2.0"    → deployed to production
-```
-
-## Deploying Project Docs
-
-Each project built with Dev Starter generates an HTML document portal (`docs/index.html`). You can host it for your team:
-
-### GitHub Pages (public repos)
-
 ```bash
-# In your project repo settings:
-# Settings → Pages → Source: Deploy from branch → /docs → Save
-# Your docs will be at: https://username.github.io/project-name/
+# Build a new web app from scratch
+> /devstarter-new
+# Answer questions → Claude creates BRD, schema, API, prototype
+# Approve each gate → builds feature by feature
+# /devstarter-release when done
+
+# Add a feature
+> /devstarter-change add dark mode toggle
+
+# Debug a bug
+> /devstarter-debug the login redirect goes to wrong page
+
+# Architecture advice (saves intake file for /devstarter-change)
+> /devstarter-consult Redis vs RabbitMQ for job queues
+
+# Multi-voice architecture decision
+> /devstarter-council should we go monolith or microservices
+
+# Review a PR or diff
+> /devstarter-review
+
+# Run full quality gate
+> /devstarter-verification-loop
+
+# Critical bug in production
+> /devstarter-hotfix
 ```
 
-### Cloudflare Pages (private repos — free)
+## Works with Other AI Tools
 
-If your repo is **private**, GitHub Pages requires a paid plan. Use Cloudflare Pages instead (free, unlimited bandwidth):
+DevStarter is built for Claude Code but the **SDLC content is AI-agnostic**. You can use any workflow with Copilot, Gemini, ChatGPT, Cursor, or any other AI.
 
-1. Go to [dash.cloudflare.com](https://dash.cloudflare.com) → **Workers & Pages** → **Create** → **Pages**
-2. **Connect to Git** → select your repo
-3. Configure:
-   - Production branch: `develop` (or `main`)
-   - Build command: *(leave empty — static HTML)*
-   - Output directory: `docs`
-4. **Save and Deploy**
+Every skill file (`skills/devstarter-*/SKILL.md`) ends with a **🌐 Universal Prompt** block — copy it into your AI tool to start the workflow without Claude Code.
 
-Your docs will be at: `https://project-name.pages.dev` (auto-deploys on every push)
+**Provider-aware install (v5.0.0+):**
+```bash
+AI_PROVIDER=codex bash install.sh    # → ~/.codex/  (hooks skipped, PROJECT.md generated)
+bash install.sh                      # → ~/.claude/ (unchanged default)
+```
+Then: `bash ~/.codex/devstarter-invoke.sh menu` to list workflows as copy-paste prompts.
+
+**Setup guide for non-Claude AI tools:** [`docs/multi-ai-guide.md`](docs/multi-ai-guide.md)
+
+| Feature | Claude Code | Other AIs |
+|---------|-------------|-----------|
+| All 51 workflows | ✅ slash commands | ✅ Universal Prompt (copy-paste) |
+| All 83 agents | ✅ `@agent-name` | ✅ paste agent file as context |
+| Gate-based approvals | ✅ automatic | ✅ AI stops and waits |
+| Hooks, MCP, slash commands | ✅ | ❌ Claude Code only |
 
 ## Requirements
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI installed
+- **Claude Code** (recommended) or any AI tool with file-context support
 - Git
-- GitHub CLI (`gh`) — for auto-creating repos
-- Node.js — for frontend tooling
+- GitHub CLI (`gh`) — for repo automation
+- Node.js 18+ — required for lifecycle hooks (optional otherwise)
 - Docker (optional) — for containerized workflows
 
 ## License

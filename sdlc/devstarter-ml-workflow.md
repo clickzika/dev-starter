@@ -1,19 +1,11 @@
 # dev-ml-workflow.md — AI/ML Project Workflow
 # DevStarter MLOps Runbook
 
+> **TL;DR** — ML project workflow: training, evaluation, deployment, monitoring · **Lifecycle** Build · **Gates** 0
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
-
-## How to Use
-
-Use when starting or working on an AI/ML project:
-```
-/new (select ML Starter or ML Standard stack)
-/change add ML feature to existing project
-```
-
----
 
 ## ⚠️ CRITICAL RULES
 

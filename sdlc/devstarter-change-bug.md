@@ -1,5 +1,7 @@
 # OPERATION C — FIX BUG
 
+> **TL;DR** — Fix a bug with intake → analysis → fix → review flow · **Lifecycle** Build · **Gates** 2
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 ---
@@ -118,17 +120,102 @@ Risk of fix:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-Use `AskUserQuestion` with:
-- question: "Gate C1 — Bug analysis ready. Approve to create task and start fix?"
-- options: ["approve", "revise"]
+---
 
-⛔ GATE C1 — wait for approval before creating tasks or writing any code.
+## C-PHASE 2.5 — Generate Bug Fix Plan Document
+
+Immediately after bug analysis, before any gate, generate the plan HTML:
+
+**Step 1 — Create folder and initialize change log:**
+- Create folder: `docs/fix/[slug]/`
+  Slug = lowercase-hyphenated bug summary, max 4 words (e.g. `login-null-crash`)
+- Create `memory/change-log-[slug].md`:
+  ```markdown
+  # Change Log — [bug-slug]
+  Change ID: BUG-[YYYY-MM-DD]-NNN
+  Date: [YYYY-MM-DD]
+  Type: Fix Bug
+
+  <!-- Agents: append entries below during fix. Format:
+  ### path/to/file.ext
+  - FIXED: functionName — what was wrong, what was fixed
+  - MODIFIED: functionName — what changed
+  - ADDED: functionName — description (e.g. new test)
+  -->
+  ```
+
+**Step 2 — Fill and save plan.html:**
+Read `~/.claude/templates/docs/devstarter-change-plan-template.html`.
+Replace all `{{PLACEHOLDER}}` tokens with values from the bug report + analysis:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | `BUG-[YYYY-MM-DD]-NNN` |
+| `{{CHANGE_TYPE}}` | `Fix Bug` |
+| `{{FEATURE_NAME}}` | bug summary (one line) |
+| `{{SLUG}}` | derived slug |
+| `{{DATE}}` | today |
+| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{PRIORITY}}` / `{{PRIORITY_COLOR}}` | from C-Q3 severity; Critical=red, High=orange, Medium=yellow, Low=gray |
+| `{{EFFORT}}` | estimated from analysis (S/M/L) |
+| `{{BRANCH_NAME}}` | `fix/[slug]` (created after approval) |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{ROOT_PROBLEM}}` | root cause from analysis |
+| `{{BUSINESS_REQUIREMENT}}` | impact of bug on users/business |
+| `{{USER_ROLE}}` / `{{USER_WANT}}` / `{{USER_BENEFIT}}` | affected users, desired behavior, benefit of fix |
+| `{{ACCEPTANCE_CRITERIA_LIST}}` | `<li>` items from intake Section 5 (fix acceptance criteria) |
+| `{{SOLUTION_APPROACH}}` | fix approach from analysis |
+| `{{WHY_THIS_APPROACH}}` | why this fix addresses root cause, not just symptom |
+| `{{ALTERNATIVES_ROWS}}` | `<tr>` rows for alternative fixes considered |
+| `{{FILES_TO_MODIFY_ROWS}}` | `<tr>` rows from "Files likely involved" in analysis |
+| `{{REGRESSION_GUARD_LIST}}` | `<li>` items — what must NOT break after fix |
+| `{{DB_IMPACT}}` / `{{API_IMPACT}}` / `{{UI_IMPACT}}` / `{{SEC_IMPACT}}` | from analysis |
+| `{{IMPLEMENTATION_STEPS_LIST}}` | `<li>` steps for the fix |
+| `{{DEPENDENCIES_LIST}}` | `<li>` — any dependencies needed |
+| `{{TESTING_APPROACH}}` | regression test approach |
+| `{{RISKS_ROWS}}` | `<tr>` risk of fix from analysis |
+| `{{ROLLBACK_PLAN}}` | revert branch; restore previous behavior |
+
+Save to: `docs/fix/[slug]/plan.html`
+
+**Step 3 — Register in docs/index.html:**
+Add entry under "Fix Plans" section (create section if absent):
+```html
+<a href="fix/[slug]/plan.html">[CHANGE_ID] — [Bug Summary] — [Date] (Pending Approval)</a>
+```
+
+**Step 4 — Announce:**
+```
+📋 Fix plan document created: docs/fix/[slug]/plan.html
+   Open in browser to review before approving.
+```
+
+---
+
+Use `AskUserQuestion` with:
+- question: "Gate C1-DOC — Open docs/fix/[slug]/plan.html in browser, review root cause and fix approach, then approve to create branch and start fix."
+- options: ["Approved — create branch and start fix", "Request changes (describe in notes)"]
+
+**If "Approved — create branch and start fix":**
+1. Show: `✅ Fix plan approved — creating branch fix/[slug]`
+2. Run: `git branch --show-current`
+3. If on `develop`, `main`, `master`, or `uat` → execute PROC-GH-06: create `fix/[slug]` branch
+4. Confirm: `git branch --show-current` — MUST show `fix/[slug]`
+5. Show: `🌿 Branch ready: fix/[slug] — all edits are isolated on this branch`
+6. Proceed to C-PHASE 3
+
+**If "Request changes":**
+1. Apply requested changes to `docs/fix/[slug]/plan.html`
+2. Announce: `📋 Fix plan updated: docs/fix/[slug]/plan.html`
+3. Loop back to Gate C1-DOC AskUserQuestion
+
+⛔ GATE C1-DOC — branch is NOT created and NO code is written until this gate is approved.
 
 ---
 
 ## C-PHASE 3 — Task Creation + GitHub + Notion
 
-After Gate C1 approved:
+After Gate C1-DOC approved:
 
 ### Step C3.1 — Create GitHub Issue
 Read `~/.claude/devstarter-github.md` → PROC-GH-05
@@ -199,6 +286,14 @@ Show:
 4. **Enter worktree** — use `EnterWorktree` tool with the fix branch name for isolated working copy
 5. Agent reads relevant code and docs from disk
 6. Implement fix
+6b. **Append to change log** — for each file modified, add to `memory/change-log-[slug].md`:
+    ```markdown
+    ### path/to/file.ext
+    - FIXED: functionName — what was wrong, what was fixed
+    - MODIFIED: functionName — what changed (if additional refactor)
+    - ADDED: functionName — new test or helper added
+    ```
+    Only log functions/methods actually changed.
 7. Write or update tests to cover the bug scenario
 8. Verify fix resolves the issue
 9. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
@@ -294,6 +389,139 @@ After approval:
 - PROC-GH-08: merge PR + close issue
 - PROC-NT-06: mark Notion task → Done
 - Commit bugfix-log.html update
+
+---
+
+## C-PHASE END — Testing Gate + Change Summary Document
+
+### ⛔ GATE C-TEST — Testing Confirmation
+
+After PR merged and Gate C2 approved, show:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 TESTING GATE — [Bug Summary]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PR merged: #[N]
+Fix plan:  docs/fix/[slug]/plan.html
+
+Reproduce the original bug scenario to confirm fix.
+When testing passes, confirm below.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Use `AskUserQuestion` with:
+- question: "Gate C-TEST — Has the fix been tested and verified for [bug summary]?"
+- options: ["Testing passed — generate summary doc", "Still testing — save checkpoint and stop"]
+
+If "Still testing": write `memory/progress.json` with `"status": "waiting_test"` and stop.
+If "Testing passed": proceed to Phase C-END below.
+
+---
+
+### Phase C-END — Generate Change Summary Document
+
+1. **Read `memory/change-log-[slug].md`** — collect all function-level changes logged during fix
+2. **Get file list:**
+   ```bash
+   git diff develop...fix/[slug] --name-only
+   ```
+   (If branch already merged/deleted, read from PR diff via `gh pr diff [PR_NUMBER] --name-only`)
+3. **Fill template:** Read `~/.claude/templates/docs/devstarter-change-summary-template.html`
+   Replace all `{{PLACEHOLDER}}` tokens:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | same BUG-ID from plan.html |
+| `{{CHANGE_TYPE}}` | `Fix Bug` |
+| `{{FEATURE_NAME}}` | bug summary |
+| `{{SLUG}}` | same slug as plan |
+| `{{BRANCH_NAME}}` | `fix/[slug]` |
+| `{{PR_NUMBER}}` | from C-PHASE 4 |
+| `{{GITHUB_ISSUE}}` | from C-PHASE 3 |
+| `{{NOTION_TASK}}` | Notion task URL |
+| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{PLAN_APPROVED_DATE}}` | date of Gate C1-DOC approval |
+| `{{DEV_COMPLETED_DATE}}` | date of Gate C2 approval |
+| `{{COMPLETED_DATE}}` | today |
+| `{{ORIGINAL_PROBLEM}}` | original bug description from intake |
+| `{{ROOT_CAUSE_OR_GAP}}` | confirmed root cause from analysis |
+| `{{HOW_RESOLVED}}` | paragraph describing the fix applied |
+| `{{ACCEPTANCE_CRITERIA_VERIFIED_ROWS}}` | `<tr>` per fix criterion: criterion, ✅ Pass / ❌ Fail, notes |
+| `{{FILES_CHANGED_ROWS}}` | `<tr>` per file: path, badge (created/modified/deleted), notes |
+| `{{TOTAL_FILES_CHANGED}}` | count |
+| `{{FUNCTIONS_CHANGED_ROWS}}` | `<tr>` per function from change-log-[slug].md |
+| `{{TOTAL_FUNCTIONS_CHANGED}}` | count |
+| `{{KEY_DECISIONS_LIST}}` | `<li>` — decisions made during fix (e.g. chose minimal fix vs refactor) |
+| `{{TECHNICAL_APPROACH}}` | paragraph: what was wrong at the code level and how fix addresses it |
+| `{{DEVIATIONS_FROM_PLAN}}` | what changed from plan.html, or "None — fixed as planned" |
+| `{{TESTS_ADDED_ROWS}}` | `<tr>` per test: name, file, type, what it verifies |
+| `{{VERIFICATION_STEPS_LIST}}` | `<li>` steps — how to reproduce the original bug and confirm it's fixed |
+| `{{REGRESSION_CHECKS_ROWS}}` | `<tr>` per check: area, test, result |
+| `{{REVIEWER_FOCUS_LIST}}` | `<li>` — what reviewers should check (correctness of root cause fix) |
+| `{{REVIEWER_FILES_LIST}}` | `<li>` — files needing closest review |
+| `{{REVIEWER_TRADEOFFS}}` | known limitations or deferred improvements |
+| `{{QA_SCENARIOS_LIST}}` | `<li>` — numbered scenarios to verify (including original bug reproduction) |
+| `{{QA_EDGE_CASES_LIST}}` | `<li>` — edge cases that could re-trigger the bug |
+| `{{QA_REGRESSION_LIST}}` | `<li>` — areas potentially affected by the fix |
+| `{{QA_ENVIRONMENT_NOTES}}` | environment notes (prod data state, config flags, etc.) |
+| `{{MGMT_BUSINESS_IMPACT}}` | what the bug was breaking (business terms) |
+| `{{MGMT_USER_IMPACT}}` | how users were affected; fix outcome |
+| `{{MGMT_RISK}}` | residual risk after fix: Low/Medium/High + explanation |
+| `{{MGMT_DELIVERED_LIST}}` | `<li>` plain-language bullets of what was fixed |
+
+4. **Save to:** `docs/fix/[slug]/summary.html`
+5. **Register in docs/index.html** under "Fix Summaries" (create section if absent):
+   ```html
+   <a href="fix/[slug]/summary.html">[CHANGE_ID] — [Bug Summary] — [Date] (Completed)</a>
+   ```
+6. **Generate management brief:** Read `~/.claude/templates/docs/devstarter-change-mgmt-template.html`
+   Replace all `{{PLACEHOLDER}}` tokens — use plain business language, no technical terms:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | same BUG-ID from plan.html |
+| `{{FEATURE_NAME}}` | bug summary (plain language title) |
+| `{{COMPLETED_DATE}}` | today |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{EXECUTIVE_SUMMARY}}` | 2–3 sentence non-technical summary: what was broken, what was fixed, status now |
+| `{{PROBLEM_PLAIN_LANGUAGE}}` | plain English description of the bug in business terms (what users experienced) |
+| `{{SITUATION_BEFORE}}` | bullet list: what was broken, error users saw, business impact |
+| `{{SITUATION_AFTER}}` | bullet list: what works now, how the experience improved |
+| `{{WHO_WAS_AFFECTED}}` | which users, teams, or processes were impacted |
+| `{{IMPACT_IF_NOT_FIXED}}` | business cost or risk of leaving bug unresolved |
+| `{{DELIVERED_LIST}}` | `<li>` plain-language bullets of what was fixed |
+| `{{IMPROVEMENT_TILES}}` | `<div class="improvement-tile">` per improvement area with icon + title + plain description |
+| `{{METRICS_ROWS}}` | `<tr>` per measurable outcome: metric name, before (broken state), after (fixed state), improvement |
+| `{{RESIDUAL_RISK_DETAIL}}` | Low/Medium/High + plain English: any remaining risk after fix |
+| `{{WHAT_WAS_TESTED_LIST}}` | `<li>` plain description of verification done (business scenarios, not test names) |
+| `{{ROLLBACK_CAPABILITY}}` | can fix be reverted? how quickly? any data implications? |
+| `{{NEXT_STEPS_ROWS}}` | `<tr>` per follow-on action: action, owner, timeline |
+| `{{PLAN_PATH}}` | `fix/[slug]/plan.html` |
+| `{{SUMMARY_PATH}}` | `fix/[slug]/summary.html` |
+
+   **Save to:** `docs/fix/[slug]/mgmt-brief.html`
+   **Register in docs/index.html** alongside summary.html entry:
+   ```html
+   <a href="fix/[slug]/mgmt-brief.html">[CHANGE_ID] — [Bug Summary] — Management Brief — [Date]</a>
+   ```
+
+7. **Announce:**
+   ```
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ BUG FIX COMPLETE — [Bug Summary]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   📋 Fix Plan:     docs/fix/[slug]/plan.html
+   📝 Summary:      docs/fix/[slug]/summary.html
+   📊 Mgmt Brief:   docs/fix/[slug]/mgmt-brief.html
+
+   Share with:
+     👁  Code Reviewers — summary.html, Section 7 "For Code Reviewers"
+     ✅  QA Team       — summary.html, Section 7 "For QA / Testers"
+     📊  Management   — mgmt-brief.html (non-technical)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ```
 
 ---
 

@@ -1,16 +1,19 @@
 # dev-onboarding.md — New Member Onboarding
 
+> **TL;DR** — Onboard a new team member with personalized briefing and first PR · **Lifecycle** Operate · **Gates** 0
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
+## When to use vs alternatives
 
-When a new team member joins, run:
-```
-claude
-> Read ~/.claude/devstarter-onboarding.md and onboard [Name] as [Role]
-```
+- **Use /devstarter-onboard** when: a NEW person is joining the team for
+  the first time. Output: personalized briefing + access setup + first-PR plan.
+- **Use /devstarter-handover** instead when: an existing owner is transferring
+  ownership to someone else (knowledge transfer + revocation, not setup).
+- **Use /devstarter-existing** instead when: the project is new to *you* but
+  not new to the team (first-time DevStarter setup on a repo, no team change).
 
 ---
 

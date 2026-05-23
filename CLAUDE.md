@@ -10,7 +10,7 @@ Name: DevStarter
 Description: A complete development workflow system for Claude Code. Drop it into ~/.claude/ and get a full software team — 13 specialist AI agents, 24 slash commands, 28+ SDLC runbooks, and battle-tested templates — ready to build any project from scratch.
 Repository: https://github.com/clickzika/dev-starter-dev
 Notion Board: https://www.notion.so/339d9f1fcda1815b9b47c9c6f5a8e54b
-Version: 1.7.0
+Version: 3.8.0
 Status: Active development — IDLE (v1.5.0 shipped)
 Created: 2026-03-22
 Branch Strategy: GitFlow (main / develop / feature/* / hotfix/*)
@@ -173,8 +173,8 @@ DevStarter/
 ├── memory/
 │   └── progress.json           ← Workflow checkpoint (always read first)
 │
-├── devstarter-menu.md          ← Entry point (20 workflow options)
-├── VERSION                     ← Current version (1.4.1)
+├── devstarter-menu.md          ← Entry point (30 workflow options)
+├── VERSION                     ← Current version (4.3.0)
 ├── CHANGELOG.md                ← Full release history
 ├── README.md                   ← User-facing documentation
 ├── USER.md                     ← User config (skill level, preferences)
@@ -231,6 +231,94 @@ Do NOT create files without the `devstarter-` prefix (except root files: CLAUDE.
 | @devstarter-docs | @docs | Gudetama | Technical writing, API docs |
 | @devstarter-mobile | @mobile | Aggretsuko | Flutter, React Native |
 | @devstarter-mlops | @mlops | (new) | ML pipelines, model serving |
+
+**Extended agents (full profile only — `bash install.sh --profile full`)**
+
+Domain Specialists:
+| Agent | Short Alias | Character | Role |
+|-------|-------------|-----------|------|
+| @devstarter-architect | @architect | Hangyodon | System design, service boundaries, ADRs |
+| @devstarter-datascience | @datascience | Chococat | EDA, A/B testing, ML modeling, notebooks |
+| @devstarter-sre | @sre | Mocha | SLI/SLO, error budgets, incident response, runbooks |
+| @devstarter-api | @api | Pekkle | Contract-first REST/GraphQL/gRPC/OpenAPI design |
+| @devstarter-performance | @performance | Spottie | Profiling, load testing, Core Web Vitals, perf budgets |
+
+Code Reviewers:
+| Agent | Short Alias | Role |
+|-------|-------------|------|
+| @devstarter-code-reviewer | @code-reviewer | Generic code review (all languages) |
+| @devstarter-typescript-reviewer | @ts-reviewer | TypeScript/JS/React review |
+| @devstarter-python-reviewer | @py-reviewer | Python review |
+| @devstarter-go-reviewer | @go-reviewer | Go review |
+| @devstarter-java-reviewer | @java-reviewer | Java/Spring review |
+| @devstarter-csharp-reviewer | @csharp-reviewer | C#/.NET review |
+| @devstarter-rust-reviewer | @rust-reviewer | Rust review |
+| @devstarter-kotlin-reviewer | @kotlin-reviewer | Kotlin/Android review |
+| @devstarter-swift-reviewer | @swift-reviewer | Swift/iOS review |
+| @devstarter-flutter-reviewer | @flutter-reviewer | Flutter/Dart review |
+| @devstarter-cpp-reviewer | @cpp-reviewer | C++ review |
+| @devstarter-django-reviewer | @django-reviewer | Django review |
+| @devstarter-fastapi-reviewer | @fastapi-reviewer | FastAPI review |
+| @devstarter-fsharp-reviewer | @fsharp-reviewer | F# review |
+| @devstarter-mle-reviewer | @mle-reviewer | ML/Data science review |
+
+Build Resolvers:
+| Agent | Short Alias | Role |
+|-------|-------------|------|
+| @devstarter-build-resolver | @build-resolver | Generic build error resolution |
+| @devstarter-typescript-build-resolver | @ts-build-resolver | TypeScript/Node build errors |
+| @devstarter-go-build-resolver | @go-build-resolver | Go/module build errors |
+| @devstarter-java-build-resolver | @java-build-resolver | Java/Kotlin/Gradle/Maven build errors |
+| @devstarter-rust-build-resolver | @rust-build-resolver | Rust/Cargo build errors |
+| @devstarter-swift-build-resolver | @swift-build-resolver | Swift/Xcode/SPM build errors |
+| @devstarter-flutter-build-resolver | @flutter-build-resolver | Flutter/Dart build errors |
+| @devstarter-dart-build-resolver | @dart-build-resolver | Dart analysis & pub errors |
+| @devstarter-kotlin-build-resolver | @kotlin-build-resolver | Kotlin/Gradle build errors |
+| @devstarter-django-build-resolver | @django-build-resolver | Django/Python build errors |
+| @devstarter-pytorch-build-resolver | @pytorch-build-resolver | PyTorch/TensorFlow/ML env errors |
+| @devstarter-cpp-build-resolver | @cpp-build-resolver | C++/CMake/Make build errors |
+
+Specialist Agents:
+| Agent | Short Alias | Role |
+|-------|-------------|------|
+| @devstarter-planner | @planner | Task decomposition & sprint planning |
+| @devstarter-tdd-guide | @tdd | Test-driven development coaching |
+| @devstarter-refactor | @refactor | Safe code refactoring |
+| @devstarter-code-explorer | @explorer | Codebase navigation & mapping |
+| @devstarter-code-simplifier | @simplifier | Complexity reduction |
+| @devstarter-code-architect | @code-architect | Feature blueprint & implementation plan |
+| @devstarter-database-reviewer | @db-reviewer | DB schema & query review |
+| @devstarter-security-reviewer | @security-reviewer | Security-focused code review |
+| @devstarter-a11y-architect | @a11y | Accessibility design & review |
+| @devstarter-network-architect | @network-architect | Network & API topology |
+| @devstarter-network-config-reviewer | @network-config-reviewer | Router/switch config review |
+| @devstarter-network-troubleshooter | @network-troubleshooter | Network connectivity diagnosis |
+| @devstarter-seo | @seo | Technical SEO review |
+| @devstarter-silent-failure-hunter | @silent-failure | Swallowed errors & silent failures |
+| @devstarter-type-analyzer | @type-analyzer | Type system analysis |
+| @devstarter-pr-analyzer | @pr-analyzer | PR health & merge readiness |
+| @devstarter-pr-test-analyzer | @pr-test-analyzer | PR test coverage quality |
+| @devstarter-chief-of-staff | @chief | Multi-agent coordination |
+| @devstarter-comment-analyzer | @comment-analyzer | Code comment quality & rot detection |
+| @devstarter-conversation-analyzer | @conversation-analyzer | Hook opportunity discovery |
+| @devstarter-doc-updater | @doc-updater | Proactive documentation updates |
+| @devstarter-docs-lookup | @docs-lookup | Live library docs via Context7 |
+| @devstarter-e2e-runner | @e2e-runner | E2E test generation & execution |
+| @devstarter-harness-optimizer | @harness-optimizer | Claude Code config optimization |
+| @devstarter-loop-operator | @loop-operator | Autonomous loop monitoring & control |
+| @devstarter-healthcare-reviewer | @healthcare-reviewer | Clinical safety & PHI compliance (Opus) |
+| @devstarter-homelab-architect | @homelab-architect | Home & small-lab network design |
+| @devstarter-harmonyos-app-resolver | @harmonyos-resolver | HarmonyOS/ArkTS development & fixes |
+| @devstarter-gan-planner | @gan-planner | GAN harness — expand prompt to spec |
+| @devstarter-gan-generator | @gan-generator | GAN harness — implement & iterate |
+| @devstarter-gan-evaluator | @gan-evaluator | GAN harness — browser test & score |
+| @devstarter-opensource-forker | @oss-forker | Strip secrets, prep for open-source |
+| @devstarter-opensource-sanitizer | @oss-sanitizer | Verify fork is clean before release |
+| @devstarter-opensource-packager | @oss-packager | Generate README/CLAUDE.md/setup.sh |
+| @devstarter-laravel-reviewer | @laravel-reviewer | Laravel/PHP architecture, security, N+1, test review |
+| @devstarter-hookify-rules | @hookify-rules | Convert markdown rules → Claude Code hook JSON |
+| @devstarter-agent-auditor | @agent-auditor | 12-layer multi-agent system diagnostic |
+| @devstarter-rules-distiller | @rules-distiller | Extract cross-cutting rules from agents/skills (2+ files) |
 
 **Short aliases** — each agent has a thin alias file at `agents/[shortname].md` so you can type `@pm` instead of `@devstarter-pm`. Aliases mirror the full agent; Claude Code resolves them by filename.
 
@@ -349,6 +437,19 @@ Every slash command requires:
 | v3.2.0 | Consult→Change handoff — consult saves intake file + AskUserQuestion gate (save/implement now/follow-up); /devstarter-change skips intake when given consult file |
 | v3.3.0 | Opus model gate in 6 SKILL.md files; commands/ migration cleanup (delete orphaned folder + fix 4 refs); Opus model ID → claude-opus-4-7 |
 | v3.4.0 | /devstarter-debug — hypothesis-driven investigation workflow; 5-phase root cause analysis with surgical fix plan; handoff to /devstarter-change |
+| v3.8.0 | /devstarter-gitsetup Phase 4.5 — post-merge branch cleanup (delete_branch_on_merge + fetch.prune + optional git sweep alias); new `cleanup` inline arg |
+| v3.9.0–3.9.2 | Compaction refactor, clean installer (wipe-first), npm/EXE distribution added then reverted — bash install only |
+| v4.0.0 | ECC Integration Phase 1 — language rules (TypeScript, Python, Go, Java), MCP configs (GitHub, PostgreSQL, SQLite, Brave Search), /devstarter-mcp command |
+| v4.0.1 | Language rules extended — C#, React, Flutter, Angular; MSSQL MCP config added |
+| v4.1.0 | Profile-based install (--profile minimal/standard/full) + 5 extended agents (architect, datascience, sre, api, performance) |
+| v4.2.0 | ECC full absorption — 29 MCP configs, 17 language rules, 40 extended agents |
+| v4.3.0 | ECC gap fill — 22 agents, 15 rule files (golang/dart/cpp subdirs), MCP accuracy fixes |
+| v4.3.1 | ECC context templates — dev.md / research.md / review.md in templates/contexts/ |
+| v4.4.0 | Hybrid hooks system — 5 Node.js hooks (session-start, pre-compact, accumulator, format, console-log), --hooks install flag |
+| v4.5.0 | ECC skills port — 4 agents (laravel-reviewer, hookify-rules, agent-auditor, rules-distiller) + 2 SDLC runbooks (/devstarter-verification-loop, /devstarter-council) |
+| v4.6.2 | Version bump (shipped) |
+| v4.7.0 | Multi-AI Support Phase 1 — Universal Prompt blocks in all 51 SKILL.md files, docs/multi-ai-guide.md, README multi-AI section |
+| v5.0.0 | Multi-AI Support Phase 2 — provider-detect install (AI_PROVIDER → ~/.{provider}/), devstarter-resolve-home.sh, PROJECT.md.template, conditional hooks, devstarter-invoke.sh universal runner |
 
 ---
 

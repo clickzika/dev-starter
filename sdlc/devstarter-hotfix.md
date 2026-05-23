@@ -1,17 +1,9 @@
 # dev-hotfix.md — Emergency Production Fix
 
+> **TL;DR** — Emergency forward-fix on production with backport to uat/develop · **Lifecycle** Ship · **Gates** 2
+
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
-
-## How to Use
-
-When there is a critical bug in PRODUCTION that cannot wait for normal sprint:
-```
-claude
-> Read ~/.claude/devstarter-hotfix.md and start a hotfix
-```
-
----
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 

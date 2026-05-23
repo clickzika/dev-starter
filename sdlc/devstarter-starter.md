@@ -1,109 +1,22 @@
 # dev-starter.md — Project Spec Intake Template
 
+> **TL;DR** — New project bootstrap (master workflow with 5 gates) · **Lifecycle** Discovery · **Gates** 5 (in starter-gates)
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
-## How to Use This File
+## ⚠️ CRITICAL RULES
 
-Place this file at `~/.claude/devstarter-starter.md` (global — works across all projects).
-When starting a new project in an empty folder, run:
+### Rule 0 — Checkpoint
+Read `~/.claude/sdlc/devstarter-checkpoint.md`: setup Cron at start, save `memory/progress.json` after every task, cleanup at end.
 
-```
-claude
-> Read ~/.claude/devstarter-starter.md and start a new project
-```
+### Rule 1 — Hard Approval Gates
+STOP at every gate. Show output. Wait for "approve" or "revise [notes]". Never continue without explicit approval.
 
----
+### Rule 2 — Read From Files
+Always read from disk before acting. Never rely on chat history. Before each task: read CLAUDE.md, devstarter-config.yml, memory/progress.json.
 
-## ⚠️ CRITICAL RULES — Read Before Doing Anything
-
-### Rule 0 — Checkpoint & Auto-Resume (ALWAYS active)
-
-This is a long workflow. You MUST follow the Checkpoint & Auto-Resume Protocol.
-Read `~/.claude/sdlc/devstarter-checkpoint.md` and:
-1. **At start** — Setup Cron auto-resume (every 10 minutes)
-2. **After every task** — Save checkpoint to `memory/progress.json`
-3. **At end** — Cleanup (update status to completed, delete Cron)
-
-This ensures work is never lost if rate limits are hit.
-
----
-
-### Rule 1 — Hard Approval Gates (NEVER skip)
-
-This project has 5 gates. Each gate has a HARD STOP.
-You MUST stop, show output, and wait for explicit user approval before proceeding.
-
-```
-GATE APPROVAL REQUIRED
-Gate: [N] — [Gate Name]
-Output: [what was produced]
-Location: [file path]
-
-Type "approve" to continue to next gate.
-Type "revise [feedback]" to make changes first.
-```
-
-Do NOT continue until the user types "approve".
-Do NOT interpret silence or any other word as approval.
-
----
-
-### Rule 2 — Always Read From Files, Never From Context
-
-When resuming any session or starting a new task:
-
-1. NEVER rely on what you remember from earlier in the conversation
-2. ALWAYS read the actual file from disk before doing any work
-3. The source of truth is always the file — not the chat history
-
-Before every task, announce:
-```
-📂 Reading source of truth from disk:
-- CLAUDE.md ✓
-- devstarter-config.yml ✓
-- memory/progress.json ✓
-- docs/[relevant-doc].html ✓
-```
-
-If a required file does not exist, STOP and tell the user:
-```
-⛔ Cannot proceed — [filename] not found on disk.
-Please confirm the file was saved before continuing.
-```
-
----
-
-### Rule 3 — Read Agent File Before Doing Any Work
-
-Before any agent produces output, you MUST read that agent's file first.
-The agent file defines the format, template, standards, and quality gate for every deliverable.
-
-```
-Agent          File to read first
-──────         ─────────────────────────────
-BA          → ~/.claude/agents/devstarter-ba.md
-Tech Lead   → ~/.claude/agents/devstarter-techlead.md
-DBA         → ~/.claude/agents/devstarter-dba.md
-Backend     → ~/.claude/agents/devstarter-backend.md
-Security    → ~/.claude/agents/devstarter-security.md
-DevOps      → ~/.claude/agents/devstarter-devops.md
-QA          → ~/.claude/agents/devstarter-qa.md
-UX/UI       → ~/.claude/agents/devstarter-uxui.md
-PM          → ~/.claude/agents/devstarter-pm.md
-Frontend    → ~/.claude/agents/devstarter-frontend.md
-Mobile      → ~/.claude/agents/devstarter-mobile.md
-Docs        → ~/.claude/agents/devstarter-docs.md
-```
-
-Before every agent task, announce:
-```
-🤖 Acting as [agent name]
-📖 Reading agent spec: ~/.claude/agents/[agent].md ✓
-📄 Output format: [format from agent file]
-📋 Producing: [deliverable name]
-```
-
-**If you skip reading the agent file, the output will be rejected.**
+### Rule 3 — Read Agent File First
+Before any agent produces output, read `~/.claude/agents/devstarter-[agent].md`. That file defines format, template, and quality gate. Output without reading is rejected.
 
 ---
 

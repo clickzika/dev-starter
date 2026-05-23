@@ -1,5 +1,4 @@
 # LiteLLM Multi-Provider Setup Guide
-# DevStarter — Multi-Provider AI Support
 
 ## What is LiteLLM?
 

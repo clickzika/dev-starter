@@ -2,9 +2,6 @@
 
 **🐧 Tuxedo Sam — Tech Lead (@devstarter-techlead)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role
@@ -278,77 +275,6 @@ ACTION ITEMS
 
 ---
 
-### SLO Definition
-
-```
-Service: [Name]  |  Owner: [Team]
-
-SLIs & SLOs
-| SLI | Measurement | Target | Window |
-| Availability | non-5xx / total | 99.9% | 30-day rolling |
-| Latency P95 | histogram_quantile | < [X]ms | 30-day rolling |
-| Error Rate | errors / total | < [X]% | 30-day rolling |
-
-ERROR BUDGET
-99.9% availability → 43.8 min/month
-Burn rate alert: >2x for 1 hour → page
-Budget exhausted policy: [action]
-
-SLA (External): [X]% | Breach remedy: [policy]
-```
-
----
-
-### STRIDE Threat Model (Condensed)
-
-```
-System: [Name]  |  Assets: [what we protect]
-Trust Boundaries: [where data crosses trust levels]
-
-| ID | STRIDE | Threat | L | I | Mitigation | Status |
-|----|--------|--------|---|---|------------|--------|
-| T1 | Spoofing | | H/M/L | H/M/L | | |
-| T2 | Tampering | | | | | |
-| T3 | Repudiation | | | | | |
-| T4 | Info Disclosure | | | | | |
-| T5 | DoS | | | | | |
-| T6 | Elevation of Privilege | | | | | |
-
-High Priority (H×H): [list with owner + due date]
-```
-
----
-
-### PR Review Checklist
-
-```
-CORRECTNESS
-[ ] Happy path correct  [ ] Edge cases handled  [ ] Errors surfaced not swallowed
-[ ] No race conditions  [ ] Concurrent access safe
-
-SECURITY
-[ ] No secrets in code/logs  [ ] Input validated  [ ] Auth/authz correct
-[ ] No new OWASP Top 10 issues  [ ] Dependencies not vulnerable
-
-TESTS
-[ ] New logic unit tested  [ ] Edge cases tested  [ ] Integration tests updated
-[ ] Test names describe behavior
-
-CODE QUALITY
-[ ] Single responsibility  [ ] Descriptive names  [ ] No unnecessary complexity
-[ ] No commented-out code  [ ] No magic numbers
-
-OBSERVABILITY
-[ ] Structured logging added  [ ] No PII in logs  [ ] Metrics instrumented
-
-OPERATIONS
-[ ] No breaking API changes without versioning
-[ ] DB migrations backward-compatible
-[ ] Rollback is possible
-```
-
----
-
 ## Engineering Standards Reference
 
 | Practice           | Standard                                         |
@@ -373,44 +299,13 @@ OPERATIONS
 
 ---
 
-## Certification & Standards Reference
-
-| Credential                               | Body           | Focus                   |
-| ---------------------------------------- | -------------- | ----------------------- |
-| AWS Solutions Architect Professional     | AWS            | Cloud architecture      |
-| Google Cloud Professional Architect      | GCP            | Cloud architecture      |
-| CKA (Certified Kubernetes Administrator) | CNCF           | Container orchestration |
-| CISSP                                    | (ISC)²         | Security architecture   |
-| TOGAF                                    | The Open Group | Enterprise architecture |
-
-**Key References:**
-
-- _Designing Data-Intensive Applications_ — Martin Kleppmann
-- _Clean Architecture_ — Robert C. Martin
-- _Accelerate_ — Forsgren, Humble, Kim
-- _The Site Reliability Engineering Book_ — Google SRE team
-- _Domain-Driven Design_ — Eric Evans
-- _A Philosophy of Software Design_ — John Ousterhout
-
----
-
-_Place at project root as `CLAUDE.md` or globally at `~/.claude/CLAUDE.md`._
-_Claude Code reads this automatically at every session start._
-
----
-
 ## Anti-patterns — What NOT To Do
 
-- **Premature optimization** — "let's add caching" before measuring. Measure first, optimize what the data tells you
-- **Resume-driven development** — choosing technologies because they look good on a resume, not because they solve the problem
-- **Architecture astronautics** — microservices for a 3-page app. Match complexity to problem size. Monolith first is usually correct
-- **Not-invented-here syndrome** — building custom solutions when battle-tested libraries exist. Use existing tools unless you have a specific reason not to
-- **Ivory tower architecture** — designing without talking to the developers who will implement it. Architecture is collaborative
-- **No decision records** — "we chose X because..." lost in Slack history. Every significant decision gets an ADR
-- **Ignoring tech debt** — "we'll fix it later" compounds. Track it, score it, pay it down every sprint (20% time)
-- **Coupling everything** — shared databases, shared models, synchronous chains. Design for independent deployability
-- **One-person knowledge silos** — if only one person understands a system, that's a bus factor of 1. Document and cross-train
-- **Skipping prototypes** — committing to architecture without a proof of concept. Spike risky assumptions first
+- **Premature optimization** — measure first, optimize what the data tells you
+- **Architecture astronautics** — microservices for a 3-page app. Monolith first is usually correct
+- **No decision records** — every significant decision gets an ADR; "we chose X" lost in Slack is a liability
+- **Coupling everything** — shared databases, synchronous chains. Design for independent deployability
+- **Skipping prototypes** — spike risky assumptions before committing to architecture
 
 ---
 
@@ -461,117 +356,22 @@ Maintainability:
 
 ---
 
-## ADR Template (Architectural Decision Record)
-
-```
-# ADR-[NNN]: [Decision Title]
-
-**Date:** YYYY-MM-DD
-**Status:** Proposed | Accepted | Deprecated | Superseded by ADR-[NNN]
-**Deciders:** [names]
-**Technical Story:** [ticket/issue reference]
-
-## Context
-
-[What is the problem? What forces are at play? What constraints exist?
-Include relevant technical and business context.]
-
-## Decision
-
-[What did we decide? State the decision clearly and specifically.]
-
-## Alternatives Considered
-
-| Option | Description | Pros | Cons |
-|--------|-------------|------|------|
-| **A: [name]** | [brief] | [list] | [list] |
-| **B: [name]** | [brief] | [list] | [list] |
-| **C: [chosen]** | [brief] | [list] | [list] |
-
-Why we chose [C]: [specific reasoning]
-
-## Consequences
-
-**Positive:**
-- [what improves or becomes possible]
-
-**Negative:**
-- [what trade-offs we accept]
-
-**Risks:**
-- [what could go wrong and how we mitigate]
-
-## Follow-up Actions
-- [ ] [action] — owner: [name] — due: [date]
-```
-
----
-
-## Technical Debt Scoring Matrix
-
-```
-TECHNICAL DEBT SCORING MATRIX
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Score each debt item on two dimensions: IMPACT and EFFORT
-
-IMPACT (how much does this hurt us?):
-  1 = Low: cosmetic, minor inconvenience, doesn't affect delivery
-  2 = Medium: slows development, increases bug risk, makes onboarding harder
-  3 = High: blocks features, causes incidents, significant security/performance risk
-
-EFFORT (how hard is it to fix?):
-  1 = Low: < 1 day, single file/module, no risk
-  2 = Medium: 1-5 days, multiple files, some testing needed
-  3 = High: 1+ weeks, cross-cutting, migration required, high risk
-
-PRIORITY MATRIX:
-| | Effort: Low (1) | Effort: Medium (2) | Effort: High (3) |
-|--|----------------|-------------------|------------------|
-| Impact: High (3) | 🔴 DO NOW (3×1=3) | 🔴 DO NOW (3×2=6) | 🟡 PLAN (3×3=9) |
-| Impact: Medium (2) | 🟢 QUICK WIN (2×1=2) | 🟡 PLAN (2×2=4) | 🟡 PLAN (2×3=6) |
-| Impact: Low (1) | 🟢 QUICK WIN (1×1=1) | ⚪ BACKLOG (1×2=2) | ⚪ SKIP (1×3=3) |
-
-DO NOW = schedule this sprint
-QUICK WIN = do when touching nearby code
-PLAN = schedule within 2 sprints
-BACKLOG = track but don't prioritize
-SKIP = not worth the effort — accept and document
-
-DEBT REGISTER:
-| ID | Description | Impact | Effort | Score | Priority | Owner | Target Sprint |
-|----|-------------|--------|--------|-------|----------|-------|---------------|
-| TD-001 | [description] | [1-3] | [1-3] | [IxE] | [priority] | [name] | [sprint] |
-
-RULE: Allocate 20% of sprint capacity to tech debt. Track debt-to-feature ratio.
-```
-
----
-
 ## Architecture Fitness Functions
 
-```
-ARCHITECTURE FITNESS FUNCTIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Automated CI checks — fail the build if violated. Run on every PR.
 
-Automated checks that verify architecture stays healthy over time.
-Run in CI on every PR — fail the build if violated.
+| Fitness Function | Tool | Threshold |
+|-----------------|------|-----------|
+| Dependency direction | ArchUnit / Dependency Cruiser | 0 circular deps |
+| Layer violations | eslint-plugin-boundaries | 0 violations |
+| API contract | OpenAPI diff / Prism | 0 breaking changes |
+| Bundle size | Lighthouse CI / bundlesize | < 150KB gzipped |
+| Test coverage | Jest/Vitest | ≥80% on /src/core/** |
+| Dependency freshness | npm outdated / Renovate | 0 outdated critical |
+| Security scan | Snyk / Trivy | 0 critical/high |
+| Response time | k6 / Lighthouse | P95 < 500ms |
+| DB queries | Query logger | 0 N+1 patterns |
 
-| Fitness Function | What It Checks | Tool | Threshold |
-|-----------------|---------------|------|-----------|
-| Dependency direction | No circular dependencies between modules | ArchUnit / Dependency Cruiser | 0 violations |
-| Layer violations | Controllers don't call repositories directly | ArchUnit / eslint-plugin-boundaries | 0 violations |
-| API contract | No breaking changes in API response schema | OpenAPI diff / Prism | 0 breaking changes |
-| Bundle size | Frontend bundle stays within budget | Lighthouse CI / bundlesize | < 150KB gzipped |
-| Test coverage | Critical paths have ≥80% coverage | Jest/Vitest coverage | ≥80% on /src/core/** |
-| Dependency freshness | No dependency > 2 major versions behind | npm outdated / Renovate | 0 outdated critical |
-| Security scan | No critical/high vulnerabilities | Snyk / Trivy | 0 critical, 0 high |
-| Response time | Key endpoints respond within SLO | k6 / Lighthouse | P95 < 500ms |
-| Database queries | No N+1 queries in critical paths | Query logger + assertion | 0 N+1 patterns |
-
-IMPLEMENTATION:
-- Add as CI step: "Architecture Fitness Check"
-- Runs on every PR alongside tests
-- Fail = PR cannot merge (same as failing test)
-- Dashboard: track trends over time (are we getting better or worse?)
-```
+DevStarter ships a working 4-function GitHub Actions workflow.
+Template: `~/.claude/templates/github/fitness-functions.yml`
+Setup: `~/.claude/templates/github/fitness-functions-setup.md`

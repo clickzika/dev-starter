@@ -1,3 +1,7 @@
+# devstarter-starter-gates.md — Gate Structure for New Project Bootstrap
+
+> **TL;DR** — Gate 0–2 structure definition (sub-file of /devstarter-new) · **Lifecycle** Discovery · **Gates** 3
+
 ## Agent Pipeline & Gate Structure
 
 ```
@@ -6,6 +10,9 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
          → PROC-GH-01: create GitHub repo + branch strategy
          → PROC-GH-10: set branch protection rules on main
          → PROC-GH-14: create PR + Issue templates (.github/)
+         → PROC-GH-17: install fitness-functions.yml CI quality gates
+                       (and add 'Fitness Functions / All checks' to required
+                        status checks in the protection rules above)
   PM     → read ~/.claude/sdlc/devstarter-notion.md
          → PROC-NT-01: find or create Notion parent page
          → PROC-NT-02: create project database (Task Board)

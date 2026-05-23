@@ -1,21 +1,14 @@
 # devstarter-gitsetup.md — Git & Gitflow Setup
 
+> **TL;DR** — Set up git + GitFlow + branch protection + standard labels on a repo · **Lifecycle** Discovery · **Gates** 1
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Agent:** @devstarter-devops (Pompompurin)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.*`, `branch_protection.*`).
 
-## How to Use
-
-Run in any existing project that needs git + gitflow configured or re-applied:
-```
-claude
-> /devstarter-gitsetup
-```
-
-Idempotent — safe to re-run on a repo already partially configured.
-Each step checks current state before making changes.
+Idempotent — safe to re-run on a repo already partially configured. Each step checks current state before making changes.
 
 ---
 
@@ -32,7 +25,7 @@ Every step MUST check current state before acting:
 Never fail on already-done state.
 
 ### Rule — Inline Args
-If called with a specific arg (`branches`, `protect`, `labels`), run ONLY that phase.
+If called with a specific arg (`branches`, `protect`, `cleanup`, `labels`), run ONLY that phase.
 If called with `full`, skip Gate 1 confirmation and run all phases.
 If called with no args, show the setup plan at Gate 1 and wait for approval.
 
@@ -80,6 +73,7 @@ Steps that will run:
   Phase 2 — Connect/verify remote origin
   Phase 3 — Create gitflow branches (main · uat · develop)
   Phase 4 — Apply branch protection
+  Phase 4.5 — Post-merge branch cleanup (auto-delete + fetch.prune)
   Phase 5 — Create standard GitHub labels
 
 Each step is idempotent — already-done items are skipped.
@@ -189,6 +183,99 @@ Then → PROC-GH-10 Step 2 based on user answer.
 
 ---
 
+## PHASE 4.5 — Post-Merge Branch Cleanup
+
+(Run if arg = `protect`, `cleanup`, `full`, or no arg.)
+
+Eliminate stale feature branches on both remote and local clone after every PR merge. Two one-time settings + one optional alias.
+
+### Step 1 — Enable GitHub auto-delete head branches (remote)
+
+```bash
+# Check current state
+CURRENT=$(gh api "repos/$GITHUB_USERNAME/$PROJECT_NAME" --jq '.delete_branch_on_merge')
+if [ "$CURRENT" = "true" ]; then
+  echo "✅ delete_branch_on_merge already enabled"
+else
+  gh api -X PATCH "repos/$GITHUB_USERNAME/$PROJECT_NAME" \
+    -f delete_branch_on_merge=true --jq '{delete_branch_on_merge}' \
+    && echo "✅ Enabled delete_branch_on_merge on $GITHUB_USERNAME/$PROJECT_NAME" \
+    || echo "⚠️  Could not enable — check repo admin permission"
+fi
+```
+
+Effect: GitHub removes the head branch (`feature/*`, `fix/*`, etc.) on the remote the moment a PR is merged via UI / `gh pr merge` / API.
+
+### Step 2 — Enable global git fetch.prune (local)
+
+```bash
+# Check current state
+CURRENT=$(git config --global --get fetch.prune 2>/dev/null)
+if [ "$CURRENT" = "true" ]; then
+  echo "✅ fetch.prune already enabled globally"
+else
+  git config --global fetch.prune true \
+    && echo "✅ Enabled global fetch.prune=true" \
+    || echo "⚠️  Could not set git config"
+fi
+```
+
+Effect: Every `git fetch`/`git pull` auto-removes stale `origin/feature/*` tracking refs whose remote branches were deleted by Step 1.
+
+### Step 3 — Offer optional `git sweep` alias
+
+Ask the user whether to add a global alias that batch-deletes locally-merged feature branches:
+
+Use `AskUserQuestion` with:
+- question: "Add `git sweep` alias? (deletes all local branches already merged into develop)"
+- options: ["yes — add sweep alias", "no — skip"]
+
+If yes:
+
+```bash
+# Git for Windows / Git Bash / macOS / Linux — alias runs through sh
+git config --global alias.sweep "!git branch --merged $DEV_BRANCH | grep -vE '^\\*|$MAIN_BRANCH|$UAT_BRANCH|$DEV_BRANCH' | xargs -r git branch -d"
+echo "✅ Added: git sweep  (run after a merge to clean local branches)"
+```
+
+Note for pure PowerShell users without Git Bash on PATH: provide this inline command instead of an alias, since `!`-shell aliases route through sh:
+
+```powershell
+git branch --merged develop | Where-Object { $_ -notmatch '^\*|develop|main|uat' } | ForEach-Object { git branch -d $_.Trim() }
+```
+
+### Step 4 — Print per-merge workflow reminder
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧹 POST-MERGE CLEANUP CONFIGURED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+After every PR merge, run:
+
+  git checkout develop && git pull
+  git branch -d feature/<slug>
+
+  Remote branch:    already deleted by GitHub on merge
+  Stale origin/*:   auto-pruned on the git pull
+  Local branch:     removed by `git branch -d` (safe — refuses unmerged)
+
+Squash-merged PRs leave the feature branch "unmerged" from git's POV.
+Either force-delete with `git branch -D feature/<slug>` (safe if you
+trust the squash landed), or use `gh pr list --state merged` to
+identify branches that actually landed and delete those.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### Rollback (if ever needed)
+
+```bash
+git config --global --unset fetch.prune
+gh api -X PATCH "repos/$GITHUB_USERNAME/$PROJECT_NAME" -f delete_branch_on_merge=false
+git config --global --unset alias.sweep   # if added
+```
+
+---
+
 ## PHASE 5 — Create Standard Labels
 
 (Run if arg = `labels` or `full` or no arg.)
@@ -247,6 +334,11 @@ Branches:
              [protected ✅ | unprotected ⚠️]
 
 Labels:   [N] created · [N] already existed (skipped)
+
+Post-merge cleanup:
+  delete_branch_on_merge ✅
+  global fetch.prune     ✅
+  git sweep alias        [✅ added | — skipped]
 
 Next steps:
   → Start a feature:  /devstarter-change add [feature]

@@ -39,4 +39,23 @@ Quick reference for all 25 slash commands. Each entry lists the command, its pur
 | `/devstarter-retro` | Sprint Retrospective | `sdlc/devstarter-retrospective.md` |
 | `/devstarter-consult` | Consult & Advise | `sdlc/devstarter-consult.md` |
 | `/devstarter-menu` | Project Launcher Menu | `devstarter-menu.md` |
-| `/devstarter-update` | Update DevStarter | Runs `~/.claude/update.sh` |
+| `/devstarter-update` | Update DevStarter | Runs `bash ~/.claude/update.sh` |
+
+---
+
+## 🌐 Universal Prompt — Works with Any AI
+
+> **Claude Code users:** Use `/devstarter-registry` above.
+> **Codex / Gemini / Copilot / ChatGPT:** Copy the prompt below into your AI.
+
+```
+DevStarter — Quick reference for all DevStarter slash commands
+
+DevStarter install path: ~/.claude/ (Mac/Linux) or %USERPROFILE%\.claude (Windows)
+Full workflow / agent spec: read N/A from your DevStarter install.
+
+Stop at every ⛔ GATE marker and wait for my approval before continuing.
+Start: type 'start'
+```
+
+> Not set up for your AI? See `docs/multi-ai-guide.md` for non-Claude setup.

@@ -1,5 +1,4 @@
 # Claude AI PR Review — Setup Guide
-# DevStarter — Autonomous GitHub Actions PR Review
 
 ## What This Does
 

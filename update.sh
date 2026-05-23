@@ -7,9 +7,27 @@
 
 set -euo pipefail
 
+# --force: re-copy files even when versions match (repairs a partial/failed
+# prior update — e.g. an older update.sh that lagged the file list).
+FORCE=0
+for arg in "$@"; do
+  case "$arg" in
+    --force|-f) FORCE=1 ;;
+  esac
+done
+
 REPO_URL="https://github.com/clickzika/dev-starter.git"
 BRANCH="main"
-CLAUDE_DIR="$HOME/.claude"
+# Resolve install dir (provider-aware). update.sh lives at the install root.
+_UPD_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}" 2>/dev/null || echo ".")" && pwd)"
+if [ -f "$_UPD_DIR/scripts/devstarter-resolve-home.sh" ]; then
+  . "$_UPD_DIR/scripts/devstarter-resolve-home.sh"
+  devstarter_resolve_home
+  CLAUDE_DIR="$DEVSTARTER_HOME"
+else
+  CLAUDE_DIR="${AI_PROVIDER:+$HOME/.$AI_PROVIDER}"
+  CLAUDE_DIR="${CLAUDE_DIR:-$HOME/.claude}"
+fi
 TMP_DIR="$(mktemp -d)"
 
 # Colors
@@ -20,9 +38,9 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 echo ""
-echo -e "${CYAN}═══════════════════════════════════════════${NC}"
+echo -e "${CYAN}-------------------------------------------${NC}"
 echo -e "${CYAN}  Dev Starter — Update                     ${NC}"
-echo -e "${CYAN}═══════════════════════════════════════════${NC}"
+echo -e "${CYAN}-------------------------------------------${NC}"
 echo ""
 
 # ─── Step 1: Check current version ──────────────────
@@ -46,9 +64,10 @@ LATEST_VERSION=$(cat "$TMP_DIR/VERSION")
 echo -e "${YELLOW}Latest version:${NC}  $LATEST_VERSION"
 
 # ─── Step 3: Check if update needed ─────────────────
-if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ]; then
+if [ "$CURRENT_VERSION" = "$LATEST_VERSION" ] && [ "$FORCE" = "0" ]; then
   echo ""
   echo -e "${GREEN}Already up to date! ($CURRENT_VERSION)${NC}"
+  echo -e "${YELLOW}(Run with --force to re-copy files anyway — repairs a partial update.)${NC}"
   rm -rf "$TMP_DIR"
   exit 0
 fi
@@ -63,7 +82,7 @@ BACKUP_DIR="$CLAUDE_DIR/.backup/$(date +%Y%m%d_%H%M%S)"
 mkdir -p "$BACKUP_DIR"
 
 # Backup files that user may have customized
-for f in CLAUDE.md USER.md settings.json settings.local.json .env; do
+for f in CLAUDE.md PROJECT.md USER.md settings.json settings.local.json .env; do
   if [ -f "$CLAUDE_DIR/$f" ]; then
     cp "$CLAUDE_DIR/$f" "$BACKUP_DIR/$f"
     echo "  Backed up: $f"
@@ -81,20 +100,15 @@ echo -e "${GREEN}  Backup saved to: $BACKUP_DIR${NC}"
 # ─── Step 5: Copy new files ─────────────────────────
 echo -e "${CYAN}[2/4] Installing new files...${NC}"
 
-# Folders to update (overwrite with latest)
-for folder in agents skills sdlc templates; do
+# Folders to update (overwrite with latest). scripts/ is DevStarter-owned —
+# must be refreshed so resolver/hooks helpers stay in sync (fixes #68).
+for folder in agents skills sdlc templates rules scripts; do
   if [ -d "$TMP_DIR/$folder" ]; then
     rm -rf "$CLAUDE_DIR/$folder"
     cp -r "$TMP_DIR/$folder" "$CLAUDE_DIR/$folder"
     echo "  Updated: $folder/"
   fi
 done
-
-# Migration: remove commands/ if skills/ now exists (v2.x → v3.x)
-if [ -d "$CLAUDE_DIR/skills" ] && [ -d "$CLAUDE_DIR/commands" ]; then
-  rm -rf "$CLAUDE_DIR/commands"
-  echo "  Migrated: commands/ removed (replaced by skills/)"
-fi
 
 # Restore agents/custom/ from backup (never overwrite user custom agents)
 if [ -d "$BACKUP_DIR/agents/custom" ]; then
@@ -105,8 +119,13 @@ else
   mkdir -p "$CLAUDE_DIR/agents/custom"
 fi
 
-# Root files to update (toolkit files only, not user files)
-for f in update.sh install.sh setup.sh devstarter-menu.md VERSION CHANGELOG.md; do
+# Wipe DevStarter-owned root files before replacing
+for f in update.sh install.sh uninstall.sh setup.sh devstarter-menu.md devstarter-invoke.sh VERSION CHANGELOG.md README.md LICENSE .gitignore .env.example; do
+  rm -f "$CLAUDE_DIR/$f"
+done
+
+# Copy DevStarter-owned root files from latest
+for f in update.sh install.sh uninstall.sh setup.sh devstarter-menu.md devstarter-invoke.sh VERSION CHANGELOG.md; do
   if [ -f "$TMP_DIR/$f" ]; then
     cp "$TMP_DIR/$f" "$CLAUDE_DIR/$f"
     echo "  Updated: $f"
@@ -117,7 +136,7 @@ done
 echo -e "${CYAN}[3/4] Preserving your settings...${NC}"
 
 # Never overwrite these user files
-for f in CLAUDE.md USER.md settings.json settings.local.json .env; do
+for f in CLAUDE.md PROJECT.md USER.md settings.json settings.local.json .env; do
   if [ -f "$BACKUP_DIR/$f" ]; then
     cp "$BACKUP_DIR/$f" "$CLAUDE_DIR/$f"
     echo "  Preserved: $f"
@@ -130,14 +149,13 @@ if [ -d "$BACKUP_DIR/memory" ]; then
   echo "  Preserved: memory/"
 fi
 
-# ─── Step 7: Done ───────────────────────────────────
+# ─── Step 7: Migration notes for major version jumps ───
 echo -e "${CYAN}[4/4] Cleaning up...${NC}"
 rm -rf "$TMP_DIR"
 
-echo ""
-echo -e "${GREEN}═══════════════════════════════════════════${NC}"
+echo -e "${GREEN}-------------------------------------------${NC}"
 echo -e "${GREEN}  Updated: $CURRENT_VERSION → $LATEST_VERSION${NC}"
-echo -e "${GREEN}═══════════════════════════════════════════${NC}"
+echo -e "${GREEN}-------------------------------------------${NC}"
 echo ""
 echo -e "  Backup:    $BACKUP_DIR"
 echo -e "  Changelog: $CLAUDE_DIR/CHANGELOG.md"

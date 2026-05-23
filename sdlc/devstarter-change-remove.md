@@ -1,5 +1,7 @@
 # OPERATION B — REMOVE FEATURE
 
+> **TL;DR** — Remove a feature with deprecation, code cleanup, and rollback plan · **Lifecycle** Build · **Gates** 5
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 ---

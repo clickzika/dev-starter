@@ -1,5 +1,6 @@
 # dev-autopr.md — Autonomous PR Review
-# DevStarter — GitHub Actions + Claude AI Runbook
+
+> **TL;DR** — Setup Claude AI autonomous PR review on GitHub Actions · **Lifecycle** Operate · **Gates** 0
 
 ## Model: Haiku (`claude-haiku-4-5-20251001`)
 

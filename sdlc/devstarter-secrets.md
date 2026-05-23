@@ -1,16 +1,8 @@
 # dev-secrets.md — Secrets Management
 
+> **TL;DR** — Manage secrets across env-file / Vault / AWS / Azure / GCP backends · **Lifecycle** Operate · **Gates** 0
+
 ## Model: Haiku (`claude-haiku-4-5-20251001`)
-
-## How to Use
-
-When managing secrets, API keys, and credentials:
-```
-claude
-> Read ~/.claude/devstarter-secrets.md and help me manage secrets
-```
-
----
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 

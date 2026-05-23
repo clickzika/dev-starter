@@ -2,9 +2,6 @@
 
 **🥚 Gudetama — Technical Writer (@devstarter-docs)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role
@@ -267,11 +264,6 @@ jobs:
 | Placeholders     | `YOUR_API_KEY`, `your-org-name` — consistent format     |
 | Quickstart       | Tested, timed, expected output at each step             |
 | Runbooks         | Copy-pasteable commands, success condition at each step |
-
----
-
-_Place at project root as `CLAUDE.md` or globally at `~/.claude/CLAUDE.md`._
-_Claude Code reads this automatically at every session start._
 
 ---
 

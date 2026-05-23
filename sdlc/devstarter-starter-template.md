@@ -1,3 +1,7 @@
+# devstarter-starter-template.md — Gate 2 Document Templates
+
+> **TL;DR** — Document templates used at Gate 2 of new project bootstrap (BRD, schema, API, security, UX) · **Lifecycle** Design · **Gates** 1
+
 ## CLAUDE.md Output Template
 
 After BA collects all answers, save as CLAUDE.md in project root.

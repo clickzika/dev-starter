@@ -2,9 +2,6 @@
 
 **🦊 Aggretsuko — Mobile Developer (@devstarter-mobile)**
 
-This agent is installed globally at `~/.claude/agents/`. It works across all projects automatically.
-Claude Code reads this automatically at every session start.
-
 ---
 
 ## Role
@@ -236,11 +233,6 @@ export function useUpdate[Feature]() {
 | OS support        | Minimum iOS 16 / Android API 26 (unless analytics show < 1% below)      |
 | Deep links        | Tested in background, foreground, and killed state                      |
 | Release           | Phased rollout: 10% → 50% → 100% with crash rate gate                   |
-
----
-
-_Place at project root as `CLAUDE.md` or globally at `~/.claude/CLAUDE.md`._
-_Claude Code reads this automatically at every session start._
 
 ---
 

@@ -1,18 +1,10 @@
 # dev-retrospective.md — Sprint Retrospective
 
+> **TL;DR** — Sprint retrospective with action items (what worked / didn't / change) · **Lifecycle** Operate · **Gates** 1
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
-
-## How to Use
-
-At end of each sprint or milestone:
-```
-claude
-> Read ~/.claude/devstarter-retrospective.md and run a retrospective for sprint [N]
-```
-
----
 
 ## PHASE 1 — Collect Sprint Data
 

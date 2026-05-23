@@ -1,18 +1,10 @@
 # dev-rollback.md — Production Rollback
 
+> **TL;DR** — Revert production to a previous version when forward-fix is risky · **Lifecycle** Ship · **Gates** 3
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
-
-## How to Use
-
-When a production deploy causes problems and needs to be reverted:
-```
-claude
-> Read ~/.claude/devstarter-rollback.md and rollback production
-```
-
----
 
 ## ⚠️ ROLLBACK RULES
 

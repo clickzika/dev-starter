@@ -1,16 +1,20 @@
 # dev-handover.md — Project Handover
 
+> **TL;DR** — Transfer ownership: knowledge capture + access revocation + rotation · **Lifecycle** Operate · **Gates** 4
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).
 
-## How to Use
+## When to use vs alternatives
 
-When a team member leaves or transfers ownership:
-```
-claude
-> Read ~/.claude/devstarter-handover.md and prepare handover from [Name] to [Name]
-```
+- **Use /devstarter-handover** when: an existing owner is transferring ownership
+  of a project / area / on-call rotation. Output: handover doc + access revocation
+  + transfer plan.
+- **Use /devstarter-onboard** instead when: a new person is joining and there's
+  no specific predecessor — output is a personalized briefing + first-PR plan.
+- **Use /devstarter-existing** instead when: the project is new to *you* (first
+  time setting up DevStarter on it), but ownership isn't changing hands.
 
 ---
 
@@ -99,6 +103,37 @@ List of topics to cover in 1:1 meeting
 
 ⛔ GATE 4 — Final handover
 Update TEAM.md → new owner
-Revoke old member access (GitHub, Notion, .env)
+Revoke old member access (concrete steps below)
 Commit: "chore: handover [area] from [Name] to [Name]"
 ```
+
+### Access revocation checklist (read VCS_TYPE + PM_TYPE from devstarter-config.yml)
+
+**VCS access (pick the row that matches `vcs.type`):**
+
+| VCS_TYPE | Revoke command |
+|----------|---------------|
+| github   | `gh api -X DELETE repos/<org>/<repo>/collaborators/<user>` (or remove from team if granted via team membership) |
+| gitlab   | `glab api -X DELETE projects/<id>/members/<user_id>` |
+| svn      | Edit `authz` file on server; remove user from `[groups]` and project paths; redeploy |
+
+**PM access (pick the row that matches `pm.type`):**
+
+| PM_TYPE | Revoke step |
+|---------|-------------|
+| notion  | Workspace admin → Settings → Members → remove user from project page sharing |
+| jira    | Site admin → User management → remove from project role; revoke API token |
+| linear  | Workspace settings → Members → remove user from team |
+
+**Other:**
+- [ ] Rotate any shared secrets the old member knew (`.env`, deploy keys, API tokens, DB passwords)
+- [ ] Remove from CI/CD secret stores if they had unique tokens
+- [ ] Remove from monitoring / on-call paging (PagerDuty, Opsgenie)
+- [ ] Remove from chat (Slack/LINE/Discord) project channels
+- [ ] Update DNS / cloud account IAM if they had elevated cloud access
+- [ ] Audit recent commits on protected branches for any pending pushes
+- [ ] Confirm new owner has all the access the old owner had
+
+> ⚠️ Secret rotation rule: if the departing member had access to ANY shared
+> secret, that secret MUST be rotated, not just access-revoked. Cached
+> credentials persist after access removal.

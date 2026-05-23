@@ -1,7 +1,6 @@
 # devstarter-github.md — Shared GitHub Procedures
 
-**Common VCS conventions (branch naming, labels, semver rules, conflict protocol):**
-Read `~/.claude/sdlc/devstarter-vcs-common.md` — do not duplicate those definitions here.
+> **TL;DR** — Shared GitHub procedures (PROC-GH-01..18) for repo, branches, issues, PRs, releases · **Lifecycle** Reference · **Gates** 0
 
 ## Purpose
 
@@ -875,6 +874,46 @@ gh pr create --title "test: verify AI review" --body "Testing autonomous PR revi
 
 **Verify:** After pushing a PR, check GitHub Actions tab.
 The "Claude AI PR Review" job should run and post a comment within 60 seconds.
+
+## PROC-GH-17 — Install Fitness Functions CI
+
+**When:** Setting up a new project OR adding fitness gates to an existing project.
+**Who:** @devstarter-devops + @devstarter-techlead (joint)
+**See:** `~/.claude/templates/github/fitness-functions.yml` + `~/.claude/templates/github/fitness-functions-setup.md`
+
+```bash
+# Step 1: Add workflow file
+cp ~/.claude/templates/github/fitness-functions.yml \
+   .github/workflows/fitness-functions.yml
+
+# Step 2: (Optional) Tune thresholds via repo variables
+# Defaults: BUNDLE_BUDGET_KB=500, COVERAGE_THRESHOLD=80, COMPLEXITY_CEILING=10
+gh variable set BUNDLE_BUDGET_KB --body "500"
+gh variable set COVERAGE_THRESHOLD --body "80"
+gh variable set COMPLEXITY_CEILING --body "10"
+gh variable list
+
+# Step 3: Commit and push
+git add .github/workflows/fitness-functions.yml
+git commit -m "ci: add fitness-functions quality gates"
+git push
+
+# Step 4: Make 'Fitness Functions / All checks' a required status check
+# (Combine with existing required checks via PROC-GH-10 update — see below)
+```
+
+**Wire into branch protection** (extend the `contexts` array in PROC-GH-10
+or PROC-GH-18 with `"Fitness Functions / All checks"`). After this:
+- Bundle bloat → PR cannot merge
+- Coverage drop → PR cannot merge
+- Complexity creep → PR cannot merge
+- Module-boundary violation → PR cannot merge (if depcruise/import-linter
+  config present)
+
+**Verify:** Open a draft PR. The "Fitness Functions" workflow should run
+4 jobs (bundle / deps / coverage / complexity, each conditional on stack)
+plus the roll-up "All checks" job. The roll-up is the single status to
+require for branch protection.
 
 ## PROC-GH-18 — Apply Branch Protection to Existing Repo
 

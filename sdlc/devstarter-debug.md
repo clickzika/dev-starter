@@ -1,21 +1,11 @@
 # devstarter-debug.md — Senior Dev Problem Analysis
 
+> **TL;DR** — Senior-dev hypothesis-driven investigation with 5 Whys root-cause gate · **Lifecycle** Build · **Gates** 1
+
 ## Model: Opus (`claude-opus-4-7`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
-## How to Use
-
-Place at `~/.claude/sdlc/devstarter-debug.md`
-
-Use when you have a bug or unexpected behavior and do NOT yet know
-where in the code to fix it. This workflow runs a hypothesis-driven
-investigation that ends with a precise root cause + surgical fix plan.
-
-```
-/devstarter-debug                          → start with intake questions
-/devstarter-debug login fails silently     → use as problem description
-/devstarter-debug memory/bug-report.md    → read file as problem context
-```
+Use when you have a bug and do NOT yet know where in the code it lives. Ends with a precise root cause + surgical fix plan.
 
 ---
 
@@ -46,6 +36,15 @@ No opportunistic refactoring during a debug session.
 This runbook is investigation and planning ONLY.
 Code changes happen in `/devstarter-change fix-bug`, not here.
 
+### Rule 6 — Recite the Debug Mantra
+Before Phase 0, recite the four-step mantra from `skills/devstarter-debug-mantra/SKILL.md` **verbatim** in the first response. Then apply the four steps in order across Phases 1–4:
+1. Reproducibility (Phase 0 Q5 + Phase 1 evidence)
+2. Fail path (Phase 2 execution path map)
+3. Falsify the hypothesis (Phase 3 disprove-first scoring)
+4. Every run is a breadcrumb (Phase 3 ledger of hypotheses + verifications)
+
+If user says "skip the mantra" → skip the recital but still apply the four steps silently.
+
 ---
 
 ## FIRST ACTION — Inline Arg Handling
@@ -66,6 +65,20 @@ Code changes happen in `/devstarter-change fix-bug`, not here.
 ---
 
 ## PHASE 0 — Problem Intake
+
+### Step 0.0 — Mantra Recital (Rule 6)
+
+Recite **verbatim** as the first thing in your first response:
+
+> **Mantra:**
+> 1. **First is reproducibility.** Can the issue be reproduced reliably?
+> 2. **Know the fail path.** Debugger first; then source trace + knob enumeration; then in-code instrumentation.
+> 3. **Question your hypothesis.** What would disprove it?
+> 4. **Every run is a breadcrumb.** Cross-reference all of them.
+
+Then begin Phase 0 intake.
+
+### Step 0.1 — Intake Questions
 
 Use `AskUserQuestion` for each group. Collect:
 
@@ -486,7 +499,7 @@ Saved: memory/debug-[YYYY-MM-DD]-[slug].md
 
 Use `AskUserQuestion` with:
 - question: "Diagnosis complete. What would you like to do?"
-- options: ["implement now", "save diagnosis only", "need more info"]
+- options: ["implement now", "save diagnosis only", "need more info", "write bug post-mortem (after fix lands)"]
 
 **If "implement now":**
 1. Confirm file is saved to `memory/debug-[YYYY-MM-DD]-[slug].md`
@@ -504,6 +517,19 @@ Use `AskUserQuestion` with:
    📂 Intake: memory/debug-[YYYY-MM-DD]-[slug].md
    ⏭️  Skipping bug intake — going straight to Impact Analysis
    ```
+7. **After `/devstarter-change` lands the fix and validation passes**, prompt:
+   ```
+   ✅ Fix landed + validated.
+
+   Required inputs for bug post-mortem are now all satisfied:
+     - Reliable repro ✓ (Phase 0 Q5 + Phase 1 evidence)
+     - Root cause known ✓ (Phase 3 declaration)
+     - Fix identified ✓ (PR / commit from /devstarter-change)
+     - Fix validated ✓ (tests pass)
+
+   Run /devstarter-bug-postmortem to draft the engineering RCA?
+   ```
+   If yes → invoke `/devstarter-bug-postmortem` with `memory/debug-[YYYY-MM-DD]-[slug].md` as input.
 
 **If "save diagnosis only":**
 ```
@@ -517,6 +543,15 @@ To implement later:
 - Ask: "What additional information would help? (e.g. specific log output, enable debug mode, run a specific query)"
 - Collect the new information → loop back to Phase 1 with extended evidence
 - Re-run Phase 2–4 with updated evidence
+
+**If "write bug post-mortem (after fix lands)":**
+- Prerequisite check — refuse if any missing:
+  - [ ] Reliable repro (from Phase 1)
+  - [ ] Root cause known (from Phase 3 declaration)
+  - [ ] Fix identified (PR / commit SHA — ask user for it)
+  - [ ] Fix validated (test/repro now passes — ask user to confirm)
+- If all 4 satisfied → invoke `/devstarter-bug-postmortem memory/debug-[YYYY-MM-DD]-[slug].md`. Diagnosis file feeds Root Cause + How It Was Found sections directly.
+- If any missing → list what's missing, do NOT draft. Tell user to run `/devstarter-change` first, then return to this option.
 
 ---
 

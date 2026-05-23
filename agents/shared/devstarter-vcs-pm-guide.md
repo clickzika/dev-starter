@@ -165,8 +165,6 @@ If `.project.env` does not exist, assume defaults:
 
 ---
 
----
-
 ## Step 5 — Secondary VCS Mirror (run after primary merge)
 
 Check if secondary VCS is configured, then mirror:

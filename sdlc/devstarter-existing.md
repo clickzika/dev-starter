@@ -1,5 +1,7 @@
 # dev-existing.md — Existing Project Onboarding
 
+> **TL;DR** — Set up DevStarter on an existing project (auto-scan, fill gaps) · **Lifecycle** Discovery · **Gates** 1
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
 ## Instructions for Claude Code
@@ -366,6 +368,7 @@ Read `vcs.type` and `pm.type` from config, then run the matching setup:
 **VCS:**
 - `github` → Read `~/.claude/sdlc/devstarter-github.md` → PROC-GH-02 (connect existing repo)
             → then PROC-GH-18 (apply standard branch protection to main + uat)
+            → then PROC-GH-17 (install fitness-functions.yml CI quality gates)
 - `gitlab` → Read `~/.claude/sdlc/devstarter-gitlab.md` → connect existing GitLab repo
 - `svn`    → Read `~/.claude/sdlc/devstarter-svn.md` → connect existing SVN repo
 - `none`   → skip VCS connection step

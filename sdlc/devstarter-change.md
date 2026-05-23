@@ -1,20 +1,10 @@
 # dev-change.md — Change Management Workflow
 
+> **TL;DR** — Router for Add Feature / Remove Feature / Fix Bug operations · **Lifecycle** Build · **Gates** 0 (gates live in sub-files)
+
 ## Model: Sonnet (`claude-sonnet-4-6`)
 
-## How to Use
-
-Place at `~/.claude/devstarter-change.md`
-
-Use when a project already exists and you need to:
-- Add a new feature
-- Remove an existing feature
-- Fix a bug
-
-```
-claude
-> Read ~/.claude/devstarter-change.md and help me make a change
-```
+Use for: add feature · remove feature · fix bug (routes to sub-files per selection).
 
 ---
 
@@ -36,18 +26,9 @@ Read `~/.claude/sdlc/devstarter-checkpoint.md` and follow the protocol:
 STOP at every gate. Show output. Wait for "approve" or "revise [notes]".
 Never proceed without explicit approval.
 
-### Rule 2 — Read Agent File Before Doing Any Work
-Before any agent produces output, MUST read `~/.claude/agents/[agent].md` first.
-The agent file defines format, template, standards, and quality gate for every deliverable.
-
-### Rule 2 — Always Read From Files First
-Before doing anything:
-```
-📂 Reading from disk:
-- CLAUDE.md ✓
-- memory/progress.json ✓
-- docs/[relevant].html ✓
-```
+### Rule 2 — Always Read First
+Before any agent produces output, read `~/.claude/agents/[agent].md` (defines format, template, quality gate).
+Before doing anything, read from disk: `CLAUDE.md`, `memory/progress.json`, `docs/[relevant].html`.
 Never rely on chat history.
 
 ### Rule 3 — Save Before Handing Off
@@ -59,8 +40,14 @@ After merging to primary VCS (`VCS_TYPE`), always run Step 5 from
 Skip if `VCS_SECONDARY_1` and `VCS_SECONDARY_2` are both `none` or unset.
 
 ### Rule 4 — Docs Before Code
-Always update documents before writing any code.
-Order: CLAUDE.md → BRD → Schema → API → UX → Security → Code
+Generate a plan HTML document BEFORE writing any code. The gate is the HTML review, not chat output. Branch is created ONLY after plan approval.
+
+Order: Impact Analysis → **plan.html** → **Gate A1-DOC/C1-DOC approval** → **branch creation** → domain docs → Code
+
+- Add Feature / Modify: plan saved to `docs/feature/[slug]/plan.html`
+- Fix Bug: plan saved to `docs/fix/[slug]/plan.html`
+- After dev + user testing confirmed: generate `summary.html` in the same folder
+- Existing domain docs (brd.html, api-reference.html, etc.) continue to be updated — plan.html and summary.html supplement, not replace, those docs
 
 ### Rule 5 — Notion Task Status MUST Be Updated
 **Before starting any task:** PROC-NT-04 → Status: "In Progress"
@@ -88,6 +75,12 @@ If Track B depends on Track A output (e.g. API response shape), complete Track A
   Follow the MANDATORY HTML examples in `~/.claude/agents/devstarter-uxui.md`.
   NEVER output text descriptions — always output actual rendered HTML components.
 - All docs MUST use `~/.claude/templates/docs/document-template.html` as the base template.
+- **docs/feature/[slug]/plan.html** — generated from `~/.claude/templates/docs/devstarter-change-plan-template.html`. Required before any feature/modify dev starts.
+- **docs/fix/[slug]/plan.html** — same template. Required before any bug fix dev starts.
+- **docs/feature/[slug]/summary.html** and **docs/fix/[slug]/summary.html** — generated from `~/.claude/templates/docs/devstarter-change-summary-template.html`. Generated after testing confirmed.
+- **docs/feature/[slug]/mgmt-brief.html** and **docs/fix/[slug]/mgmt-brief.html** — generated from `~/.claude/templates/docs/devstarter-change-mgmt-template.html`. Non-technical management brief. Generated alongside summary.html after testing confirmed. Plain business language — no code, no technical terms.
+- **Function-level change tracking** — agents append to `memory/change-log-[slug].md` during development. Summary phase reads this file. Format: `### file.ext` → `- ADDED/MODIFIED/FIXED: functionName — description`.
+- **Bilingual content (MANDATORY)** — ALL generated documents MUST contain both English and Thai for every text block using `<span class="lang-en">` / `<span class="lang-th">` pairs. See Bilingual Content Rule in `agents/shared/devstarter-agent-base.md`. Code blocks, file paths, and technical identifiers are NOT translated. Lang toggle + PDF export buttons are built into all templates.
 
 ### Rule 9 — Branch Guard (ALWAYS active, no exceptions)
 **NEVER edit any file while on `develop`, `main`, `master`, or `uat`.**
@@ -98,6 +91,43 @@ Before writing any code or editing any file:
 4. Confirm with `git branch --show-current` — result MUST NOT be a protected branch
 5. Only then proceed to editing
 This rule cannot be skipped in autopilot mode, resume flows, or any other context.
+> **Technical enforcement (secondary):** A PreToolUse hook (`pre-edit-branch-guard.js`) blocks Edit/Write tool calls on protected branches. Install via `install.sh --hooks`.
+
+---
+
+## ⚡ Quick Mode — `--quick` flag
+
+If the user invoked `/devstarter-change --quick ...`, apply scope-based
+agent + doc skips per the algorithm below. This reduces newcomer reading
+load from ~3000 lines to ~1000 for a typical scoped change. Documented
+in detail in `~/.claude/skills/devstarter-change/SKILL.md` (Quick Mode
+section).
+
+**Auto-scope detection (run after intake):**
+
+| Detected scope | Skip these agents | Skip these doc updates |
+|----------------|-------------------|------------------------|
+| Backend-only (api/, services/, db/) | @uxui, @frontend, @mobile | docs/frontend-spec.html, docs/ux-spec.html, docs/prototype/ |
+| Frontend-only (frontend/, components/) | @backend, @dba, @mobile | docs/api-reference.html, docs/api/openapi.yaml, docs/database-design.html |
+| Mobile-only (mobile/, native/) | @uxui (web), @frontend (web) | docs/frontend-spec.html (web parts) |
+| Full-stack | (none — full flow) | (none) |
+| Bug fix (localized) | @ba (no BRD update for tiny bugs) | docs/brd.html (tiny bugs only) |
+
+**Auto-promotion guards** (these scope conditions force full mode even with `--quick`):
+
+- Touches auth, multi-tenancy, schema migrations, billing, payments, or external integrations → full mode (ADR + Threat Model + SLO are mandatory regardless of scope)
+- Cross-cutting refactor → full mode
+- New top-level domain or bounded context → full mode
+
+When auto-promotion fires, print:
+```
+⚠️  --quick disabled for this change — [reason].
+   This scope requires the full agent flow because [auth/schema/etc.].
+```
+
+**Doc Quality Preflight** at Gate A2 still runs in `--quick` mode, but
+only checks the docs that ARE updated for the detected scope. Quality
+bar is unchanged; surface area is smaller.
 
 ---
 

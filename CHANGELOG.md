@@ -1,5 +1,1147 @@
 # Changelog
 
+## v5.2.0 — Branch Guard hook + Bilingual PDF export (2026-05-23)
+
+### New
+- `scripts/hooks/pre-edit-branch-guard.js` — PreToolUse hook that enforces Branch Guard technically: blocks Edit/Write on `main`, `uat`, and any `release/*` branch. Runs on every file edit, checks current git branch, exits non-zero with a clear error message if on a protected branch. (CR-2026-05-23-001)
+- Bilingual (EN/TH) support for all generated HTML documents — every template now ships with `<span class="lang-en">` / `<span class="lang-th">` content pairs, a language toggle button in the topbar, Google Fonts Sarabun for Thai rendering, and `localStorage` persistence. (CR-2026-05-23-002)
+- PDF export button on all HTML documents — `window.print()` + `@media print` CSS: hides sidebar/buttons, full-width layout, page-break rules. Zero dependencies, searchable PDFs. (CR-2026-05-23-002)
+
+### Changed
+- `templates/docs/document-template.html` — added Sarabun font link, `.lang-btn`/`.pdf-btn` CSS, `.lang-en`/`.lang-th` CSS rules, `[data-lang="th"]` font selector, `@media print` enhancements, PDF + lang buttons in topbar, `toggleLang()` JS + IIFE.
+- `templates/docs/devstarter-change-plan-template.html` — same bilingual + PDF additions as base template.
+- `templates/docs/devstarter-change-summary-template.html` — same bilingual + PDF additions as base template.
+- `templates/docs/devstarter-change-mgmt-template.html` — same bilingual + PDF additions; mgmt-specific `page-break-inside:avoid` on `.exec-hero` and `.ba-card` preserved.
+- `agents/shared/devstarter-agent-base.md` — added "Bilingual Content Rule — MANDATORY" section: every generated document must contain EN + TH spans for all text blocks; static UI chrome stays English-only; code/paths not translated.
+- `sdlc/devstarter-change.md` — Rule 8 updated with bilingual content bullet (mandatory EN+TH span format, reference to agent-base rule).
+- `docs/feature/branch-guard-hook/plan.html`, `summary.html`, `mgmt-brief.html` — fully regenerated with bilingual EN/TH content and PDF export support.
+- `sdlc/devstarter-change.md` — HTML plan, summary, and management brief documents added to fix and feature workflows.
+
+## v5.1.0 — Port 9arm-skills engineering practice skills (2026-05-20)
+
+### New skills (4)
+- `skills/devstarter-debug-mantra/` — four-step debugging discipline (reproduce → trace fail path → falsify hypothesis → cross-reference breadcrumbs). Recited verbatim at session start, applied in order before any fix.
+- `skills/devstarter-bug-postmortem/` — canonical engineering record of a fixed bug (root cause, mechanism, fix, validation, slip-through analysis). Engineer-audience, code identifiers welcome. Distinct from `/devstarter-postmortem` (blameless incident workflow).
+- `skills/devstarter-scrutinize/` — outsider-perspective end-to-end review of a plan, PR, or code change. Questions intent before line-by-line review, traces actual code path not just diff.
+- `skills/devstarter-management-talk/` — rewrite engineer-to-engineer content for engineering-org leadership across channels (JIRA / Slack / standup / email / meeting talking-points).
+
+### Changed
+- `devstarter-menu.md` — new "DIRECT-INVOKE SKILLS" section with entries 33–36 + route table additions.
+- `sdlc/devstarter-debug.md` — wired into the two new debug-cycle skills:
+  - **Rule 6** added — recite the four-step debug mantra verbatim and map steps to phases 1–4.
+  - **Phase 0 Step 0.0** — mantra recital block before intake questions.
+  - **Phase 5.4** — new option *"write bug post-mortem (after fix lands)"* + post-`/devstarter-change` prompt to invoke `/devstarter-bug-postmortem` once all four required inputs (repro, root cause, fix, validation) are satisfied.
+
+### Attribution
+- Ported from `9arm-skills` @ commit `d714cb8` (skills/engineering/debug-mantra, post-mortem, scrutinize; skills/productivity/management-talk). `post-mortem` renamed to `devstarter-bug-postmortem` to avoid collision with existing `devstarter-postmortem` (incident workflow). Each ported SKILL.md carries an upstream attribution comment.
+
+### Notes
+- These are direct-invoke skills (no SDLC runbook, no gates). Suitable for daily engineering practice rather than full workflow orchestration.
+- Universal Prompt blocks added per v4.7.0 Phase 1 parity — invokable from non-Claude AI tools.
+
+## v5.0.1 — Fix: update.sh propagates scripts/ (2026-05-18)
+
+### Fixed
+- `update.sh` — `scripts/` was missing from the folder-update list, so `scripts/devstarter-resolve-home.sh` (v5.0.0 Phase 2) never reached installs via `update.sh` — only fresh `install.sh`. Provider-detect was dead on the upgrade path. (#68)
+- `update.sh` — added `--force` / `-f` flag to bypass the version-equal early-exit, enabling repair of a partial/failed prior update.
+
+## v5.0.0 — Multi-AI Support Phase 2: provider-detect install (2026-05-18)
+
+### New
+- `scripts/devstarter-resolve-home.sh` — resolves install dir from `AI_PROVIDER`. Unset/`claude` → `~/.claude/` (unchanged); else `~/.<provider>/`. Sanitizes input (lowercase, strips path-traversal chars).
+- `devstarter-invoke.sh` — universal runner for non-Claude AI tools. `menu` lists workflows; `<name>` prints the copy-paste Universal Prompt block.
+- `templates/PROJECT.md.template` — AI-neutral project context file (non-Claude analogue of `CLAUDE.md`).
+
+### Changed
+- `install.sh` — sources resolver after clone, installs to resolved dir, shows provider banner, emits `PROJECT.md` for non-claude providers.
+- `install.sh` — lifecycle hooks skipped for non-claude providers (Claude Code-only); `--hooks` ignored with a notice.
+- `uninstall.sh` / `update.sh` / `setup.sh` — provider-aware (resolve install dir from own root location + `AI_PROVIDER`); `update.sh` preserves `PROJECT.md`.
+
+### Breaking
+- `AI_PROVIDER` env var now controls install directory. Default behavior (unset) is unchanged — `~/.claude/` byte-identical to v4.x. Major bump for the structural install-path change.
+
+### Migration
+- Existing `~/.claude/` installs: no action needed. Run `bash ~/.claude/update.sh` as usual.
+- New non-Claude installs: `AI_PROVIDER=codex bash install.sh`. See `docs/multi-ai-guide.md`.
+
+## v4.7.0 — Multi-AI Support Phase 1: Universal Prompts (2026-05-18)
+
+### New
+- `🌐 Universal Prompt` block appended to all 51 `skills/devstarter-*/SKILL.md` files. Non-Claude AI users (Copilot, Gemini, ChatGPT, Cursor) copy the block to invoke any workflow without Claude Code.
+- `docs/multi-ai-guide.md` — per-AI setup guide (Copilot, Gemini, ChatGPT, Cursor, Windsurf) + feature comparison matrix.
+- `scripts/add-universal-prompts.py` — idempotent generator for the prompt blocks.
+
+### Changed
+- `README.md` — "Works with Other AI Tools" section + matrix; intro updated.
+- `templates/devstarter-config.template.yml` — `ai.provider` enum expanded: `claude | litellm | openai | gemini | codex | copilot | local`.
+
+## v4.6.2 — README overhaul (2026-05-18)
+
+### Docs
+- `README.md` — full rewrite to reflect v4.6.1 state: 83 agents, profile-based install, hooks, 29 MCP configs, 18 language rules, uninstall, all 30+ slash commands, team-packs + agent-disambiguation pointers
+
+## v4.6.1 — Uninstall script (2026-05-18)
+
+### New
+- `uninstall.sh` — Remove DevStarter from `~/.claude/` with preview + confirmation
+- `scripts/uninstall-hooks.js` — Node.js hook remover: strips DevStarter hooks from settings.json without touching other hooks
+
+### Flags
+- `bash uninstall.sh` — interactive, shows preview, asks confirmation
+- `bash uninstall.sh --yes` — skip confirmation
+- `bash uninstall.sh --purge` — also removes USER.md, CLAUDE.md, memory/
+- `bash uninstall.sh --hooks-only` — only remove DevStarter hooks from settings.json
+
+### Always preserved on uninstall
+USER.md · CLAUDE.md · settings.json (hooks cleaned) · .env · mcp.json · memory/ · agents/custom/
+
+### Changes
+- `install.sh` — deploys uninstall.sh + uninstall-hooks.js; adds uninstall.sh to wipe list on reinstall
+
+## v4.6.0 — Consolidation: go rules merge, team packs, disambiguation guide (2026-05-17)
+
+### Fixed
+- `rules/devstarter/go.md` — merged all content from `rules/devstarter/golang/` (5 files: coding-style, hooks, patterns, security, testing) into single canonical file; deleted redundant `golang/` directory
+
+### New
+- `templates/team-packs.md` — 13 pre-defined agent team configs for common scenarios (web API, full-stack, mobile, ML, code review, incident, open-source release, GAN harness, homelab, build triage, quality gate, docs sprint, architecture decision)
+- `templates/agent-disambiguation.md` — when-to-use-which guide for all commonly confused agent pairs: techlead/architect/code-architect, pm/planner/sprint, security/security-reviewer, docs/doc-updater/docs-lookup, code-reviewer vs specialists, devops/sre, consult/council/adr, audit/review/doctor, incident/rollback/postmortem, datascience/mlops/mle-reviewer, 4 network agents
+
+## v4.5.1 — ECC Final Gaps: node rules, hooks README, prompt-defense (2026-05-17)
+
+### New
+- `rules/devstarter/node.md` — Node.js/CommonJS rules: hook development, error handling, testing, stdin safety
+- `templates/hooks/README.md` — DevStarter hooks install guide: formatters, debug detection, custom hook authoring
+
+### Updated
+- `rules/devstarter/common/security.md` — added Prompt Injection Defense section (role hijacking, unicode tricks, urgency/authority signals)
+
+## v4.5.0 — ECC Skills Port: 4 agents + 2 workflows (2026-05-17)
+
+### New Agents (full profile)
+- **laravel-reviewer** — Laravel architecture (controller/service/action), N+1, mass assignment, query optimization, policy/gate auth, migrations, test coverage
+- **hookify-rules** — convert markdown rule files to Claude Code hook JSON (bash/file/stop/prompt events); shows diff + gate before writing
+- **agent-auditor** — 12-layer multi-agent system diagnostic (system prompt → session history → memory → tools → answer shaping → persistence); failure pattern detection
+- **rules-distiller** — scan agents/skills for cross-cutting principles (2+ file threshold), produce append/revise/new-section verdicts, never auto-modifies rules files
+
+### New SDLC Runbooks + Skills
+- `/devstarter-verification-loop` — 6-phase quality gate: build → typecheck → lint → tests (80% threshold) → security scan → diff review; supports Node/TS/Go/Python/Rust/Flutter/Java/PHP; continuous mode opt-in
+- `/devstarter-council` — 4-voice deliberation (Architect/Skeptic/Pragmatist/Critic) for ambiguous decisions; parallel subagents, bias guardrails, saves to memory for /devstarter-change handoff; Opus model
+
+### Updated
+- `install.sh` EXTENDED_AGENTS — includes laravel-reviewer, hookify-rules, agent-auditor, rules-distiller
+- `devstarter-menu.md` — verification-loop (#31), council (#32), 4 new agent aliases
+- `CLAUDE.md` — agent table updated
+
+## v4.4.0 — Hybrid Hooks System (2026-05-17)
+
+### New
+- `scripts/hooks/session-start.js` — load memory/progress.json + MEMORY.md at session start
+- `scripts/hooks/pre-compact.js` — log compaction event to memory/compaction-log.txt
+- `scripts/hooks/post-edit-accumulator.js` — track edited JS/TS/Go/Python/Rust files for batch Stop processing
+- `scripts/hooks/stop-format-typecheck.js` — batch format (prettier/biome/black/ruff/gofmt/rustfmt) + tsc on Stop
+- `scripts/hooks/stop-check-console-log.js` — warn on debug statements in modified JS/TS/Go/Python files
+- `scripts/install-hooks.js` — Node.js merger: installs DevStarter hooks into ~/.claude/settings.json without overwriting existing hooks
+- `templates/hooks/hooks.json` — Claude Code hooks config template
+
+### Changes
+- `install.sh` — `--hooks` flag: copies hook scripts + merges settings.json; tip shown if hooks not installed
+- Hooks support JS/TS (prettier/biome/tsc), Python (ruff/black), Go (gofmt), Rust (rustfmt)
+- Debug log detection covers: `console.log` (JS/TS), `print()` (Python), `fmt.Println/Printf` (Go)
+
+### Usage
+```bash
+bash install.sh --hooks                      # install + activate hooks
+bash install.sh --profile full --hooks       # full profile + hooks
+# or manually:
+node ~/.claude/scripts/install-hooks.js ~/.claude/scripts/hooks ~/.claude/settings.json ~/.claude/templates/hooks/hooks.json
+```
+
+## v4.3.1 — ECC Context Templates (2026-05-17)
+
+### New
+- `templates/contexts/` — 3 behavior-mode context files adapted from ECC (dev.md, research.md, review.md)
+- DevStarter integration hints added to each context (relevant slash commands, agents)
+
+## v4.3.0 — ECC Gap Fill: 22 agents, 15 rule files, MCP accuracy fixes (2026-05-17)
+
+### MCP Config Accuracy Fixes
+- `sdlc/devstarter-mcp.md` — corrected vercel (HTTP, no token), clickhouse (HTTP, no creds), cloudflare (4 HTTP endpoints: docs/builds/bindings/observability) env var entries
+- Jira config already uses correct `uvx mcp-atlassian==0.21.0` command
+
+### 22 New Agents (full profile)
+- **code-architect** — codebase-pattern-aware feature blueprint & implementation plan
+- **comment-analyzer** — code comment accuracy, rot detection, comment quality
+- **conversation-analyzer** — analyze session transcripts to find hook opportunities
+- **dart-build-resolver** — Dart analysis, pub conflicts, build_runner errors
+- **kotlin-build-resolver** — Kotlin compiler, Gradle, KMP build failures
+- **doc-updater** — proactive README/API doc/codemap updates after code changes
+- **docs-lookup** — live library documentation via Context7 MCP
+- **e2e-runner** — Playwright E2E test generation, maintenance & execution
+- **harness-optimizer** — Claude Code settings, hooks, MCP configuration optimization
+- **loop-operator** — monitor & safely intervene in autonomous agent loops
+- **pr-test-analyzer** — PR test coverage quality (distinct from pr-analyzer)
+- **network-config-reviewer** — Cisco/Juniper router & switch config review
+- **network-troubleshooter** — OSI-layer network connectivity diagnosis
+- **healthcare-reviewer** — clinical safety, PHI/HIPAA compliance (Opus model)
+- **homelab-architect** — home & small-lab network design with staged rollout
+- **harmonyos-app-resolver** — HarmonyOS/ArkTS V2 state, Navigation, API fixes
+- **gan-planner** — GAN harness: expand one-liner to full product spec
+- **gan-generator** — GAN harness: implement features, iterate on feedback
+- **gan-evaluator** — GAN harness: Playwright browser testing & rubric scoring
+- **opensource-forker** — strip secrets/PII/internal refs for open-source release
+- **opensource-sanitizer** — verify fork is fully clean before public release
+- **opensource-packager** — generate README, setup.sh, CLAUDE.md, LICENSE, templates
+
+### Language Rule Directories (15 new files)
+- `rules/devstarter/dart/` — coding-style, hooks, patterns, security, testing
+- `rules/devstarter/cpp/` — coding-style, hooks, patterns, security, testing
+- `rules/devstarter/golang/` — coding-style, hooks, patterns, security, testing
+
+---
+
+## v4.2.0 — ECC Full Absorption: 29 MCPs, 17 language rules, 40 new agents (2026-05-17)
+
+### MCP Templates (29 total, 24 new)
+
+Added 24 new MCP server configs to `templates/mcp/`:
+jira, firecrawl, supabase, memory, omega-memory, longhand, sequential-thinking, vercel, railway, cloudflare (4-in-1: workers/kv/d1/r2), clickhouse, exa-search, context7, magic-ui, filesystem, playwright, fal-ai, browserbase, browser-use, devfleet, token-optimizer, laraplugins, confluence, evalview.
+
+- **`sdlc/devstarter-mcp.md`** — picker expanded from 5 to 29 servers; env var table updated
+- **`templates/mcp/mcp-setup.md`** — setup docs for all 29 servers
+
+### Language Rules (17 total, 9 new)
+
+Added 9 language rule files to `rules/devstarter/`:
+- `rust.md` — ownership, error handling, async, safety, testing
+- `kotlin.md` — null safety, coroutines, flow, data classes, testing
+- `swift.md` — optionals, Swift concurrency, SwiftUI, Codable, testing
+- `php.md` — strict types, error handling, Laravel idioms, testing
+- `ruby.md` — frozen string literal, null handling, Rails best practices, RSpec
+- `web.md` — semantic HTML, CSS, vanilla JS, accessibility, Core Web Vitals
+- `arkts.md` — HarmonyOS ArkTS, reactive state, threading, testing
+- `fsharp.md` — functional style, DU types, Result/Option, modules, testing
+- `perl.md` — strict/warnings, references, modules, testing
+
+### Common Rules (new directory)
+
+Added `rules/devstarter/common/` with 10 cross-language rule files:
+agents.md, code-review.md, coding-style.md, development-workflow.md, git-workflow.md, hooks.md, patterns.md, performance.md, security.md, testing.md
+
+### 15 Code Reviewer Agents (full profile)
+
+Language-specific code reviewers: code-reviewer (generic), typescript-reviewer, python-reviewer, go-reviewer, java-reviewer, csharp-reviewer, rust-reviewer, kotlin-reviewer, swift-reviewer, flutter-reviewer, cpp-reviewer, django-reviewer, fastapi-reviewer, fsharp-reviewer, mle-reviewer.
+
+### 10 Build Resolver Agents (full profile)
+
+Build failure resolvers: build-resolver (generic), typescript-build-resolver, go-build-resolver, java-build-resolver, rust-build-resolver, swift-build-resolver, flutter-build-resolver, django-build-resolver, pytorch-build-resolver, cpp-build-resolver.
+
+### 14 Specialist Agents (full profile)
+
+planner, tdd-guide, refactor, code-explorer, code-simplifier, database-reviewer, security-reviewer, a11y-architect, network-architect, seo, silent-failure-hunter, type-analyzer, pr-analyzer, chief-of-staff.
+
+### Wiring Updates
+
+- **`install.sh`** — EXTENDED_AGENTS expanded to include all 39 extended agents (5 + 15 reviewers + 10 build resolvers + 14 specialists)
+- **`devstarter-menu.md`** — AGENTS section shows all 4 categories of extended agents
+- **`CLAUDE.md`** — agent tables updated with all extended agents; version → 4.2.0
+
+---
+
+## v4.1.0 — Phase 2+3: Profile install + 5 extended agents (2026-05-17)
+
+### Phase 2 — Profile-based install
+
+`install.sh` now accepts `--profile minimal|standard|full` (default: `standard`).
+
+```bash
+bash install.sh --profile minimal   # 7 core agents, no language rules
+bash install.sh --profile standard  # all 13 agents + rules (default)
+bash install.sh --profile full      # standard + 5 extended agents
+```
+
+| Profile | Agents | Language rules |
+|---------|--------|----------------|
+| minimal | 7 (pm, techlead, ba, backend, frontend, qa, security) | No |
+| standard | 13 original | Yes |
+| full | 13 + 5 extended | Yes |
+
+- **`install.sh`** — `--profile` flag parsing + profile-aware agent copy
+- **`templates/devstarter-config.template.yml`** — `devstarter.install_profile` field added
+- **`devstarter-menu.md`** — AGENTS section shows standard vs extended roster
+
+### Phase 3 — 5 Extended Agents (full profile)
+
+- **`agents/devstarter-architect.md`** — Hangyodon. System design from first principles: service boundaries, data architecture, failure modes, ADRs. Works upstream of @techlead.
+- **`agents/devstarter-datascience.md`** — Chococat. EDA, statistical analysis, A/B testing, ML modeling, reproducible notebooks. Distinct from @mlops (pipelines).
+- **`agents/devstarter-sre.md`** — Mocha. SLI/SLO/error budgets, incident response, runbooks, chaos engineering, capacity planning.
+- **`agents/devstarter-api.md`** — Pekkle. Contract-first API design: REST, GraphQL, gRPC, AsyncAPI, OpenAPI specs, versioning, consumer-driven contract tests.
+- **`agents/devstarter-performance.md`** — Spottie. Profiling, load testing, query optimization, frontend Core Web Vitals, performance budgets.
+
+---
+
+## v4.0.1 — Additional language rules + MSSQL MCP config (2026-05-17)
+
+- **`rules/devstarter/csharp.md`** — C# rules: null safety, async/await, ASP.NET Core, EF Core, xUnit
+- **`rules/devstarter/react.md`** — React rules: functional components, hooks, React Query, RTL testing
+- **`rules/devstarter/flutter.md`** — Flutter/Dart rules: null safety, Riverpod/Bloc, widget splitting, feature structure
+- **`rules/devstarter/angular.md`** — Angular rules: OnPush, signals, RxJS, standalone components, reactive forms
+- **`templates/mcp/mssql.json`** — Microsoft SQL Server MCP config (community `mcp-server-mssql`)
+- **`templates/mcp/mcp-setup.md`** — added MSSQL setup instructions + Azure SQL example
+- **`sdlc/devstarter-mcp.md`** — mssql added to picker + env var table
+
+---
+
+## v4.0.0 — ECC Integration Phase 1: Language Rules + MCP Configs (2026-05-17)
+
+> Absorbed the best capabilities from "everything-claude-code" (ECC) into
+> DevStarter natively, without requiring ECC installation or causing conflicts.
+> DevStarter remains the single source of truth in `~/.claude/`.
+
+**What changed:**
+
+- **`rules/devstarter/typescript.md`** — TypeScript coding rules: strict types,
+  no `any`, no non-null assertions, import grouping, async patterns
+- **`rules/devstarter/python.md`** — Python coding rules: PEP 8, full type hints,
+  async patterns, pytest conventions
+- **`rules/devstarter/go.md`** — Go coding rules: error wrapping, interface design,
+  concurrency with context, table-driven tests
+- **`rules/devstarter/java.md`** — Java coding rules: null safety with Optional,
+  Spring DI via constructor, specific exception handling, JUnit 5 + AssertJ
+- **`templates/mcp/github.json`** — GitHub MCP server config template
+- **`templates/mcp/postgres.json`** — PostgreSQL MCP server config template
+- **`templates/mcp/sqlite.json`** — SQLite MCP server config template
+- **`templates/mcp/brave-search.json`** — Brave Search MCP server config template
+- **`templates/mcp/mcp-setup.md`** — full MCP setup guide with env var instructions
+- **`skills/devstarter-mcp/SKILL.md`** — new `/devstarter-mcp` command
+- **`sdlc/devstarter-mcp.md`** — MCP server selection + activation runbook
+- **`devstarter-menu.md`** — new entry #30 MCP Setup
+- **`install.sh`** — now copies `rules/` to `~/.claude/rules/` on install
+- **`update.sh`** — now updates `rules/` on upgrade
+
+**How to use language rules:**
+
+Language rules are automatically installed to `~/.claude/rules/devstarter/`.
+Claude Code loads rules from `~/.claude/rules/` automatically. Users can also
+copy specific rules into their project's `.claude/rules/` for project-specific enforcement.
+
+**How to use MCP configs:**
+
+```
+> /devstarter-mcp
+```
+
+Select servers interactively. Config merged into `~/.claude/mcp.json`.
+Restart Claude Code to activate.
+
+---
+
+## v3.9.6 — /devstarter-update restored + menu entry + publish fix (2026-05-15)
+
+> `/devstarter-update` skill re-added after being removed in v3.9.5.
+> Menu entry #29 added for discoverability. Fixed a long-standing bug
+> in publish.sh where subdirectory deletions (e.g. `skills/update/`)
+> were never removed from the public release repo.
+
+**What changed:**
+
+- **`skills/devstarter-update/SKILL.md`** — restored; runs
+  `bash ~/.claude/update.sh` from inside Claude Code
+- **`devstarter-menu.md`** — new entry **#29 Update DevStarter**
+  showing both `/devstarter-update` and `bash ~/.claude/update.sh`
+- **`scripts/publish.sh`** — fixed deletion check: was top-level only
+  (`git ls-tree --name-only`), now recursive (`git ls-tree -r`).
+  `skills/update/` has been orphaned in the public release repo since
+  v3.7.2 because of this bug — this release purges it
+- **`skills/devstarter-registry/SKILL.md`** — restored update entry
+- **`README.md`** — restored `/devstarter-update` mention in update section
+
+---
+
+## v3.9.4 — README refresh (2026-05-15)
+
+> Corrects stale counts and adds update instructions.
+
+**What changed:**
+
+- **`README.md`** — title `Dev Starter V1` → `DevStarter`; runbook
+  count `28` → `48`; skill count `42` → `34` (actual); removed stale
+  `(24)` from Slash Commands heading; added **Update** section with
+  `bash ~/.claude/update.sh` and `/devstarter-update`
+
+---
+
+## v3.9.3 — Remove npm + EXE distribution; bash install only (2026-05-15)
+
+> Reverts the v3.9.0 distribution experiment. npm package and Windows EXE
+> installer added complexity without solving the auth/distribution problems.
+> Bash install (`curl | bash` or `git clone + bash install.sh`) remains
+> the single supported installation method.
+
+**What changed:**
+
+- **`bin/devstarter.js`** — removed (npm entry point)
+- **`installer/setup.iss`** — removed (Inno Setup Windows EXE script)
+- **`package.json`** — removed
+- **`scripts/build-dist.sh`** — removed (dist bundler for npm/EXE)
+- **`.github/workflows/build-distribution.yml`** — removed (CI for EXE/npm builds)
+- **`install.sh`** — removed npm/EXE alternative lines from header comment
+- **`README.md`** — replaced 4-option install section (npm/EXE/bash/manual)
+  with single bash install section
+
+---
+
+## v3.9.2 — Clean install + update; remove unused files (2026-05-15)
+
+> install.sh and update.sh now wipe all DevStarter-owned files before
+> installing fresh — no stale files survive version bumps. User-owned
+> files (CLAUDE.md, USER.md, settings.json, .env, memory/, agents/custom/)
+> are always preserved. Dead migration code and stale breaking-change notes
+> removed from update.sh. npm users can now self-update.
+
+**What changed:**
+
+- **`install.sh`** — wipe-first approach: removes all DevStarter-owned
+  dirs (agents/, skills/, sdlc/, templates/, scripts/) and known root
+  files before copying fresh. Saves user-owned files to a temp dir and
+  restores them after install. Eliminates the stale-file problem where
+  old skills or runbooks deleted from the repo survived reinstalls.
+- **`update.sh`** — adds `rm -f` for DevStarter-owned root files before
+  replacement (previously only the 4 main dirs got rm-rf'd). Removes
+  dead v2→v3 migration block (commands/ removal — no user is still on
+  v2.x). Removes hardcoded breaking-change notes for v3.4–v3.6 that
+  referenced non-existent features; users now directed to CHANGELOG.
+- **`bin/devstarter.js`** — adds `update.sh` to `FILES_TO_COPY` so
+  npm-installed users (`npx devstarter init`) can run
+  `bash ~/.claude/update.sh` to self-update. Removes duplicate
+  `isWin ? 'bash' : 'bash'` dead branch.
+- **`statusline.sh` + `statusline-command.sh`** — moved from repo root
+  to `scripts/` (dev contributor tools with no install path — were
+  orphaned in root, not shipped to users).
+
+---
+
+## v3.9.1 — Compaction refactor + 3 bug fixes (2026-05-15)
+
+> Swept every .md file in the project (agents/, sdlc/, skills/, templates/, root)
+> to remove non-functional bloat: duplicate title headers, stale "How to Use"
+> invocation blocks, "installed globally" footers, and changelog content embedded
+> in README. Found and fixed 3 runtime bugs along the way.
+
+**What changed:**
+
+- **`agents/*.md`** (13 agents) — removed 3-liner "installed globally" headers,
+  "_Place at project root_" footers, duplicate ADR templates, cert/book references
+- **`sdlc/*.md`** (23 files) — removed `## How to Use` blocks, condensed Rules
+  0–3 in `starter.md`, fixed duplicate Rule 2 in `change.md`
+- **`sdlc/devstarter-autopr.md`** — removed duplicate title header line 2
+- **`sdlc/devstarter-jira.md`** — removed duplicate title header line 2
+- **`sdlc/devstarter-github.md`** — removed dangling reference to
+  nonexistent `devstarter-vcs-common.md`
+- **`sdlc/devstarter-gitlab.md`** — same dangling reference removed
+- **`templates/github/claude-pr-review-setup.md`** — removed duplicate title header
+- **`templates/litellm/provider-setup.md`** — removed duplicate title header
+- **`templates/stacks/ml-starter.md`** — merged 3 title lines into 1
+- **`templates/stacks/ml-standard.md`** — merged 3 title lines into 1
+- **`USER.md`** — removed "Place at `~/.claude/USER.md`" footer (users already
+  reading from that path)
+- **`README.md`** — removed embedded "New in v1.1.0" and "New in v1.2.0"
+  sections (~82 lines of stale changelog content)
+- **`agents/shared/devstarter-vcs-pm-guide.md`** — removed duplicate `---`
+  divider between Step 4 and Step 5
+
+**Bug fixes:**
+
+- **`agents/shared/devstarter-agent-base.md`** — Config Guard referenced
+  `python3 sdlc/devstarter-config-sync.md` (Python can't run a .md file).
+  Fixed to `bash scripts/config-sync.sh`
+- **`scripts/dev-setup.sh`** — backup and symlink loops referenced `commands/`
+  (deleted in v3.0.0) and never symlinked `skills/`. Contributors using
+  dev-setup.sh couldn't get live edits to `skills/*/SKILL.md` reflected in
+  `~/.claude/`. Fixed both loops to use `skills/` and drop the stale `commands/`
+- **`installer/setup.iss`** + **`package.json`** — version strings still read
+  `3.8.0` after the v3.9.0 distribution release. Bumped both to `3.9.0`
+
+---
+
+## v3.8.0 — Post-merge branch cleanup in gitsetup (2026-05-13)
+
+> New gitsetup phase that eliminates stale feature branches automatically
+> after every PR merge — both on the remote (GitHub auto-delete) and in
+> the local clone (global `fetch.prune`). Removes a recurring chore from
+> the per-PR workflow.
+
+**What changed:**
+
+- **`sdlc/devstarter-gitsetup.md`** — new **Phase 4.5 — Post-Merge
+  Branch Cleanup**, inserted between Phase 4 (branch protection) and
+  Phase 5 (labels). Idempotent — every step checks current state first.
+  Phase steps:
+  1. Enable `delete_branch_on_merge=true` on the GitHub repo via
+     `gh api -X PATCH` (deletes the head branch on every PR merge).
+  2. Enable `git config --global fetch.prune true` (auto-removes stale
+     `origin/feature/*` tracking refs on every `git fetch`/`git pull`).
+  3. Offer optional `git sweep` alias for batch local cleanup. Bash
+     form for Git Bash / Git for Windows / macOS / Linux, plus inline
+     PowerShell command for pure-PowerShell users without sh on PATH.
+  4. Print per-merge workflow reminder + rollback commands.
+- **`skills/devstarter-gitsetup/SKILL.md`** — new `cleanup` inline
+  arg runs Phase 4.5 in isolation (`/devstarter-gitsetup cleanup`).
+  Also documents that `protect` now runs Phase 4 + 4.5.
+- **`sdlc/devstarter-gitsetup.md`** — Gate 1 setup plan and Phase 6
+  summary updated to mention the new cleanup status block.
+
+**Per-merge workflow after the new config lands:**
+
+```bash
+git checkout develop && git pull   # remote branch already gone, stale refs pruned
+git branch -d feature/<slug>       # safe — refuses unmerged work
+```
+
+**Squash-merge caveat:** squash-merged branches show as "unmerged" to
+git, so `git branch -d` refuses them. Use `git branch -D` once you're
+sure the squash landed, or query `gh pr list --state merged` to
+identify landed branches programmatically.
+
+**Validation:** applied to `clickzika/dev-starter-dev` during the
+consultation that produced this change. The very next `git fetch`
+pruned 30+ accumulated stale `origin/feature/*` and `origin/fix/*`
+tracking refs in one shot.
+
+**Net effect:** new DevStarter projects (and any existing project
+that re-runs `/devstarter-gitsetup cleanup`) ship with automatic
+post-merge branch hygiene out of the box. No more `git fetch --prune`
+muscle memory, no more "Delete branch" button clicking after PR merges.
+
+---
+
+## v3.7.2 — Fix release announcements (2026-05-09)
+
+> Reverts v3.7.1's approach. Instead of adding a `/update` alias to make
+> the existing wrong messaging "true," v3.7.2 fixes the messaging at
+> the source — `publish.sh` now generates correct release announcements,
+> and the misleading `/update` skill added in v3.7.1 has been removed.
+
+**What changed:**
+
+- **`scripts/publish.sh`** — line 242 (GitHub Release notes generator)
+  and line 260 (post-publish terminal output) updated:
+  - `Run \`/update\`` → `Run \`/devstarter-update\` (or \`bash ~/.claude/update.sh\`)`
+  - This means every future release announcement names the actual
+    command users have on their install.
+- **`skills/update/SKILL.md`** — removed. v3.7.1 added it to make the
+  existing wrong messaging accidentally correct, but the cleaner fix
+  is to fix the source (publish.sh) and avoid skill-namespace
+  pollution.
+
+**Existing GitHub Release notes for v3.5.0–v3.7.1 are also being edited
+in place** (via `gh release edit`) to use the correct command name.
+
+**Net effect:** users see a correct command name in every release
+announcement, and the skill picker stays uncluttered.
+
+**Apology context:** the user explicitly asked for "Option 1" (fix the
+messaging) when given the choice. v3.7.1 mistakenly shipped Option 2
+(add an alias). v3.7.2 reverts that and does Option 1.
+
+---
+
+## v3.7.1 — `/update` alias fix (2026-05-09 — reverted by v3.7.2)
+
+> Patch release. Every release announcement since v3.5.0 told users
+> "Run `/update` in Claude Code to get this version" — but `/update`
+> didn't actually exist as a skill. Only `/devstarter-update` did.
+> Users following the announcement instructions hit "command not
+> found" until they discovered the longer name.
+
+**Fix:**
+
+- **`skills/update/SKILL.md`** (new) — short alias for
+  `/devstarter-update`. Both run `bash ~/.claude/update.sh` and produce
+  identical behavior. After this patch lands, every prior release
+  announcement that says "Run `/update`" becomes truthful for any
+  user who reaches v3.7.1+.
+
+**No other changes.** Same SDLC, same agents, same gates — just the
+alias users were already being told to run.
+
+**Note for users on v3.4.0–v3.7.0:** `/update` still doesn't exist on
+your install yet. To get this fix, run `/devstarter-update` (or
+`bash ~/.claude/update.sh`) once. After that, `/update` will work
+for every future release.
+
+---
+
+## v3.7.0 — Top-1% Completeness (2026-05-09)
+
+> Additive top-up release. v3.6.0 made gates enforce quality. v3.7.0
+> adds the four workflows that top-1% teams have but DevStarter was
+> missing — post-mortem, ADR capture, compliance audit, perf profiling —
+> plus polish (lifecycle headers, TL;DR blocks, quick-start mode) and
+> a hardened upgrade path with version-jump migration messaging.
+
+### /devstarter-postmortem — Blameless Incident Post-Mortem
+
+After a SEV-1/SEV-2 incident is resolved, run a structured blameless
+post-mortem. Top-1% engineering practice; previously absent.
+
+**New:**
+- **`skills/devstarter-postmortem/SKILL.md`** — Opus-gated entry, decision
+  tree (vs incident / retro / debug), inline args (no-arg / slug / file)
+- **`sdlc/devstarter-postmortem.md`** — full 9-phase runbook:
+  - Phase 0 — incident intake (slug, severity, timing, impact, repeat?)
+  - Phase 1 — timeline reconstruction from raw evidence (chat, alerts,
+    deploy logs, APM); actor-based rows (engineer / system / alert /
+    customer), never names
+  - Phase 2 — 5 Whys causal analysis pushed past the first plausible
+    "why" to a root cause that targets systems, not humans
+  - Phase 3 — contributing factors across Technical / Process /
+    Observability / Organizational categories
+  - Phase 4 — customer & communications review (what did customers see,
+    when did we tell them, was the comms strategy adequate)
+  - Phase 5 — action items table with mandatory owner + size + priority
+    + target date (vague items are parked in "Open Questions" instead)
+  - Phase 6 — publish at `docs/postmortems/[date]-[slug].html` using
+    standard template; index.html updated
+  - Phase 7 — Blameless Review Gate (7-item checklist enforced before
+    publish — no person named as cause, actions target systems not
+    "be more careful," every Yes contributing factor has a corresponding
+    action item)
+  - Phase 8 — auto-create action item tickets in PM tool
+    (github-issues / notion / jira) with `post-mortem-action` label
+  - Phase 9 — handoff: implement P0 actions via `/devstarter-change`,
+    share with team, or schedule 30-day follow-up
+- **`devstarter-menu.md`** — entry #25 under PRODUCTION
+
+**Why:** v3.6.0 added incident response (`/devstarter-incident`) and sprint
+retro (`/devstarter-retro`) but no post-mortem workflow. Top teams treat
+these as different lenses: incident = response under pressure; retro =
+sprint reflection; post-mortem = causal analysis with prevention actions.
+
+### /devstarter-adr — Architecture Decision Record (Standalone)
+
+Capture an architecture decision *outside* of a feature change. Complements
+the v3.6.0 Gate A2 ADR mandate (which fires inside `/devstarter-change` for
+non-trivial features); this command handles tech-stack picks, library
+evaluations, infra moves, process changes, and superseding prior ADRs.
+
+**New:**
+- **`skills/devstarter-adr/SKILL.md`** — Opus-gated, decision tree (vs
+  change / consult / audit), inline args (no-arg / title / consult file)
+- **`sdlc/devstarter-adr.md`** — full 9-phase runbook:
+  - Phase 0 — intake (decision question, scope, driver, related ADRs)
+  - Phase 1 — Context & Forces table (functional / non-functional /
+    operational / skill / regulatory / strategic / existing)
+  - Phase 2 — ≥ 3 options (status quo always included; pros / cons / cost
+    / operational fit / risk / references each)
+  - Phase 3 — Recommendation referencing the Forces; confidence rating
+    (Low confidence → status = Proposed, not Accepted; revisit scheduled)
+  - Phase 4 — Consequences (positive AND negative AND revisit-triggers;
+    empty negatives list rejected as incomplete analysis)
+  - Phase 5 — Supersedes / Related (auto-search docs/adr/ for conflicts;
+    explicit supersede chain enforced both directions)
+  - Phase 6 — Generate sequential ADR ID (NNNN) + slug
+  - Phase 7 — Save using TechLead ADR template, update docs/adr/index.html
+  - Phase 8 — Approval Gate (Accepted / Proposed / revise)
+  - Phase 9 — Handoff (implement now via /devstarter-change / share /
+    schedule revisit / done)
+- **`devstarter-menu.md`** — entry #26
+
+**Why both ADR paths exist:**
+- `/devstarter-change` Gate A2 (v3.6.0) — *forces* an ADR for non-trivial
+  features so decisions inside features get captured
+- `/devstarter-adr` (this) — *enables* an ADR outside a feature for
+  decisions that don't fit the feature flow (stack picks, infra moves)
+
+### /devstarter-profile — Proactive Performance Investigation
+
+Investigate a performance issue *before* it becomes an incident. Captures
+baseline → profiles to find bottlenecks → ranks by impact → optimization
+roadmap → optional handoff to `/devstarter-change`.
+
+**New:**
+- **`skills/devstarter-profile/SKILL.md`** — Opus-gated, decision tree
+  (vs incident / debug / monitor / audit), inline args
+- **`sdlc/devstarter-profile.md`** — full 7-phase runbook:
+  - Phase 0 — perf intake (area, SLO target, current measurement, trigger)
+  - Pre-Phase 1 guard — STOPS if no measurement is in place; routes to
+    `/devstarter-monitor` first (you can't profile what you don't measure)
+  - Phase 1 — baseline (P50/P95/P99 latency, throughput, error rate, or
+    LCP/FID/CLS for frontend, EXPLAIN ANALYZE for DB, etc.)
+  - Phase 2 — profile data capture (clinic.js / py-spy / pprof / async-
+    profiler / DevTools Performance) saved to `docs/perf/[date]-[slug]/`
+  - Phase 3 — bottleneck inventory ranked by total impact (cost ×
+    frequency); top 1–2 must account for ≥ 70% of cost or profile is too
+    coarse and Phase 2 must redo
+  - Phase 4 — optimization roadmap with impact / effort / risk per fix;
+    classified Quick wins / Worth it / Maybe later
+  - Phase 5 — approval gate (implement now / save roadmap / revise)
+  - Phase 6 — save report at `docs/perf/[date]-[slug]/report.html`;
+    handoff to `/devstarter-change` if "implement now"
+  - Phase 7 — verification (post-implementation re-measurement; if
+    not materially better, revert + loop back to Phase 3)
+- **`devstarter-menu.md`** — entry #27
+
+**Why:** `/devstarter-debug` covers reactive root-cause hunting for bugs;
+`/devstarter-incident` is for active prod crises. Performance work that
+isn't a crisis but matters before it becomes one had no home — perf
+issues silently ate SLO budget. This closes that gap.
+
+### /devstarter-compliance — Framework-specific Compliance Audit
+
+Last of the four new v3.7.0 commands. `/devstarter-audit` covers code/security
+quality and `/devstarter-security` covers OWASP — neither addresses the
+specific frameworks customers and regulators actually ask about. This
+command does, with a checklist + gap report + remediation roadmap +
+(for Type II frameworks) an evidence pack.
+
+**New:**
+- **`skills/devstarter-compliance/SKILL.md`** — Sonnet-tier (template-driven),
+  decision tree (vs audit / security / adr), inline args per framework
+- **`sdlc/devstarter-compliance.md`** — full 6-phase runbook covering
+  six frameworks each with a concrete checklist:
+  - **WCAG 2.1 Level AA** — 38 success criteria across Perceivable /
+    Operable / Understandable / Robust; axe-core preflight recommended
+  - **GDPR** — Lawfulness, Data Subject Rights, Data Handling, Accountability
+    (RoPA, DPIA, breach notification, cross-border transfers)
+  - **HIPAA** — Privacy + Security Rule (Administrative / Physical /
+    Technical) + Breach Notification (60-day/HHS rules)
+  - **SOC 2 Type II** — CC1–CC9 + A/C/PI/P trust services criteria with
+    evidence-pack requirements (artifacts auditors will request)
+  - **PCI-DSS** — 12 core requirements, scope reduction via tokenization
+  - **ISO 27001** — Annex A 93 controls (organizational / people /
+    physical / technological)
+  - Phase 0 — scope (framework, surface, trigger, prior audit, owner)
+  - Phase 1 — run checklist (Pass / Partial / Fail / N/A / Unknown with
+    evidence link per item)
+  - Phase 2 — gap inventory with severity (🔴 Critical / 🟠 High /
+    🟡 Medium / 🟢 Low)
+  - Phase 3 — remediation roadmap (every gap has owner + size + priority
+    + target date; vague items parked in Open Questions)
+  - Phase 4 — evidence pack (SOC 2 / HIPAA / ISO 27001 only) — control
+    → artifact → location → period covered
+  - Phase 5 — publish at `docs/compliance/[framework]-[date].html`;
+    `docs/compliance/index.html` updated; approval gate
+  - Phase 6 — auto-create remediation tickets (per `pm.type`); handoff
+    to `/devstarter-change` for P0 items
+  - Appendix — recommended audit cadence per framework
+- **`devstarter-menu.md`** — entry #28
+
+**Why:** Customers ask "are you SOC 2 compliant?" — the answer needs to
+be backed by a real audit + evidence, not aspirational. This workflow
+produces that.
+
+**v3.7.0 status:** all four new commands shipped (postmortem / adr /
+profile / compliance). Last items pending: Lifecycle Stage / Gates count /
+TL;DR headers across SDLC files + `--quick` flag on `/devstarter-change`.
+
+### TL;DR + Lifecycle Stage + Gates count headers across all SDLC files
+
+Mass-edit applied to all 48 `sdlc/devstarter-*.md` runbooks. Each file now
+opens with a one-line scannable header:
+
+```
+> **TL;DR** — [purpose] · **Lifecycle** [Discovery|Design|Build|Ship|Operate|Reference] · **Gates** [N]
+```
+
+This lets a newcomer pick the right runbook without committing to reading
+the full file. Lifecycle stage classification:
+
+- **Discovery** — audit, consult, existing, gitsetup, sprint, starter,
+  starter-gates, starter-intake
+- **Design** — adr, document, starter-template
+- **Build** — change, change-add, change-bug, change-remove, change-resume,
+  debug, migrate, ml-workflow, review
+- **Ship** — hotfix, release, release-deploy, release-prep, release-verify,
+  rollback
+- **Operate** — autopr, compliance, dependency, doctor, env, handover,
+  incident, monitor, onboarding, postmortem, profile, retrospective,
+  secrets
+- **Reference** — ai-providers, checkpoint, config-sync, github, gitlab,
+  jira, notion, svn, vcs-sync (procedure files loaded by other workflows)
+
+For files that previously lacked a top-level H1 (sub-files of starter +
+release), an H1 was added so the structure is uniform.
+
+### `--quick` flag on `/devstarter-change` — scope-based reading reduction
+
+Cuts newcomer reading load from ~3000 lines to ~1000 for a typical scoped
+change by skipping agents + docs not relevant to the detected scope.
+
+- **`skills/devstarter-change/SKILL.md`** — new "Quick Mode" section
+  explaining usage, scope detection, what gets skipped per scope, and
+  the auto-promotion guards
+- **`sdlc/devstarter-change.md`** — auto-scope detection table + auto-
+  promotion rules (touches auth / multi-tenancy / schema / billing /
+  external integrations → full mode regardless of `--quick`)
+
+**Auto-scope detection:**
+| Detected scope | Skip these agents | Skip these doc updates |
+|---|---|---|
+| Backend-only | @uxui, @frontend, @mobile | frontend-spec, ux-spec, prototype/ |
+| Frontend-only | @backend, @dba, @mobile | api-reference, openapi.yaml, database-design |
+| Mobile-only | @uxui (web), @frontend (web) | frontend-spec (web parts) |
+| Full-stack | (none) | (none) |
+| Bug fix (localized) | @ba (no BRD update for tiny bugs) | brd.html (tiny bugs only) |
+
+**Auto-promotion guards** — these always force full mode even with `--quick`:
+auth, multi-tenancy, schema migrations, billing, payments, external
+integrations, cross-cutting refactors, new bounded contexts. Quality
+bar (Doc Quality Preflight) still runs in quick mode, just on the
+smaller surface.
+
+---
+
+### update.sh enhanced — version-jump migration messaging
+
+`update.sh` now detects when a user is jumping a minor or major version
+boundary (e.g. v3.4 → v3.7) and prints explicit migration notes for each
+crossed boundary:
+
+- **From v3.4 or earlier** — warns that 13 thin agent slash-commands
+  were removed in v3.5; points to `@<alias>` and `/devstarter-agents`
+- **From v3.5 or earlier** — warns that v3.6 Gate A2 + Gate A4 are now
+  enforcement gates (Doc Quality Preflight + Fitness Functions + PR
+  Review Checklist); flags the new `templates/github/fitness-functions.yml`
+- **From v3.6 or earlier** — calls out the 4 new v3.7 commands and the
+  `--quick` flag
+
+Confirms that the `rm -rf + cp -r` pattern in update.sh cleanly removes
+deleted skills / runbooks / templates from prior versions — no stale
+files linger after update. `agents/custom/` is preserved from backup as
+before.
+
+## Upgrade notes (any version → v3.7.0)
+
+### Clean upgrade — what update.sh handles automatically
+
+When `bash ~/.claude/update.sh` runs:
+
+1. **Backs up** user files (CLAUDE.md, USER.md, settings.json,
+   settings.local.json, .env) and the entire `memory/` folder to
+   `~/.claude/.backup/<timestamp>/`
+2. **Wipes + replaces** `agents/`, `skills/`, `sdlc/`, `templates/`
+   entirely (`rm -rf` then `cp -r`) — guaranteeing no stale files
+   from prior versions linger
+3. **Removes** the legacy `commands/` folder if it exists (v2.x → v3.x
+   migration; was already in update.sh)
+4. **Restores** `agents/custom/` from the backup so user-authored
+   custom agents are preserved across the wipe
+5. **Updates** root toolkit files: `update.sh`, `install.sh`, `setup.sh`,
+   `devstarter-menu.md`, `VERSION`, `CHANGELOG.md`
+6. **Restores** user files from the backup so personal config is never
+   touched
+7. **Prints** version-jump migration notes (new in this release) so
+   users see the breaking-change summary without reading the full
+   CHANGELOG
+
+### Manual checks after upgrade from v3.4 or earlier
+
+- If you scripted `/devstarter-pm`, `/devstarter-techlead`, etc. into
+  any tooling, switch to `@pm`, `@techlead` (the agent files are
+  unchanged; only the slash-command wrappers were removed)
+- If you have an existing GitHub project, copy
+  `templates/github/fitness-functions.yml` to `.github/workflows/` and
+  add `Fitness Functions / All checks` as a required status check on
+  protected branches
+- Existing in-progress features may need a docs catch-up before the
+  next `/devstarter-change` Gate A2 — backfill SLO + Threat Model
+  for backend, bundle budget for frontend, WCAG conformance for UX
+
+---
+
+## v3.7.0 status: **COMPLETE — ready to release**
+
+All planned sub-PRs merged to develop:
+1. ✅ `/devstarter-postmortem` — blameless incident post-mortem (PR #32)
+2. ✅ `/devstarter-adr` — standalone ADR capture (PR #33)
+3. ✅ `/devstarter-profile` — proactive performance investigation (PR #34)
+4. ✅ `/devstarter-compliance` — WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001 audits (PR #35)
+5. ✅ TL;DR + Lifecycle + Gates headers across 48 SDLC files (PR #36)
+6. ✅ `--quick` flag on `/devstarter-change` (this PR)
+
+Next: bump VERSION to 3.7.0, finalize CHANGELOG date, run `bash scripts/publish.sh`.
+
+---
+
+## v3.6.0 — Real Quality Gates (2026-05-09)
+
+> The biggest single release in the v3.5.0 → v3.7.0 audit roadmap. Turns
+> documented quality bars into **enforced** quality gates that auto-block
+> PRs when architectural quality slips. Top-1% engineering teams catch
+> ~80% of architectural regressions automatically — DevStarter now ships
+> the toolkit and wires it into the change workflow.
+>
+> **Bundles in v3.5.1** (router standardization) — see "Router
+> Standardization" section below.
+
+### Architectural Fitness Functions — automated CI quality gates
+
+**New:**
+- `templates/github/fitness-functions.yml` — GitHub Actions workflow with
+  4 fitness checks, stack-aware (Node / Python / Go), tunable via repo
+  variables. Roll-up status check (`Fitness Functions / All checks`) is
+  the single status to require for branch protection.
+  - **Bundle budget** (Node) — `dist/` must stay under threshold (default 500 KB)
+  - **Dependency rules** — depcruise (Node) / import-linter (Python) module-boundary enforcement
+  - **Coverage gate** — line coverage ≥ threshold (default 80%) on Node / Python / Go
+  - **Complexity ceiling** — max cyclomatic complexity per function (default 10)
+- `templates/github/fitness-functions-setup.md` — install + tuning + per-stack config guide
+
+**Wired in:**
+- **`agents/devstarter-techlead.md`** — Architecture Fitness Functions
+  section now references the shipped reference implementation (it was
+  previously aspirational table only)
+- **`sdlc/devstarter-change-add.md`** — pre-Gate A4 verification step:
+  fetches `gh pr checks` for "Fitness Functions / All checks" on each PR;
+  fails the gate if any check failed; offers `/devstarter-debug` or
+  `/devstarter-change fix-bug` route to address blockers
+- **`sdlc/devstarter-github.md`** — new procedure **PROC-GH-17** (Install
+  Fitness Functions CI) parallel to PROC-GH-16 (AutoPR)
+- **`sdlc/devstarter-starter-gates.md`** — Gate 0 now installs fitness
+  functions during new-project bootstrap (after PROC-GH-14 templates)
+- **`sdlc/devstarter-existing.md`** — installs fitness functions when
+  setting up DevStarter on an existing GitHub repo (after PROC-GH-18
+  branch protection)
+
+**Why:** Per the v3.6.0 plan in `~/.claude/plans/synthetic-gliding-clock.md`
+and `memory/consult-2026-05-09-top1-rigor-audit.md`. Previously the
+TechLead spec defined fitness functions in a table but no CI ever ran
+them. With this change the bar is enforced, not documented.
+
+### Backend mandatory deliverable + Gate A2 Doc Quality Preflight
+
+The Backend agent's API Reference Document was already a Gate 1 deliverable
+but lacked enforceable specifics. v3.6.0 adds three required additions:
+
+- **`agents/devstarter-backend.md`** — API Reference Document now requires:
+  - **SLO/SLI table** (section 6) — concrete P50/P95/P99 latency, availability,
+    and error-budget numbers per endpoint group serving > 1 RPS. No `TBD`.
+  - **Threat Model** (section 7) — STRIDE checklist with concrete mitigation
+    + test for each row. Mandatory if endpoint touches auth / money / PII /
+    multi-tenant data / external integrations.
+  - **`docs/api/openapi.yaml`** companion spec (machine-readable) — OpenAPI
+    3.1+ with `x-slo` extensions matching section 6. Validates with
+    `openapi-spec-validator` or `redocly lint`. Used by contract tests, SDK
+    generation, gateway routing.
+  - Quality gate updated: SLO table populated, Threat Model present, spec
+    validates, HTML and OpenAPI don't drift.
+
+- **`sdlc/devstarter-change-add.md`** — Gate A2 promoted from rubber stamp to
+  real quality gate via a **Doc Quality Preflight** that runs before the
+  approve picker appears:
+  - BRD has ≥ 2× Given-When-Then criteria per user story
+  - Schema migration has reversible rollback (DROP / ALTER ... DROP)
+  - OpenAPI spec validates; SLO table populated; Threat Model present
+  - security_design.html updated for auth/data/multi-tenant/external scope
+  - **ADR mandatory** for auth, multi-tenancy, schema, caching, payments,
+    billing, external integrations (the "non-trivial decision" set);
+    `docs/adr/NNNN-<slug>.html` must exist with status=Accepted
+  - Failing rows block the Gate A2 picker — loop back to the agent that
+    owns the failing doc
+
+**Why both ship together:** the Backend agent calls out "Gate A2 will reject
+backend features that lack SLO/Threat Model" so the spec change and the
+gate enforcement are coupled — shipping one without the other would either
+be unenforced docs or unattainable enforcement.
+
+### Frontend mandatory deliverable + Gate A2 enforcement
+
+Same enforcement pattern as Backend, applied to Frontend. Gate A2 will now
+reject frontend features that lack a per-route Bundle Budget row or
+Accessibility Conformance Plan.
+
+- **`agents/devstarter-frontend.md`** — new **Frontend Specification
+  Document** Gate 1 deliverable at `docs/frontend-spec.html`, 13 required
+  sections covering: tech stack, information architecture, component
+  inventory, state architecture, **per-route bundle budget table** (concrete
+  KB numbers per route, no TBD), **WCAG 2.1 AA conformance plan** (axe-core
+  in CI mandatory), testing strategy, browser/device support matrix, build
+  & deploy strategy, design system integration. Quality gate enforces no
+  placeholder text and consistency with `browserslist` + build config.
+
+- **`sdlc/devstarter-change-add.md`** — Doc Quality Preflight check 5b
+  added for any frontend feature touching routes, components, or pages.
+  Gate A2 doc-list now includes `docs/frontend-spec.html`.
+
+**Why:** Frontend was the second of the three "expert agents with no
+enforced deliverable" gap (Backend / Frontend / UX). Now matched to BA's
+BRD and QA's Test Strategy enforcement pattern.
+
+### UX Design Specification + Accessibility Conformance + Gate A2 enforcement
+
+Last of the three "expert agents with no enforced deliverable" gap. The UX
+agent had an Interactive Prototype as Gate 1 deliverable but no *written*
+Design Spec with auditable accessibility commitment.
+
+- **`agents/devstarter-uxui.md`** — new **Design Specification Document**
+  Gate 1 deliverable at `docs/ux-spec.html` with 11 required sections:
+  - Project-specific design principles (no generic platitudes)
+  - Concrete design tokens (color/typography/spacing/radius/motion)
+  - Information architecture + user flow diagrams
+  - Component specifications (states, variants, ARIA pattern, motion)
+  - **WCAG 2.1 AA Conformance** table covering all Level AA success
+    criteria with Pass / Partial / Fail status — every Partial/Fail row
+    has linked issue, owner, target date (no "TBD")
+  - Manual checks list (tab-key only, focus rings, prefers-reduced-motion)
+  - Microcopy guidelines (voice/tone, error rules, button-label pattern)
+  - Research summary, heuristic evaluation (Nielsen 10), changelog, open issues
+
+- **`sdlc/devstarter-change-add.md`** — Doc Quality Preflight check 5c
+  added for any UX-touching feature. Gate A2 doc-list now includes
+  `docs/ux-spec.html`. Drift between design tokens in spec and
+  `docs/prototype/components.html` blocks the gate.
+
+**v3.6.0 status:** All three weak agents (Backend / Frontend / UX) now have
+enforceable Gate 1 deliverables matching BA's BRD and QA's Test Strategy
+pattern. Gate A2 is now a real quality gate, not a rubber stamp.
+
+### TechLead PR Review Checklist wired to Gate A4
+
+The TechLead spec defined a 26-item PR Review Checklist (correctness,
+security, tests, code quality, observability, operations) but it was
+never wired to a merge gate — PRs merged on user "approve" alone.
+
+- **`sdlc/devstarter-change-add.md`** — second pre-Gate A4 step added,
+  runs after fitness functions pass:
+  - TechLead loads each PR diff and evaluates all 26 items
+  - Each item marked ✅ / ❌ / ⚠️ (waiver with rationale + owner +
+    revisit-date in PR description) / `n/a`
+  - Severity classes:
+    - **🔴 BLOCKER (any ❌):** correctness / security / operations →
+      Gate A4 cannot pass; route ❌ items to `/devstarter-change fix-bug`
+      with each finding pre-filled
+    - **🟡 MAJOR (any ❌):** tests / code quality / observability →
+      surfaces in summary; owner can ship-with-debt by adding waiver
+  - Checklist posted as PR comment via `gh pr review --comment`
+- Gate A4 picker now shows the rolled-up checklist counts per category
+  alongside the fitness-function row.
+
+**Why:** Closes the last "documented but unenforced" gap. Combined with
+the fitness functions and the Gate A2 Doc Quality Preflight, every gate
+now has programmatic enforcement, not just human approval.
+
+---
+
+### Sub-PR summary
+
+All five planned sub-PRs landed in develop and ship together as v3.6.0:
+1. ✅ Fitness Functions CI template + workflow wiring (PR #26)
+2. ✅ Backend SLO/Threat-Model/OpenAPI + Gate A2 Doc Quality Preflight + ADR mandate (PR #27)
+3. ✅ Frontend Specification Document + Gate A2 enforcement (PR #28)
+4. ✅ UX Design Specification + WCAG conformance + Gate A2 enforcement (PR #29)
+5. ✅ TechLead PR Review Checklist wired to Gate A4 (PR #30)
+
+Plus **Router Standardization (v3.5.1)** — bundled into this release rather than shipped separately.
+
+---
+
+## Router Standardization (was v3.5.1, now bundled into v3.6.0)
+
+### 17 SKILL.md routers now have decision trees + inline args
+
+All 17 thin SDLC routers were missing a "When to use vs alternatives" section,
+forcing users to read the SDLC runbook to figure out which command applies.
+Sub-PR 4 of the v3.5.0 audit fixes this.
+
+**Updated (17 files, consistent template):**
+
+Tier A — bare 2-liners now have purpose + decision tree + 3 inline args:
+- `/devstarter-sprint`, `/devstarter-release`, `/devstarter-rollback`,
+  `/devstarter-dependency`, `/devstarter-env`, `/devstarter-secrets`,
+  `/devstarter-monitor`, `/devstarter-onboard`, `/devstarter-handover`,
+  `/devstarter-retro`, `/devstarter-menu`
+
+Tier B — preserved existing model gate / inline args, added decision tree:
+- `/devstarter-hotfix`, `/devstarter-incident`, `/devstarter-consult`,
+  `/devstarter-migrate`, `/devstarter-gitsetup`, `/devstarter-review`
+
+**Decision trees disambiguate the common confusions:**
+- hotfix vs rollback vs incident vs change fix-bug
+- env vs secrets vs existing
+- onboard vs handover vs existing
+- consult vs debug vs review vs audit
+- release vs hotfix vs rollback
+- migrate vs change vs consult vs audit
+- review vs audit vs debug
+
+No SDLC runbook content changed; this is pure SKILL.md "shop window" polish
+so users pick the right command without reading the full runbook first.
+
+---
+
+## v3.5.0 — Cut the Clutter (2026-05-09)
+
+> **Partial release.** First two of four planned v3.5.0 sub-tasks shipped.
+> Remaining (deferred to v3.5.1 or v3.6.0 prep): VCS triplication refactor
+> (github/gitlab/svn → common base) and standardize 17 thin SDLC routers.
+> See `memory/consult-2026-05-09-top1-rigor-audit.md` for full roadmap.
+
+### Skills consolidation — 13 thin agent direct-invokes → 1 meta-skill
+
+**⚠️ Breaking change** for users who invoked agents via slash commands. Agents
+themselves are unchanged; only the redundant slash-command wrappers were removed.
+Use `@<alias>` (e.g., `@pm`, `@techlead`, `@qa`) directly in chat — same behavior,
+shorter to type, no skill-picker clutter.
+
+**What changed:**
+
+- **chore: removed 13 thin agent direct-invoke skills** — each was a 6-line
+  passthrough to its agent file:
+  `skills/devstarter-{ba,pm,techlead,backend,frontend,dba,qa,security,devops,uxui,docs,mobile,mlops}/SKILL.md`
+- **feat: `skills/devstarter-agents/SKILL.md`** — single meta-skill that lists
+  the full agent roster (alias, character, role) and supports inline args:
+  `/devstarter-agents`, `/devstarter-agents qa`, `/devstarter-agents pick`
+- **chore: `devstarter-menu.md`** — replaced 13-line AGENTS block with a single
+  pointer to `/devstarter-agents`
+
+**Migration for existing users:**
+
+After running `update.sh`, the slash commands `/devstarter-pm`,
+`/devstarter-techlead`, etc. will not exist. Either:
+- Type `@pm`, `@techlead`, etc. directly in chat (recommended — short alias)
+- Or run `/devstarter-agents` to see the full roster
+
+The agent files at `agents/devstarter-*.md` are unchanged.
+
+**Why:** Per the v3.5.0 audit (`memory/consult-2026-05-09-top1-rigor-audit.md`),
+these 13 wrappers added no logic — they just routed to the agent file. They
+cluttered the skill picker and added no discoverability beyond what `@pm` already
+provides. One meta-skill `/devstarter-agents` lists every agent with aliases and
+example prompts, replacing 13 entries with 1.
+
+### Code review polish — severity bar + post-review actions
+
+- **`sdlc/devstarter-review.md`** — added concrete Severity Definitions
+  (🔴 BLOCKER / 🟡 MAJOR / 🟢 MINOR with specific criteria each), wired
+  the post-review action loop to:
+  - `gh pr review --approve` for Mode A approvals
+  - `gh pr review --comment` to push findings as PR comments
+  - `/devstarter-change fix-bug` for "fix blockers" path with each finding
+    pre-filled as a separate bug intake
+  - "explain finding" path with impact, failure mode, fix pattern, test
+- Added "When to use vs alternatives" comparison to clarify boundaries with
+  `/devstarter-audit` (full project) and `/devstarter-debug` (root-cause hunt)
+
+### Handover access revocation — concrete per-VCS / per-PM commands
+
+- **`sdlc/devstarter-handover.md`** — Gate 4 access revocation expanded from
+  "Revoke (GitHub, Notion, .env)" to a concrete checklist:
+  - VCS revoke commands per `vcs.type` (github / gitlab / svn)
+  - PM revoke steps per `pm.type` (notion / jira / linear)
+  - Mandatory secret rotation rule (cached creds persist after access removal)
+  - CI/CD secret stores, monitoring/on-call, chat, cloud IAM, DNS
+- Added "When to use vs alternatives" header (vs `/devstarter-onboard` and
+  `/devstarter-existing`) so users pick the right command upfront
+
+### Onboarding clarity
+
+- **`sdlc/devstarter-onboarding.md`** — added "When to use vs alternatives"
+  header to disambiguate from `/devstarter-handover` (transfer of ownership)
+  and `/devstarter-existing` (first-time DevStarter setup, no team change)
+
+---
+
 ## v3.4.0 (2026-05-09)
 
 ### /devstarter-debug — Senior Dev Problem Analysis Workflow
