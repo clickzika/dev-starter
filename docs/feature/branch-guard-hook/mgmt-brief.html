@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Management Brief — Branch Guard Hook — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
+    --bg-card:#f8f9fb; --bg-hover:#e8ebf0; --accent:#e94560; --accent-light:#d63851;
+    --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4;
+    --border-light:#e2e7ed; --status-approved:#10b981; --status-draft:#f59e0b;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
+    --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316;
+    --header-h:64px; --sidebar-w:260px;
+    --table-even-bg:rgba(0,0,0,0.02); --table-hover-bg:rgba(233,69,96,0.04);
+    --shadow:0 1px 3px rgba(0,0,0,0.06); --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-header:#1a1a2e; --bg-sidebar:#16213e; --bg-content:#1e1e3a;
+    --bg-card:#252547; --bg-hover:#0f3460; --accent:#e94560; --accent-light:#ff6b81;
+    --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f;
+    --border-light:#2d4a6f; --table-even-bg:rgba(255,255,255,0.02);
+    --table-hover-bg:rgba(233,69,96,0.05); --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.7; height:100vh; overflow:hidden; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--bg-header); border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); font-weight:500; }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; background:rgba(16,185,129,0.15); color:var(--status-approved); border:1px solid rgba(16,185,129,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); transition:all 0.2s; }
+  .lang-btn:hover { background:var(--bg-hover); color:var(--text); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); transition:all 0.2s; }
+  .pdf-btn:hover { background:rgba(233,69,96,0.2); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3, [data-lang="th"] h4 { font-family:'Sarabun',system-ui,sans-serif; }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s; border-left:3px solid transparent; }
+  .toc-link:hover { background:var(--bg-hover); color:var(--text); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent-light); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; flex-shrink:0; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
+  .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; }
+  .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
+  .doc-info-row span:first-child { color:var(--text-muted); }
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:48px 56px 100px; background:var(--bg-content); }
+  .doc-content::-webkit-scrollbar { width:6px; }
+  .doc-content::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:6px; }
+  .section-header { display:flex; align-items:center; gap:14px; margin:56px 0 24px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
+  .section-title { font-size:24px; font-weight:700; letter-spacing:-0.3px; }
+  h3 { font-size:17px; font-weight:600; color:var(--text); margin:32px 0 14px; border-left:3px solid var(--accent); padding-left:12px; }
+  p { color:var(--text-dim); margin-bottom:18px; font-size:15px; line-height:1.8; }
+  ul, ol { margin:8px 0 20px 28px; color:var(--text-dim); font-size:15px; }
+  li { margin-bottom:8px; line-height:1.8; }
+  .exec-hero { background:linear-gradient(135deg, rgba(233,69,96,0.08) 0%, rgba(59,130,246,0.06) 100%); border:1px solid rgba(233,69,96,0.2); border-radius:16px; padding:32px 40px; margin:0 0 40px; }
+  .exec-hero-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); margin-bottom:12px; }
+  .exec-hero-text { font-size:18px; line-height:1.7; color:var(--text); font-weight:400; }
+  .before-after { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0 28px; }
+  .ba-card { border-radius:12px; padding:24px 28px; }
+  .ba-card.before { background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); }
+  .ba-card.after { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); }
+  .ba-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+  .ba-card.before .ba-label { color:#ef4444; }
+  .ba-card.after .ba-label { color:#10b981; }
+  .ba-card p { font-size:14px; margin-bottom:0; color:var(--text-dim); }
+  .improvement-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:16px; margin:20px 0 28px; }
+  .improvement-tile { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px 24px; transition:border-color 0.2s; }
+  .improvement-tile:hover { border-color:var(--accent); }
+  .improvement-icon { font-size:28px; margin-bottom:10px; }
+  .improvement-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:6px; }
+  .improvement-desc { font-size:13px; color:var(--text-dim); line-height:1.6; margin-bottom:0; }
+  .status-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:16px 0 28px; }
+  .status-pill { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:24px; font-size:13px; font-weight:600; }
+  .pill-green { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+  .pill-orange { background:rgba(249,115,22,0.12); color:#f97316; border:1px solid rgba(249,115,22,0.3); }
+  .pill-blue { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+  table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:14px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  thead th { background:var(--bg-sidebar); color:var(--text); font-weight:600; text-align:left; padding:12px 16px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--accent); }
+  tbody tr { border-bottom:1px solid var(--border); transition:background 0.1s; }
+  tbody tr:nth-child(even) { background:var(--table-even-bg); }
+  tbody tr:hover { background:var(--table-hover-bg); }
+  td { padding:12px 16px; color:var(--text-dim); vertical-align:top; line-height:1.6; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px 28px; margin:16px 0 24px; }
+  .card-title { font-size:15px; font-weight:600; margin-bottom:10px; color:var(--text); }
+  .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
+  .success { border-left:4px solid var(--section-4); background:rgba(16,185,129,0.05); }
+  @media (max-width:900px) { .before-after{grid-template-columns:1fr;} }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:28px 20px 80px;} }
+  @media print {
+    body { overflow:auto; }
+    .doc-sidebar, .lang-btn, .pdf-btn, .theme-toggle { display:none !important; }
+    .doc-content { margin-left:0; height:auto; overflow:visible; padding:24px; }
+    .doc-header { position:static; }
+    table { page-break-inside:avoid; }
+    .section-header { page-break-after:avoid; }
+    h3 { page-break-after:avoid; }
+    .before-after { grid-template-columns:1fr; }
+    .exec-hero, .ba-card { page-break-inside:avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Management Brief — Branch Guard Hook</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>CR-2026-05-23-001 · 2026-05-23</div>
+      <div>Prepared by: @devstarter-techlead</div>
+    </div>
+    <span class="doc-status-badge">&#10003; COMPLETED</span>
+    <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()" title="Switch language / เปลี่ยนภาษา">
+      <span id="langLabel">EN</span>
+    </div>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Executive Summary</span><span class="lang-th">สรุปผู้บริหาร</span></a></li>
+    <li><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">What Was the Problem</span><span class="lang-th">ปัญหาคืออะไร</span></a></li>
+    <li><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></a></li>
+    <li><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">What Improved</span><span class="lang-th">สิ่งที่ดีขึ้น</span></a></li>
+    <li><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Risk &amp; Status</span><span class="lang-th">ความเสี่ยง & สถานะ</span></a></li>
+    <li><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Next Steps</span><span class="lang-th">ขั้นตอนถัดไป</span></a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Reference</span> <span>CR-2026-05-23-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>New Protection</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>High</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>Small (&lt; 2 hours)</span></div>
+    <div class="doc-info-row"><span>Completed</span> <span>2026-05-23</span></div>
+    <div class="doc-info-row"><span>Risk</span> <span>Low</span></div>
+  </div>
+</nav>
+
+<main class="doc-content">
+
+  <div class="section-header" id="section-1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Executive Summary</span><span class="lang-th">สรุปผู้บริหาร</span></h2>
+  </div>
+
+  <div class="exec-hero">
+    <div class="exec-hero-label">&#128203; Summary</div>
+    <p class="exec-hero-text">
+      <span class="lang-en">DevStarter now automatically prevents the AI assistant from making changes directly to protected code branches (the main, production, and integration lines). Previously this was a documented rule that relied on the AI following instructions — now it is enforced automatically, with a clear message telling the AI exactly what to do instead. The change was small, delivered in under two hours, and carries low risk.</span>
+      <span class="lang-th">DevStarter ตอนนี้ป้องกันผู้ช่วย AI จากการเปลี่ยนแปลงโดยตรงบน protected code branch (สาย main, production และ integration) โดยอัตโนมัติ ก่อนหน้านี้เป็นกฎเอกสารที่อาศัยการปฏิบัติตามคำสั่งของ AI — ตอนนี้บังคับใช้โดยอัตโนมัติ พร้อมข้อความที่ชัดเจนบอก AI ว่าต้องทำอะไรแทน การเปลี่ยนแปลงนี้เล็ก ส่งมอบในเวลาน้อยกว่าสองชั่วโมง และมีความเสี่ยงต่ำ</span>
+    </p>
+  </div>
+
+  <div class="status-row">
+    <span class="status-pill pill-green">&#10003; <span class="lang-en">Completed</span><span class="lang-th">เสร็จสิ้น</span></span>
+    <span class="status-pill pill-orange"><span class="lang-en">Priority: High</span><span class="lang-th">ความสำคัญ: สูง</span></span>
+    <span class="status-pill pill-blue"><span class="lang-en">Safety Improvement</span><span class="lang-th">ปรับปรุงความปลอดภัย</span></span>
+    <span class="status-pill pill-green"><span class="lang-en">Risk: Low</span><span class="lang-th">ความเสี่ยง: ต่ำ</span></span>
+  </div>
+
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Reference Number</span><span class="lang-th">หมายเลขอ้างอิง</span></td><td>CR-2026-05-23-001</td></tr>
+      <tr><td><span class="lang-en">Project</span><span class="lang-th">โครงการ</span></td><td>DevStarter</td></tr>
+      <tr><td><span class="lang-en">Change Title</span><span class="lang-th">ชื่อการเปลี่ยนแปลง</span></td><td><span class="lang-en">Branch Guard Hook — Automatic Protected-Branch Enforcement</span><span class="lang-th">Branch Guard Hook — การบังคับใช้ Protected Branch อัตโนมัติ</span></td></tr>
+      <tr><td><span class="lang-en">Type</span><span class="lang-th">ประเภท</span></td><td><span class="lang-en">Safety Improvement / New Protection</span><span class="lang-th">ปรับปรุงความปลอดภัย / การป้องกันใหม่</span></td></tr>
+      <tr><td><span class="lang-en">Approved</span><span class="lang-th">อนุมัติ</span></td><td>2026-05-23</td></tr>
+      <tr><td><span class="lang-en">Delivered</span><span class="lang-th">ส่งมอบ</span></td><td>2026-05-23</td></tr>
+      <tr><td><span class="lang-en">Prepared by</span><span class="lang-th">จัดทำโดย</span></td><td>@devstarter-techlead</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">What Was the Problem</span><span class="lang-th">ปัญหาคืออะไร</span></h2>
+  </div>
+
+  <p><span class="lang-en">DevStarter has a rule that says the AI must never make changes directly to important code lines — it should always work on a separate, isolated copy first. This rule was written down in the AI's instructions, but there was no automatic check to enforce it. If the AI ever missed or ignored the rule, it could have made changes directly to the main production or integration codebase, which is a significant risk.</span><span class="lang-th">DevStarter มีกฎที่กำหนดว่า AI ต้องไม่เปลี่ยนแปลงโดยตรงบนสายโค้ดสำคัญ — ควรทำงานบนสำเนาที่แยกและแยกไว้ก่อนเสมอ กฎนี้เขียนไว้ในคำแนะนำของ AI แต่ไม่มีการตรวจสอบอัตโนมัติเพื่อบังคับใช้ หาก AI มองข้ามหรือละเลยกฎ อาจทำการเปลี่ยนแปลงโดยตรงบน codebase การผลิตหลักหรือ integration ซึ่งเป็นความเสี่ยงที่สำคัญ</span></p>
+
+  <div class="before-after">
+    <div class="ba-card before">
+      <div class="ba-label">&#10006; <span class="lang-en">Before — The Situation</span><span class="lang-th">ก่อน — สถานการณ์</span></div>
+      <p><span class="lang-en">The rule existed only as written instructions. The AI was expected to check which line of code it was working on before making any changes. If it forgot or the instructions were skipped during automated or unattended operation, there was nothing to stop it from making changes in the wrong place.</span><span class="lang-th">กฎมีเพียงในรูปแบบคำแนะนำเป็นลายลักษณ์อักษร AI ถูกคาดหวังให้ตรวจสอบว่ากำลังทำงานบนสาย code ใดก่อนทำการเปลี่ยนแปลง หากลืมหรือคำแนะนำถูกข้ามระหว่างการทำงานอัตโนมัติหรือไม่มีผู้ดูแล ไม่มีอะไรหยุดมันจากการเปลี่ยนแปลงในสถานที่ที่ผิด</span></p>
+    </div>
+    <div class="ba-card after">
+      <div class="ba-label">&#10003; <span class="lang-en">After — The Resolution</span><span class="lang-th">หลัง — การแก้ไข</span></div>
+      <p><span class="lang-en">An automatic check now runs before every file change. If the AI is on a protected line, the change is blocked immediately with a clear message: "You are on the main branch. Create a working copy first." The AI recovers correctly and continues safely.</span><span class="lang-th">การตรวจสอบอัตโนมัติตอนนี้รันก่อนการเปลี่ยนแปลงไฟล์ทุกครั้ง หาก AI อยู่บนสายที่ป้องกัน การเปลี่ยนแปลงจะถูกบล็อกทันทีพร้อมข้อความที่ชัดเจน: "คุณอยู่บน main branch สร้างสำเนาทำงานก่อน" AI กู้คืนอย่างถูกต้องและดำเนินการต่ออย่างปลอดภัย</span></p>
+    </div>
+  </div>
+
+  <h3><span class="lang-en">Who Was Affected</span><span class="lang-th">ผู้ที่ได้รับผลกระทบ</span></h3>
+  <p><span class="lang-en">All developers using DevStarter as their AI-assisted workflow tool. The risk was present whenever the AI operated in automated mode, resumed a paused session, or worked without close supervision.</span><span class="lang-th">นักพัฒนาทุกคนที่ใช้ DevStarter เป็นเครื่องมือ workflow ที่ใช้ AI ช่วย ความเสี่ยงมีอยู่เมื่อใดก็ตามที่ AI ทำงานในโหมดอัตโนมัติ, เรซูม session ที่หยุดชั่วคราว หรือทำงานโดยไม่มีการดูแลอย่างใกล้ชิด</span></p>
+
+  <h3><span class="lang-en">Business Impact of Not Acting</span><span class="lang-th">ผลกระทบทางธุรกิจหากไม่ดำเนินการ</span></h3>
+  <p><span class="lang-en">Without this change, there was a risk that the AI could accidentally make untested changes directly to the main or production codebase. This could introduce bugs, break working features, or require emergency rollbacks — all of which have time and cost implications.</span><span class="lang-th">หากไม่มีการเปลี่ยนแปลงนี้ มีความเสี่ยงที่ AI อาจเปลี่ยนแปลงโดยไม่ตั้งใจและไม่ผ่านการทดสอบโดยตรงบน codebase หลักหรือ production ซึ่งอาจนำ bug เข้ามา, ทำลายฟีเจอร์ที่ทำงานได้ หรือต้องทำ emergency rollback — ทั้งหมดนี้มีผลกระทบด้านเวลาและต้นทุน</span></p>
+
+  <div class="section-header" id="section-3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></h2>
+  </div>
+
+  <p><span class="lang-en">A small automatic safety check was added to the DevStarter toolkit that runs every time the AI tries to make a file change.</span><span class="lang-th">มีการเพิ่มการตรวจสอบความปลอดภัยอัตโนมัติขนาดเล็กในชุดเครื่องมือ DevStarter ที่รันทุกครั้งที่ AI พยายามเปลี่ยนแปลงไฟล์</span></p>
+
+  <ul>
+    <li><span class="lang-en">Automatic block when the AI tries to edit files on the main, production, or integration code lines</span><span class="lang-th">การบล็อกอัตโนมัติเมื่อ AI พยายามแก้ไขไฟล์บนสาย code หลัก, production หรือ integration</span></li>
+    <li><span class="lang-en">Clear, instructional message telling the AI exactly which type of working copy to create</span><span class="lang-th">ข้อความที่ชัดเจนและให้คำแนะนำบอก AI ว่าต้องสร้างสำเนาทำงานประเภทใด</span></li>
+    <li><span class="lang-en">No interruption to normal workflow — the check passes instantly when the AI is already on a working copy</span><span class="lang-th">ไม่มีการขัดจังหวะ workflow ปกติ — การตรวจสอบผ่านทันทีเมื่อ AI อยู่บนสำเนาทำงานแล้ว</span></li>
+    <li><span class="lang-en">Graceful handling of non-code directories — no false errors when working outside a code repository</span><span class="lang-th">การจัดการไดเรกทอรีที่ไม่ใช่ code อย่างราบรื่น — ไม่มีข้อผิดพลาดเท็จเมื่อทำงานนอก code repository</span></li>
+    <li><span class="lang-en">Integrated into the existing DevStarter installation system — no manual setup required beyond the standard install command</span><span class="lang-th">รวมเข้ากับระบบติดตั้ง DevStarter ที่มีอยู่ — ไม่จำเป็นต้องตั้งค่าด้วยตนเองนอกจากคำสั่ง install มาตรฐาน</span></li>
+  </ul>
+
+  <h3><span class="lang-en">What Was NOT Changed</span><span class="lang-th">สิ่งที่ไม่ได้เปลี่ยนแปลง</span></h3>
+  <p><span class="lang-en">The existing written rules remain in place — the automatic check is an additional layer of protection, not a replacement. All other AI behaviors, workflows, and tools are unchanged. Existing team processes are unaffected.</span><span class="lang-th">กฎเอกสารที่มีอยู่ยังคงอยู่ — การตรวจสอบอัตโนมัติเป็นชั้นการป้องกันเพิ่มเติม ไม่ใช่การแทนที่ พฤติกรรม workflow และเครื่องมือ AI อื่นๆ ทั้งหมดไม่เปลี่ยนแปลง กระบวนการทีมที่มีอยู่ไม่ได้รับผลกระทบ</span></p>
+
+  <h3><span class="lang-en">Timeline</span><span class="lang-th">ไทม์ไลน์</span></h3>
+  <table>
+    <thead><tr><th><span class="lang-en">Milestone</span><span class="lang-th">หลักเขต</span></th><th><span class="lang-en">Date</span><span class="lang-th">วันที่</span></th><th><span class="lang-en">Notes</span><span class="lang-th">หมายเหตุ</span></th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="lang-en">Plan approved</span><span class="lang-th">อนุมัติแผน</span></td>
+        <td>2026-05-23</td>
+        <td><span class="lang-en">Scope and approach signed off</span><span class="lang-th">ขอบเขตและแนวทางได้รับการอนุมัติ</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Development completed</span><span class="lang-th">พัฒนาเสร็จ</span></td>
+        <td>2026-05-23</td>
+        <td><span class="lang-en">Build finished, internal review passed</span><span class="lang-th">การ build เสร็จ, ผ่านการตรวจสอบภายใน</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Testing completed</span><span class="lang-th">ทดสอบเสร็จ</span></td>
+        <td>2026-05-23</td>
+        <td><span class="lang-en">Verified on protected and working-copy branches</span><span class="lang-th">ตรวจสอบบน protected และ working-copy branch</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">What Improved</span><span class="lang-th">สิ่งที่ดีขึ้น</span></h2>
+  </div>
+
+  <p><span class="lang-en">This change moves branch safety from "we trust the AI to follow the rule" to "the AI is physically prevented from breaking the rule." That is a meaningful step up in reliability for AI-assisted development at any scale.</span><span class="lang-th">การเปลี่ยนแปลงนี้เปลี่ยนความปลอดภัยของ branch จาก "เราเชื่อใจให้ AI ปฏิบัติตามกฎ" เป็น "AI ถูกป้องกันทางกายภาพไม่ให้ละเมิดกฎ" นั่นเป็นก้าวที่มีความหมายในด้านความน่าเชื่อถือสำหรับการพัฒนาที่ใช้ AI ช่วยในทุกขนาด</span></p>
+
+  <div class="improvement-grid">
+    <div class="improvement-tile">
+      <div class="improvement-icon">&#128737;</div>
+      <div class="improvement-title"><span class="lang-en">Automatic Protection</span><span class="lang-th">การป้องกันอัตโนมัติ</span></div>
+      <p class="improvement-desc"><span class="lang-en">The safety rule now enforces itself. No human needs to watch for it or remind the AI. It works in all modes — supervised, automated, and resumed sessions.</span><span class="lang-th">กฎความปลอดภัยตอนนี้บังคับใช้ตัวเอง ไม่จำเป็นต้องมีมนุษย์คอยดูหรือเตือน AI ทำงานในทุกโหมด — ดูแล, อัตโนมัติ และ session ที่เรซูม</span></p>
+    </div>
+    <div class="improvement-tile">
+      <div class="improvement-icon">&#128161;</div>
+      <div class="improvement-title"><span class="lang-en">Educational Errors</span><span class="lang-th">ข้อผิดพลาดแบบสอน</span></div>
+      <p class="improvement-desc"><span class="lang-en">When the block triggers, the AI receives a clear instruction — not just "stop." It knows exactly what to do next, so work resumes quickly with no confusion.</span><span class="lang-th">เมื่อการบล็อกทำงาน AI ได้รับคำแนะนำที่ชัดเจน — ไม่ใช่แค่ "หยุด" มันรู้ว่าต้องทำอะไรต่อไป ดังนั้นงานจึงเรซูมอย่างรวดเร็วโดยไม่มีความสับสน</span></p>
+    </div>
+    <div class="improvement-tile">
+      <div class="improvement-icon">&#9889;</div>
+      <div class="improvement-title"><span class="lang-en">Zero Disruption</span><span class="lang-th">ไม่มีการหยุดชะงัก</span></div>
+      <p class="improvement-desc"><span class="lang-en">Developers working on proper working-copy branches experience no change. The check completes in milliseconds and is completely invisible during normal use.</span><span class="lang-th">นักพัฒนาที่ทำงานบน working-copy branch ที่ถูกต้องไม่รู้สึกถึงการเปลี่ยนแปลง การตรวจสอบเสร็จสิ้นในมิลลิวินาทีและมองไม่เห็นในการใช้งานปกติ</span></p>
+    </div>
+    <div class="improvement-tile">
+      <div class="improvement-icon">&#128274;</div>
+      <div class="improvement-title"><span class="lang-en">Risk Eliminated</span><span class="lang-th">กำจัดความเสี่ยง</span></div>
+      <p class="improvement-desc"><span class="lang-en">The specific risk of accidental direct changes to main, production, or integration lines is now eliminated — not just reduced. The AI cannot bypass this check.</span><span class="lang-th">ความเสี่ยงเฉพาะของการเปลี่ยนแปลงโดยตรงโดยไม่ตั้งใจบนสาย main, production หรือ integration ถูกกำจัดแล้ว — ไม่ใช่แค่ลดลง AI ไม่สามารถหลีกเลี่ยงการตรวจสอบนี้ได้</span></p>
+    </div>
+  </div>
+
+  <h3><span class="lang-en">Measurable Outcomes</span><span class="lang-th">ผลลัพธ์ที่วัดได้</span></h3>
+  <table>
+    <thead><tr><th><span class="lang-en">Metric</span><span class="lang-th">ตัวชี้วัด</span></th><th><span class="lang-en">Before</span><span class="lang-th">ก่อน</span></th><th><span class="lang-en">After</span><span class="lang-th">หลัง</span></th><th><span class="lang-en">Improvement</span><span class="lang-th">การปรับปรุง</span></th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="lang-en">Risk of accidental edit on protected branch</span><span class="lang-th">ความเสี่ยงของการแก้ไขโดยไม่ตั้งใจบน protected branch</span></td>
+        <td><span class="lang-en">Present (rule-only)</span><span class="lang-th">มีอยู่ (กฎเท่านั้น)</span></td>
+        <td><span class="lang-en">Eliminated (technical block)</span><span class="lang-th">กำจัดแล้ว (บล็อกทางเทคนิค)</span></td>
+        <td><span class="lang-en">Risk removed</span><span class="lang-th">ลบความเสี่ยง</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Time to detect wrong-branch edit</span><span class="lang-th">เวลาในการตรวจจับการแก้ไข branch ที่ผิด</span></td>
+        <td><span class="lang-en">After commit / PR review</span><span class="lang-th">หลัง commit / PR review</span></td>
+        <td><span class="lang-en">Before the edit executes</span><span class="lang-th">ก่อนการแก้ไขทำงาน</span></td>
+        <td><span class="lang-en">Immediate prevention</span><span class="lang-th">ป้องกันทันที</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Developer action needed to recover</span><span class="lang-th">การดำเนินการของนักพัฒนาที่จำเป็นในการกู้คืน</span></td>
+        <td><span class="lang-en">git revert + re-branch</span><span class="lang-th">git revert + สร้าง branch ใหม่</span></td>
+        <td><span class="lang-en">None — AI self-corrects</span><span class="lang-th">ไม่มี — AI แก้ไขตัวเอง</span></td>
+        <td><span class="lang-en">Recovery eliminated</span><span class="lang-th">กำจัดการกู้คืน</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title"><span class="lang-en">Risk &amp; Status</span><span class="lang-th">ความเสี่ยง &amp; สถานะ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Current Status</span><span class="lang-th">สถานะปัจจุบัน</span></h3>
+  <div class="card success">
+    <div class="card-title">&#10003; <span class="lang-en">Live and Verified</span><span class="lang-th">ใช้งานและตรวจสอบแล้ว</span></div>
+    <p><span class="lang-en">The protection is active in the DevStarter toolkit and has been verified on both protected branches (correctly blocked) and working-copy branches (correctly allowed). All existing workflows continue to function normally.</span><span class="lang-th">การป้องกันทำงานใน DevStarter toolkit และได้รับการตรวจสอบบนทั้ง protected branch (ถูกบล็อกอย่างถูกต้อง) และ working-copy branch (ได้รับอนุญาตอย่างถูกต้อง) workflow ที่มีอยู่ทั้งหมดยังคงทำงานได้ตามปกติ</span></p>
+  </div>
+
+  <h3><span class="lang-en">Residual Risk</span><span class="lang-th">ความเสี่ยงที่เหลืออยู่</span></h3>
+  <p><strong><span class="lang-en">Low.</span><span class="lang-th">ต่ำ</span></strong> <span class="lang-en">The only remaining consideration is a small delay (about half a second or less) added to each file change the AI makes. This is imperceptible in normal use and acceptable for a safety check of this importance. No data, user permissions, or external systems were changed.</span><span class="lang-th">การพิจารณาที่เหลืออยู่เพียงอย่างเดียวคือความล่าช้าเล็กน้อย (ประมาณครึ่งวินาทีหรือน้อยกว่า) เพิ่มในการเปลี่ยนแปลงไฟล์แต่ละครั้งที่ AI ทำ ซึ่งแทบจะไม่รู้สึกในการใช้งานปกติและยอมรับได้สำหรับการตรวจสอบความปลอดภัยที่สำคัญนี้ ไม่มีข้อมูล สิทธิ์ผู้ใช้ หรือระบบภายนอกที่เปลี่ยนแปลง</span></p>
+
+  <h3><span class="lang-en">What Was Tested</span><span class="lang-th">สิ่งที่ทดสอบ</span></h3>
+  <ul>
+    <li><span class="lang-en">AI correctly blocked from editing on the main integration branch</span><span class="lang-th">AI ถูกบล็อกอย่างถูกต้องจากการแก้ไขบน main integration branch</span></li>
+    <li><span class="lang-en">AI correctly blocked on the production and staging branches</span><span class="lang-th">AI ถูกบล็อกอย่างถูกต้องบน production และ staging branch</span></li>
+    <li><span class="lang-en">AI allowed to edit normally on working-copy branches</span><span class="lang-th">AI ได้รับอนุญาตให้แก้ไขตามปกติบน working-copy branch</span></li>
+    <li><span class="lang-en">No false errors when working outside a code repository</span><span class="lang-th">ไม่มีข้อผิดพลาดเท็จเมื่อทำงานนอก code repository</span></li>
+    <li><span class="lang-en">All previously working safety and formatting checks still function correctly</span><span class="lang-th">การตรวจสอบความปลอดภัยและการจัดรูปแบบที่ทำงานก่อนหน้าทั้งหมดยังคงทำงานได้อย่างถูกต้อง</span></li>
+  </ul>
+
+  <h3><span class="lang-en">Rollback Capability</span><span class="lang-th">ความสามารถในการย้อนกลับ</span></h3>
+  <p><span class="lang-en">Yes — the protection can be removed in under 5 minutes by removing one configuration entry and re-running the install command. No data was changed, so rollback has no side effects.</span><span class="lang-th">ใช่ — การป้องกันสามารถลบออกได้ในเวลาน้อยกว่า 5 นาทีโดยการลบรายการการกำหนดค่าหนึ่งรายการและรันคำสั่ง install ใหม่ ไม่มีข้อมูลที่เปลี่ยนแปลง ดังนั้นการย้อนกลับจึงไม่มีผลข้างเคียง</span></p>
+
+  <div class="section-header" id="section-6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title"><span class="lang-en">Next Steps</span><span class="lang-th">ขั้นตอนถัดไป</span></h2>
+  </div>
+
+  <p><span class="lang-en">The immediate work is complete. The following actions are recommended to close out the change and ensure full coverage.</span><span class="lang-th">งานทันทีเสร็จสิ้นแล้ว การดำเนินการต่อไปนี้แนะนำเพื่อปิดการเปลี่ยนแปลงและให้แน่ใจว่าครบถ้วน</span></p>
+
+  <table>
+    <thead><tr><th><span class="lang-en">Action</span><span class="lang-th">การดำเนินการ</span></th><th><span class="lang-en">Owner</span><span class="lang-th">เจ้าของ</span></th><th><span class="lang-en">Timeline</span><span class="lang-th">ไทม์ไลน์</span></th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="lang-en">Merge working copy to integration branch (PR review)</span><span class="lang-th">Merge สำเนาทำงานไปยัง integration branch (PR review)</span></td>
+        <td><span class="lang-en">Development Team</span><span class="lang-th">ทีมพัฒนา</span></td>
+        <td><span class="lang-en">This sprint</span><span class="lang-th">Sprint นี้</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Include in next DevStarter release notes</span><span class="lang-th">รวมใน release notes DevStarter ถัดไป</span></td>
+        <td><span class="lang-en">Product / Release Manager</span><span class="lang-th">ผลิตภัณฑ์ / Release Manager</span></td>
+        <td><span class="lang-en">Next release cycle</span><span class="lang-th">รอบ release ถัดไป</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Notify DevStarter users of new safety feature in changelog</span><span class="lang-th">แจ้งผู้ใช้ DevStarter เกี่ยวกับฟีเจอร์ความปลอดภัยใหม่ใน changelog</span></td>
+        <td><span class="lang-en">Development Team</span><span class="lang-th">ทีมพัฒนา</span></td>
+        <td><span class="lang-en">Next release cycle</span><span class="lang-th">รอบ release ถัดไป</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Monitor for any user feedback on the block message wording</span><span class="lang-th">ติดตาม feedback ของผู้ใช้เกี่ยวกับถ้อยคำในข้อความบล็อก</span></td>
+        <td><span class="lang-en">Development Team</span><span class="lang-th">ทีมพัฒนา</span></td>
+        <td><span class="lang-en">2 weeks post-release</span><span class="lang-th">2 สัปดาห์หลัง release</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="card note">
+    <div class="card-title">&#128203; <span class="lang-en">Related Documents</span><span class="lang-th">เอกสารที่เกี่ยวข้อง</span></div>
+    <p>
+      <span class="lang-en">Technical detail (for developers):</span><span class="lang-th">รายละเอียดทางเทคนิค (สำหรับนักพัฒนา):</span> <a href="summary.html" style="color:var(--accent)">summary.html</a><br>
+      <span class="lang-en">Original approved plan:</span><span class="lang-th">แผนที่ได้รับการอนุมัติเดิม:</span> <a href="plan.html" style="color:var(--accent)">plan.html</a>
+    </p>
+  </div>
+
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>Reference</th><th><span class="lang-en">Date</span><span class="lang-th">วันที่</span></th><th><span class="lang-en">Description</span><span class="lang-th">คำอธิบาย</span></th><th><span class="lang-en">Author</span><span class="lang-th">ผู้เขียน</span></th></tr></thead>
+    <tbody>
+      <tr>
+        <td>CR-2026-05-23-001</td>
+        <td>2026-05-23</td>
+        <td><span class="lang-en">Management brief generated after testing completed</span><span class="lang-th">สรุปผู้บริหารสร้างขึ้นหลังการทดสอบเสร็จสิ้น</span></td>
+        <td>@devstarter-techlead</td>
+      </tr>
+      <tr>
+        <td>CR-2026-05-23-001</td>
+        <td>2026-05-23</td>
+        <td><span class="lang-en">Added bilingual EN/TH content + PDF export (CR-2026-05-23-002)</span><span class="lang-th">เพิ่มเนื้อหาสองภาษา EN/TH + ส่งออก PDF (CR-2026-05-23-002)</span></td>
+        <td>@devstarter-frontend</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function toggleLang() {
+    var html = document.documentElement;
+    var isThai = html.getAttribute('data-lang') === 'th';
+    var label = document.getElementById('langLabel');
+    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
+    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
+  }
+  (function() {
+    var savedLang = localStorage.getItem('docportal-lang');
+    if (savedLang === 'th') { document.documentElement.setAttribute('data-lang','th'); var label = document.getElementById('langLabel'); if (label) label.textContent='TH'; }
+  })();
+  function toggleTheme() {
+    var html = document.documentElement;
+    var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function() {
+    var saved = localStorage.getItem('docportal-theme');
+    if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  })();
+  const sections = document.querySelectorAll('.section-header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const content = document.querySelector('.doc-content');
+  content.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (content.scrollTop >= s.offsetTop - content.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+  });
+  tocLinks.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(l.getAttribute('href'));
+      if (t) content.scrollTo({ top: t.offsetTop - content.offsetTop - 20, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
