@@ -904,18 +904,50 @@ If "Testing passed": proceed to Phase A-END below.
    ```html
    <a href="feature/[slug]/summary.html">[CHANGE_ID] — [Feature Name] — [Date] (Completed)</a>
    ```
-6. **Announce:**
+6. **Generate management brief:** Read `~/.claude/templates/docs/devstarter-change-mgmt-template.html`
+   Replace all `{{PLACEHOLDER}}` tokens — use plain business language, no technical terms:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | same CR-ID from plan.html |
+| `{{FEATURE_NAME}}` | feature name |
+| `{{COMPLETED_DATE}}` | today |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{EXECUTIVE_SUMMARY}}` | 2–3 sentence non-technical summary of the feature and its business value |
+| `{{PROBLEM_PLAIN_LANGUAGE}}` | plain English description of the gap or need that existed before this feature |
+| `{{SITUATION_BEFORE}}` | bullet list: what was missing, what users couldn't do, what was manual/slow |
+| `{{SITUATION_AFTER}}` | bullet list: what works now, what improved, what is automated |
+| `{{WHO_WAS_AFFECTED}}` | which users or teams were impacted before; who benefits now |
+| `{{IMPACT_IF_NOT_FIXED}}` | business risk or cost of leaving this undone |
+| `{{DELIVERED_LIST}}` | `<li>` plain-language bullets of each capability delivered |
+| `{{IMPROVEMENT_TILES}}` | `<div class="improvement-tile">` per improvement area with icon + title + plain description |
+| `{{METRICS_ROWS}}` | `<tr>` per measurable outcome: metric name, before value, after value, improvement |
+| `{{RESIDUAL_RISK_DETAIL}}` | Low/Medium/High + plain English explanation of any remaining risk |
+| `{{WHAT_WAS_TESTED_LIST}}` | `<li>` plain description of what was verified (no test names — business scenarios) |
+| `{{ROLLBACK_CAPABILITY}}` | can this be reverted? how quickly? any data implications? |
+| `{{NEXT_STEPS_ROWS}}` | `<tr>` per follow-on action: action description, owner, timeline |
+| `{{PLAN_PATH}}` | `feature/[slug]/plan.html` |
+| `{{SUMMARY_PATH}}` | `feature/[slug]/summary.html` |
+
+   **Save to:** `docs/feature/[slug]/mgmt-brief.html`
+   **Register in docs/index.html** alongside summary.html entry:
+   ```html
+   <a href="feature/[slug]/mgmt-brief.html">[CHANGE_ID] — [Feature Name] — Management Brief — [Date]</a>
+   ```
+
+7. **Announce:**
    ```
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ✅ FEATURE COMPLETE — [Feature Name]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   📋 Plan:    docs/feature/[slug]/plan.html
-   📝 Summary: docs/feature/[slug]/summary.html
+   📋 Plan:         docs/feature/[slug]/plan.html
+   📝 Summary:      docs/feature/[slug]/summary.html
+   📊 Mgmt Brief:   docs/feature/[slug]/mgmt-brief.html
 
-   Share summary.html with:
-     👁  Code Reviewers — Section 7, "For Code Reviewers"
-     ✅  QA Team       — Section 7, "For QA / Testers"
-     📊  Management   — Section 7, "For Management"
+   Share with:
+     👁  Code Reviewers — summary.html, Section 7 "For Code Reviewers"
+     ✅  QA Team       — summary.html, Section 7 "For QA / Testers"
+     📊  Management   — mgmt-brief.html (non-technical)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ```
 

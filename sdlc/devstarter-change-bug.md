@@ -476,18 +476,50 @@ If "Testing passed": proceed to Phase C-END below.
    ```html
    <a href="fix/[slug]/summary.html">[CHANGE_ID] — [Bug Summary] — [Date] (Completed)</a>
    ```
-6. **Announce:**
+6. **Generate management brief:** Read `~/.claude/templates/docs/devstarter-change-mgmt-template.html`
+   Replace all `{{PLACEHOLDER}}` tokens — use plain business language, no technical terms:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | same BUG-ID from plan.html |
+| `{{FEATURE_NAME}}` | bug summary (plain language title) |
+| `{{COMPLETED_DATE}}` | today |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{EXECUTIVE_SUMMARY}}` | 2–3 sentence non-technical summary: what was broken, what was fixed, status now |
+| `{{PROBLEM_PLAIN_LANGUAGE}}` | plain English description of the bug in business terms (what users experienced) |
+| `{{SITUATION_BEFORE}}` | bullet list: what was broken, error users saw, business impact |
+| `{{SITUATION_AFTER}}` | bullet list: what works now, how the experience improved |
+| `{{WHO_WAS_AFFECTED}}` | which users, teams, or processes were impacted |
+| `{{IMPACT_IF_NOT_FIXED}}` | business cost or risk of leaving bug unresolved |
+| `{{DELIVERED_LIST}}` | `<li>` plain-language bullets of what was fixed |
+| `{{IMPROVEMENT_TILES}}` | `<div class="improvement-tile">` per improvement area with icon + title + plain description |
+| `{{METRICS_ROWS}}` | `<tr>` per measurable outcome: metric name, before (broken state), after (fixed state), improvement |
+| `{{RESIDUAL_RISK_DETAIL}}` | Low/Medium/High + plain English: any remaining risk after fix |
+| `{{WHAT_WAS_TESTED_LIST}}` | `<li>` plain description of verification done (business scenarios, not test names) |
+| `{{ROLLBACK_CAPABILITY}}` | can fix be reverted? how quickly? any data implications? |
+| `{{NEXT_STEPS_ROWS}}` | `<tr>` per follow-on action: action, owner, timeline |
+| `{{PLAN_PATH}}` | `fix/[slug]/plan.html` |
+| `{{SUMMARY_PATH}}` | `fix/[slug]/summary.html` |
+
+   **Save to:** `docs/fix/[slug]/mgmt-brief.html`
+   **Register in docs/index.html** alongside summary.html entry:
+   ```html
+   <a href="fix/[slug]/mgmt-brief.html">[CHANGE_ID] — [Bug Summary] — Management Brief — [Date]</a>
+   ```
+
+7. **Announce:**
    ```
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ✅ BUG FIX COMPLETE — [Bug Summary]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   📋 Fix Plan: docs/fix/[slug]/plan.html
-   📝 Summary:  docs/fix/[slug]/summary.html
+   📋 Fix Plan:     docs/fix/[slug]/plan.html
+   📝 Summary:      docs/fix/[slug]/summary.html
+   📊 Mgmt Brief:   docs/fix/[slug]/mgmt-brief.html
 
-   Share summary.html with:
-     👁  Code Reviewers — Section 7, "For Code Reviewers"
-     ✅  QA Team       — Section 7, "For QA / Testers"
-     📊  Management   — Section 7, "For Management"
+   Share with:
+     👁  Code Reviewers — summary.html, Section 7 "For Code Reviewers"
+     ✅  QA Team       — summary.html, Section 7 "For QA / Testers"
+     📊  Management   — mgmt-brief.html (non-technical)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    ```
 

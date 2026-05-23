@@ -78,6 +78,7 @@ If Track B depends on Track A output (e.g. API response shape), complete Track A
 - **docs/feature/[slug]/plan.html** — generated from `~/.claude/templates/docs/devstarter-change-plan-template.html`. Required before any feature/modify dev starts.
 - **docs/fix/[slug]/plan.html** — same template. Required before any bug fix dev starts.
 - **docs/feature/[slug]/summary.html** and **docs/fix/[slug]/summary.html** — generated from `~/.claude/templates/docs/devstarter-change-summary-template.html`. Generated after testing confirmed.
+- **docs/feature/[slug]/mgmt-brief.html** and **docs/fix/[slug]/mgmt-brief.html** — generated from `~/.claude/templates/docs/devstarter-change-mgmt-template.html`. Non-technical management brief. Generated alongside summary.html after testing confirmed. Plain business language — no code, no technical terms.
 - **Function-level change tracking** — agents append to `memory/change-log-[slug].md` during development. Summary phase reads this file. Format: `### file.ext` → `- ADDED/MODIFIED/FIXED: functionName — description`.
 
 ### Rule 9 — Branch Guard (ALWAYS active, no exceptions)
