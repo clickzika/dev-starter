@@ -149,11 +149,97 @@ Sprint:           [current / next]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-Use `AskUserQuestion` with:
-- question: "Gate A1 — Impact analysis ready. Approve to proceed to document updates?"
-- options: ["approve", "revise"]
+---
 
-⛔ GATE A1 — wait for approval before touching any file.
+## A-PHASE 2.5 — Generate Change Plan Document
+
+Immediately after impact analysis, before any gate, generate the plan HTML:
+
+**Step 1 — Create folder and initialize change log:**
+- Create folder: `docs/feature/[slug]/`
+  Slug = lowercase-hyphenated feature name, max 4 words (e.g. `auth-refresh-token`)
+- Create `memory/change-log-[slug].md`:
+  ```markdown
+  # Change Log — [feature-name]
+  Change ID: CR-[YYYY-MM-DD]-NNN
+  Date: [YYYY-MM-DD]
+  Type: [Add Feature / Modify Feature]
+
+  <!-- Agents: append entries below during development. Format:
+  ### path/to/file.ext
+  - ADDED: functionName — description
+  - MODIFIED: functionName — what changed
+  - FIXED: functionName — what was wrong, what was fixed
+  -->
+  ```
+
+**Step 2 — Fill and save plan.html:**
+Read `~/.claude/templates/docs/devstarter-change-plan-template.html`.
+Replace all `{{PLACEHOLDER}}` tokens with values from the intake + impact analysis:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | `CR-[YYYY-MM-DD]-001` (auto-increment if changerequest-log.html exists) |
+| `{{CHANGE_TYPE}}` | `Add Feature` or `Modify Feature` |
+| `{{FEATURE_NAME}}` | from A-Q1 or intake Section 1.1 |
+| `{{SLUG}}` | derived slug |
+| `{{DATE}}` | today |
+| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{PRIORITY}}` / `{{PRIORITY_COLOR}}` | from A-Q7; color: red/orange/yellow/gray |
+| `{{EFFORT}}` | from A-Q8 |
+| `{{BRANCH_NAME}}` | `feature/[slug]` (created after approval) |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{ROOT_PROBLEM}}` | from A-Q2 or intake Section 1.3 |
+| `{{BUSINESS_REQUIREMENT}}` | from intake Section 1.3 |
+| `{{USER_ROLE}}` / `{{USER_WANT}}` / `{{USER_BENEFIT}}` | from intake Section 2.2 |
+| `{{ACCEPTANCE_CRITERIA_LIST}}` | `<li>` items from intake Section 2.3 |
+| `{{SOLUTION_APPROACH}}` | approach summary from impact analysis |
+| `{{WHY_THIS_APPROACH}}` | reasoning based on project context |
+| `{{ALTERNATIVES_ROWS}}` | `<tr>` rows for alternatives considered |
+| `{{FILES_TO_MODIFY_ROWS}}` | `<tr>` rows from "Code that will be created/modified" |
+| `{{REGRESSION_GUARD_LIST}}` | `<li>` items from intake Section 4.1 |
+| `{{DB_IMPACT}}` / `{{API_IMPACT}}` / `{{UI_IMPACT}}` / `{{SEC_IMPACT}}` | from impact analysis |
+| Impact badge classes | `badge-green` (None), `badge-yellow` (Minor), `badge-orange` (Moderate), `badge-red` (Major) |
+| `{{IMPLEMENTATION_STEPS_LIST}}` | `<li>` items for each dev task |
+| `{{DEPENDENCIES_LIST}}` | `<li>` from intake Section 5.3 |
+| `{{TESTING_APPROACH}}` | brief testing strategy |
+| `{{RISKS_ROWS}}` | `<tr>` rows from risk assessment |
+| `{{ROLLBACK_PLAN}}` | revert branch; undo migrations if any |
+
+Save to: `docs/feature/[slug]/plan.html`
+
+**Step 3 — Register in docs/index.html:**
+Add entry under "Change Plans" section (create section if absent):
+```html
+<a href="feature/[slug]/plan.html">[CHANGE_ID] — [Feature Name] — [Date] (Pending Approval)</a>
+```
+
+**Step 4 — Announce:**
+```
+📋 Plan document created: docs/feature/[slug]/plan.html
+   Open in browser to review before approving.
+```
+
+---
+
+Use `AskUserQuestion` with:
+- question: "Gate A1-DOC — Open docs/feature/[slug]/plan.html in browser, review all sections, then approve to create branch and start development."
+- options: ["Approved — create branch and start development", "Request changes (describe in notes)"]
+
+**If "Approved — create branch and start development":**
+1. Show: `✅ Plan approved — creating branch feature/[slug]`
+2. Run: `git branch --show-current`
+3. If on `develop`, `main`, `master`, or `uat` → execute PROC-GH-06: create `feature/[slug]` branch
+4. Confirm: `git branch --show-current` — MUST show `feature/[slug]`
+5. Show: `🌿 Branch ready: feature/[slug] — all edits are isolated on this branch`
+6. Proceed to A-PHASE 3
+
+**If "Request changes":**
+1. Apply requested changes to `docs/feature/[slug]/plan.html` (re-fill affected placeholders)
+2. Announce: `📋 Plan updated: docs/feature/[slug]/plan.html`
+3. Loop back to Gate A1-DOC AskUserQuestion
+
+⛔ GATE A1-DOC — branch is NOT created and NO files are edited until this gate is approved.
 
 ---
 
@@ -539,6 +625,14 @@ For **each task** within a track:
    - @devstarter-frontend → docs/prototype/index.html + docs/brd.html
    - @devstarter-dba → docs/database-design.html
 7. Implement code
+7b. **Append to change log** — for each file modified, add to `memory/change-log-[slug].md`:
+    ```markdown
+    ### path/to/file.ext
+    - ADDED: functionName — description
+    - MODIFIED: functionName — what changed
+    - FIXED: functionName — what was wrong, what was fixed
+    ```
+    Only log functions/methods actually created or changed (not unchanged files).
 8. Read `~/.claude/devstarter-github.md` → PROC-GH-07: create PR
 9. **Exit worktree** — use `ExitWorktree` tool to return to main working copy
 10. **TaskUpdate → completed:** `TaskUpdate(task_id, status="completed")` for this task's UI task
@@ -723,6 +817,107 @@ After approval:
   - PROC-GH-08: merge PR + close issue
   - PROC-NT-06: mark task → Done ⚠️ MANDATORY
 - Update CLAUDE.md: tick feature checkbox ✅
+
+---
+
+## A-PHASE END — Testing Gate + Change Summary Document
+
+### ⛔ GATE A-TEST — Testing Confirmation
+
+After all PRs merged and Gate A4 approved, show:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🧪 TESTING GATE — [Feature Name]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PRs merged: [N]
+Plan document: docs/feature/[slug]/plan.html
+
+Test in your environment, then confirm below.
+To re-trigger later: /devstarter-change → resume → select this feature.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+Use `AskUserQuestion` with:
+- question: "Gate A-TEST — Has user testing passed for [feature name]?"
+- options: ["Testing passed — generate summary doc", "Still testing — save checkpoint and stop"]
+
+If "Still testing": write `memory/progress.json` with `"status": "waiting_test"` and stop.
+If "Testing passed": proceed to Phase A-END below.
+
+---
+
+### Phase A-END — Generate Change Summary Document
+
+1. **Read `memory/change-log-[slug].md`** — collect all function-level changes logged during dev
+2. **Get file list:**
+   ```bash
+   git diff develop...feature/[slug] --name-only
+   ```
+   (If branch already merged/deleted, read from PR diff via `gh pr diff [PR_NUMBER] --name-only`)
+3. **Fill template:** Read `~/.claude/templates/docs/devstarter-change-summary-template.html`
+   Replace all `{{PLACEHOLDER}}` tokens:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | same CR-ID from plan.html |
+| `{{CHANGE_TYPE}}` | `Add Feature` or `Modify Feature` |
+| `{{FEATURE_NAME}}` | feature name |
+| `{{SLUG}}` | same slug as plan |
+| `{{BRANCH_NAME}}` | `feature/[slug]` |
+| `{{PR_NUMBER}}` | from A-PHASE 5 |
+| `{{GITHUB_ISSUE}}` | from A-PHASE 4 |
+| `{{NOTION_TASK}}` | Notion task URL |
+| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{PLAN_APPROVED_DATE}}` | date of Gate A1-DOC approval |
+| `{{DEV_COMPLETED_DATE}}` | date of Gate A4 approval |
+| `{{COMPLETED_DATE}}` | today |
+| `{{ORIGINAL_PROBLEM}}` | from intake A-Q2 / Section 1.3 |
+| `{{ROOT_CAUSE_OR_GAP}}` | business gap / reason for feature |
+| `{{HOW_RESOLVED}}` | paragraph describing solution delivered |
+| `{{ACCEPTANCE_CRITERIA_VERIFIED_ROWS}}` | `<tr>` per criterion: criterion, `✅ Pass` or `❌ Fail`, notes |
+| `{{FILES_CHANGED_ROWS}}` | `<tr>` per file: path, badge (created/modified/deleted), notes |
+| `{{TOTAL_FILES_CHANGED}}` | count |
+| `{{FUNCTIONS_CHANGED_ROWS}}` | `<tr>` per function from change-log-[slug].md: name, file, badge (ADDED/MODIFIED/FIXED), description |
+| `{{TOTAL_FUNCTIONS_CHANGED}}` | count |
+| `{{KEY_DECISIONS_LIST}}` | `<li>` items — major implementation choices |
+| `{{TECHNICAL_APPROACH}}` | paragraph summary of technical implementation |
+| `{{DEVIATIONS_FROM_PLAN}}` | what changed from plan.html, or "None — implemented as planned" |
+| `{{TESTS_ADDED_ROWS}}` | `<tr>` per test: name, file, type, description |
+| `{{VERIFICATION_STEPS_LIST}}` | `<li>` numbered steps — how to verify the feature |
+| `{{REGRESSION_CHECKS_ROWS}}` | `<tr>` per check: area, test, result |
+| `{{REVIEWER_FOCUS_LIST}}` | `<li>` items — specific areas for code reviewer attention |
+| `{{REVIEWER_FILES_LIST}}` | `<li>` items — files needing closest review |
+| `{{REVIEWER_TRADEOFFS}}` | known trade-offs or deferred work |
+| `{{QA_SCENARIOS_LIST}}` | `<li>` numbered test scenarios |
+| `{{QA_EDGE_CASES_LIST}}` | `<li>` edge cases to verify |
+| `{{QA_REGRESSION_LIST}}` | `<li>` regression areas |
+| `{{QA_ENVIRONMENT_NOTES}}` | environment / config notes for QA |
+| `{{MGMT_BUSINESS_IMPACT}}` | non-technical summary of business value |
+| `{{MGMT_USER_IMPACT}}` | how end users are affected |
+| `{{MGMT_RISK}}` | residual risk: Low/Medium/High + explanation |
+| `{{MGMT_DELIVERED_LIST}}` | `<li>` plain-language bullets of what was delivered |
+
+4. **Save to:** `docs/feature/[slug]/summary.html`
+5. **Register in docs/index.html** under "Change Summaries" (create section if absent):
+   ```html
+   <a href="feature/[slug]/summary.html">[CHANGE_ID] — [Feature Name] — [Date] (Completed)</a>
+   ```
+6. **Announce:**
+   ```
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ FEATURE COMPLETE — [Feature Name]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   📋 Plan:    docs/feature/[slug]/plan.html
+   📝 Summary: docs/feature/[slug]/summary.html
+
+   Share summary.html with:
+     👁  Code Reviewers — Section 7, "For Code Reviewers"
+     ✅  QA Team       — Section 7, "For QA / Testers"
+     📊  Management   — Section 7, "For Management"
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ```
 
 ---
 
