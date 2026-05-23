@@ -90,6 +90,7 @@ Before writing any code or editing any file:
 4. Confirm with `git branch --show-current` — result MUST NOT be a protected branch
 5. Only then proceed to editing
 This rule cannot be skipped in autopilot mode, resume flows, or any other context.
+> **Technical enforcement (secondary):** A PreToolUse hook (`pre-edit-branch-guard.js`) blocks Edit/Write tool calls on protected branches. Install via `install.sh --hooks`.
 
 ---
 
