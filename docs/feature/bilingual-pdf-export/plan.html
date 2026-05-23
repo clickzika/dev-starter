@@ -3,10 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{CHANGE_TYPE}} Plan — {{FEATURE_NAME}} — {{PROJECT_NAME}}</title>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Modify Feature Plan — Bilingual (EN/TH) + PDF Export — DevStarter</title>
 <style>
-  /* Standard DevStarter document template */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
@@ -42,10 +40,8 @@
   .doc-header-right { display:flex; align-items:center; gap:16px; }
   .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
   .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
-  .doc-status-badge.draft { background:rgba(245,158,11,0.15); color:var(--status-draft); border:1px solid rgba(245,158,11,0.3); }
-  .doc-status-badge.review { background:rgba(59,130,246,0.15); color:var(--status-review); border:1px solid rgba(59,130,246,0.3); }
-  .doc-status-badge.approved { background:rgba(16,185,129,0.15); color:var(--status-approved); border:1px solid rgba(16,185,129,0.3); }
   .doc-status-badge.pending { background:rgba(139,92,246,0.15); color:var(--status-pending); border:1px solid rgba(139,92,246,0.3); }
+  .doc-status-badge.approved { background:rgba(16,185,129,0.15); color:var(--status-approved); border:1px solid rgba(16,185,129,0.3); }
   .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
   .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
   .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
@@ -113,21 +109,13 @@
   .approval-title { font-size:18px; font-weight:700; margin-bottom:8px; }
   .approval-subtitle { font-size:14px; color:var(--text-dim); margin-bottom:20px; }
   .approval-status { font-size:13px; font-weight:600; margin-top:16px; }
-  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); transition:all 0.2s; }
-  .lang-btn:hover { background:var(--bg-hover); color:var(--text); }
-  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); transition:all 0.2s; }
-  .pdf-btn:hover { background:rgba(233,69,96,0.2); }
-  .lang-th { display:none; } .lang-en { display:inline; }
-  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
-  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3, [data-lang="th"] h4 { font-family:'Sarabun',system-ui,sans-serif; }
   @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:24px 16px 60px;} }
   @media print {
     .doc-header{position:static;border-bottom:2px solid #000;box-shadow:none;}
     .doc-sidebar{display:none;}
     .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;}
     body{background:#fff;color:#000;overflow:auto;}
-    table{page-break-inside:avoid;} .section-header{page-break-after:avoid;} h3{page-break-after:avoid;}
-    .theme-toggle,.lang-btn,.pdf-btn{display:none;}
+    .theme-toggle{display:none;}
   }
 </style>
 </head>
@@ -135,20 +123,18 @@
 
 <header class="doc-header">
   <div class="doc-header-left">
-    <div class="doc-header-logo">{{PROJECT_INITIALS}}</div>
+    <div class="doc-header-logo">DS</div>
     <div class="doc-header-title">
-      <div class="doc-header-project">{{PROJECT_NAME}}</div>
-      <div class="doc-header-docname">{{CHANGE_TYPE}} Plan — {{FEATURE_NAME}}</div>
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Modify Feature Plan — Bilingual (EN/TH) + PDF Export</div>
     </div>
   </div>
   <div class="doc-header-right">
     <div class="doc-header-meta">
-      <div>{{CHANGE_ID}} · {{DATE}}</div>
-      <div>Author: {{AUTHOR}}</div>
+      <div>CR-2026-05-23-002 · 2026-05-23</div>
+      <div>Author: @devstarter-techlead</div>
     </div>
     <span class="doc-status-badge pending">● PENDING APPROVAL</span>
-    <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
-    <div class="lang-btn" onclick="toggleLang()" title="Switch language / เปลี่ยนภาษา"><span id="langLabel">EN</span></div>
     <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
       <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
       <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
@@ -168,11 +154,11 @@
     <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> Approval</a></li>
   </ul>
   <div class="doc-info-card">
-    <div class="doc-info-row"><span>Change ID</span> <span>{{CHANGE_ID}}</span></div>
-    <div class="doc-info-row"><span>Type</span> <span>{{CHANGE_TYPE}}</span></div>
-    <div class="doc-info-row"><span>Effort</span> <span>{{EFFORT}}</span></div>
-    <div class="doc-info-row"><span>Priority</span> <span>{{PRIORITY}}</span></div>
-    <div class="doc-info-row"><span>Date</span> <span>{{DATE}}</span></div>
+    <div class="doc-info-row"><span>Change ID</span> <span>CR-2026-05-23-002</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Modify Feature</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>M (2–8h)</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>Medium</span></div>
+    <div class="doc-info-row"><span>Date</span> <span>2026-05-23</span></div>
     <div class="doc-info-row"><span>Status</span> <span>Pending Approval</span></div>
   </div>
 </nav>
@@ -187,15 +173,15 @@
   <table>
     <thead><tr><th>Field</th><th>Value</th></tr></thead>
     <tbody>
-      <tr><td>Change ID</td><td><code>{{CHANGE_ID}}</code></td></tr>
-      <tr><td>Change Type</td><td><span class="badge badge-blue">{{CHANGE_TYPE}}</span></td></tr>
-      <tr><td>Feature / Fix Name</td><td>{{FEATURE_NAME}}</td></tr>
-      <tr><td>Slug</td><td><code>{{SLUG}}</code></td></tr>
-      <tr><td>Date</td><td>{{DATE}}</td></tr>
-      <tr><td>Author</td><td>{{AUTHOR}}</td></tr>
-      <tr><td>Priority</td><td><span class="badge badge-{{PRIORITY_COLOR}}">{{PRIORITY}}</span></td></tr>
-      <tr><td>Effort</td><td>{{EFFORT}}</td></tr>
-      <tr><td>Branch</td><td><code>{{BRANCH_NAME}}</code></td></tr>
+      <tr><td>Change ID</td><td><code>CR-2026-05-23-002</code></td></tr>
+      <tr><td>Change Type</td><td><span class="badge badge-blue">Modify Feature</span></td></tr>
+      <tr><td>Feature Name</td><td>Bilingual (EN/TH) + PDF Export for All Documents</td></tr>
+      <tr><td>Slug</td><td><code>bilingual-pdf-export</code></td></tr>
+      <tr><td>Date</td><td>2026-05-23</td></tr>
+      <tr><td>Author</td><td>@devstarter-techlead</td></tr>
+      <tr><td>Priority</td><td><span class="badge badge-yellow">Medium</span></td></tr>
+      <tr><td>Effort</td><td>M (2–8h)</td></tr>
+      <tr><td>Branch</td><td><code>feature/bilingual-pdf-export</code></td></tr>
       <tr><td>Status</td><td><span class="badge badge-purple">Pending Approval</span></td></tr>
     </tbody>
   </table>
@@ -207,21 +193,29 @@
   </div>
 
   <h3>Root Problem</h3>
-  <p>{{ROOT_PROBLEM}}</p>
+  <p>All DevStarter HTML documents (plan, summary, mgmt-brief, document-template) are English-only and have no PDF export capability. Thai-speaking stakeholders cannot read these documents in their preferred language, and documents cannot be easily archived or shared outside a browser.</p>
 
   <h3>Business Requirement</h3>
-  <p>{{BUSINESS_REQUIREMENT}}</p>
+  <p>All DevStarter document templates must support full bilingual content (English and Thai) with a language toggle button, and must provide PDF export via a browser print button. Agents must generate bilingual content (both languages) when creating new documents. Existing generated docs must be regenerated with bilingual content.</p>
 
   <h3>User Story</h3>
   <div class="card note">
-    <p><strong>As a</strong> {{USER_ROLE}},<br>
-    <strong>I want to</strong> {{USER_WANT}},<br>
-    <strong>So that</strong> {{USER_BENEFIT}}.</p>
+    <p><strong>As a</strong> DevStarter user working with Thai-speaking stakeholders,<br>
+    <strong>I want to</strong> view all DevStarter documents in Thai and export them as PDF,<br>
+    <strong>So that</strong> I can share professional bilingual documentation with stakeholders and create offline-ready PDF archives.</p>
   </div>
 
   <h3>Acceptance Criteria</h3>
   <ul>
-    {{ACCEPTANCE_CRITERIA_LIST}}
+    <li>Language toggle button (EN ↔ TH) appears in the topbar of all 4 document templates</li>
+    <li>Clicking the toggle switches ALL text in the document between English and Thai</li>
+    <li>Language preference persists across page reloads via <code>localStorage</code></li>
+    <li>"Export PDF" button appears in the topbar of all 4 document templates</li>
+    <li>Clicking Export PDF opens the browser print dialog; resulting PDF has no sidebar, full-width content, clean layout</li>
+    <li>Thai text renders correctly using Sarabun font (loaded from Google Fonts CDN)</li>
+    <li>Agents generate bilingual content using <code>&lt;span class="lang-en"&gt;</code> / <code>&lt;span class="lang-th"&gt;</code> span pairs for every paragraph, heading, and bullet</li>
+    <li>Bilingual Content Rule documented in <code>agents/shared/devstarter-agent-base.md</code> with format example</li>
+    <li>All 3 existing docs for branch-guard-hook (plan/summary/mgmt-brief) regenerated with bilingual content</li>
   </ul>
 
   <!-- Section 3: Proposed Solution -->
@@ -231,16 +225,19 @@
   </div>
 
   <h3>Approach</h3>
-  <p>{{SOLUTION_APPROACH}}</p>
+  <p>Add Google Fonts Sarabun to <code>&lt;head&gt;</code> of all templates. Add CSS for <code>.lang-en</code> / <code>.lang-th</code> visibility classes. Add <code>toggleLang()</code> JavaScript function with <code>localStorage</code> persistence. Add a language toggle button in the topbar (next to the existing theme toggle). Enhance <code>@media print</code> CSS to fully hide sidebar and make content full-width. Add "Export PDF" button in topbar calling <code>window.print()</code>. Update agent instructions to require bilingual span pairs in all generated content. Regenerate existing docs with bilingual content.</p>
 
   <h3>Why This Approach</h3>
-  <p>{{WHY_THIS_APPROACH}}</p>
+  <p>Zero external runtime dependencies beyond Google Fonts CDN. Fully consistent with the existing dark/light theme toggle UX pattern. Works at <code>file://</code> protocol — no web server needed. <code>window.print()</code> produces searchable, text-selectable PDFs (unlike html2canvas screenshot approach). Self-contained HTML files remain portable and archive-safe.</p>
 
   <h3>Alternatives Considered</h3>
   <table>
     <thead><tr><th>Option</th><th>Reason Rejected</th></tr></thead>
     <tbody>
-      {{ALTERNATIVES_ROWS}}
+      <tr><td>Separate .th.html files per document</td><td>Doubles file count; EN and TH can drift out of sync; docs portal needs dual entries</td></tr>
+      <tr><td>External JSON i18n + fetch()</td><td>Fails at file:// protocol; requires web server; adds complexity</td></tr>
+      <tr><td>html2pdf.js (CDN)</td><td>~2MB CDN dependency; complex sidebar layout renders poorly; requires internet</td></tr>
+      <tr><td>jsPDF + html2canvas</td><td>Text is rasterized (not searchable); very slow; large library</td></tr>
     </tbody>
   </table>
 
@@ -254,23 +251,35 @@
   <table>
     <thead><tr><th>File Path</th><th>Change Type</th><th>Reason</th></tr></thead>
     <tbody>
-      {{FILES_TO_MODIFY_ROWS}}
+      <tr><td><code>templates/docs/document-template.html</code></td><td><span class="badge badge-yellow">MODIFIED</span></td><td>Add Sarabun font, lang toggle, PDF button, @media print enhancements</td></tr>
+      <tr><td><code>templates/docs/devstarter-change-plan-template.html</code></td><td><span class="badge badge-yellow">MODIFIED</span></td><td>Same bilingual + PDF infrastructure</td></tr>
+      <tr><td><code>templates/docs/devstarter-change-summary-template.html</code></td><td><span class="badge badge-yellow">MODIFIED</span></td><td>Same bilingual + PDF infrastructure</td></tr>
+      <tr><td><code>templates/docs/devstarter-change-mgmt-template.html</code></td><td><span class="badge badge-yellow">MODIFIED</span></td><td>Same bilingual + PDF infrastructure</td></tr>
+      <tr><td><code>agents/shared/devstarter-agent-base.md</code></td><td><span class="badge badge-yellow">MODIFIED</span></td><td>Add Bilingual Content Rule with span pair format example</td></tr>
+      <tr><td><code>sdlc/devstarter-change.md</code></td><td><span class="badge badge-yellow">MODIFIED</span></td><td>Rule 8 — note bilingual requirement for generated docs</td></tr>
+      <tr><td><code>docs/feature/branch-guard-hook/plan.html</code></td><td><span class="badge badge-orange">REGENERATED</span></td><td>Add bilingual EN/TH content + PDF export button</td></tr>
+      <tr><td><code>docs/feature/branch-guard-hook/summary.html</code></td><td><span class="badge badge-orange">REGENERATED</span></td><td>Add bilingual EN/TH content + PDF export button</td></tr>
+      <tr><td><code>docs/feature/branch-guard-hook/mgmt-brief.html</code></td><td><span class="badge badge-orange">REGENERATED</span></td><td>Add bilingual EN/TH content + PDF export button</td></tr>
     </tbody>
   </table>
 
   <h3>Files NOT to Touch (Regression Guard)</h3>
   <ul>
-    {{REGRESSION_GUARD_LIST}}
+    <li><code>scripts/hooks/pre-edit-branch-guard.js</code> — Branch Guard hook unchanged</li>
+    <li><code>templates/hooks/hooks.json</code> — hook config unchanged</li>
+    <li><code>docs/index.html</code> — document portal navigation unchanged</li>
+    <li><code>install.sh</code> / <code>update.sh</code> / <code>publish.sh</code> — installer scripts unchanged</li>
+    <li>All agent files (except devstarter-agent-base.md) — no scope changes</li>
   </ul>
 
   <h3>System Impact</h3>
   <table>
     <thead><tr><th>Area</th><th>Impact</th><th>Details</th></tr></thead>
     <tbody>
-      <tr><td>Database</td><td><span class="badge {{DB_IMPACT_CLASS}}">{{DB_IMPACT}}</span></td><td>{{DB_IMPACT_DETAIL}}</td></tr>
-      <tr><td>API</td><td><span class="badge {{API_IMPACT_CLASS}}">{{API_IMPACT}}</span></td><td>{{API_IMPACT_DETAIL}}</td></tr>
-      <tr><td>UI</td><td><span class="badge {{UI_IMPACT_CLASS}}">{{UI_IMPACT}}</span></td><td>{{UI_IMPACT_DETAIL}}</td></tr>
-      <tr><td>Security</td><td><span class="badge {{SEC_IMPACT_CLASS}}">{{SEC_IMPACT}}</span></td><td>{{SEC_IMPACT_DETAIL}}</td></tr>
+      <tr><td>Database</td><td><span class="badge badge-green">None</span></td><td>No schema changes</td></tr>
+      <tr><td>API</td><td><span class="badge badge-green">None</span></td><td>No API changes — all client-side HTML/JS</td></tr>
+      <tr><td>UI</td><td><span class="badge badge-yellow">Minor</span></td><td>Lang toggle button + Export PDF button added to topbar in all 4 templates</td></tr>
+      <tr><td>Security</td><td><span class="badge badge-green">None</span></td><td>No auth, data scope, or credential changes</td></tr>
     </tbody>
   </table>
 
@@ -281,16 +290,28 @@
   </div>
 
   <ol>
-    {{IMPLEMENTATION_STEPS_LIST}}
+    <li>Create branch <code>feature/bilingual-pdf-export</code> from <code>develop</code></li>
+    <li>Update <code>document-template.html</code>: add Sarabun Google Font link, <code>.lang-en</code> / <code>.lang-th</code> CSS, <code>toggleLang()</code> JS, lang toggle button in topbar, enhanced <code>@media print</code> CSS, Export PDF button</li>
+    <li>Update <code>devstarter-change-plan-template.html</code>: same additions as step 2</li>
+    <li>Update <code>devstarter-change-summary-template.html</code>: same additions as step 2</li>
+    <li>Update <code>devstarter-change-mgmt-template.html</code>: same additions as step 2</li>
+    <li>Update <code>agents/shared/devstarter-agent-base.md</code>: add "Bilingual Content Rule" section with explicit span pair format example and requirement that agents output both EN and TH for every text element</li>
+    <li>Update <code>sdlc/devstarter-change.md</code> Rule 8: add note that all generated documents must use bilingual span pairs</li>
+    <li>Regenerate <code>docs/feature/branch-guard-hook/plan.html</code>: add bilingual EN/TH content for all text, add lang toggle + PDF button</li>
+    <li>Regenerate <code>docs/feature/branch-guard-hook/summary.html</code>: same as step 8</li>
+    <li>Regenerate <code>docs/feature/branch-guard-hook/mgmt-brief.html</code>: same as step 8</li>
+    <li>Mirror all 4 updated templates + 2 SDLC files to <code>~/.claude/</code></li>
+    <li>Commit all changes on feature branch, open PR to develop</li>
   </ol>
 
   <h3>Dependencies</h3>
   <ul>
-    {{DEPENDENCIES_LIST}}
+    <li>Google Fonts CDN (fonts.googleapis.com) — required for Sarabun Thai font rendering</li>
+    <li>No other external dependencies</li>
   </ul>
 
   <h3>Testing Approach</h3>
-  <p>{{TESTING_APPROACH}}</p>
+  <p>Manual testing: open each updated template in a browser → verify lang toggle button appears → click EN→TH and verify all text switches to Thai → click TH→EN and verify switch back → reload page and verify localStorage preserves last language. Click Export PDF → verify browser print dialog opens → save as PDF → verify no sidebar in output, Thai characters rendered correctly. Verify dark/light theme toggle still works independently.</p>
 
   <!-- Section 6: Risk & Rollback -->
   <div class="section-header" id="section-6">
@@ -302,12 +323,15 @@
   <table>
     <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
     <tbody>
-      {{RISKS_ROWS}}
+      <tr><td>Google Fonts CDN unavailable → Thai text falls back to system font</td><td><span class="badge badge-yellow">Low</span></td><td>Acceptable — body content still readable; system Thai fonts (e.g. Tahoma) cover most characters</td></tr>
+      <tr><td>Agents forget to use span pairs → new docs not bilingual</td><td><span class="badge badge-yellow">Low</span></td><td>Clear Bilingual Content Rule in agent-base.md with explicit format example and pre-Gate doc quality check</td></tr>
+      <tr><td>Thai translation accuracy in regenerated docs</td><td><span class="badge badge-yellow">Low</span></td><td>Review Thai translations for branch-guard-hook docs before final commit</td></tr>
+      <tr><td>Print layout breaks for complex tables</td><td><span class="badge badge-yellow">Low</span></td><td>Test each template type (plan/summary/mgmt-brief) before merging; add page-break-inside:avoid where needed</td></tr>
     </tbody>
   </table>
 
   <h3>Rollback Plan</h3>
-  <p>{{ROLLBACK_PLAN}}</p>
+  <p>Revert the feature branch. All changes are purely additive to existing templates — no data migrations, no schema changes, no API changes. Reverting the branch restores all templates and SDLC files to their pre-change state. Existing generated docs can be restored from git history.</p>
 
   <!-- Section 7: Approval -->
   <div class="section-header" id="section-7">
@@ -317,7 +341,7 @@
 
   <div class="card warning">
     <div class="card-title">Action Required</div>
-    <p>Review all sections above. When satisfied, approve in the Claude Code terminal to start development on branch <code>{{BRANCH_NAME}}</code>.</p>
+    <p>Review all sections above. When satisfied, approve in the Claude Code terminal to create branch <code>feature/bilingual-pdf-export</code> and start development.</p>
   </div>
 
   <div class="approval-block pending" id="approval-block">
@@ -326,10 +350,10 @@
     <table style="margin:16px auto;width:auto;min-width:320px;">
       <thead><tr><th>Field</th><th>Value</th></tr></thead>
       <tbody>
-        <tr><td>Change ID</td><td><code>{{CHANGE_ID}}</code></td></tr>
-        <tr><td>Branch to create</td><td><code>{{BRANCH_NAME}}</code></td></tr>
-        <tr><td>Requested by</td><td>{{AUTHOR}}</td></tr>
-        <tr><td>Date</td><td>{{DATE}}</td></tr>
+        <tr><td>Change ID</td><td><code>CR-2026-05-23-002</code></td></tr>
+        <tr><td>Branch to create</td><td><code>feature/bilingual-pdf-export</code></td></tr>
+        <tr><td>Requested by</td><td>@devstarter-techlead</td></tr>
+        <tr><td>Date</td><td>2026-05-23</td></tr>
       </tbody>
     </table>
     <div class="approval-status">Status: <span class="badge badge-purple">PENDING APPROVAL</span></div>
@@ -344,11 +368,11 @@
     <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
     <tbody>
       <tr>
-        <td><code>{{CHANGE_ID}}</code></td>
-        <td>{{DATE}}</td>
+        <td><code>CR-2026-05-23-002</code></td>
+        <td>2026-05-23</td>
         <td>ADD</td>
-        <td>Initial change plan created</td>
-        <td>{{AUTHOR}}</td>
+        <td>Initial change plan created — bilingual EN/TH support + PDF export for all DevStarter document templates</td>
+        <td>@devstarter-techlead</td>
       </tr>
     </tbody>
   </table>
@@ -356,12 +380,6 @@
 </main>
 
 <script>
-  function toggleLang() {
-    var html = document.documentElement; var isThai = html.getAttribute('data-lang') === 'th'; var label = document.getElementById('langLabel');
-    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
-    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
-  }
-  (function() { var l=localStorage.getItem('docportal-lang'); if (l==='th') { document.documentElement.setAttribute('data-lang','th'); var lb=document.getElementById('langLabel'); if(lb) lb.textContent='TH'; } })();
   function toggleTheme() {
     var html = document.documentElement;
     var isDark = html.getAttribute('data-theme') === 'dark';

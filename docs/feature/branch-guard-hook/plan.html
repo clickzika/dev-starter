@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Add Feature Plan — Branch Guard Hook — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* Standard DevStarter document template */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
@@ -41,12 +41,19 @@
   .doc-header-right { display:flex; align-items:center; gap:16px; }
   .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
   .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
-  .doc-status-badge.pending { background:rgba(139,92,246,0.15); color:var(--status-pending); border:1px solid rgba(139,92,246,0.3); }
+  .doc-status-badge.approved { background:rgba(16,185,129,0.15); color:var(--status-approved); border:1px solid rgba(16,185,129,0.3); }
   .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
   .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
   .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
   .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s,background 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
   [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); transition:all 0.2s; }
+  .lang-btn:hover { background:var(--bg-hover); color:var(--text); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); transition:all 0.2s; }
+  .pdf-btn:hover { background:rgba(233,69,96,0.2); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3, [data-lang="th"] h4 { font-family:'Sarabun',system-ui,sans-serif; }
   .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; transition:background 0.3s,border-color 0.3s; }
   .doc-sidebar::-webkit-scrollbar { width:4px; }
   .doc-sidebar::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
@@ -104,11 +111,20 @@
   .badge-purple{background:rgba(139,92,246,0.15);color:#8b5cf6;}
   hr { border:none; border-top:1px solid var(--border); margin:32px 0; }
   .approval-block { background:var(--bg-card); border:2px solid var(--border); border-radius:12px; padding:28px 32px; margin:32px 0; text-align:center; }
-  .approval-block.pending { border-color:rgba(139,92,246,0.4); background:rgba(139,92,246,0.04); }
+  .approval-block.approved-state { border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.04); }
   .approval-title { font-size:18px; font-weight:700; margin-bottom:8px; }
   .approval-subtitle { font-size:14px; color:var(--text-dim); margin-bottom:20px; }
   .approval-status { font-size:13px; font-weight:600; margin-top:16px; }
   @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:24px 16px 60px;} }
+  @media print {
+    body { overflow:auto; }
+    .doc-sidebar, .lang-btn, .pdf-btn, .theme-toggle { display:none !important; }
+    .doc-content { margin-left:0; height:auto; overflow:visible; padding:24px; }
+    .doc-header { position:static; }
+    table { page-break-inside:avoid; }
+    .section-header { page-break-after:avoid; }
+    h3 { page-break-after:avoid; }
+  }
 </style>
 </head>
 <body>
@@ -126,7 +142,11 @@
       <div>CR-2026-05-23-001 · 2026-05-23</div>
       <div>Author: @devstarter-techlead</div>
     </div>
-    <span class="doc-status-badge pending">● PENDING APPROVAL</span>
+    <span class="doc-status-badge approved">● APPROVED</span>
+    <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()" title="Switch language / เปลี่ยนภาษา">
+      <span id="langLabel">EN</span>
+    </div>
     <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
       <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
       <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
@@ -137,13 +157,13 @@
 <nav class="doc-sidebar">
   <div class="doc-sidebar-title">Contents</div>
   <ul class="toc-list">
-    <li class="toc-item"><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> Change Overview</a></li>
-    <li class="toc-item"><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> Problem / Requirement</a></li>
-    <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> Proposed Solution</a></li>
-    <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> Scope &amp; Impact</a></li>
-    <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> Implementation Steps</a></li>
-    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> Risk &amp; Rollback</a></li>
-    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> Approval</a></li>
+    <li class="toc-item"><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวม</span></a></li>
+    <li class="toc-item"><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Problem / Requirement</span><span class="lang-th">ปัญหา / ความต้องการ</span></a></li>
+    <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Proposed Solution</span><span class="lang-th">วิธีแก้ปัญหา</span></a></li>
+    <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Scope &amp; Impact</span><span class="lang-th">ขอบเขต & ผลกระทบ</span></a></li>
+    <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Implementation Steps</span><span class="lang-th">ขั้นตอนการพัฒนา</span></a></li>
+    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยง & แผนย้อนกลับ</span></a></li>
+    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> <span class="lang-en">Approval</span><span class="lang-th">การอนุมัติ</span></a></li>
   </ul>
   <div class="doc-info-card">
     <div class="doc-info-row"><span>Change ID</span> <span>CR-2026-05-23-001</span></div>
@@ -151,7 +171,7 @@
     <div class="doc-info-row"><span>Effort</span> <span>S (&lt; 2h)</span></div>
     <div class="doc-info-row"><span>Priority</span> <span>High</span></div>
     <div class="doc-info-row"><span>Date</span> <span>2026-05-23</span></div>
-    <div class="doc-info-row"><span>Status</span> <span>Pending Approval</span></div>
+    <div class="doc-info-row"><span>Status</span> <span>Approved</span></div>
   </div>
 </nav>
 
@@ -160,204 +180,277 @@
   <!-- Section 1: Change Overview -->
   <div class="section-header" id="section-1">
     <span class="section-number s1">1</span>
-    <h2 class="section-title">Change Overview</h2>
+    <h2 class="section-title"><span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวมการเปลี่ยนแปลง</span></h2>
   </div>
   <table>
     <thead><tr><th>Field</th><th>Value</th></tr></thead>
     <tbody>
       <tr><td>Change ID</td><td><code>CR-2026-05-23-001</code></td></tr>
-      <tr><td>Change Type</td><td><span class="badge badge-blue">Add Feature</span></td></tr>
-      <tr><td>Feature Name</td><td>Branch Guard Hook</td></tr>
+      <tr><td><span class="lang-en">Change Type</span><span class="lang-th">ประเภทการเปลี่ยนแปลง</span></td><td><span class="badge badge-blue">Add Feature</span></td></tr>
+      <tr><td><span class="lang-en">Feature Name</span><span class="lang-th">ชื่อฟีเจอร์</span></td><td><span class="lang-en">Branch Guard Hook</span><span class="lang-th">Branch Guard Hook</span></td></tr>
       <tr><td>Slug</td><td><code>branch-guard-hook</code></td></tr>
-      <tr><td>Date</td><td>2026-05-23</td></tr>
-      <tr><td>Author</td><td>@devstarter-techlead</td></tr>
-      <tr><td>Priority</td><td><span class="badge badge-orange">High</span></td></tr>
-      <tr><td>Effort</td><td>S (&lt; 2h)</td></tr>
-      <tr><td>Branch</td><td><code>feature/branch-guard-hook</code></td></tr>
-      <tr><td>Status</td><td><span class="badge badge-purple">Pending Approval</span></td></tr>
+      <tr><td><span class="lang-en">Date</span><span class="lang-th">วันที่</span></td><td>2026-05-23</td></tr>
+      <tr><td><span class="lang-en">Author</span><span class="lang-th">ผู้เขียน</span></td><td>@devstarter-techlead</td></tr>
+      <tr><td><span class="lang-en">Priority</span><span class="lang-th">ความสำคัญ</span></td><td><span class="badge badge-orange">High</span></td></tr>
+      <tr><td><span class="lang-en">Effort</span><span class="lang-th">ความพยายาม</span></td><td>S (&lt; 2h)</td></tr>
+      <tr><td><span class="lang-en">Branch</span><span class="lang-th">สาขา</span></td><td><code>feature/branch-guard-hook</code></td></tr>
+      <tr><td><span class="lang-en">Status</span><span class="lang-th">สถานะ</span></td><td><span class="badge badge-green">Approved</span></td></tr>
     </tbody>
   </table>
 
   <!-- Section 2: Problem / Requirement -->
   <div class="section-header" id="section-2">
     <span class="section-number s2">2</span>
-    <h2 class="section-title">Problem / Requirement</h2>
+    <h2 class="section-title"><span class="lang-en">Problem / Requirement</span><span class="lang-th">ปัญหา / ความต้องการ</span></h2>
   </div>
 
-  <h3>Root Problem</h3>
-  <p>Branch Guard exists as text rules only (Rule 9 in <code>devstarter-change.md</code>, Branch Guard section in <code>agents/shared/devstarter-agent-base.md</code>). Claude can still edit files on protected branches (develop, main, uat, master) if the rule is overlooked in autopilot mode, resume flows, or edge cases. There is no technical enforcement — no Claude Code hook intercepts Edit/Write tool calls to verify the current branch before allowing the edit.</p>
+  <h3><span class="lang-en">Root Problem</span><span class="lang-th">ปัญหาหลัก</span></h3>
+  <p><span class="lang-en">Branch Guard exists as text rules only (Rule 9 in <code>devstarter-change.md</code>, Branch Guard section in <code>agents/shared/devstarter-agent-base.md</code>). Claude can still edit files on protected branches (develop, main, uat, master) if the rule is overlooked in autopilot mode, resume flows, or edge cases. There is no technical enforcement — no Claude Code hook intercepts Edit/Write tool calls to verify the current branch before allowing the edit.</span><span class="lang-th">Branch Guard ปัจจุบันมีเพียงกฎข้อความเท่านั้น (Rule 9 ใน <code>devstarter-change.md</code> และส่วน Branch Guard ใน <code>agents/shared/devstarter-agent-base.md</code>) Claude ยังสามารถแก้ไขไฟล์บน protected branch (develop, main, uat, master) ได้หากมีการมองข้ามกฎในโหมด autopilot, resume flow หรือกรณีพิเศษ ไม่มีการบังคับใช้ทางเทคนิค — ไม่มี Claude Code hook ที่สกัดกั้นการเรียก tool Edit/Write เพื่อตรวจสอบ branch ปัจจุบันก่อนอนุญาตให้แก้ไข</span></p>
 
-  <h3>Business Requirement</h3>
-  <p>Every Edit/Write tool call must be technically blocked when Claude is on a protected branch (develop, main, master, uat, dev). The block message must instruct Claude to create the correct branch type (<code>feature/[slug]</code> or <code>fix/[slug]</code>) before proceeding. Non-git directories must pass through without false blocks.</p>
+  <h3><span class="lang-en">Business Requirement</span><span class="lang-th">ความต้องการทางธุรกิจ</span></h3>
+  <p><span class="lang-en">Every Edit/Write tool call must be technically blocked when Claude is on a protected branch (develop, main, master, uat, dev). The block message must instruct Claude to create the correct branch type (<code>feature/[slug]</code> or <code>fix/[slug]</code>) before proceeding. Non-git directories must pass through without false blocks.</span><span class="lang-th">การเรียก tool Edit/Write ทุกครั้งต้องถูกบล็อกทางเทคนิคเมื่อ Claude อยู่บน protected branch (develop, main, master, uat, dev) ข้อความบล็อกต้องสั่งให้ Claude สร้าง branch ประเภทที่ถูกต้อง (<code>feature/[slug]</code> หรือ <code>fix/[slug]</code>) ก่อนดำเนินการ ไดเรกทอรีที่ไม่ใช่ git ต้องผ่านได้โดยไม่มีการบล็อกเท็จ</span></p>
 
-  <h3>User Story</h3>
+  <h3><span class="lang-en">User Story</span><span class="lang-th">เรื่องราวผู้ใช้</span></h3>
   <div class="card note">
-    <p><strong>As a</strong> developer using DevStarter,<br>
-    <strong>I want to</strong> have Claude automatically blocked from editing on develop/main/uat with a clear error and branch creation instruction,<br>
-    <strong>So that</strong> no accidental direct commits to protected branches occur — even in autopilot or resume flows.</p>
+    <p><strong><span class="lang-en">As a</span><span class="lang-th">ในฐานะ</span></strong> <span class="lang-en">developer using DevStarter,</span><span class="lang-th">นักพัฒนาที่ใช้ DevStarter,</span><br>
+    <strong><span class="lang-en">I want to</span><span class="lang-th">ฉันต้องการให้</span></strong> <span class="lang-en">have Claude automatically blocked from editing on develop/main/uat with a clear error and branch creation instruction,</span><span class="lang-th">Claude ถูกบล็อกอัตโนมัติจากการแก้ไขบน develop/main/uat พร้อมข้อผิดพลาดที่ชัดเจนและคำแนะนำการสร้าง branch,</span><br>
+    <strong><span class="lang-en">So that</span><span class="lang-th">เพื่อให้</span></strong> <span class="lang-en">no accidental direct commits to protected branches occur — even in autopilot or resume flows.</span><span class="lang-th">ไม่มีการ commit โดยตรงไปยัง protected branch โดยไม่ตั้งใจ แม้แต่ใน autopilot หรือ resume flow</span></p>
   </div>
 
-  <h3>Acceptance Criteria</h3>
+  <h3><span class="lang-en">Acceptance Criteria</span><span class="lang-th">เกณฑ์การยอมรับ</span></h3>
   <ul>
-    <li>Given Claude is about to edit any file while on <code>develop</code>, <code>main</code>, <code>master</code>, <code>uat</code>, or <code>dev</code> — the Edit/Write tool call is blocked with an instruction to create a work branch first</li>
-    <li>Given Claude is on <code>feature/my-feature</code> or <code>fix/my-fix</code> — Edit/Write passes through normally, no block</li>
-    <li>Given the working directory is not a git repository — Edit/Write passes through normally (no false block)</li>
-    <li>All existing PostToolUse hooks (accumulator, config-sync) continue to function without change</li>
-    <li>Hook is registered in <code>templates/hooks/hooks.json</code> and installed via <code>install.sh --hooks</code></li>
+    <li><span class="lang-en">Given Claude is about to edit any file while on <code>develop</code>, <code>main</code>, <code>master</code>, <code>uat</code>, or <code>dev</code> — the Edit/Write tool call is blocked with an instruction to create a work branch first</span><span class="lang-th">เมื่อ Claude กำลังจะแก้ไขไฟล์ใดๆ ขณะอยู่บน <code>develop</code>, <code>main</code>, <code>master</code>, <code>uat</code>, หรือ <code>dev</code> — การเรียก tool Edit/Write จะถูกบล็อกพร้อมคำแนะนำให้สร้าง work branch ก่อน</span></li>
+    <li><span class="lang-en">Given Claude is on <code>feature/my-feature</code> or <code>fix/my-fix</code> — Edit/Write passes through normally, no block</span><span class="lang-th">เมื่อ Claude อยู่บน <code>feature/my-feature</code> หรือ <code>fix/my-fix</code> — Edit/Write ผ่านได้ตามปกติ ไม่มีการบล็อก</span></li>
+    <li><span class="lang-en">Given the working directory is not a git repository — Edit/Write passes through normally (no false block)</span><span class="lang-th">เมื่อไดเรกทอรีทำงานไม่ใช่ git repository — Edit/Write ผ่านได้ตามปกติ (ไม่มีการบล็อกเท็จ)</span></li>
+    <li><span class="lang-en">All existing PostToolUse hooks (accumulator, config-sync) continue to function without change</span><span class="lang-th">PostToolUse hooks ที่มีอยู่ทั้งหมด (accumulator, config-sync) ยังทำงานได้โดยไม่มีการเปลี่ยนแปลง</span></li>
+    <li><span class="lang-en">Hook is registered in <code>templates/hooks/hooks.json</code> and installed via <code>install.sh --hooks</code></span><span class="lang-th">Hook ถูกลงทะเบียนใน <code>templates/hooks/hooks.json</code> และติดตั้งผ่าน <code>install.sh --hooks</code></span></li>
   </ul>
 
   <!-- Section 3: Proposed Solution -->
   <div class="section-header" id="section-3">
     <span class="section-number s3">3</span>
-    <h2 class="section-title">Proposed Solution</h2>
+    <h2 class="section-title"><span class="lang-en">Proposed Solution</span><span class="lang-th">วิธีแก้ปัญหาที่เสนอ</span></h2>
   </div>
 
-  <h3>Approach</h3>
-  <p>Add a <strong>PreToolUse hook</strong> (<code>scripts/hooks/pre-edit-branch-guard.js</code>) that intercepts every Edit and Write tool call. The hook runs <code>git branch --show-current</code>, checks the result against the protected-branch list, and outputs a JSON block decision (<code>{"decision":"block","reason":"..."}</code>) if on a protected branch. If git is unavailable or the directory is not a git repo, the hook passes through silently. The existing text rules (Rule 9, agent-base Branch Guard) stay as primary instruction; the hook is the technical safety net.</p>
+  <h3><span class="lang-en">Approach</span><span class="lang-th">แนวทาง</span></h3>
+  <p><span class="lang-en">Add a <strong>PreToolUse hook</strong> (<code>scripts/hooks/pre-edit-branch-guard.js</code>) that intercepts every Edit and Write tool call. The hook runs <code>git branch --show-current</code>, checks the result against the protected-branch list, and outputs a JSON block decision (<code>{"decision":"block","reason":"..."}</code>) if on a protected branch. If git is unavailable or the directory is not a git repo, the hook passes through silently. The existing text rules (Rule 9, agent-base Branch Guard) stay as primary instruction; the hook is the technical safety net.</span><span class="lang-th">เพิ่ม <strong>PreToolUse hook</strong> (<code>scripts/hooks/pre-edit-branch-guard.js</code>) ที่สกัดกั้นการเรียก tool Edit และ Write ทุกครั้ง Hook จะรัน <code>git branch --show-current</code>, ตรวจสอบผลลัพธ์กับรายการ protected branch และส่งออกคำตัดสินบล็อก JSON (<code>{"decision":"block","reason":"..."}</code>) หากอยู่บน protected branch ถ้า git ไม่พร้อมใช้งานหรือไดเรกทอรีไม่ใช่ git repo hook จะผ่านโดยไม่ส่งเสียง กฎข้อความที่มีอยู่ (Rule 9, agent-base Branch Guard) ยังคงเป็นคำแนะนำหลัก โดย hook เป็นตาข่ายความปลอดภัยทางเทคนิค</span></p>
 
-  <h3>Why This Approach</h3>
-  <p>Defense in depth: text rules explain WHY (educates Claude), the hook enforces HOW (hard technical block that cannot be bypassed by model drift, autopilot, or resume flows). The hook message is educational — it names the current branch and tells Claude exactly what branch to create — so Claude recovers correctly rather than just retrying. The implementation follows the exact same Node.js stdin/stdout pass-through pattern as the existing <code>stop-check-console-log.js</code> hook (~60 lines).</p>
+  <h3><span class="lang-en">Why This Approach</span><span class="lang-th">เหตุผลที่เลือกแนวทางนี้</span></h3>
+  <p><span class="lang-en">Defense in depth: text rules explain WHY (educates Claude), the hook enforces HOW (hard technical block that cannot be bypassed by model drift, autopilot, or resume flows). The hook message is educational — it names the current branch and tells Claude exactly what branch to create — so Claude recovers correctly rather than just retrying. The implementation follows the exact same Node.js stdin/stdout pass-through pattern as the existing <code>stop-check-console-log.js</code> hook (~60 lines).</span><span class="lang-th">การป้องกันเชิงลึก: กฎข้อความอธิบายว่า WHY (สั่งสอน Claude), hook บังคับใช้ว่า HOW (การบล็อกทางเทคนิคแบบแข็งที่ไม่สามารถหลีกเลี่ยงได้โดย model drift, autopilot หรือ resume flow) ข้อความ hook เป็นการสอน — มันระบุชื่อ branch ปัจจุบันและบอก Claude ว่าต้องสร้าง branch อะไร — เพื่อให้ Claude กู้คืนได้อย่างถูกต้องแทนที่จะลองใหม่ การพัฒนาตามรูปแบบ Node.js stdin/stdout pass-through เดียวกันกับ hook <code>stop-check-console-log.js</code> ที่มีอยู่ (~60 บรรทัด)</span></p>
 
-  <h3>Alternatives Considered</h3>
+  <h3><span class="lang-en">Alternatives Considered</span><span class="lang-th">ทางเลือกที่พิจารณา</span></h3>
   <table>
-    <thead><tr><th>Option</th><th>Reason Rejected</th></tr></thead>
+    <thead><tr><th>Option</th><th><span class="lang-en">Reason Rejected</span><span class="lang-th">เหตุผลที่ปฏิเสธ</span></th></tr></thead>
     <tbody>
-      <tr><td>Text rules only (current state)</td><td>No technical safety net — model can drift or be overridden in autopilot/resume flows</td></tr>
-      <tr><td>PostToolUse hook</td><td>Runs AFTER the edit — too late to prevent the write to a protected branch</td></tr>
-      <tr><td>Git pre-commit hook</td><td>Only fires on commit, not on individual file writes — doesn't prevent Claude from writing changes to the working tree on a protected branch</td></tr>
+      <tr>
+        <td><span class="lang-en">Text rules only (current state)</span><span class="lang-th">กฎข้อความเท่านั้น (สถานะปัจจุบัน)</span></td>
+        <td><span class="lang-en">No technical safety net — model can drift or be overridden in autopilot/resume flows</span><span class="lang-th">ไม่มีตาข่ายความปลอดภัยทางเทคนิค — model อาจเบี่ยงเบนหรือถูกแทนที่ใน autopilot/resume flow</span></td>
+      </tr>
+      <tr>
+        <td>PostToolUse hook</td>
+        <td><span class="lang-en">Runs AFTER the edit — too late to prevent the write to a protected branch</span><span class="lang-th">ทำงานหลังการแก้ไข — สายเกินไปที่จะป้องกันการเขียนไปยัง protected branch</span></td>
+      </tr>
+      <tr>
+        <td>Git pre-commit hook</td>
+        <td><span class="lang-en">Only fires on commit, not on individual file writes — doesn't prevent Claude from writing changes to the working tree on a protected branch</span><span class="lang-th">ทำงานเฉพาะเมื่อ commit ไม่ใช่เมื่อเขียนไฟล์แต่ละไฟล์ — ไม่ป้องกัน Claude จากการเขียนการเปลี่ยนแปลงไปยัง working tree บน protected branch</span></td>
+      </tr>
     </tbody>
   </table>
 
   <!-- Section 4: Scope & Impact -->
   <div class="section-header" id="section-4">
     <span class="section-number s4">4</span>
-    <h2 class="section-title">Scope &amp; Impact</h2>
+    <h2 class="section-title"><span class="lang-en">Scope &amp; Impact</span><span class="lang-th">ขอบเขต &amp; ผลกระทบ</span></h2>
   </div>
 
-  <h3>Files to Modify</h3>
+  <h3><span class="lang-en">Files to Modify</span><span class="lang-th">ไฟล์ที่ต้องแก้ไข</span></h3>
   <table>
-    <thead><tr><th>File Path</th><th>Change Type</th><th>Reason</th></tr></thead>
+    <thead><tr><th><span class="lang-en">File Path</span><span class="lang-th">เส้นทางไฟล์</span></th><th><span class="lang-en">Change Type</span><span class="lang-th">ประเภทการเปลี่ยนแปลง</span></th><th><span class="lang-en">Reason</span><span class="lang-th">เหตุผล</span></th></tr></thead>
     <tbody>
-      <tr><td><code>scripts/hooks/pre-edit-branch-guard.js</code></td><td><span class="badge badge-green">CREATE</span></td><td>New PreToolUse hook — branch enforcement logic</td></tr>
-      <tr><td><code>templates/hooks/hooks.json</code></td><td><span class="badge badge-blue">MODIFY</span></td><td>Register new PreToolUse handler for Edit|Write</td></tr>
-      <tr><td><code>agents/shared/devstarter-agent-base.md</code></td><td><span class="badge badge-blue">MODIFY</span></td><td>Add note: hook backs up Branch Guard rule as technical safety net</td></tr>
-      <tr><td><code>sdlc/devstarter-change.md</code></td><td><span class="badge badge-blue">MODIFY</span></td><td>Rule 9 — add note that PreToolUse hook provides secondary enforcement</td></tr>
-      <tr><td><code>~/.claude/</code> copies</td><td><span class="badge badge-blue">COPY</span></td><td>Mirror all above to installed location after dev</td></tr>
+      <tr>
+        <td><code>scripts/hooks/pre-edit-branch-guard.js</code></td>
+        <td><span class="badge badge-green">CREATE</span></td>
+        <td><span class="lang-en">New PreToolUse hook — branch enforcement logic</span><span class="lang-th">PreToolUse hook ใหม่ — ตรรกะการบังคับใช้ branch</span></td>
+      </tr>
+      <tr>
+        <td><code>templates/hooks/hooks.json</code></td>
+        <td><span class="badge badge-blue">MODIFY</span></td>
+        <td><span class="lang-en">Register new PreToolUse handler for Edit|Write</span><span class="lang-th">ลงทะเบียน PreToolUse handler ใหม่สำหรับ Edit|Write</span></td>
+      </tr>
+      <tr>
+        <td><code>agents/shared/devstarter-agent-base.md</code></td>
+        <td><span class="badge badge-blue">MODIFY</span></td>
+        <td><span class="lang-en">Add note: hook backs up Branch Guard rule as technical safety net</span><span class="lang-th">เพิ่มหมายเหตุ: hook รองรับกฎ Branch Guard เป็นตาข่ายความปลอดภัยทางเทคนิค</span></td>
+      </tr>
+      <tr>
+        <td><code>sdlc/devstarter-change.md</code></td>
+        <td><span class="badge badge-blue">MODIFY</span></td>
+        <td><span class="lang-en">Rule 9 — add note that PreToolUse hook provides secondary enforcement</span><span class="lang-th">Rule 9 — เพิ่มหมายเหตุว่า PreToolUse hook ให้การบังคับใช้รอง</span></td>
+      </tr>
+      <tr>
+        <td><code>~/.claude/</code> copies</td>
+        <td><span class="badge badge-blue">COPY</span></td>
+        <td><span class="lang-en">Mirror all above to installed location after dev</span><span class="lang-th">คัดลอกทั้งหมดไปยังตำแหน่งที่ติดตั้งหลังการพัฒนา</span></td>
+      </tr>
     </tbody>
   </table>
 
-  <h3>Files NOT to Touch (Regression Guard)</h3>
+  <h3><span class="lang-en">Files NOT to Touch (Regression Guard)</span><span class="lang-th">ไฟล์ที่ไม่ต้องแก้ไข (ป้องกัน Regression)</span></h3>
   <ul>
-    <li>All existing hook files: <code>session-start.js</code>, <code>pre-compact.js</code>, <code>post-edit-accumulator.js</code>, <code>stop-format-typecheck.js</code>, <code>stop-check-console-log.js</code> — no changes</li>
-    <li><code>scripts/install-hooks.js</code> — no changes (reads from hooks.json automatically)</li>
-    <li><code>.claude/settings.json</code> — not modified directly (install-hooks.js merges on install)</li>
-    <li>All other SDLC runbooks, agent files, templates</li>
+    <li><span class="lang-en">All existing hook files: <code>session-start.js</code>, <code>pre-compact.js</code>, <code>post-edit-accumulator.js</code>, <code>stop-format-typecheck.js</code>, <code>stop-check-console-log.js</code> — no changes</span><span class="lang-th">ไฟล์ hook ที่มีอยู่ทั้งหมด: <code>session-start.js</code>, <code>pre-compact.js</code>, <code>post-edit-accumulator.js</code>, <code>stop-format-typecheck.js</code>, <code>stop-check-console-log.js</code> — ไม่มีการเปลี่ยนแปลง</span></li>
+    <li><span class="lang-en"><code>scripts/install-hooks.js</code> — no changes (reads from hooks.json automatically)</span><span class="lang-th"><code>scripts/install-hooks.js</code> — ไม่มีการเปลี่ยนแปลง (อ่านจาก hooks.json โดยอัตโนมัติ)</span></li>
+    <li><span class="lang-en"><code>.claude/settings.json</code> — not modified directly (install-hooks.js merges on install)</span><span class="lang-th"><code>.claude/settings.json</code> — ไม่แก้ไขโดยตรง (install-hooks.js รวมเมื่อติดตั้ง)</span></li>
+    <li><span class="lang-en">All other SDLC runbooks, agent files, templates</span><span class="lang-th">SDLC runbook, ไฟล์ agent และ template อื่นๆ ทั้งหมด</span></li>
   </ul>
 
-  <h3>System Impact</h3>
+  <h3><span class="lang-en">System Impact</span><span class="lang-th">ผลกระทบต่อระบบ</span></h3>
   <table>
-    <thead><tr><th>Area</th><th>Impact</th><th>Details</th></tr></thead>
+    <thead><tr><th><span class="lang-en">Area</span><span class="lang-th">พื้นที่</span></th><th><span class="lang-en">Impact</span><span class="lang-th">ผลกระทบ</span></th><th><span class="lang-en">Details</span><span class="lang-th">รายละเอียด</span></th></tr></thead>
     <tbody>
-      <tr><td>Database</td><td><span class="badge badge-green">None</span></td><td>No database changes</td></tr>
-      <tr><td>API</td><td><span class="badge badge-green">None</span></td><td>No API changes</td></tr>
-      <tr><td>UI</td><td><span class="badge badge-green">None</span></td><td>No UI changes</td></tr>
-      <tr><td>Security</td><td><span class="badge badge-blue">Low</span></td><td>Hook adds read-only <code>git branch --show-current</code> check; no secrets or auth scope changes; hook never logs sensitive data</td></tr>
-      <tr><td>Performance</td><td><span class="badge badge-yellow">Low</span></td><td>~30–50ms added to every Edit/Write call for git subprocess; acceptable overhead</td></tr>
+      <tr>
+        <td><span class="lang-en">Database</span><span class="lang-th">ฐานข้อมูล</span></td>
+        <td><span class="badge badge-green">None</span></td>
+        <td><span class="lang-en">No database changes</span><span class="lang-th">ไม่มีการเปลี่ยนแปลงฐานข้อมูล</span></td>
+      </tr>
+      <tr>
+        <td>API</td>
+        <td><span class="badge badge-green">None</span></td>
+        <td><span class="lang-en">No API changes</span><span class="lang-th">ไม่มีการเปลี่ยนแปลง API</span></td>
+      </tr>
+      <tr>
+        <td>UI</td>
+        <td><span class="badge badge-green">None</span></td>
+        <td><span class="lang-en">No UI changes</span><span class="lang-th">ไม่มีการเปลี่ยนแปลง UI</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Security</span><span class="lang-th">ความปลอดภัย</span></td>
+        <td><span class="badge badge-blue">Low</span></td>
+        <td><span class="lang-en">Hook adds read-only <code>git branch --show-current</code> check; no secrets or auth scope changes; hook never logs sensitive data</span><span class="lang-th">Hook เพิ่มการตรวจสอบ <code>git branch --show-current</code> แบบอ่านอย่างเดียว ไม่มีการเปลี่ยนแปลง secrets หรือขอบเขต auth hook ไม่บันทึกข้อมูลที่ละเอียดอ่อน</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Performance</span><span class="lang-th">ประสิทธิภาพ</span></td>
+        <td><span class="badge badge-yellow">Low</span></td>
+        <td><span class="lang-en">~30–50ms added to every Edit/Write call for git subprocess; acceptable overhead</span><span class="lang-th">เพิ่ม ~30–50ms สำหรับการเรียก Edit/Write ทุกครั้งสำหรับ git subprocess ซึ่งเป็น overhead ที่ยอมรับได้</span></td>
+      </tr>
     </tbody>
   </table>
 
   <!-- Section 5: Implementation Steps -->
   <div class="section-header" id="section-5">
     <span class="section-number s5">5</span>
-    <h2 class="section-title">Implementation Steps</h2>
+    <h2 class="section-title"><span class="lang-en">Implementation Steps</span><span class="lang-th">ขั้นตอนการพัฒนา</span></h2>
   </div>
 
   <ol>
-    <li>Create <code>feature/branch-guard-hook</code> branch from develop</li>
-    <li>Create <code>scripts/hooks/pre-edit-branch-guard.js</code>:<br>
+    <li><span class="lang-en">Create <code>feature/branch-guard-hook</code> branch from develop</span><span class="lang-th">สร้าง branch <code>feature/branch-guard-hook</code> จาก develop</span></li>
+    <li><span class="lang-en">Create <code>scripts/hooks/pre-edit-branch-guard.js</code>:<br>
       — Read stdin (PreToolUse JSON) and pass through to stdout unchanged<br>
       — Run <code>execFileSync('git', ['branch', '--show-current'])</code><br>
       — If result is in <code>['develop','main','master','uat','dev']</code>: write block decision JSON to stdout and exit 0<br>
       — If not in git repo (exception): exit 0 (pass through)<br>
-      — Block message: names current branch + instructs <code>feature/[slug]</code> or <code>fix/[slug]</code> creation</li>
-    <li>Update <code>templates/hooks/hooks.json</code>: add PreToolUse array with <code>"matcher": "Edit|Write"</code> pointing to <code>pre-edit-branch-guard.js</code></li>
-    <li>Update <code>agents/shared/devstarter-agent-base.md</code> Branch Guard section: add one-line note about hook</li>
-    <li>Update <code>sdlc/devstarter-change.md</code> Rule 9: add one-line note about hook</li>
-    <li>Copy all modified files to <code>~/.claude/</code></li>
-    <li>Test: manually trigger Edit on develop → confirm block; switch to feature branch → confirm pass-through</li>
-    <li>Commit and open PR to develop</li>
+      — Block message: names current branch + instructs <code>feature/[slug]</code> or <code>fix/[slug]</code> creation</span>
+      <span class="lang-th">สร้าง <code>scripts/hooks/pre-edit-branch-guard.js</code>:<br>
+      — อ่าน stdin (PreToolUse JSON) และส่งผ่านไปยัง stdout โดยไม่เปลี่ยนแปลง<br>
+      — รัน <code>execFileSync('git', ['branch', '--show-current'])</code><br>
+      — หากผลลัพธ์อยู่ใน <code>['develop','main','master','uat','dev']</code>: เขียนคำตัดสินบล็อก JSON ไปยัง stdout และออกด้วย 0<br>
+      — หากไม่ได้อยู่ใน git repo (exception): ออกด้วย 0 (ผ่าน)<br>
+      — ข้อความบล็อก: ระบุชื่อ branch ปัจจุบัน + แนะนำการสร้าง <code>feature/[slug]</code> หรือ <code>fix/[slug]</code></span></li>
+    <li><span class="lang-en">Update <code>templates/hooks/hooks.json</code>: add PreToolUse array with <code>"matcher": "Edit|Write"</code> pointing to <code>pre-edit-branch-guard.js</code></span><span class="lang-th">อัปเดต <code>templates/hooks/hooks.json</code>: เพิ่ม PreToolUse array ด้วย <code>"matcher": "Edit|Write"</code> ที่ชี้ไปยัง <code>pre-edit-branch-guard.js</code></span></li>
+    <li><span class="lang-en">Update <code>agents/shared/devstarter-agent-base.md</code> Branch Guard section: add one-line note about hook</span><span class="lang-th">อัปเดตส่วน Branch Guard ของ <code>agents/shared/devstarter-agent-base.md</code>: เพิ่มหมายเหตุหนึ่งบรรทัดเกี่ยวกับ hook</span></li>
+    <li><span class="lang-en">Update <code>sdlc/devstarter-change.md</code> Rule 9: add one-line note about hook</span><span class="lang-th">อัปเดต Rule 9 ของ <code>sdlc/devstarter-change.md</code>: เพิ่มหมายเหตุหนึ่งบรรทัดเกี่ยวกับ hook</span></li>
+    <li><span class="lang-en">Copy all modified files to <code>~/.claude/</code></span><span class="lang-th">คัดลอกไฟล์ที่แก้ไขทั้งหมดไปยัง <code>~/.claude/</code></span></li>
+    <li><span class="lang-en">Test: manually trigger Edit on develop → confirm block; switch to feature branch → confirm pass-through</span><span class="lang-th">ทดสอบ: เรียก Edit บน develop ด้วยตนเอง → ยืนยันการบล็อก สลับไปยัง feature branch → ยืนยันการผ่าน</span></li>
+    <li><span class="lang-en">Commit and open PR to develop</span><span class="lang-th">Commit และเปิด PR ไปยัง develop</span></li>
   </ol>
 
-  <h3>Dependencies</h3>
+  <h3><span class="lang-en">Dependencies</span><span class="lang-th">ข้อกำหนดเบื้องต้น</span></h3>
   <ul>
-    <li>Node.js 18+ (already required by hooks system)</li>
-    <li>git in PATH (already required by DevStarter)</li>
-    <li><code>scripts/install-hooks.js</code> (existing — no changes needed)</li>
+    <li><span class="lang-en">Node.js 18+ (already required by hooks system)</span><span class="lang-th">Node.js 18+ (จำเป็นแล้วโดยระบบ hooks)</span></li>
+    <li><span class="lang-en">git in PATH (already required by DevStarter)</span><span class="lang-th">git ใน PATH (จำเป็นแล้วโดย DevStarter)</span></li>
+    <li><span class="lang-en"><code>scripts/install-hooks.js</code> (existing — no changes needed)</span><span class="lang-th"><code>scripts/install-hooks.js</code> (มีอยู่แล้ว — ไม่จำเป็นต้องเปลี่ยนแปลง)</span></li>
   </ul>
 
-  <h3>Testing Approach</h3>
-  <p>Manual functional test: (1) confirm <code>git branch --show-current</code> returns <code>develop</code>, attempt an Edit tool call, verify Claude receives the block decision and creates a work branch instead; (2) checkout <code>feature/test-branch</code>, attempt an Edit tool call, verify it passes through normally; (3) run in a non-git directory, verify pass-through with no error.</p>
+  <h3><span class="lang-en">Testing Approach</span><span class="lang-th">แนวทางการทดสอบ</span></h3>
+  <p><span class="lang-en">Manual functional test: (1) confirm <code>git branch --show-current</code> returns <code>develop</code>, attempt an Edit tool call, verify Claude receives the block decision and creates a work branch instead; (2) checkout <code>feature/test-branch</code>, attempt an Edit tool call, verify it passes through normally; (3) run in a non-git directory, verify pass-through with no error.</span><span class="lang-th">การทดสอบฟังก์ชันด้วยตนเอง: (1) ยืนยันว่า <code>git branch --show-current</code> ส่งคืน <code>develop</code>, ลองเรียก tool Edit, ตรวจสอบว่า Claude ได้รับคำตัดสินบล็อกและสร้าง work branch แทน (2) checkout <code>feature/test-branch</code>, ลองเรียก tool Edit, ตรวจสอบว่าผ่านได้ตามปกติ (3) รันในไดเรกทอรีที่ไม่ใช่ git, ตรวจสอบว่าผ่านได้โดยไม่มีข้อผิดพลาด</span></p>
 
   <!-- Section 6: Risk & Rollback -->
   <div class="section-header" id="section-6">
     <span class="section-number s6">6</span>
-    <h2 class="section-title">Risk &amp; Rollback</h2>
+    <h2 class="section-title"><span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยง &amp; แผนย้อนกลับ</span></h2>
   </div>
 
-  <h3>Risks</h3>
+  <h3><span class="lang-en">Risks</span><span class="lang-th">ความเสี่ยง</span></h3>
   <table>
-    <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+    <thead><tr><th><span class="lang-en">Risk</span><span class="lang-th">ความเสี่ยง</span></th><th><span class="lang-en">Severity</span><span class="lang-th">ระดับความรุนแรง</span></th><th><span class="lang-en">Mitigation</span><span class="lang-th">การลดความเสี่ยง</span></th></tr></thead>
     <tbody>
-      <tr><td>False block on non-git directory (e.g. temp file edit)</td><td><span class="badge badge-yellow">Low</span></td><td>Hook wraps git call in try/catch — exits 0 (pass-through) if <code>rev-parse</code> fails</td></tr>
-      <tr><td>Hook adds latency to every file edit</td><td><span class="badge badge-yellow">Low</span></td><td>~30–50ms for git subprocess is acceptable; hook timeout in settings.json set to 5s</td></tr>
-      <tr><td>Hook blocks legitimate edits if branch name check is too broad</td><td><span class="badge badge-yellow">Low</span></td><td>Exact match on known protected names only: develop, main, master, uat, dev — no glob/prefix matching</td></tr>
-      <tr><td>Existing hooks no longer installed after hooks.json change</td><td><span class="badge badge-orange">Medium</span></td><td>Regression test: run <code>node scripts/install-hooks.js</code> and verify all 5 existing hooks still appear in output settings.json</td></tr>
+      <tr>
+        <td><span class="lang-en">False block on non-git directory (e.g. temp file edit)</span><span class="lang-th">การบล็อกเท็จในไดเรกทอรีที่ไม่ใช่ git (เช่น การแก้ไขไฟล์ชั่วคราว)</span></td>
+        <td><span class="badge badge-yellow">Low</span></td>
+        <td><span class="lang-en">Hook wraps git call in try/catch — exits 0 (pass-through) if <code>rev-parse</code> fails</span><span class="lang-th">Hook ห่อการเรียก git ด้วย try/catch — ออกด้วย 0 (ผ่าน) หาก <code>rev-parse</code> ล้มเหลว</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Hook adds latency to every file edit</span><span class="lang-th">Hook เพิ่ม latency สำหรับการแก้ไขไฟล์ทุกครั้ง</span></td>
+        <td><span class="badge badge-yellow">Low</span></td>
+        <td><span class="lang-en">~30–50ms for git subprocess is acceptable; hook timeout in settings.json set to 5s</span><span class="lang-th">~30–50ms สำหรับ git subprocess ยอมรับได้ hook timeout ใน settings.json ตั้งค่าเป็น 5 วินาที</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Hook blocks legitimate edits if branch name check is too broad</span><span class="lang-th">Hook บล็อกการแก้ไขที่ถูกต้องหากการตรวจสอบชื่อ branch กว้างเกินไป</span></td>
+        <td><span class="badge badge-yellow">Low</span></td>
+        <td><span class="lang-en">Exact match on known protected names only: develop, main, master, uat, dev — no glob/prefix matching</span><span class="lang-th">จับคู่แบบ exact กับชื่อที่ป้องกันที่รู้จักเท่านั้น: develop, main, master, uat, dev — ไม่มีการจับคู่ glob/prefix</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Existing hooks no longer installed after hooks.json change</span><span class="lang-th">hooks ที่มีอยู่ไม่ถูกติดตั้งอีกต่อไปหลังการเปลี่ยนแปลง hooks.json</span></td>
+        <td><span class="badge badge-orange">Medium</span></td>
+        <td><span class="lang-en">Regression test: run <code>node scripts/install-hooks.js</code> and verify all 5 existing hooks still appear in output settings.json</span><span class="lang-th">ทดสอบ regression: รัน <code>node scripts/install-hooks.js</code> และตรวจสอบว่า hooks ที่มีอยู่ทั้ง 5 ยังคงปรากฏใน settings.json ที่ส่งออก</span></td>
+      </tr>
     </tbody>
   </table>
 
-  <h3>Rollback Plan</h3>
-  <p>Remove the <code>PreToolUse</code> entry from <code>templates/hooks/hooks.json</code> and re-run <code>node scripts/install-hooks.js</code>. No code logic changes are required — the hook file can remain in <code>scripts/hooks/</code> without being registered. Alternatively, revert the commit on <code>develop</code> after PR merge.</p>
+  <h3><span class="lang-en">Rollback Plan</span><span class="lang-th">แผนย้อนกลับ</span></h3>
+  <p><span class="lang-en">Remove the <code>PreToolUse</code> entry from <code>templates/hooks/hooks.json</code> and re-run <code>node scripts/install-hooks.js</code>. No code logic changes are required — the hook file can remain in <code>scripts/hooks/</code> without being registered. Alternatively, revert the commit on <code>develop</code> after PR merge.</span><span class="lang-th">ลบรายการ <code>PreToolUse</code> จาก <code>templates/hooks/hooks.json</code> และรัน <code>node scripts/install-hooks.js</code> ใหม่ ไม่จำเป็นต้องเปลี่ยนแปลงตรรกะโค้ด — ไฟล์ hook สามารถอยู่ใน <code>scripts/hooks/</code> โดยไม่ถูกลงทะเบียน หรือจะย้อนกลับ commit บน <code>develop</code> หลังการ merge PR ก็ได้</span></p>
 
   <!-- Section 7: Approval -->
   <div class="section-header" id="section-7">
     <span class="section-number s7">7</span>
-    <h2 class="section-title">Approval</h2>
+    <h2 class="section-title"><span class="lang-en">Approval</span><span class="lang-th">การอนุมัติ</span></h2>
   </div>
 
-  <div class="card warning">
-    <div class="card-title">Action Required</div>
-    <p>Review all sections above. When satisfied, approve in the Claude Code terminal to start development on branch <code>feature/branch-guard-hook</code>.</p>
-  </div>
-
-  <div class="approval-block pending" id="approval-block">
-    <div class="approval-title">&#9888; Awaiting Approval</div>
-    <div class="approval-subtitle">Return to the terminal and approve to start development.</div>
+  <div class="approval-block approved-state" id="approval-block">
+    <div class="approval-title">&#10003; <span class="lang-en">Approved</span><span class="lang-th">อนุมัติแล้ว</span></div>
+    <div class="approval-subtitle"><span class="lang-en">This change plan has been approved. Development is complete.</span><span class="lang-th">แผนการเปลี่ยนแปลงนี้ได้รับการอนุมัติแล้ว การพัฒนาเสร็จสิ้นแล้ว</span></div>
     <table style="margin:16px auto;width:auto;min-width:320px;">
       <thead><tr><th>Field</th><th>Value</th></tr></thead>
       <tbody>
         <tr><td>Change ID</td><td><code>CR-2026-05-23-001</code></td></tr>
-        <tr><td>Branch to create</td><td><code>feature/branch-guard-hook</code></td></tr>
-        <tr><td>Requested by</td><td>@devstarter-techlead</td></tr>
-        <tr><td>Date</td><td>2026-05-23</td></tr>
+        <tr><td><span class="lang-en">Branch created</span><span class="lang-th">Branch ที่สร้าง</span></td><td><code>feature/branch-guard-hook</code></td></tr>
+        <tr><td><span class="lang-en">Requested by</span><span class="lang-th">ร้องขอโดย</span></td><td>@devstarter-techlead</td></tr>
+        <tr><td><span class="lang-en">Date</span><span class="lang-th">วันที่</span></td><td>2026-05-23</td></tr>
       </tbody>
     </table>
-    <div class="approval-status">Status: <span class="badge badge-purple">PENDING APPROVAL</span></div>
+    <div class="approval-status"><span class="lang-en">Status:</span><span class="lang-th">สถานะ:</span> <span class="badge badge-green">APPROVED</span></div>
   </div>
 
   <!-- Revision History -->
   <div class="section-header" id="revision-history">
     <span class="section-number s1">R</span>
-    <h2 class="section-title">Revision History</h2>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
   </div>
   <table>
-    <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
+    <thead><tr><th>CR ID</th><th><span class="lang-en">Date</span><span class="lang-th">วันที่</span></th><th><span class="lang-en">Type</span><span class="lang-th">ประเภท</span></th><th><span class="lang-en">Description</span><span class="lang-th">คำอธิบาย</span></th><th><span class="lang-en">Author</span><span class="lang-th">ผู้เขียน</span></th></tr></thead>
     <tbody>
       <tr>
         <td><code>CR-2026-05-23-001</code></td>
         <td>2026-05-23</td>
         <td>ADD</td>
-        <td>Initial change plan created</td>
+        <td><span class="lang-en">Initial change plan created</span><span class="lang-th">สร้างแผนการเปลี่ยนแปลงเริ่มต้น</span></td>
         <td>@devstarter-techlead</td>
+      </tr>
+      <tr>
+        <td><code>CR-2026-05-23-001</code></td>
+        <td>2026-05-23</td>
+        <td>UPDATE</td>
+        <td><span class="lang-en">Added bilingual EN/TH content + PDF export (CR-2026-05-23-002)</span><span class="lang-th">เพิ่มเนื้อหาสองภาษา EN/TH + ส่งออก PDF (CR-2026-05-23-002)</span></td>
+        <td>@devstarter-frontend</td>
       </tr>
     </tbody>
   </table>
@@ -365,6 +458,17 @@
 </main>
 
 <script>
+  function toggleLang() {
+    var html = document.documentElement;
+    var isThai = html.getAttribute('data-lang') === 'th';
+    var label = document.getElementById('langLabel');
+    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
+    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
+  }
+  (function() {
+    var savedLang = localStorage.getItem('docportal-lang');
+    if (savedLang === 'th') { document.documentElement.setAttribute('data-lang','th'); var label = document.getElementById('langLabel'); if (label) label.textContent='TH'; }
+  })();
   function toggleTheme() {
     var html = document.documentElement;
     var isDark = html.getAttribute('data-theme') === 'dark';
