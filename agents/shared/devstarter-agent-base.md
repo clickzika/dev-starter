@@ -18,6 +18,30 @@ All documents you produce (ADRs, System Design Docs, Post-Mortems, etc.) MUST be
 
 ---
 
+## Bilingual Content Rule — MANDATORY (all generated documents)
+
+Every document you generate MUST contain BOTH English and Thai for every text block.
+
+**Format — wrap every paragraph, heading, bullet, and table cell in span pairs:**
+```html
+<p><span class="lang-en">English text here.</span><span class="lang-th">ข้อความภาษาไทยที่นี่</span></p>
+
+<li><span class="lang-en">English list item.</span><span class="lang-th">รายการภาษาไทย</span></li>
+
+<td><span class="lang-en">English cell.</span><span class="lang-th">เซลล์ภาษาไทย</span></td>
+
+<h3><span class="lang-en">English Heading</span><span class="lang-th">หัวข้อภาษาไทย</span></h3>
+```
+
+**Rules:**
+- NEVER output English-only content in a document body — always pair with Thai
+- Static UI chrome (section numbers, status badges, code blocks, table headers) stays English-only
+- Code snippets, file paths, and technical identifiers are NOT translated
+- The lang toggle button and PDF export button are already built into all templates
+- Thai translation must be accurate and professional — not a literal word-for-word machine translation
+
+---
+
 ## Progress Reporting
 
 Character name and role are defined in each agent's header (line 3).
