@@ -71,6 +71,8 @@ if output is develop / main / master / uat:
 
 This rule cannot be skipped in autopilot mode, resume flows, or any other context.
 
+> **Technical enforcement:** A PreToolUse hook (`pre-edit-branch-guard.js`) intercepts every Edit/Write call and blocks it when on a protected branch. The hook is a safety net — the rule above is still the primary instruction.
+
 ---
 
 ## Session Resume — Check on Every Start

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Feature Plan — Branch Guard Hook — DevStarter</title>
+<style>
+  /* Standard DevStarter document template */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
+    --bg-card:#f8f9fb; --bg-hover:#e8ebf0; --accent:#e94560; --accent-light:#d63851;
+    --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4;
+    --border-light:#e2e7ed; --status-draft:#f59e0b; --status-review:#3b82f6;
+    --status-approved:#10b981; --status-pending:#8b5cf6;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
+    --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316;
+    --section-7:#06b6d4;
+    --header-h:64px; --sidebar-w:280px;
+    --code-bg:#f1f5f9; --code-inline-bg:rgba(233,69,96,0.08);
+    --code-inline-color:#d63851; --table-even-bg:rgba(0,0,0,0.02);
+    --table-hover-bg:rgba(233,69,96,0.04); --shadow:0 1px 3px rgba(0,0,0,0.06);
+    --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-header:#1a1a2e; --bg-sidebar:#16213e; --bg-content:#1e1e3a;
+    --bg-card:#252547; --bg-hover:#0f3460; --accent:#e94560; --accent-light:#ff6b81;
+    --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f;
+    --border-light:#2d4a6f; --code-bg:#0d0d1a; --code-inline-bg:rgba(233,69,96,0.1);
+    --code-inline-color:#ff6b81; --table-even-bg:rgba(255,255,255,0.02);
+    --table-hover-bg:rgba(233,69,96,0.05); --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.6; height:100vh; overflow:hidden; transition:background 0.3s,color 0.3s; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--bg-header); border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; transition:background 0.3s,border-color 0.3s; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; letter-spacing:-0.3px; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); font-weight:500; }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+  .doc-status-badge.pending { background:rgba(139,92,246,0.15); color:var(--status-pending); border:1px solid rgba(139,92,246,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s,background 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; transition:background 0.3s,border-color 0.3s; }
+  .doc-sidebar::-webkit-scrollbar { width:4px; }
+  .doc-sidebar::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-item { display:block; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s ease; border-left:3px solid transparent; }
+  .toc-link:hover { background:var(--bg-hover); color:var(--text); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent-light); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; flex-shrink:0; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
+  .toc-number.s7{background:var(--section-7);}
+  .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; transition:background 0.3s,border-color 0.3s; }
+  .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
+  .doc-info-row span:first-child { color:var(--text-muted); }
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:40px 48px 80px; background:var(--bg-content); transition:background 0.3s; }
+  .doc-content::-webkit-scrollbar { width:6px; }
+  .doc-content::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:6px; }
+  .section-header { display:flex; align-items:center; gap:14px; margin:48px 0 20px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
+  .section-number.s7{background:var(--section-7);}
+  .section-title { font-size:22px; font-weight:700; letter-spacing:-0.3px; }
+  h3 { font-size:16px; font-weight:600; color:var(--text); margin:28px 0 12px; border-left:3px solid var(--accent); padding-left:12px; }
+  h4 { font-size:14px; font-weight:600; color:var(--text-dim); margin:20px 0 8px; }
+  p { color:var(--text-dim); margin-bottom:16px; font-size:14px; line-height:1.7; }
+  table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:13px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  thead th { background:var(--bg-sidebar); color:var(--text); font-weight:600; text-align:left; padding:12px 16px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--accent); transition:background 0.3s; }
+  tbody tr { border-bottom:1px solid var(--border); transition:background 0.1s ease; }
+  tbody tr:nth-child(even) { background:var(--table-even-bg); }
+  tbody tr:hover { background:var(--table-hover-bg); }
+  td { padding:10px 16px; color:var(--text-dim); vertical-align:top; }
+  pre { background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:16px 20px; overflow-x:auto; margin:12px 0 20px; font-size:13px; line-height:1.5; transition:background 0.3s,border-color 0.3s; }
+  code { font-family:'JetBrains Mono','Fira Code','Consolas',monospace; font-size:13px; }
+  :not(pre) > code { background:var(--code-inline-bg); color:var(--code-inline-color); padding:2px 6px; border-radius:4px; font-size:12px; }
+  ul,ol { margin:8px 0 16px 24px; color:var(--text-dim); font-size:14px; }
+  li { margin-bottom:6px; line-height:1.6; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin:16px 0 24px; transition:background 0.3s,border-color 0.3s; }
+  .card-title { font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text); }
+  .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
+  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
+  .critical { border-left:4px solid var(--section-5); background:rgba(239,68,68,0.05); }
+  .success { border-left:4px solid var(--section-4); background:rgba(16,185,129,0.05); }
+  .badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.3px; }
+  .badge-red{background:rgba(239,68,68,0.15);color:#ef4444;}
+  .badge-orange{background:rgba(249,115,22,0.15);color:#f97316;}
+  .badge-yellow{background:rgba(245,158,11,0.15);color:#f59e0b;}
+  .badge-green{background:rgba(16,185,129,0.15);color:#10b981;}
+  .badge-blue{background:rgba(59,130,246,0.15);color:#3b82f6;}
+  .badge-purple{background:rgba(139,92,246,0.15);color:#8b5cf6;}
+  hr { border:none; border-top:1px solid var(--border); margin:32px 0; }
+  .approval-block { background:var(--bg-card); border:2px solid var(--border); border-radius:12px; padding:28px 32px; margin:32px 0; text-align:center; }
+  .approval-block.pending { border-color:rgba(139,92,246,0.4); background:rgba(139,92,246,0.04); }
+  .approval-title { font-size:18px; font-weight:700; margin-bottom:8px; }
+  .approval-subtitle { font-size:14px; color:var(--text-dim); margin-bottom:20px; }
+  .approval-status { font-size:13px; font-weight:600; margin-top:16px; }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:24px 16px 60px;} }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Add Feature Plan — Branch Guard Hook</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>CR-2026-05-23-001 · 2026-05-23</div>
+      <div>Author: @devstarter-techlead</div>
+    </div>
+    <span class="doc-status-badge pending">● PENDING APPROVAL</span>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li class="toc-item"><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> Change Overview</a></li>
+    <li class="toc-item"><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> Problem / Requirement</a></li>
+    <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> Proposed Solution</a></li>
+    <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> Scope &amp; Impact</a></li>
+    <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> Implementation Steps</a></li>
+    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> Risk &amp; Rollback</a></li>
+    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> Approval</a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Change ID</span> <span>CR-2026-05-23-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Add Feature</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>S (&lt; 2h)</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>High</span></div>
+    <div class="doc-info-row"><span>Date</span> <span>2026-05-23</span></div>
+    <div class="doc-info-row"><span>Status</span> <span>Pending Approval</span></div>
+  </div>
+</nav>
+
+<main class="doc-content">
+
+  <!-- Section 1: Change Overview -->
+  <div class="section-header" id="section-1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title">Change Overview</h2>
+  </div>
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Change ID</td><td><code>CR-2026-05-23-001</code></td></tr>
+      <tr><td>Change Type</td><td><span class="badge badge-blue">Add Feature</span></td></tr>
+      <tr><td>Feature Name</td><td>Branch Guard Hook</td></tr>
+      <tr><td>Slug</td><td><code>branch-guard-hook</code></td></tr>
+      <tr><td>Date</td><td>2026-05-23</td></tr>
+      <tr><td>Author</td><td>@devstarter-techlead</td></tr>
+      <tr><td>Priority</td><td><span class="badge badge-orange">High</span></td></tr>
+      <tr><td>Effort</td><td>S (&lt; 2h)</td></tr>
+      <tr><td>Branch</td><td><code>feature/branch-guard-hook</code></td></tr>
+      <tr><td>Status</td><td><span class="badge badge-purple">Pending Approval</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 2: Problem / Requirement -->
+  <div class="section-header" id="section-2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title">Problem / Requirement</h2>
+  </div>
+
+  <h3>Root Problem</h3>
+  <p>Branch Guard exists as text rules only (Rule 9 in <code>devstarter-change.md</code>, Branch Guard section in <code>agents/shared/devstarter-agent-base.md</code>). Claude can still edit files on protected branches (develop, main, uat, master) if the rule is overlooked in autopilot mode, resume flows, or edge cases. There is no technical enforcement — no Claude Code hook intercepts Edit/Write tool calls to verify the current branch before allowing the edit.</p>
+
+  <h3>Business Requirement</h3>
+  <p>Every Edit/Write tool call must be technically blocked when Claude is on a protected branch (develop, main, master, uat, dev). The block message must instruct Claude to create the correct branch type (<code>feature/[slug]</code> or <code>fix/[slug]</code>) before proceeding. Non-git directories must pass through without false blocks.</p>
+
+  <h3>User Story</h3>
+  <div class="card note">
+    <p><strong>As a</strong> developer using DevStarter,<br>
+    <strong>I want to</strong> have Claude automatically blocked from editing on develop/main/uat with a clear error and branch creation instruction,<br>
+    <strong>So that</strong> no accidental direct commits to protected branches occur — even in autopilot or resume flows.</p>
+  </div>
+
+  <h3>Acceptance Criteria</h3>
+  <ul>
+    <li>Given Claude is about to edit any file while on <code>develop</code>, <code>main</code>, <code>master</code>, <code>uat</code>, or <code>dev</code> — the Edit/Write tool call is blocked with an instruction to create a work branch first</li>
+    <li>Given Claude is on <code>feature/my-feature</code> or <code>fix/my-fix</code> — Edit/Write passes through normally, no block</li>
+    <li>Given the working directory is not a git repository — Edit/Write passes through normally (no false block)</li>
+    <li>All existing PostToolUse hooks (accumulator, config-sync) continue to function without change</li>
+    <li>Hook is registered in <code>templates/hooks/hooks.json</code> and installed via <code>install.sh --hooks</code></li>
+  </ul>
+
+  <!-- Section 3: Proposed Solution -->
+  <div class="section-header" id="section-3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title">Proposed Solution</h2>
+  </div>
+
+  <h3>Approach</h3>
+  <p>Add a <strong>PreToolUse hook</strong> (<code>scripts/hooks/pre-edit-branch-guard.js</code>) that intercepts every Edit and Write tool call. The hook runs <code>git branch --show-current</code>, checks the result against the protected-branch list, and outputs a JSON block decision (<code>{"decision":"block","reason":"..."}</code>) if on a protected branch. If git is unavailable or the directory is not a git repo, the hook passes through silently. The existing text rules (Rule 9, agent-base Branch Guard) stay as primary instruction; the hook is the technical safety net.</p>
+
+  <h3>Why This Approach</h3>
+  <p>Defense in depth: text rules explain WHY (educates Claude), the hook enforces HOW (hard technical block that cannot be bypassed by model drift, autopilot, or resume flows). The hook message is educational — it names the current branch and tells Claude exactly what branch to create — so Claude recovers correctly rather than just retrying. The implementation follows the exact same Node.js stdin/stdout pass-through pattern as the existing <code>stop-check-console-log.js</code> hook (~60 lines).</p>
+
+  <h3>Alternatives Considered</h3>
+  <table>
+    <thead><tr><th>Option</th><th>Reason Rejected</th></tr></thead>
+    <tbody>
+      <tr><td>Text rules only (current state)</td><td>No technical safety net — model can drift or be overridden in autopilot/resume flows</td></tr>
+      <tr><td>PostToolUse hook</td><td>Runs AFTER the edit — too late to prevent the write to a protected branch</td></tr>
+      <tr><td>Git pre-commit hook</td><td>Only fires on commit, not on individual file writes — doesn't prevent Claude from writing changes to the working tree on a protected branch</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 4: Scope & Impact -->
+  <div class="section-header" id="section-4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title">Scope &amp; Impact</h2>
+  </div>
+
+  <h3>Files to Modify</h3>
+  <table>
+    <thead><tr><th>File Path</th><th>Change Type</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td><code>scripts/hooks/pre-edit-branch-guard.js</code></td><td><span class="badge badge-green">CREATE</span></td><td>New PreToolUse hook — branch enforcement logic</td></tr>
+      <tr><td><code>templates/hooks/hooks.json</code></td><td><span class="badge badge-blue">MODIFY</span></td><td>Register new PreToolUse handler for Edit|Write</td></tr>
+      <tr><td><code>agents/shared/devstarter-agent-base.md</code></td><td><span class="badge badge-blue">MODIFY</span></td><td>Add note: hook backs up Branch Guard rule as technical safety net</td></tr>
+      <tr><td><code>sdlc/devstarter-change.md</code></td><td><span class="badge badge-blue">MODIFY</span></td><td>Rule 9 — add note that PreToolUse hook provides secondary enforcement</td></tr>
+      <tr><td><code>~/.claude/</code> copies</td><td><span class="badge badge-blue">COPY</span></td><td>Mirror all above to installed location after dev</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Files NOT to Touch (Regression Guard)</h3>
+  <ul>
+    <li>All existing hook files: <code>session-start.js</code>, <code>pre-compact.js</code>, <code>post-edit-accumulator.js</code>, <code>stop-format-typecheck.js</code>, <code>stop-check-console-log.js</code> — no changes</li>
+    <li><code>scripts/install-hooks.js</code> — no changes (reads from hooks.json automatically)</li>
+    <li><code>.claude/settings.json</code> — not modified directly (install-hooks.js merges on install)</li>
+    <li>All other SDLC runbooks, agent files, templates</li>
+  </ul>
+
+  <h3>System Impact</h3>
+  <table>
+    <thead><tr><th>Area</th><th>Impact</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Database</td><td><span class="badge badge-green">None</span></td><td>No database changes</td></tr>
+      <tr><td>API</td><td><span class="badge badge-green">None</span></td><td>No API changes</td></tr>
+      <tr><td>UI</td><td><span class="badge badge-green">None</span></td><td>No UI changes</td></tr>
+      <tr><td>Security</td><td><span class="badge badge-blue">Low</span></td><td>Hook adds read-only <code>git branch --show-current</code> check; no secrets or auth scope changes; hook never logs sensitive data</td></tr>
+      <tr><td>Performance</td><td><span class="badge badge-yellow">Low</span></td><td>~30–50ms added to every Edit/Write call for git subprocess; acceptable overhead</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 5: Implementation Steps -->
+  <div class="section-header" id="section-5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title">Implementation Steps</h2>
+  </div>
+
+  <ol>
+    <li>Create <code>feature/branch-guard-hook</code> branch from develop</li>
+    <li>Create <code>scripts/hooks/pre-edit-branch-guard.js</code>:<br>
+      — Read stdin (PreToolUse JSON) and pass through to stdout unchanged<br>
+      — Run <code>execFileSync('git', ['branch', '--show-current'])</code><br>
+      — If result is in <code>['develop','main','master','uat','dev']</code>: write block decision JSON to stdout and exit 0<br>
+      — If not in git repo (exception): exit 0 (pass through)<br>
+      — Block message: names current branch + instructs <code>feature/[slug]</code> or <code>fix/[slug]</code> creation</li>
+    <li>Update <code>templates/hooks/hooks.json</code>: add PreToolUse array with <code>"matcher": "Edit|Write"</code> pointing to <code>pre-edit-branch-guard.js</code></li>
+    <li>Update <code>agents/shared/devstarter-agent-base.md</code> Branch Guard section: add one-line note about hook</li>
+    <li>Update <code>sdlc/devstarter-change.md</code> Rule 9: add one-line note about hook</li>
+    <li>Copy all modified files to <code>~/.claude/</code></li>
+    <li>Test: manually trigger Edit on develop → confirm block; switch to feature branch → confirm pass-through</li>
+    <li>Commit and open PR to develop</li>
+  </ol>
+
+  <h3>Dependencies</h3>
+  <ul>
+    <li>Node.js 18+ (already required by hooks system)</li>
+    <li>git in PATH (already required by DevStarter)</li>
+    <li><code>scripts/install-hooks.js</code> (existing — no changes needed)</li>
+  </ul>
+
+  <h3>Testing Approach</h3>
+  <p>Manual functional test: (1) confirm <code>git branch --show-current</code> returns <code>develop</code>, attempt an Edit tool call, verify Claude receives the block decision and creates a work branch instead; (2) checkout <code>feature/test-branch</code>, attempt an Edit tool call, verify it passes through normally; (3) run in a non-git directory, verify pass-through with no error.</p>
+
+  <!-- Section 6: Risk & Rollback -->
+  <div class="section-header" id="section-6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title">Risk &amp; Rollback</h2>
+  </div>
+
+  <h3>Risks</h3>
+  <table>
+    <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>False block on non-git directory (e.g. temp file edit)</td><td><span class="badge badge-yellow">Low</span></td><td>Hook wraps git call in try/catch — exits 0 (pass-through) if <code>rev-parse</code> fails</td></tr>
+      <tr><td>Hook adds latency to every file edit</td><td><span class="badge badge-yellow">Low</span></td><td>~30–50ms for git subprocess is acceptable; hook timeout in settings.json set to 5s</td></tr>
+      <tr><td>Hook blocks legitimate edits if branch name check is too broad</td><td><span class="badge badge-yellow">Low</span></td><td>Exact match on known protected names only: develop, main, master, uat, dev — no glob/prefix matching</td></tr>
+      <tr><td>Existing hooks no longer installed after hooks.json change</td><td><span class="badge badge-orange">Medium</span></td><td>Regression test: run <code>node scripts/install-hooks.js</code> and verify all 5 existing hooks still appear in output settings.json</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Rollback Plan</h3>
+  <p>Remove the <code>PreToolUse</code> entry from <code>templates/hooks/hooks.json</code> and re-run <code>node scripts/install-hooks.js</code>. No code logic changes are required — the hook file can remain in <code>scripts/hooks/</code> without being registered. Alternatively, revert the commit on <code>develop</code> after PR merge.</p>
+
+  <!-- Section 7: Approval -->
+  <div class="section-header" id="section-7">
+    <span class="section-number s7">7</span>
+    <h2 class="section-title">Approval</h2>
+  </div>
+
+  <div class="card warning">
+    <div class="card-title">Action Required</div>
+    <p>Review all sections above. When satisfied, approve in the Claude Code terminal to start development on branch <code>feature/branch-guard-hook</code>.</p>
+  </div>
+
+  <div class="approval-block pending" id="approval-block">
+    <div class="approval-title">&#9888; Awaiting Approval</div>
+    <div class="approval-subtitle">Return to the terminal and approve to start development.</div>
+    <table style="margin:16px auto;width:auto;min-width:320px;">
+      <thead><tr><th>Field</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Change ID</td><td><code>CR-2026-05-23-001</code></td></tr>
+        <tr><td>Branch to create</td><td><code>feature/branch-guard-hook</code></td></tr>
+        <tr><td>Requested by</td><td>@devstarter-techlead</td></tr>
+        <tr><td>Date</td><td>2026-05-23</td></tr>
+      </tbody>
+    </table>
+    <div class="approval-status">Status: <span class="badge badge-purple">PENDING APPROVAL</span></div>
+  </div>
+
+  <!-- Revision History -->
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title">Revision History</h2>
+  </div>
+  <table>
+    <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>CR-2026-05-23-001</code></td>
+        <td>2026-05-23</td>
+        <td>ADD</td>
+        <td>Initial change plan created</td>
+        <td>@devstarter-techlead</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function toggleTheme() {
+    var html = document.documentElement;
+    var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function() {
+    var saved = localStorage.getItem('docportal-theme');
+    if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  })();
+  const sections = document.querySelectorAll('.section-header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const content = document.querySelector('.doc-content');
+  content.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (content.scrollTop >= s.offsetTop - content.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+  });
+  tocLinks.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(l.getAttribute('href'));
+      if (t) content.scrollTo({ top: t.offsetTop - content.offsetTop - 20, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
