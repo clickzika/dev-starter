@@ -257,6 +257,20 @@ develop → DEV test → UAT branch → UAT test → main → Production
 ⛔ "DEPLOY v[X.Y.Z]" → deploy
 ```
 
+## Documents by Flow
+
+Each workflow generates a plain-language + technical document pair. Plain docs are for the requester and management; technical docs are for engineers, reviewers, and QA. All docs are bilingual (EN/TH), PDF-exportable, and authored under your `USER.md` name.
+
+| Flow | Pre-build (plain / technical) | Post-build (plain / technical) |
+|------|-------------------------------|--------------------------------|
+| `/devstarter-new` | `brd.html` + `srs.html` (discovery), full architecture suite (`database-design`, `api-reference`, `security-design`, `infrastructure-guide`, `test-strategy`, `prototype/`, `project-plan`) | — (delivery brief at first release) |
+| `/devstarter-change` (add / modify / remove / fix) | `kickoff.html` / `plan.html` | `mgmt-brief.html` / `summary.html` |
+| `/devstarter-hotfix` | — (expedited, no pre-fix gate) | `incident-brief.html` / `postmortem.html` |
+| `/devstarter-migrate` | `migration/[slug]/kickoff.html` / `migration-plan.html` (+ `schema-mapping`, `risk-register`) | `mgmt-brief.html` / verification report |
+| `/devstarter-release` | — | `releases/[version]/mgmt-brief.html` / `summary.html` (initial / major launch) |
+
+The symmetric family: **plain** (kickoff, mgmt-brief, incident-brief) pairs with **technical** (plan, summary, postmortem) at each phase. See `templates/docs/` for the source templates.
+
 ## Usage Examples
 
 ```bash

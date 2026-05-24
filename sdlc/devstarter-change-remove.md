@@ -92,12 +92,12 @@ hyphenated, max 4 words). Replace all `{{PLACEHOLDER}}` tokens:
 | `{{FEATURE_NAME}}` | feature being removed (from B-Q1) |
 | `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
 | `{{DATE}}` | today |
-| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{AUTHOR}}` | Name from install-root `~/.claude/USER.md` Identity section (fallback `IT Dept`) — never an agent alias |
 | `{{PRIORITY}}` / `{{PRIORITY_PILL_COLOR}}` | removal urgency; pill color accordingly |
 | `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | estimated removal effort + rationale |
 | `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | risk of removing (dependents, data loss); pill green/yellow/red |
 | `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: what is being removed and why |
-| `{{CONFIRMATION_HEADING}}` | `What We Will Remove` |
+| `{{CONFIRMATION_HEADING}}` | bilingual span — `<span class="lang-en">What We Will Remove</span><span class="lang-th">สิ่งที่เราจะนำออก</span>` |
 | `{{CONFIRMATION_DETAIL}}` | plain-language description of the feature + why it is going away (from B-Q2) |
 | `{{CONFIRMATION_SECONDARY_TITLE}}` | `Rollback Plan` |
 | `{{CONFIRMATION_SECONDARY}}` | how the removal can be reverted if needed |
@@ -136,7 +136,7 @@ Read `~/.claude/templates/docs/devstarter-change-plan-template.html`. Replace
 |-------------|--------|
 | `{{CHANGE_ID}}` / `{{CHANGE_TYPE}}` | same CR-ID; `Remove Feature` |
 | `{{FEATURE_NAME}}` / `{{SLUG}}` / `{{DATE}}` | feature, slug, today |
-| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{AUTHOR}}` | Name from install-root `~/.claude/USER.md` Identity section (fallback `IT Dept`) — never an agent alias |
 | `{{BRANCH_NAME}}` | `chore/remove-[slug]` (created after approval) |
 | `{{ROOT_PROBLEM}}` | why this feature must go |
 | `{{SOLUTION_APPROACH}}` | removal approach (delete code, deprecate endpoints, drop tables) |
@@ -362,11 +362,11 @@ If "Verified": generate the post-removal documents below.
    Fill per the placeholder mapping in `devstarter-change-add.md` (Phase A-END),
    removal-framed: `{{CHANGE_TYPE}}` = `Remove Feature`; `{{HOW_RESOLVED}}` = what was
    removed and verified; files/functions from `memory/change-log-[slug].md`.
-   `{{AUTHOR}}` = Name from `USER.md`. Save to `docs/feature/[slug]/summary.html`,
+   `{{AUTHOR}}` = Name from install-root `~/.claude/USER.md` (fallback `IT Dept`). Save to `docs/feature/[slug]/summary.html`,
    register under "Change Summaries".
 2. **mgmt-brief.html** — Read `~/.claude/templates/docs/devstarter-change-mgmt-template.html`.
    Plain business language: what was removed, why, who is affected, residual risk,
-   rollback capability. `{{AUTHOR}}` = Name from `USER.md`. Save to
+   rollback capability. `{{AUTHOR}}` = Name from install-root `~/.claude/USER.md` (fallback `IT Dept`). Save to
    `docs/feature/[slug]/mgmt-brief.html`, register alongside summary.
 
 3. **Announce:**

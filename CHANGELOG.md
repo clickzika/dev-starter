@@ -1,5 +1,19 @@
 # Changelog
 
+## v5.5.0 — Bilingual document chrome + human-style Thai (2026-05-24)
+
+Generated documents are now fully bilingual including headings, and the Author field resolves correctly.
+
+### New
+- **Documents by Flow** reference section in `README.md` — a per-flow table mapping each workflow (new / change / hotfix / migrate / release) to the plain + technical documents it generates. Includes a generated sample doc family under `docs/feature/documents-by-flow/`.
+
+### Fixed
+- **Bilingual static chrome** — section titles (`<h2 class="section-title">`), sidebar TOC labels, and `<h3>` subheadings are now bilingual across all six document templates (kickoff, plan, summary, mgmt-brief, incident-brief, base). Previously these were English-only, so documents showed English headings even in Thai mode. `{{CONFIRMATION_HEADING}}` is now a bilingual span in the add/bug/remove/migrate mappings.
+- **Document Author source** — the `{{AUTHOR}}` field now resolves from the **install-root** `~/.claude/USER.md` (`%USERPROFILE%\.claude\USER.md` on Windows) Identity Name, NOT the project-local `USER.md`. Falls back to the literal `IT Dept` when no Name is present. Corrected across Rule 8 and every `{{AUTHOR}}` mapping row.
+
+### Changed
+- **Human-style Thai rule (MANDATORY)** — added to Rule 8 + `agents/shared/devstarter-agent-base.md`: Thai must read as natural, human-written Thai, not literal machine translation (idiomatic phrasing, `และ` not `&`, keep common English technical terms, avoid stiff calques). Headings, TOC labels, and table headers are explicitly classified as translatable content, not static chrome.
+
 ## v5.4.0 — Document family across all flows + Author from USER.md (2026-05-24)
 
 A plain-language / technical document pair at every phase of every build, change,
