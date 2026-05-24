@@ -74,6 +74,114 @@ Use `AskUserQuestion` with:
 
 ---
 
+## B-PHASE 2.4 — Generate Kickoff & Sign-off Document (plain language)
+
+After removal impact is confirmed, before any doc/code removal, generate the
+**kickoff document** — a plain-language pre-removal sign-off for the requester
+(Sections 1–3) and management (Sections 4–5).
+
+**Step 1 — Fill and save kickoff.html:**
+Read `~/.claude/templates/docs/devstarter-change-kickoff-template.html`.
+Create folder `docs/feature/[slug]/` (slug = removed feature name, lowercase-
+hyphenated, max 4 words). Replace all `{{PLACEHOLDER}}` tokens:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | `CR-[YYYY-MM-DD]-NNN` (same ID used by plan.html) |
+| `{{CHANGE_TYPE}}` | `Remove Feature` |
+| `{{FEATURE_NAME}}` | feature being removed (from B-Q1) |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{DATE}}` | today |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{PRIORITY}}` / `{{PRIORITY_PILL_COLOR}}` | removal urgency; pill color accordingly |
+| `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | estimated removal effort + rationale |
+| `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | risk of removing (dependents, data loss); pill green/yellow/red |
+| `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: what is being removed and why |
+| `{{CONFIRMATION_HEADING}}` | `What We Will Remove` |
+| `{{CONFIRMATION_DETAIL}}` | plain-language description of the feature + why it is going away (from B-Q2) |
+| `{{CONFIRMATION_SECONDARY_TITLE}}` | `Rollback Plan` |
+| `{{CONFIRMATION_SECONDARY}}` | how the removal can be reverted if needed |
+| `{{IN_SCOPE_LIST}}` | `<li>` — what gets removed (docs, code, endpoints, screens) |
+| `{{OUT_OF_SCOPE_LIST}}` | `<li>` — what stays (dependents preserved, data retained, etc.) |
+| `{{ACCEPTANCE_CRITERIA_LIST}}` | `<li>` Given/When/Then — feature gone, no broken references, build passes |
+| `{{BUSINESS_NEED}}` | why remove now (from B-Q2), plain language |
+| `{{WHO_BENEFITS}}` | who is affected / who benefits from removal |
+| `{{IMPACT_IF_DEFERRED}}` | cost of keeping the feature (maintenance, risk, confusion) |
+| `{{TIMELINE_ESTIMATE}}` / `{{TIMELINE_NOTES}}` | rough removal window |
+| `{{PRIORITY_NOTES}}` | one line on urgency |
+| `{{SIGN_OFF_MEANING}}` | "Approving authorises branch creation and removal of this feature against this scope." |
+| `{{APPROVER_ROWS}}` | `<tr>` per approver (Requester, Manager) with Approve/Revise checkbox |
+
+**Bilingual (MANDATORY):** every filled text block contains both English and Thai
+via `<span class="lang-en">` / `<span class="lang-th">` pairs (Rule 8).
+
+Save to: `docs/feature/[slug]/kickoff.html`. Register in docs/index.html under
+"Change Kickoffs" (create section if absent):
+```html
+<a href="feature/[slug]/kickoff.html">[CHANGE_ID] — Remove [Feature Name] — Kickoff — [Date] (Pending Sign-off)</a>
+```
+
+---
+
+## B-PHASE 2.5 — Generate Removal Plan Document
+
+**Step 1 — Initialize change log:** Create `memory/change-log-[slug].md`
+(Type: `Remove Feature`).
+
+**Step 2 — Fill and save plan.html:**
+Read `~/.claude/templates/docs/devstarter-change-plan-template.html`. Replace
+`{{PLACEHOLDER}}` tokens for the removal (technical):
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` / `{{CHANGE_TYPE}}` | same CR-ID; `Remove Feature` |
+| `{{FEATURE_NAME}}` / `{{SLUG}}` / `{{DATE}}` | feature, slug, today |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{BRANCH_NAME}}` | `chore/remove-[slug]` (created after approval) |
+| `{{ROOT_PROBLEM}}` | why this feature must go |
+| `{{SOLUTION_APPROACH}}` | removal approach (delete code, deprecate endpoints, drop tables) |
+| `{{WHY_THIS_APPROACH}}` | reasoning (clean delete vs deprecate-first) |
+| `{{FILES_TO_MODIFY_ROWS}}` | `<tr>` per file/folder to delete or edit |
+| `{{REGRESSION_GUARD_LIST}}` | `<li>` — dependents that must keep working |
+| `{{DB_IMPACT}}` / `{{API_IMPACT}}` / `{{UI_IMPACT}}` / `{{SEC_IMPACT}}` | from impact analysis |
+| `{{IMPLEMENTATION_STEPS_LIST}}` | `<li>` removal steps |
+| `{{RISKS_ROWS}}` | `<tr>` removal risks |
+| `{{ROLLBACK_PLAN}}` | revert branch; restore deleted code/data |
+| (remaining placeholders) | fill per add/bug plan mapping, removal-framed |
+
+Save to: `docs/feature/[slug]/plan.html`. Register in docs/index.html under
+"Change Plans".
+
+**Step 3 — Announce:**
+```
+📝 Kickoff + plan created: docs/feature/[slug]/kickoff.html + plan.html
+   Plain-language removal sign-off + technical plan — review before removal.
+```
+
+---
+
+### Pre-Gate B1-DOC — Kickoff Preflight (mandatory)
+
+Before the picker, verify both docs: zero `{{` placeholders remain; bilingual
+`lang-en`/`lang-th` spans present; kickoff Sections 2 (what we remove) and 4
+(Management Summary) populated. Fix and re-run if any check fails.
+
+Use `AskUserQuestion` with:
+- question: "Gate B1-DOC — Open kickoff.html (plain-language removal sign-off) and plan.html (technical) in browser, review both, then approve to create branch and start removal."
+- options: ["Approved — create branch and start removal", "Request changes (describe in notes)"]
+
+**If "Approved":**
+1. Show: `✅ Removal plan approved — creating branch chore/remove-[slug]`
+2. Run `git branch --show-current`; if on `develop`/`main`/`master`/`uat` → PROC-GH-06: create `chore/remove-[slug]`
+3. Confirm `git branch --show-current` shows `chore/remove-[slug]`
+4. Proceed to B-PHASE 3
+
+**If "Request changes":** apply to kickoff.html and/or plan.html, re-announce, loop back to Gate B1-DOC.
+
+⛔ GATE B1-DOC — branch is NOT created and NO files are edited until this gate is approved.
+
+---
+
 ## B-PHASE 3 — Document Removal (upstream → downstream)
 
 Update documents in this order.
@@ -191,10 +299,11 @@ If it exists, append the new entry at the top (newest first).
 After Gate B2 approved:
 
 ### Step B4.1 — Remove Code (if B-Q3 = 1, 2, or 3)
-- Create branch: `chore/remove-[feature-slug]`
+- Branch `chore/remove-[slug]` already created at Gate B1-DOC — confirm with `git branch --show-current`
 - Remove feature code files
 - Remove related tests
 - Remove routes, endpoints, components
+- Append each removed file/function to `memory/change-log-[slug].md` (REMOVED: ...)
 - Verify build still passes
 - Create PR
 
@@ -231,5 +340,45 @@ Use `AskUserQuestion` with:
 - options: ["approve", "revise"]
 
 ⛔ GATE B3 — wait for approval before merging.
+
+---
+
+## B-PHASE END — Testing Gate + Summary & Management Brief
+
+### ⛔ GATE B-TEST — Removal Confirmation
+
+After the removal PR is merged, confirm nothing broke:
+
+Use `AskUserQuestion` with:
+- question: "Gate B-TEST — Has the app been verified after removing [feature]? (build passes, no broken references, dependents still work)"
+- options: ["Verified — generate summary + mgmt brief", "Still testing — save checkpoint and stop"]
+
+If "Still testing": write `memory/progress.json` `"status": "waiting_test"` and stop.
+If "Verified": generate the post-removal documents below.
+
+### Generate summary.html + mgmt-brief.html
+
+1. **summary.html** — Read `~/.claude/templates/docs/devstarter-change-summary-template.html`.
+   Fill per the placeholder mapping in `devstarter-change-add.md` (Phase A-END),
+   removal-framed: `{{CHANGE_TYPE}}` = `Remove Feature`; `{{HOW_RESOLVED}}` = what was
+   removed and verified; files/functions from `memory/change-log-[slug].md`.
+   `{{AUTHOR}}` = Name from `USER.md`. Save to `docs/feature/[slug]/summary.html`,
+   register under "Change Summaries".
+2. **mgmt-brief.html** — Read `~/.claude/templates/docs/devstarter-change-mgmt-template.html`.
+   Plain business language: what was removed, why, who is affected, residual risk,
+   rollback capability. `{{AUTHOR}}` = Name from `USER.md`. Save to
+   `docs/feature/[slug]/mgmt-brief.html`, register alongside summary.
+
+3. **Announce:**
+   ```
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✅ FEATURE REMOVED — [Feature Name]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   📋 Kickoff:    docs/feature/[slug]/kickoff.html
+   📋 Plan:       docs/feature/[slug]/plan.html
+   📝 Summary:    docs/feature/[slug]/summary.html
+   📊 Mgmt Brief: docs/feature/[slug]/mgmt-brief.html
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ```
 
 ---

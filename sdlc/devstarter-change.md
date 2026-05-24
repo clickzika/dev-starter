@@ -44,7 +44,7 @@ Generate plain-language + technical HTML documents BEFORE writing any code. The 
 
 Order: Impact Analysis → **kickoff.html** (plain sign-off) → **plan.html** (technical) → **Gate A1-DOC/C1-DOC approval** → **branch creation** → domain docs → Code
 
-- Add Feature / Modify: kickoff + plan saved to `docs/feature/[slug]/kickoff.html` + `docs/feature/[slug]/plan.html`
+- Add Feature / Modify / Remove Feature: kickoff + plan saved to `docs/feature/[slug]/kickoff.html` + `docs/feature/[slug]/plan.html`
 - Fix Bug: kickoff + plan saved to `docs/fix/[slug]/kickoff.html` + `docs/fix/[slug]/plan.html`
 - After dev + user testing confirmed: generate `summary.html` in the same folder
 - Existing domain docs (brd.html, api-reference.html, etc.) continue to be updated — kickoff.html, plan.html and summary.html supplement, not replace, those docs
