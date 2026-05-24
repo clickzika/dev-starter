@@ -151,9 +151,67 @@ Sprint:           [current / next]
 
 ---
 
+## A-PHASE 2.4 — Generate Kickoff & Sign-off Document (plain language)
+
+Immediately after impact analysis, before plan.html, generate the **kickoff
+document** — a plain-language pre-development sign-off for the requester
+(Sections 1–3) and management (Sections 4–5). All inputs come from the intake
++ impact analysis; no code exists yet.
+
+**Step 1 — Fill and save kickoff.html:**
+Read `~/.claude/templates/docs/devstarter-change-kickoff-template.html`.
+Use the same `[slug]` folder created in A-PHASE 2.5 Step 1 (create it now if not
+yet created). Replace all `{{PLACEHOLDER}}` tokens:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | `CR-[YYYY-MM-DD]-001` (same ID used by plan.html) |
+| `{{CHANGE_TYPE}}` | `Add Feature` or `Modify Feature` |
+| `{{FEATURE_NAME}}` | from A-Q1 / intake Section 1.1 |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{DATE}}` | today |
+| `{{AUTHOR}}` | `@devstarter-ba` (requirements) |
+| `{{PRIORITY}}` / `{{PRIORITY_PILL_COLOR}}` | from A-Q7; pill: red/yellow/blue/gray |
+| `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | from A-Q8 + one-line rationale |
+| `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | from impact analysis; pill: green(Low)/yellow(Medium)/red(High) |
+| `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: what is being approved |
+| `{{CONFIRMATION_HEADING}}` | `What We Will Build` (feature) |
+| `{{CONFIRMATION_DETAIL}}` | plain description of the feature from intake Section 1.3 / 2.2 |
+| `{{CONFIRMATION_SECONDARY_TITLE}}` | `User Story` |
+| `{{CONFIRMATION_SECONDARY}}` | `As a [role], I want [want], so that [benefit]` from Section 2.2 |
+| `{{IN_SCOPE_LIST}}` | `<li>` items — what this change includes |
+| `{{OUT_OF_SCOPE_LIST}}` | `<li>` items — explicitly excluded |
+| `{{ACCEPTANCE_CRITERIA_LIST}}` | `<li>` Given/When/Then items from intake Section 2.3 |
+| `{{BUSINESS_NEED}}` | from A-Q2 / Section 1.3 — why now, plain language |
+| `{{WHO_BENEFITS}}` | from A-Q3 — target users, plain language |
+| `{{IMPACT_IF_DEFERRED}}` | business cost of not doing it |
+| `{{TIMELINE_ESTIMATE}}` / `{{TIMELINE_NOTES}}` | rough delivery window from effort |
+| `{{PRIORITY_NOTES}}` | one line on priority rationale |
+| `{{SIGN_OFF_MEANING}}` | "Approving authorises branch creation and development to begin against this scope." |
+| `{{APPROVER_ROWS}}` | `<tr>` per approver (Requester, Manager) with Approve/Revise checkbox |
+
+**Bilingual (MANDATORY):** every filled text block must contain both English and
+Thai via `<span class="lang-en">` / `<span class="lang-th">` pairs (Rule 8).
+
+Save to: `docs/feature/[slug]/kickoff.html`
+
+**Step 2 — Register in docs/index.html:**
+Add under "Change Kickoffs" section (create section if absent):
+```html
+<a href="feature/[slug]/kickoff.html">[CHANGE_ID] — [Feature Name] — Kickoff — [Date] (Pending Sign-off)</a>
+```
+
+**Step 3 — Announce:**
+```
+📝 Kickoff document created: docs/feature/[slug]/kickoff.html
+   Plain-language sign-off (requester + management) — review before plan.
+```
+
+---
+
 ## A-PHASE 2.5 — Generate Change Plan Document
 
-Immediately after impact analysis, before any gate, generate the plan HTML:
+Immediately after the kickoff document, before any gate, generate the plan HTML:
 
 **Step 1 — Create folder and initialize change log:**
 - Create folder: `docs/feature/[slug]/`
@@ -223,7 +281,7 @@ Add entry under "Change Plans" section (create section if absent):
 ---
 
 Use `AskUserQuestion` with:
-- question: "Gate A1-DOC — Open docs/feature/[slug]/plan.html in browser, review all sections, then approve to create branch and start development."
+- question: "Gate A1-DOC — Open kickoff.html (plain-language sign-off) and plan.html (technical) in browser, review both, then approve to create branch and start development."
 - options: ["Approved — create branch and start development", "Request changes (describe in notes)"]
 
 **If "Approved — create branch and start development":**
@@ -235,8 +293,8 @@ Use `AskUserQuestion` with:
 6. Proceed to A-PHASE 3
 
 **If "Request changes":**
-1. Apply requested changes to `docs/feature/[slug]/plan.html` (re-fill affected placeholders)
-2. Announce: `📋 Plan updated: docs/feature/[slug]/plan.html`
+1. Apply requested changes to `docs/feature/[slug]/kickoff.html` and/or `docs/feature/[slug]/plan.html` (re-fill affected placeholders)
+2. Announce: `📋 Updated: kickoff.html / plan.html`
 3. Loop back to Gate A1-DOC AskUserQuestion
 
 ⛔ GATE A1-DOC — branch is NOT created and NO files are edited until this gate is approved.

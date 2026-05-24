@@ -40,14 +40,20 @@ After merging to primary VCS (`VCS_TYPE`), always run Step 5 from
 Skip if `VCS_SECONDARY_1` and `VCS_SECONDARY_2` are both `none` or unset.
 
 ### Rule 4 — Docs Before Code
-Generate a plan HTML document BEFORE writing any code. The gate is the HTML review, not chat output. Branch is created ONLY after plan approval.
+Generate plain-language + technical HTML documents BEFORE writing any code. The gate is the HTML review, not chat output. Branch is created ONLY after approval.
 
-Order: Impact Analysis → **plan.html** → **Gate A1-DOC/C1-DOC approval** → **branch creation** → domain docs → Code
+Order: Impact Analysis → **kickoff.html** (plain sign-off) → **plan.html** (technical) → **Gate A1-DOC/C1-DOC approval** → **branch creation** → domain docs → Code
 
-- Add Feature / Modify: plan saved to `docs/feature/[slug]/plan.html`
-- Fix Bug: plan saved to `docs/fix/[slug]/plan.html`
+- Add Feature / Modify: kickoff + plan saved to `docs/feature/[slug]/kickoff.html` + `docs/feature/[slug]/plan.html`
+- Fix Bug: kickoff + plan saved to `docs/fix/[slug]/kickoff.html` + `docs/fix/[slug]/plan.html`
 - After dev + user testing confirmed: generate `summary.html` in the same folder
-- Existing domain docs (brd.html, api-reference.html, etc.) continue to be updated — plan.html and summary.html supplement, not replace, those docs
+- Existing domain docs (brd.html, api-reference.html, etc.) continue to be updated — kickoff.html, plan.html and summary.html supplement, not replace, those docs
+
+**Document family (symmetric — plain + technical at each phase):**
+| Phase | Plain-language | Technical |
+|-------|----------------|-----------|
+| Pre-dev | `kickoff.html` (requester + mgmt sign-off) | `plan.html` |
+| Post-test | `mgmt-brief.html` | `summary.html` |
 
 ### Rule 5 — Notion Task Status MUST Be Updated
 **Before starting any task:** PROC-NT-04 → Status: "In Progress"
@@ -75,6 +81,7 @@ If Track B depends on Track A output (e.g. API response shape), complete Track A
   Follow the MANDATORY HTML examples in `~/.claude/agents/devstarter-uxui.md`.
   NEVER output text descriptions — always output actual rendered HTML components.
 - All docs MUST use `~/.claude/templates/docs/document-template.html` as the base template.
+- **docs/feature/[slug]/kickoff.html** and **docs/fix/[slug]/kickoff.html** — generated from `~/.claude/templates/docs/devstarter-change-kickoff-template.html`. Plain-language pre-development sign-off for the requester (requirement / root-cause + fix solution) AND management (scope, why, effort, risk). Generated BEFORE plan.html, reviewed at Gate A1-DOC/C1-DOC. No code, plain business language in the requester/mgmt sections.
 - **docs/feature/[slug]/plan.html** — generated from `~/.claude/templates/docs/devstarter-change-plan-template.html`. Required before any feature/modify dev starts.
 - **docs/fix/[slug]/plan.html** — same template. Required before any bug fix dev starts.
 - **docs/feature/[slug]/summary.html** and **docs/fix/[slug]/summary.html** — generated from `~/.claude/templates/docs/devstarter-change-summary-template.html`. Generated after testing confirmed.
