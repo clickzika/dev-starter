@@ -221,7 +221,7 @@ Read `~/.claude/templates/docs/devstarter-incident-brief-template.html`. Fill th
 | `{{INCIDENT_ID}}` | `HOTFIX-[YYYY-MM-DD]-[N]` |
 | `{{INCIDENT_TITLE}}` | one-line incident name |
 | `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
-| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{AUTHOR}}` | Name from install-root `~/.claude/USER.md` Identity section (fallback `IT Dept`) — never an agent alias |
 | `{{SEVERITY}}` / `{{SEVERITY_PILL_COLOR}}` | P0/P1; pill red(P0)/yellow(P1) |
 | `{{DETECTED_AT}}` / `{{RESOLVED_AT}}` / `{{RESOLVED_DATE}}` / `{{DURATION}}` | from triage + resolution times |
 | `{{RESIDUAL_RISK}}` / `{{RISK_PILL_COLOR}}` / `{{RESIDUAL_RISK_DETAIL}}` | remaining risk after fix |

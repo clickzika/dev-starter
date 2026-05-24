@@ -249,7 +249,7 @@ Add a row to `docs/postmortems/index.html` (create if missing) with:
 
 The post-mortem is the **technical** record. Generate its **plain-language**
 management pair from `~/.claude/templates/docs/devstarter-incident-brief-template.html`
-(no code, bilingual, `{{AUTHOR}}` = Name from `USER.md`). Save to
+(no code, bilingual, `{{AUTHOR}}` = Name from install-root `~/.claude/USER.md`, fallback `IT Dept`). Save to
 `docs/postmortems/[date]-[slug]-incident-brief.html`, link it from the
 post-mortem and the index. See the placeholder mapping in
 `~/.claude/sdlc/devstarter-hotfix.md` → "Generate Incident Brief".

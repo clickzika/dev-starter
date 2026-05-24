@@ -325,7 +325,7 @@ If unsure whether this release qualifies, ask the user once.
 1. **summary.html (technical delivery summary)** — Read
    `~/.claude/templates/docs/devstarter-change-summary-template.html`. Launch-frame:
    - `{{CHANGE_TYPE}}` = `Launch` / `Major Release`; `{{FEATURE_NAME}}` = project name + version
-   - `{{AUTHOR}}` = Name from `USER.md` (Identity section) — never an agent alias
+   - `{{AUTHOR}}` = Name from install-root `~/.claude/USER.md` Identity section (fallback `IT Dept`) — never an agent alias
    - `{{HOW_RESOLVED}}` = what the project delivers; key components / modules shipped
    - `{{FILES_CHANGED_ROWS}}` / `{{TESTS_ADDED_ROWS}}` = high-level component + test inventory
    - reviewer/QA sections = what to focus on for this launch
@@ -333,7 +333,7 @@ If unsure whether this release qualifies, ask the user once.
 
 2. **mgmt-brief.html (plain launch brief)** — Read
    `~/.claude/templates/docs/devstarter-change-mgmt-template.html`. Plain business language:
-   - `{{CHANGE_TYPE}}` = `Launch`; `{{AUTHOR}}` = Name from `USER.md`
+   - `{{CHANGE_TYPE}}` = `Launch`; `{{AUTHOR}}` = Name from install-root `~/.claude/USER.md` (fallback `IT Dept`)
    - `{{EXECUTIVE_SUMMARY}}` = what launched + business value
    - `{{SITUATION_BEFORE}}` / `{{SITUATION_AFTER}}` = before the product vs now live
    - `{{METRICS_ROWS}}` = launch metrics if available (else "n/a — initial launch")
