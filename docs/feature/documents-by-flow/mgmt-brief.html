@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{CHANGE_TYPE}} Brief — {{FEATURE_NAME}} — {{PROJECT_NAME}}</title>
+<title>Add Feature Brief — Documents by Flow (README reference) — DevStarter</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -155,16 +155,16 @@
 
 <header class="doc-header">
   <div class="doc-header-left">
-    <div class="doc-header-logo">{{PROJECT_INITIALS}}</div>
+    <div class="doc-header-logo">DS</div>
     <div class="doc-header-title">
-      <div class="doc-header-project">{{PROJECT_NAME}}</div>
-      <div class="doc-header-docname">Management Brief — {{FEATURE_NAME}}</div>
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Management Brief — Documents by Flow (README reference)</div>
     </div>
   </div>
   <div class="doc-header-right">
     <div class="doc-header-meta">
-      <div>{{CHANGE_ID}} · {{COMPLETED_DATE}}</div>
-      <div>Prepared by: {{AUTHOR}}</div>
+      <div>CR-2026-05-24-001 · 2026-05-24</div>
+      <div>Prepared by: Natthaphat Wajanavisit</div>
     </div>
     <span class="doc-status-badge">&#10003; COMPLETED</span>
     <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
@@ -187,12 +187,12 @@
     <li><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Next Steps</span><span class="lang-th">ขั้นตอนถัดไป</span></a></li>
   </ul>
   <div class="doc-info-card">
-    <div class="doc-info-row"><span>Reference</span> <span>{{CHANGE_ID}}</span></div>
-    <div class="doc-info-row"><span>Type</span> <span>{{CHANGE_TYPE}}</span></div>
-    <div class="doc-info-row"><span>Priority</span> <span>{{PRIORITY}}</span></div>
-    <div class="doc-info-row"><span>Effort</span> <span>{{EFFORT}}</span></div>
-    <div class="doc-info-row"><span>Completed</span> <span>{{COMPLETED_DATE}}</span></div>
-    <div class="doc-info-row"><span>Risk</span> <span>{{RESIDUAL_RISK}}</span></div>
+    <div class="doc-info-row"><span>Reference</span> <span>CR-2026-05-24-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Add Feature</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>Low</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>S</span></div>
+    <div class="doc-info-row"><span>Completed</span> <span>2026-05-24</span></div>
+    <div class="doc-info-row"><span>Risk</span> <span>Low</span></div>
   </div>
 </nav>
 
@@ -206,26 +206,26 @@
 
   <div class="exec-hero">
     <div class="exec-hero-label">&#128203; Summary</div>
-    <p class="exec-hero-text">{{EXECUTIVE_SUMMARY}}</p>
+    <p class="exec-hero-text"><span class="lang-en">The README now includes a reference showing which documents each DevStarter workflow produces, so teams know what to expect before starting work.</span><span class="lang-th">ตอนนี้ README มีคู่มือแสดงว่าแต่ละเวิร์กโฟลว์ของ DevStarter สร้างเอกสารใด ทีมจึงรู้ว่าจะได้อะไรก่อนเริ่มงาน</span></p>
   </div>
 
   <div class="status-row">
     <span class="status-pill pill-green">&#10003; Completed</span>
-    <span class="status-pill pill-{{PRIORITY_PILL_COLOR}}">Priority: {{PRIORITY}}</span>
-    <span class="status-pill pill-blue">{{CHANGE_TYPE}}</span>
-    <span class="status-pill pill-{{RISK_PILL_COLOR}}">Risk: {{RESIDUAL_RISK}}</span>
+    <span class="status-pill pill-gray">Priority: Low</span>
+    <span class="status-pill pill-blue">Add Feature</span>
+    <span class="status-pill pill-green">Risk: Low</span>
   </div>
 
   <table>
     <thead><tr><th>Field</th><th>Value</th></tr></thead>
     <tbody>
-      <tr><td>Reference Number</td><td>{{CHANGE_ID}}</td></tr>
-      <tr><td>Project</td><td>{{PROJECT_NAME}}</td></tr>
-      <tr><td>Change Title</td><td>{{FEATURE_NAME}}</td></tr>
-      <tr><td>Type</td><td>{{CHANGE_TYPE}}</td></tr>
-      <tr><td>Requested</td><td>{{PLAN_APPROVED_DATE}}</td></tr>
-      <tr><td>Delivered</td><td>{{COMPLETED_DATE}}</td></tr>
-      <tr><td>Prepared by</td><td>{{AUTHOR}}</td></tr>
+      <tr><td>Reference Number</td><td>CR-2026-05-24-001</td></tr>
+      <tr><td>Project</td><td>DevStarter</td></tr>
+      <tr><td>Change Title</td><td>Documents by Flow (README reference)</td></tr>
+      <tr><td>Type</td><td>Add Feature</td></tr>
+      <tr><td>Requested</td><td>2026-05-24</td></tr>
+      <tr><td>Delivered</td><td>2026-05-24</td></tr>
+      <tr><td>Prepared by</td><td>Natthaphat Wajanavisit</td></tr>
     </tbody>
   </table>
 
@@ -235,24 +235,24 @@
     <h2 class="section-title"><span class="lang-en">What Was the Problem</span><span class="lang-th">ปัญหาที่เกิดขึ้นคืออะไร</span></h2>
   </div>
 
-  <p>{{PROBLEM_PLAIN_LANGUAGE}}</p>
+  <p><span class="lang-en">People couldn't easily tell which documents a workflow would create without digging through internal guides.</span><span class="lang-th">คนทั่วไปบอกไม่ได้ง่าย ๆ ว่าเวิร์กโฟลว์จะสร้างเอกสารใด ต้องไปค้นคู่มือภายใน</span></p>
 
   <div class="before-after">
     <div class="ba-card before">
       <div class="ba-label">&#10006; Before — The Situation</div>
-      <p>{{SITUATION_BEFORE}}</p>
+      <p><span class="lang-en">Document outputs were buried inside individual workflow guides.</span><span class="lang-th">เอกสารที่ได้ถูกซ่อนอยู่ในคู่มือของแต่ละเวิร์กโฟลว์</span></p>
     </div>
     <div class="ba-card after">
       <div class="ba-label">&#10003; After — The Resolution</div>
-      <p>{{SITUATION_AFTER}}</p>
+      <p><span class="lang-en">A single table in the README lists every flow's documents at a glance.</span><span class="lang-th">ตารางเดียวใน README แสดงเอกสารของทุกโฟลว์ในที่เดียว</span></p>
     </div>
   </div>
 
   <h3><span class="lang-en">Who Was Affected</span><span class="lang-th">ใครได้รับผลกระทบ</span></h3>
-  <p>{{WHO_WAS_AFFECTED}}</p>
+  <p><span class="lang-en">Anyone adopting DevStarter — developers, leads, and managers.</span><span class="lang-th">ทุกคนที่ใช้ DevStarter — นักพัฒนา หัวหน้า และผู้จัดการ</span></p>
 
   <h3><span class="lang-en">Business Impact of Not Acting</span><span class="lang-th">ผลกระทบทางธุรกิจหากไม่ดำเนินการ</span></h3>
-  <p>{{IMPACT_IF_NOT_FIXED}}</p>
+  <p><span class="lang-en">Continued confusion and slower onboarding.</span><span class="lang-th">สับสนต่อไปและเริ่มงานช้าลง</span></p>
 
   <!-- Section 3: What Was Delivered -->
   <div class="section-header" id="section-3">
@@ -260,22 +260,22 @@
     <h2 class="section-title"><span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></h2>
   </div>
 
-  <p>{{WHAT_DELIVERED_INTRO}}</p>
+  <p><span class="lang-en">A clear reference section was added.</span><span class="lang-th">เพิ่มส่วนคู่มืออ้างอิงที่ชัดเจน</span></p>
 
   <ul>
-    {{DELIVERED_LIST}}
+    <li><span class="lang-en">'Documents by Flow' section in the README</span><span class="lang-th">ส่วน 'Documents by Flow' ใน README</span></li>
   </ul>
 
   <h3><span class="lang-en">What Was NOT Changed</span><span class="lang-th">อะไรที่ไม่ได้เปลี่ยน</span></h3>
-  <p>{{WHAT_NOT_CHANGED}}</p>
+  <p><span class="lang-en">No workflows or templates were changed — documentation only.</span><span class="lang-th">ไม่มีการเปลี่ยนเวิร์กโฟลว์หรือเทมเพลต — เอกสารเท่านั้น</span></p>
 
   <h3><span class="lang-en">Timeline</span><span class="lang-th">ลำดับเวลา</span></h3>
   <table>
     <thead><tr><th>Milestone</th><th>Date</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td>Plan approved</td><td>{{PLAN_APPROVED_DATE}}</td><td>Scope and approach signed off</td></tr>
-      <tr><td>Development completed</td><td>{{DEV_COMPLETED_DATE}}</td><td>Build finished, internal review passed</td></tr>
-      <tr><td>Testing completed</td><td>{{COMPLETED_DATE}}</td><td>User acceptance testing passed</td></tr>
+      <tr><td>Plan approved</td><td>2026-05-24</td><td>Scope and approach signed off</td></tr>
+      <tr><td>Development completed</td><td>2026-05-24</td><td>Build finished, internal review passed</td></tr>
+      <tr><td>Testing completed</td><td>2026-05-24</td><td>User acceptance testing passed</td></tr>
     </tbody>
   </table>
 
@@ -285,10 +285,10 @@
     <h2 class="section-title"><span class="lang-en">What Improved</span><span class="lang-th">สิ่งที่ดีขึ้น</span></h2>
   </div>
 
-  <p>{{IMPROVEMENTS_INTRO}}</p>
+  <p><span class="lang-en">Onboarding and expectation-setting improved.</span><span class="lang-th">การเริ่มงานและการตั้งความคาดหวังดีขึ้น</span></p>
 
   <div class="improvement-grid">
-    {{IMPROVEMENT_TILES}}
+    <div class="improvement-tile"><div class="improvement-icon">📖</div><div class="improvement-title"><span class="lang-en">Clarity</span><span class="lang-th">ความชัดเจน</span></div><p class="improvement-desc"><span class="lang-en">Document outputs visible in one place.</span><span class="lang-th">เห็นเอกสารที่ได้ในที่เดียว</span></p></div>
     <!--
     Example tile (repeat for each improvement):
     <div class="improvement-tile">
@@ -303,7 +303,7 @@
   <table>
     <thead><tr><th>Metric</th><th>Before</th><th>After</th><th>Improvement</th></tr></thead>
     <tbody>
-      {{METRICS_ROWS}}
+      <tr><td><span class="lang-en">Steps to learn doc outputs</span><span class="lang-th">ขั้นตอนเพื่อรู้เอกสารที่ได้</span></td><td><span class="lang-en">Read runbooks</span><span class="lang-th">อ่าน runbook</span></td><td><span class="lang-en">1 README section</span><span class="lang-th">1 ส่วนใน README</span></td><td><span class="lang-en">Faster</span><span class="lang-th">เร็วขึ้น</span></td></tr>
       <!--
       Example row:
       <tr><td>User complaints about X</td><td>~5/week</td><td>0</td><td>Eliminated</td></tr>
@@ -320,19 +320,20 @@
   <h3><span class="lang-en">Current Status</span><span class="lang-th">สถานะปัจจุบัน</span></h3>
   <div class="card success">
     <div class="card-title">&#10003; Live and Verified</div>
-    <p>{{CURRENT_STATUS_DETAIL}}</p>
+    <p><span class="lang-en">Live in the README on the feature branch, pending merge.</span><span class="lang-th">อยู่ใน README บนสาขาฟีเจอร์ รอ merge</span></p>
   </div>
 
   <h3><span class="lang-en">Residual Risk</span><span class="lang-th">ความเสี่ยงที่เหลืออยู่</span></h3>
-  <p>{{RESIDUAL_RISK_DETAIL}}</p>
+  <p><span class="lang-en">Low — documentation only; revert by reverting the branch.</span><span class="lang-th">ต่ำ — เอกสารเท่านั้น ย้อนกลับได้โดยรีเวิร์ตสาขา</span></p>
 
   <h3><span class="lang-en">What Was Tested</span><span class="lang-th">ทดสอบอะไรบ้าง</span></h3>
   <ul>
-    {{WHAT_WAS_TESTED_LIST}}
+    <li><span class="lang-en">Read the new section as a new user</span><span class="lang-th">อ่านส่วนใหม่ในมุมผู้ใช้ใหม่</span></li>
+        <li><span class="lang-en">Checked all five flows are listed</span><span class="lang-th">ตรวจว่าครบทั้งห้าโฟลว์</span></li>
   </ul>
 
   <h3><span class="lang-en">Rollback Capability</span><span class="lang-th">ความสามารถย้อนกลับ</span></h3>
-  <p>{{ROLLBACK_CAPABILITY}}</p>
+  <p><span class="lang-en">Immediate — revert the branch.</span><span class="lang-th">ทันที — รีเวิร์ตสาขา</span></p>
 
   <!-- Section 6: Next Steps -->
   <div class="section-header" id="section-6">
@@ -340,12 +341,12 @@
     <h2 class="section-title"><span class="lang-en">Next Steps</span><span class="lang-th">ขั้นตอนถัดไป</span></h2>
   </div>
 
-  <p>{{NEXT_STEPS_INTRO}}</p>
+  <p><span class="lang-en">Keep the table in sync as flows evolve.</span><span class="lang-th">คงตารางให้ตรงเมื่อโฟลว์เปลี่ยน</span></p>
 
   <table>
     <thead><tr><th>Action</th><th>Owner</th><th>Timeline</th></tr></thead>
     <tbody>
-      {{NEXT_STEPS_ROWS}}
+      <tr><td><span class="lang-en">Update table when a flow changes its documents</span><span class="lang-th">อัปเดตตารางเมื่อโฟลว์เปลี่ยนเอกสาร</span></td><td>Natthaphat Wajanavisit</td><td><span class="lang-en">Ongoing</span><span class="lang-th">ต่อเนื่อง</span></td></tr>
       <!--
       Example:
       <tr><td>Monitor for user feedback</td><td>Product Team</td><td>Next 2 weeks</td></tr>
@@ -370,10 +371,10 @@
     <thead><tr><th>Reference</th><th>Date</th><th>Description</th><th>Author</th></tr></thead>
     <tbody>
       <tr>
-        <td>{{CHANGE_ID}}</td>
-        <td>{{COMPLETED_DATE}}</td>
+        <td>CR-2026-05-24-001</td>
+        <td>2026-05-24</td>
         <td>Management brief generated after testing completed</td>
-        <td>{{AUTHOR}}</td>
+        <td>Natthaphat Wajanavisit</td>
       </tr>
     </tbody>
   </table>

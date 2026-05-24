@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{CHANGE_TYPE}} Plan — {{FEATURE_NAME}} — {{PROJECT_NAME}}</title>
+<title>Add Feature Summary — Documents by Flow (README reference) — DevStarter</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* Standard DevStarter document template */
@@ -16,7 +16,7 @@
     --status-approved:#10b981; --status-pending:#8b5cf6;
     --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
     --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316;
-    --section-7:#06b6d4;
+    --section-7:#06b6d4; --section-8:#ec4899;
     --header-h:64px; --sidebar-w:280px;
     --code-bg:#f1f5f9; --code-inline-bg:rgba(233,69,96,0.08);
     --code-inline-color:#d63851; --table-even-bg:rgba(0,0,0,0.02);
@@ -42,10 +42,7 @@
   .doc-header-right { display:flex; align-items:center; gap:16px; }
   .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
   .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
-  .doc-status-badge.draft { background:rgba(245,158,11,0.15); color:var(--status-draft); border:1px solid rgba(245,158,11,0.3); }
-  .doc-status-badge.review { background:rgba(59,130,246,0.15); color:var(--status-review); border:1px solid rgba(59,130,246,0.3); }
   .doc-status-badge.approved { background:rgba(16,185,129,0.15); color:var(--status-approved); border:1px solid rgba(16,185,129,0.3); }
-  .doc-status-badge.pending { background:rgba(139,92,246,0.15); color:var(--status-pending); border:1px solid rgba(139,92,246,0.3); }
   .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
   .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
   .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
@@ -64,7 +61,7 @@
   .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
   .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
   .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
-  .toc-number.s7{background:var(--section-7);}
+  .toc-number.s7{background:var(--section-7);} .toc-number.s8{background:var(--section-8);}
   .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; transition:background 0.3s,border-color 0.3s; }
   .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
   .doc-info-row span:first-child { color:var(--text-muted); }
@@ -77,7 +74,7 @@
   .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
   .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
   .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
-  .section-number.s7{background:var(--section-7);}
+  .section-number.s7{background:var(--section-7);} .section-number.s8{background:var(--section-8);}
   .section-title { font-size:22px; font-weight:700; letter-spacing:-0.3px; }
   h3 { font-size:16px; font-weight:600; color:var(--text); margin:28px 0 12px; border-left:3px solid var(--accent); padding-left:12px; }
   h4 { font-size:14px; font-weight:600; color:var(--text-dim); margin:20px 0 8px; }
@@ -96,9 +93,8 @@
   .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin:16px 0 24px; transition:background 0.3s,border-color 0.3s; }
   .card-title { font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text); }
   .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
-  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
-  .critical { border-left:4px solid var(--section-5); background:rgba(239,68,68,0.05); }
   .success { border-left:4px solid var(--section-4); background:rgba(16,185,129,0.05); }
+  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
   .badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.3px; }
   .badge-red{background:rgba(239,68,68,0.15);color:#ef4444;}
   .badge-orange{background:rgba(249,115,22,0.15);color:#f97316;}
@@ -106,13 +102,12 @@
   .badge-green{background:rgba(16,185,129,0.15);color:#10b981;}
   .badge-blue{background:rgba(59,130,246,0.15);color:#3b82f6;}
   .badge-purple{background:rgba(139,92,246,0.15);color:#8b5cf6;}
+  .badge-gray{background:rgba(100,116,139,0.15);color:#94a3b8;}
   hr { border:none; border-top:1px solid var(--border); margin:32px 0; }
-  .approval-block { background:var(--bg-card); border:2px solid var(--border); border-radius:12px; padding:28px 32px; margin:32px 0; text-align:center; }
-  .approval-block.pending { border-color:rgba(139,92,246,0.4); background:rgba(139,92,246,0.04); }
-  .approval-block.approved { border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.04); }
-  .approval-title { font-size:18px; font-weight:700; margin-bottom:8px; }
-  .approval-subtitle { font-size:14px; color:var(--text-dim); margin-bottom:20px; }
-  .approval-status { font-size:13px; font-weight:600; margin-top:16px; }
+  .handoff-grid { display:grid; grid-template-columns:1fr; gap:20px; margin:16px 0; }
+  .handoff-card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; }
+  .handoff-card-title { font-size:14px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .handoff-card-title .icon { font-size:18px; }
   .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); transition:all 0.2s; }
   .lang-btn:hover { background:var(--bg-hover); color:var(--text); }
   .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); transition:all 0.2s; }
@@ -135,18 +130,18 @@
 
 <header class="doc-header">
   <div class="doc-header-left">
-    <div class="doc-header-logo">{{PROJECT_INITIALS}}</div>
+    <div class="doc-header-logo">DS</div>
     <div class="doc-header-title">
-      <div class="doc-header-project">{{PROJECT_NAME}}</div>
-      <div class="doc-header-docname">{{CHANGE_TYPE}} Plan — {{FEATURE_NAME}}</div>
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Add Feature Summary — Documents by Flow (README reference)</div>
     </div>
   </div>
   <div class="doc-header-right">
     <div class="doc-header-meta">
-      <div>{{CHANGE_ID}} · {{DATE}}</div>
-      <div>Author: {{AUTHOR}}</div>
+      <div>CR-2026-05-24-001 · Completed 2026-05-24</div>
+      <div>Author: Natthaphat Wajanavisit</div>
     </div>
-    <span class="doc-status-badge pending">● PENDING APPROVAL</span>
+    <span class="doc-status-badge approved">&#10003; COMPLETED</span>
     <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
     <div class="lang-btn" onclick="toggleLang()" title="Switch language / เปลี่ยนภาษา"><span id="langLabel">EN</span></div>
     <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
@@ -160,20 +155,20 @@
   <div class="doc-sidebar-title">Contents</div>
   <ul class="toc-list">
     <li class="toc-item"><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวมการเปลี่ยนแปลง</span></a></li>
-    <li class="toc-item"><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Problem / Requirement</span><span class="lang-th">ปัญหา / ความต้องการ</span></a></li>
-    <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Proposed Solution</span><span class="lang-th">แนวทางแก้ไขที่เสนอ</span></a></li>
-    <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Scope &amp; Impact</span><span class="lang-th">ขอบเขตและผลกระทบ</span></a></li>
-    <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Implementation Steps</span><span class="lang-th">ขั้นตอนการพัฒนา</span></a></li>
-    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยงและการย้อนกลับ</span></a></li>
-    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> <span class="lang-en">Approval</span><span class="lang-th">การอนุมัติ</span></a></li>
+    <li class="toc-item"><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Root Problem / Requirement</span><span class="lang-th">ต้นตอของปัญหา / ความต้องการ</span></a></li>
+    <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Files Changed</span><span class="lang-th">ไฟล์ที่เปลี่ยน</span></a></li>
+    <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Functions Changed</span><span class="lang-th">ฟังก์ชันที่เปลี่ยน</span></a></li>
+    <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Implementation Notes</span><span class="lang-th">บันทึกการพัฒนา</span></a></li>
+    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Testing &amp; Validation</span><span class="lang-th">การทดสอบและการตรวจสอบ</span></a></li>
+    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> <span class="lang-en">Handoff</span><span class="lang-th">การส่งมอบ</span></a></li>
   </ul>
   <div class="doc-info-card">
-    <div class="doc-info-row"><span>Change ID</span> <span>{{CHANGE_ID}}</span></div>
-    <div class="doc-info-row"><span>Type</span> <span>{{CHANGE_TYPE}}</span></div>
-    <div class="doc-info-row"><span>Effort</span> <span>{{EFFORT}}</span></div>
-    <div class="doc-info-row"><span>Priority</span> <span>{{PRIORITY}}</span></div>
-    <div class="doc-info-row"><span>Date</span> <span>{{DATE}}</span></div>
-    <div class="doc-info-row"><span>Status</span> <span>Pending Approval</span></div>
+    <div class="doc-info-row"><span>Change ID</span> <span>CR-2026-05-24-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Add Feature</span></div>
+    <div class="doc-info-row"><span>Branch</span> <span>feature/documents-by-flow</span></div>
+    <div class="doc-info-row"><span>PR</span> <span>(pending)</span></div>
+    <div class="doc-info-row"><span>Completed</span> <span>2026-05-24</span></div>
+    <div class="doc-info-row"><span>Status</span> <span style="color:var(--status-approved)">&#10003; Completed</span></div>
   </div>
 </nav>
 
@@ -184,155 +179,178 @@
     <span class="section-number s1">1</span>
     <h2 class="section-title"><span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวมการเปลี่ยนแปลง</span></h2>
   </div>
+  <div class="card success">
+    <div class="card-title">&#10003; Change Completed Successfully</div>
+    <p>This document captures the full record of what was changed, why, and how to validate it. Use the Handoff section (Section 7) for reviewer, QA, and management briefings.</p>
+  </div>
   <table>
     <thead><tr><th>Field</th><th>Value</th></tr></thead>
     <tbody>
-      <tr><td>Change ID</td><td><code>{{CHANGE_ID}}</code></td></tr>
-      <tr><td>Change Type</td><td><span class="badge badge-blue">{{CHANGE_TYPE}}</span></td></tr>
-      <tr><td>Feature / Fix Name</td><td>{{FEATURE_NAME}}</td></tr>
-      <tr><td>Slug</td><td><code>{{SLUG}}</code></td></tr>
-      <tr><td>Date</td><td>{{DATE}}</td></tr>
-      <tr><td>Author</td><td>{{AUTHOR}}</td></tr>
-      <tr><td>Priority</td><td><span class="badge badge-{{PRIORITY_COLOR}}">{{PRIORITY}}</span></td></tr>
-      <tr><td>Effort</td><td>{{EFFORT}}</td></tr>
-      <tr><td>Branch</td><td><code>{{BRANCH_NAME}}</code></td></tr>
-      <tr><td>Status</td><td><span class="badge badge-purple">Pending Approval</span></td></tr>
+      <tr><td>Change ID</td><td><code>CR-2026-05-24-001</code></td></tr>
+      <tr><td>Change Type</td><td><span class="badge badge-blue">Add Feature</span></td></tr>
+      <tr><td>Feature / Fix Name</td><td>Documents by Flow (README reference)</td></tr>
+      <tr><td>Slug</td><td><code>documents-by-flow</code></td></tr>
+      <tr><td>Branch</td><td><code>feature/documents-by-flow</code></td></tr>
+      <tr><td>Pull Request</td><td>(pending)</td></tr>
+      <tr><td>GitHub Issue</td><td>(none)</td></tr>
+      <tr><td>Notion Task</td><td>(none)</td></tr>
+      <tr><td>Author</td><td>Natthaphat Wajanavisit</td></tr>
+      <tr><td>Plan Approved</td><td>2026-05-24</td></tr>
+      <tr><td>Development Completed</td><td>2026-05-24</td></tr>
+      <tr><td>Testing Completed</td><td>2026-05-24</td></tr>
+      <tr><td>Total Files Changed</td><td>1</td></tr>
+      <tr><td>Total Functions Changed</td><td>0</td></tr>
     </tbody>
   </table>
 
-  <!-- Section 2: Problem / Requirement -->
+  <!-- Section 2: Root Problem / Requirement -->
   <div class="section-header" id="section-2">
     <span class="section-number s2">2</span>
-    <h2 class="section-title"><span class="lang-en">Problem / Requirement</span><span class="lang-th">ปัญหา / ความต้องการ</span></h2>
+    <h2 class="section-title"><span class="lang-en">Root Problem / Requirement</span><span class="lang-th">ต้นตอของปัญหา / ความต้องการ</span></h2>
   </div>
 
-  <h3><span class="lang-en">Root Problem</span><span class="lang-th">ต้นตอของปัญหา</span></h3>
-  <p>{{ROOT_PROBLEM}}</p>
+  <h3><span class="lang-en">Original Problem / Requirement</span><span class="lang-th">ปัญหา / ความต้องการเดิม</span></h3>
+  <p><span class="lang-en">No single reference for which docs each flow generates.</span><span class="lang-th">ไม่มีคู่มือเดียวว่าแต่ละโฟลว์สร้างเอกสารใด</span></p>
 
-  <h3><span class="lang-en">Business Requirement</span><span class="lang-th">ความต้องการทางธุรกิจ</span></h3>
-  <p>{{BUSINESS_REQUIREMENT}}</p>
+  <h3><span class="lang-en">Root Cause (Bugs) / Business Gap (Features)</span><span class="lang-th">ต้นตอของปัญหา (บั๊ก) / ช่องว่างทางธุรกิจ (ฟีเจอร์)</span></h3>
+  <p><span class="lang-en">Document outputs were only described inside individual runbooks.</span><span class="lang-th">เอกสารที่ได้ถูกอธิบายไว้ใน runbook แต่ละตัวเท่านั้น</span></p>
 
-  <h3><span class="lang-en">User Story</span><span class="lang-th">เรื่องราวของผู้ใช้</span></h3>
-  <div class="card note">
-    <p><strong>As a</strong> {{USER_ROLE}},<br>
-    <strong>I want to</strong> {{USER_WANT}},<br>
-    <strong>So that</strong> {{USER_BENEFIT}}.</p>
-  </div>
+  <h3><span class="lang-en">How This Change Resolves It</span><span class="lang-th">การเปลี่ยนแปลงนี้แก้ไขอย่างไร</span></h3>
+  <p><span class="lang-en">Added a 'Documents by Flow' table to README mapping all five flows to their plain + technical documents.</span><span class="lang-th">เพิ่มตาราง 'Documents by Flow' ใน README จับคู่ทั้งห้าโฟลว์กับเอกสารภาษาคนและเชิงเทคนิค</span></p>
 
-  <h3><span class="lang-en">Acceptance Criteria</span><span class="lang-th">เกณฑ์การยอมรับ</span></h3>
-  <ul>
-    {{ACCEPTANCE_CRITERIA_LIST}}
-  </ul>
+  <h3><span class="lang-en">Acceptance Criteria — Verified</span><span class="lang-th">เกณฑ์การยอมรับ — ตรวจสอบแล้ว</span></h3>
+  <table>
+    <thead><tr><th>Criterion</th><th>Result</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Section exists in README</span><span class="lang-th">มีส่วนใน README</span></td><td>&#9989; Pass</td><td><span class="lang-en">Rendered on GitHub</span><span class="lang-th">เรนเดอร์บน GitHub</span></td></tr><tr><td><span class="lang-en">All 5 flows listed</span><span class="lang-th">ครบ 5 โฟลว์</span></td><td>&#9989; Pass</td><td>new/change/hotfix/migrate/release</td></tr>
+    </tbody>
+  </table>
 
-  <!-- Section 3: Proposed Solution -->
+  <!-- Section 3: Files Changed -->
   <div class="section-header" id="section-3">
     <span class="section-number s3">3</span>
-    <h2 class="section-title"><span class="lang-en">Proposed Solution</span><span class="lang-th">แนวทางแก้ไขที่เสนอ</span></h2>
+    <h2 class="section-title"><span class="lang-en">Files Changed</span><span class="lang-th">ไฟล์ที่เปลี่ยน</span></h2>
   </div>
-
-  <h3><span class="lang-en">Approach</span><span class="lang-th">แนวทาง</span></h3>
-  <p>{{SOLUTION_APPROACH}}</p>
-
-  <h3><span class="lang-en">Why This Approach</span><span class="lang-th">เหตุผลที่เลือกแนวทางนี้</span></h3>
-  <p>{{WHY_THIS_APPROACH}}</p>
-
-  <h3><span class="lang-en">Alternatives Considered</span><span class="lang-th">ทางเลือกอื่นที่พิจารณา</span></h3>
+  <p>Every file that was created, modified, or deleted as part of this change.</p>
   <table>
-    <thead><tr><th>Option</th><th>Reason Rejected</th></tr></thead>
+    <thead><tr><th>File Path</th><th>Change Type</th><th>Notes</th></tr></thead>
     <tbody>
-      {{ALTERNATIVES_ROWS}}
+      <tr><td>README.md</td><td><span class="badge badge-yellow">modified</span></td><td><span class="lang-en">Added Documents by Flow section</span><span class="lang-th">เพิ่มส่วน Documents by Flow</span></td></tr>
     </tbody>
   </table>
 
-  <!-- Section 4: Scope & Impact -->
+  <!-- Section 4: Functions Changed -->
   <div class="section-header" id="section-4">
     <span class="section-number s4">4</span>
-    <h2 class="section-title"><span class="lang-en">Scope &amp; Impact</span><span class="lang-th">ขอบเขตและผลกระทบ</span></h2>
+    <h2 class="section-title"><span class="lang-en">Functions Changed</span><span class="lang-th">ฟังก์ชันที่เปลี่ยน</span></h2>
   </div>
-
-  <h3><span class="lang-en">Files to Modify</span><span class="lang-th">ไฟล์ที่ต้องแก้ไข</span></h3>
+  <p>Every function/method/class that was added, modified, or fixed. Source: <code>memory/change-log-documents-by-flow.md</code>.</p>
   <table>
-    <thead><tr><th>File Path</th><th>Change Type</th><th>Reason</th></tr></thead>
+    <thead><tr><th>Function / Method</th><th>File</th><th>Change Type</th><th>Description</th></tr></thead>
     <tbody>
-      {{FILES_TO_MODIFY_ROWS}}
+      <tr><td>&mdash;</td><td>README.md</td><td>&mdash;</td><td><span class="lang-en">Documentation only — no functions</span><span class="lang-th">เอกสารเท่านั้น ไม่มีฟังก์ชัน</span></td></tr>
     </tbody>
   </table>
 
-  <h3><span class="lang-en">Files NOT to Touch (Regression Guard)</span><span class="lang-th">ไฟล์ที่ต้องไม่แก้ไข (ป้องกันผลกระทบ)</span></h3>
-  <ul>
-    {{REGRESSION_GUARD_LIST}}
-  </ul>
-
-  <h3><span class="lang-en">System Impact</span><span class="lang-th">ผลกระทบต่อระบบ</span></h3>
-  <table>
-    <thead><tr><th>Area</th><th>Impact</th><th>Details</th></tr></thead>
-    <tbody>
-      <tr><td>Database</td><td><span class="badge {{DB_IMPACT_CLASS}}">{{DB_IMPACT}}</span></td><td>{{DB_IMPACT_DETAIL}}</td></tr>
-      <tr><td>API</td><td><span class="badge {{API_IMPACT_CLASS}}">{{API_IMPACT}}</span></td><td>{{API_IMPACT_DETAIL}}</td></tr>
-      <tr><td>UI</td><td><span class="badge {{UI_IMPACT_CLASS}}">{{UI_IMPACT}}</span></td><td>{{UI_IMPACT_DETAIL}}</td></tr>
-      <tr><td>Security</td><td><span class="badge {{SEC_IMPACT_CLASS}}">{{SEC_IMPACT}}</span></td><td>{{SEC_IMPACT_DETAIL}}</td></tr>
-    </tbody>
-  </table>
-
-  <!-- Section 5: Implementation Steps -->
+  <!-- Section 5: Implementation Notes -->
   <div class="section-header" id="section-5">
     <span class="section-number s5">5</span>
-    <h2 class="section-title"><span class="lang-en">Implementation Steps</span><span class="lang-th">ขั้นตอนการพัฒนา</span></h2>
+    <h2 class="section-title"><span class="lang-en">Implementation Notes</span><span class="lang-th">บันทึกการพัฒนา</span></h2>
   </div>
 
-  <ol>
-    {{IMPLEMENTATION_STEPS_LIST}}
-  </ol>
-
-  <h3><span class="lang-en">Dependencies</span><span class="lang-th">สิ่งที่ต้องพึ่งพา</span></h3>
+  <h3><span class="lang-en">Key Decisions Made</span><span class="lang-th">การตัดสินใจสำคัญ</span></h3>
   <ul>
-    {{DEPENDENCIES_LIST}}
+    <li><span class="lang-en">Table format over prose for scannability</span><span class="lang-th">ใช้ตารางแทนข้อความเพื่ออ่านง่าย</span></li>
   </ul>
 
-  <h3><span class="lang-en">Testing Approach</span><span class="lang-th">แนวทางการทดสอบ</span></h3>
-  <p>{{TESTING_APPROACH}}</p>
+  <h3><span class="lang-en">Technical Approach</span><span class="lang-th">แนวทางเชิงเทคนิค</span></h3>
+  <p><span class="lang-en">Single markdown table inserted after the Release Flow section.</span><span class="lang-th">แทรกตาราง markdown หนึ่งตารางหลังส่วน Release Flow</span></p>
 
-  <!-- Section 6: Risk & Rollback -->
+  <h3><span class="lang-en">Deviations from Plan</span><span class="lang-th">ความแตกต่างจากแผน</span></h3>
+  <p><span class="lang-en">None — implemented as planned.</span><span class="lang-th">ไม่มี — ทำตามแผน</span></p>
+
+  <!-- Section 6: Testing & Validation -->
   <div class="section-header" id="section-6">
     <span class="section-number s6">6</span>
-    <h2 class="section-title"><span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยงและการย้อนกลับ</span></h2>
+    <h2 class="section-title"><span class="lang-en">Testing &amp; Validation</span><span class="lang-th">การทดสอบและการตรวจสอบ</span></h2>
   </div>
 
-  <h3><span class="lang-en">Risks</span><span class="lang-th">ความเสี่ยง</span></h3>
+  <h3><span class="lang-en">Tests Added</span><span class="lang-th">การทดสอบที่เพิ่ม</span></h3>
   <table>
-    <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+    <thead><tr><th>Test Name</th><th>File</th><th>Type</th><th>What It Verifies</th></tr></thead>
     <tbody>
-      {{RISKS_ROWS}}
+      <tr><td>&mdash;</td><td>&mdash;</td><td><span class="lang-en">Manual</span><span class="lang-th">ด้วยตนเอง</span></td><td><span class="lang-en">Visual README review</span><span class="lang-th">ตรวจ README ด้วยสายตา</span></td></tr>
     </tbody>
   </table>
 
-  <h3><span class="lang-en">Rollback Plan</span><span class="lang-th">แผนการย้อนกลับ</span></h3>
-  <p>{{ROLLBACK_PLAN}}</p>
+  <h3><span class="lang-en">How to Verify the Fix / Feature</span><span class="lang-th">วิธีตรวจสอบการแก้ไข / ฟีเจอร์</span></h3>
+  <ol>
+    <li><span class="lang-en">Open README on GitHub</span><span class="lang-th">เปิด README บน GitHub</span></li>
+        <li><span class="lang-en">Confirm table renders with all 5 flows</span><span class="lang-th">ยืนยันว่าตารางแสดงครบ 5 โฟลว์</span></li>
+  </ol>
 
-  <!-- Section 7: Approval -->
+  <h3><span class="lang-en">Regression Checks</span><span class="lang-th">การตรวจสอบการถดถอย</span></h3>
+  <table>
+    <thead><tr><th>Area</th><th>Test</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Other README sections</span><span class="lang-th">ส่วนอื่นของ README</span></td><td><span class="lang-en">Unchanged</span><span class="lang-th">ไม่เปลี่ยน</span></td><td>&#9989;</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 7: Handoff -->
   <div class="section-header" id="section-7">
     <span class="section-number s7">7</span>
-    <h2 class="section-title"><span class="lang-en">Approval</span><span class="lang-th">การอนุมัติ</span></h2>
+    <h2 class="section-title"><span class="lang-en">Handoff</span><span class="lang-th">การส่งมอบ</span></h2>
   </div>
 
-  <div class="card warning">
-    <div class="card-title">Action Required</div>
-    <p>Review all sections above. When satisfied, approve in the Claude Code terminal to start development on branch <code>{{BRANCH_NAME}}</code>.</p>
-  </div>
+  <div class="handoff-grid">
 
-  <div class="approval-block pending" id="approval-block">
-    <div class="approval-title">&#9888; Awaiting Approval</div>
-    <div class="approval-subtitle">Return to the terminal and approve to start development.</div>
-    <table style="margin:16px auto;width:auto;min-width:320px;">
-      <thead><tr><th>Field</th><th>Value</th></tr></thead>
-      <tbody>
-        <tr><td>Change ID</td><td><code>{{CHANGE_ID}}</code></td></tr>
-        <tr><td>Branch to create</td><td><code>{{BRANCH_NAME}}</code></td></tr>
-        <tr><td>Requested by</td><td>{{AUTHOR}}</td></tr>
-        <tr><td>Date</td><td>{{DATE}}</td></tr>
-      </tbody>
-    </table>
-    <div class="approval-status">Status: <span class="badge badge-purple">PENDING APPROVAL</span></div>
+    <div class="handoff-card">
+      <div class="handoff-card-title"><span class="icon">&#128065;</span> For Code Reviewers</div>
+      <h4>What to Focus On</h4>
+      <ul>
+        <li><span class="lang-en">Table accuracy vs actual flow outputs</span><span class="lang-th">ความถูกต้องของตารางเทียบกับเอกสารจริง</span></li>
+      </ul>
+      <h4>Files Requiring Closest Review</h4>
+      <ul>
+        <li><span class="lang-en">README.md</span><span class="lang-th">README.md</span></li>
+      </ul>
+      <h4>Known Trade-offs / Tech Debt</h4>
+      <p><span class="lang-en">Table must be updated if flows change their document outputs.</span><span class="lang-th">ต้องอัปเดตตารางหากโฟลว์เปลี่ยนเอกสารที่สร้าง</span></p>
+    </div>
+
+    <div class="handoff-card">
+      <div class="handoff-card-title"><span class="icon">&#9989;</span> For QA / Testers</div>
+      <h4>Test Scenarios</h4>
+      <ol>
+        <li><span class="lang-en">Read the section as a new user</span><span class="lang-th">อ่านส่วนนี้ในมุมผู้ใช้ใหม่</span></li>
+      </ol>
+      <h4>Edge Cases to Check</h4>
+      <ul>
+        <li><span class="lang-en">Thai language toggle renders the table labels</span><span class="lang-th">สลับภาษาไทยแล้วป้ายตารางแสดงถูก</span></li>
+      </ul>
+      <h4>Regression Areas</h4>
+      <ul>
+        <li><span class="lang-en">Existing links/sections still work</span><span class="lang-th">ลิงก์/ส่วนเดิมยังใช้ได้</span></li>
+      </ul>
+      <h4>Environment Notes</h4>
+      <p><span class="lang-en">GitHub markdown renderer.</span><span class="lang-th">ตัวเรนเดอร์ markdown ของ GitHub</span></p>
+    </div>
+
+    <div class="handoff-card">
+      <div class="handoff-card-title"><span class="icon">&#128200;</span> For Management</div>
+      <h4>Business Impact</h4>
+      <p><span class="lang-en">Faster onboarding — users know expected documents up front.</span><span class="lang-th">เริ่มงานเร็วขึ้น — ผู้ใช้รู้เอกสารที่จะได้ล่วงหน้า</span></p>
+      <h4>User Impact</h4>
+      <p><span class="lang-en">Clearer expectations before running any flow.</span><span class="lang-th">คาดหวังได้ชัดเจนก่อนรันโฟลว์</span></p>
+      <h4>Risk Assessment</h4>
+      <p><span class="lang-en">Low — documentation only.</span><span class="lang-th">ต่ำ — เอกสารเท่านั้น</span></p>
+      <h4>What Was Delivered</h4>
+      <ul>
+        <li><span class="lang-en">A per-flow document reference in the README</span><span class="lang-th">คู่มือเอกสารต่อโฟลว์ใน README</span></li>
+      </ul>
+    </div>
+
   </div>
 
   <!-- Revision History -->
@@ -344,11 +362,11 @@
     <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
     <tbody>
       <tr>
-        <td><code>{{CHANGE_ID}}</code></td>
-        <td>{{DATE}}</td>
+        <td><code>CR-2026-05-24-001</code></td>
+        <td>2026-05-24</td>
         <td>ADD</td>
-        <td>Initial change plan created</td>
-        <td>{{AUTHOR}}</td>
+        <td>Change summary generated after testing completed</td>
+        <td>Natthaphat Wajanavisit</td>
       </tr>
     </tbody>
   </table>

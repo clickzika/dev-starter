@@ -1,13 +1,15 @@
 {
   "workflow": "devstarter-release",
-  "version": "v5.2.0",
+  "version": "v5.4.0",
   "status": "completed",
   "branch": "main",
-  "started_at": "2026-05-23",
-  "completed_at": "2026-05-23",
-  "tag": "v5.2.0",
+  "started_at": "2026-05-24",
+  "completed_at": "2026-05-24",
+  "tag": "v5.4.0",
   "features": [
-    "CR-2026-05-23-001 — branch-guard-hook (PR #70)",
-    "CR-2026-05-23-002 — bilingual-pdf-export (PR #71)"
+    "CR-2026-05-24-001 — kickoff.html pre-dev sign-off (add/bug) (PR #72)",
+    "CR-2026-05-24-001 — doc family all flows: remove + hotfix incident-brief + migrate (PR #73)",
+    "CR-2026-05-24-003 — release launch brief PHASE 9.5 (PR #74)",
+    "Author from USER.md (Rule 8) across all generated docs"
   ]
 }

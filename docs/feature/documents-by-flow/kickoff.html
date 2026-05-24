@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kickoff — {{FEATURE_NAME}} — {{PROJECT_NAME}}</title>
+<title>Kickoff — Documents by Flow (README reference) — DevStarter</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -171,22 +171,22 @@
   CHANGE-TYPE NOTES:
     Add / Modify Feature → Section 2 = "What We Will Build" + user story.
     Fix Bug              → Section 2 = "Root Cause & Fix Solution".
-    Fill {{CONFIRMATION_HEADING}} and {{CONFIRMATION_DETAIL}} accordingly.
+    Fill What We Will Build and <span class="lang-en">A new README section listing, per flow (new / change / hotfix / migrate / release), which HTML documents are produced and whether each is plain-language or technical.</span><span class="lang-th">ส่วนใหม่ใน README ที่ระบุเอกสารที่แต่ละโฟลว์สร้าง พร้อมระบุว่าเป็นภาษาคนทั่วไปหรือเชิงเทคนิค</span> accordingly.
   ════════════════════════════════════════════════════════════════════════
 -->
 
 <header class="doc-header">
   <div class="doc-header-left">
-    <div class="doc-header-logo">{{PROJECT_INITIALS}}</div>
+    <div class="doc-header-logo">DS</div>
     <div class="doc-header-title">
-      <div class="doc-header-project">{{PROJECT_NAME}}</div>
-      <div class="doc-header-docname">Kickoff &amp; Sign-off — {{FEATURE_NAME}}</div>
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Kickoff &amp; Sign-off — Documents by Flow (README reference)</div>
     </div>
   </div>
   <div class="doc-header-right">
     <div class="doc-header-meta">
-      <div>{{CHANGE_ID}} · {{DATE}}</div>
-      <div>Prepared by: {{AUTHOR}}</div>
+      <div>CR-2026-05-24-001 · 2026-05-24</div>
+      <div>Prepared by: Natthaphat Wajanavisit</div>
     </div>
     <span class="doc-status-badge">&#9203; PENDING SIGN-OFF</span>
     <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
@@ -202,19 +202,19 @@
   <div class="doc-sidebar-title">Contents</div>
   <ul class="toc-list">
     <li><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Overview</span><span class="lang-th">ภาพรวม</span></a></li>
-    <li><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> {{CONFIRMATION_HEADING}}</a></li>
+    <li><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">What We Will Build</span><span class="lang-th">สิ่งที่เราจะสร้าง</span></a></li>
     <li><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Scope &amp; Acceptance</span><span class="lang-th">ขอบเขต &amp; การยอมรับ</span></a></li>
     <li><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Management Summary</span><span class="lang-th">สรุปสำหรับผู้บริหาร</span></a></li>
     <li><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Effort, Timeline &amp; Risk</span><span class="lang-th">ความพยายาม ระยะเวลา และความเสี่ยง</span></a></li>
     <li><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Sign-off</span><span class="lang-th">การลงนามอนุมัติ</span></a></li>
   </ul>
   <div class="doc-info-card">
-    <div class="doc-info-row"><span>Reference</span> <span>{{CHANGE_ID}}</span></div>
-    <div class="doc-info-row"><span>Type</span> <span>{{CHANGE_TYPE}}</span></div>
-    <div class="doc-info-row"><span>Priority</span> <span>{{PRIORITY}}</span></div>
-    <div class="doc-info-row"><span>Effort</span> <span>{{EFFORT}}</span></div>
+    <div class="doc-info-row"><span>Reference</span> <span>CR-2026-05-24-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Add Feature</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>Low</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>S</span></div>
     <div class="doc-info-row"><span>Status</span> <span>Pending Sign-off</span></div>
-    <div class="doc-info-row"><span>Risk</span> <span>{{RISK_LEVEL}}</span></div>
+    <div class="doc-info-row"><span>Risk</span> <span>Low</span></div>
   </div>
 </nav>
 
@@ -228,25 +228,25 @@
 
   <div class="exec-hero">
     <div class="exec-hero-label">&#128221; What you are being asked to approve</div>
-    <p class="exec-hero-text">{{PLAIN_SUMMARY}}</p>
+    <p class="exec-hero-text"><span class="lang-en">Add a 'Documents by Flow' reference section to the README that maps each DevStarter workflow to the documents it generates.</span><span class="lang-th">เพิ่มส่วน 'Documents by Flow' ใน README เพื่อแสดงว่าแต่ละเวิร์กโฟลว์สร้างเอกสารใดบ้าง</span></p>
   </div>
 
   <div class="status-row">
     <span class="status-pill pill-yellow">&#9203; Pending Sign-off</span>
-    <span class="status-pill pill-blue">{{CHANGE_TYPE}}</span>
-    <span class="status-pill pill-{{PRIORITY_PILL_COLOR}}">Priority: {{PRIORITY}}</span>
-    <span class="status-pill pill-{{RISK_PILL_COLOR}}">Risk: {{RISK_LEVEL}}</span>
+    <span class="status-pill pill-blue">Add Feature</span>
+    <span class="status-pill pill-gray">Priority: Low</span>
+    <span class="status-pill pill-green">Risk: Low</span>
   </div>
 
   <table>
     <thead><tr><th>Field</th><th>Value</th></tr></thead>
     <tbody>
-      <tr><td>Reference Number</td><td>{{CHANGE_ID}}</td></tr>
-      <tr><td>Project</td><td>{{PROJECT_NAME}}</td></tr>
-      <tr><td>Title</td><td>{{FEATURE_NAME}}</td></tr>
-      <tr><td>Type</td><td>{{CHANGE_TYPE}}</td></tr>
-      <tr><td>Requested</td><td>{{DATE}}</td></tr>
-      <tr><td>Prepared by</td><td>{{AUTHOR}}</td></tr>
+      <tr><td>Reference Number</td><td>CR-2026-05-24-001</td></tr>
+      <tr><td>Project</td><td>DevStarter</td></tr>
+      <tr><td>Title</td><td>Documents by Flow (README reference)</td></tr>
+      <tr><td>Type</td><td>Add Feature</td></tr>
+      <tr><td>Requested</td><td>2026-05-24</td></tr>
+      <tr><td>Prepared by</td><td>Natthaphat Wajanavisit</td></tr>
     </tbody>
   </table>
 
@@ -260,7 +260,7 @@
   <!-- ══ Section 2: Requirement / Solution Confirmation (REQUESTER) ══ -->
   <div class="section-header" id="section-2">
     <span class="section-number s2">2</span>
-    <h2 class="section-title">{{CONFIRMATION_HEADING}}</h2>
+    <h2 class="section-title"><span class="lang-en">What We Will Build</span><span class="lang-th">สิ่งที่เราจะสร้าง</span></h2>
   </div>
 
   <div class="audience-banner audience-requester">
@@ -268,12 +268,12 @@
   </div>
 
   <!-- FEATURE: plain description of what will be built.  BUG: root cause + fix in plain language. -->
-  <p>{{CONFIRMATION_DETAIL}}</p>
+  <p><span class="lang-en">A new README section listing, per flow (new / change / hotfix / migrate / release), which HTML documents are produced and whether each is plain-language or technical.</span><span class="lang-th">ส่วนใหม่ใน README ที่ระบุเอกสารที่แต่ละโฟลว์สร้าง พร้อมระบุว่าเป็นภาษาคนทั่วไปหรือเชิงเทคนิค</span></p>
 
   <!-- FEATURE: user story.  BUG: how we will know it is fixed.  Remove the block that does not apply. -->
   <div class="card">
-    <div class="card-title">{{CONFIRMATION_SECONDARY_TITLE}}</div>
-    <p>{{CONFIRMATION_SECONDARY}}</p>
+    <div class="card-title">User Story</div>
+    <p><span class="lang-en">As a DevStarter user, I want a quick reference of which documents each flow generates, so I know what artifacts to expect before running a flow.</span><span class="lang-th">ในฐานะผู้ใช้ DevStarter ฉันต้องการคู่มืออ้างอิงว่าแต่ละโฟลว์สร้างเอกสารใด เพื่อจะได้รู้ว่าจะได้เอกสารใดก่อนรันโฟลว์</span></p>
   </div>
 
   <!-- ══ Section 3: Scope & Acceptance ══ -->
@@ -286,14 +286,16 @@
     <div class="ba-card after">
       <div class="ba-label">&#10003; <span class="lang-en">In Scope</span><span class="lang-th">อยู่ในขอบเขต</span></div>
       <ul>
-        {{IN_SCOPE_LIST}}
+        <li><span class="lang-en">New '## Documents by Flow' section in README.md</span><span class="lang-th">ส่วน '## Documents by Flow' ใหม่ใน README.md</span></li>
+        <li><span class="lang-en">Table mapping all five flows to their documents</span><span class="lang-th">ตารางจับคู่ทั้งห้าโฟลว์กับเอกสารของมัน</span></li>
         <!-- <li><span class="lang-en">...</span><span class="lang-th">...</span></li> -->
       </ul>
     </div>
     <div class="ba-card before">
       <div class="ba-label">&#10006; <span class="lang-en">Out of Scope</span><span class="lang-th">อยู่นอกขอบเขต</span></div>
       <ul>
-        {{OUT_OF_SCOPE_LIST}}
+        <li><span class="lang-en">No template or runbook changes</span><span class="lang-th">ไม่แก้ไขเทมเพลตหรือ runbook</span></li>
+        <li><span class="lang-en">No new document templates generated</span><span class="lang-th">ไม่สร้างเทมเพลตเอกสารใหม่</span></li>
         <!-- <li><span class="lang-en">...</span><span class="lang-th">...</span></li> -->
       </ul>
     </div>
@@ -301,7 +303,8 @@
 
   <h3><span class="lang-en">Acceptance Criteria &mdash; done when</span><span class="lang-th">เกณฑ์การยอมรับ &mdash; เสร็จเมื่อ</span></h3>
   <ul>
-    {{ACCEPTANCE_CRITERIA_LIST}}
+    <li><span class="lang-en">Given the README, When a reader scans it, Then a 'Documents by Flow' section exists</span><span class="lang-th">เมื่อเปิด README จะพบส่วน 'Documents by Flow'</span></li>
+        <li><span class="lang-en">All five flows are listed with their plain + technical docs</span><span class="lang-th">ระบุครบทั้งห้าโฟลว์พร้อมเอกสารภาษาคนและเชิงเทคนิค</span></li>
     <!-- <li><span class="lang-en">Given X, When Y, Then Z</span><span class="lang-th">เมื่อ X กระทำ Y จะได้ Z</span></li> -->
   </ul>
 
@@ -316,13 +319,13 @@
   </div>
 
   <h3><span class="lang-en">Why now &mdash; the business need</span><span class="lang-th">ทำไมต้องทำตอนนี้ &mdash; ความจำเป็นทางธุรกิจ</span></h3>
-  <p>{{BUSINESS_NEED}}</p>
+  <p><span class="lang-en">Users were unsure which documents a flow produces and had to read the runbooks to find out.</span><span class="lang-th">ผู้ใช้ไม่แน่ใจว่าแต่ละโฟลว์สร้างเอกสารใด ต้องไปอ่าน runbook เอง</span></p>
 
   <h3><span class="lang-en">Who benefits</span><span class="lang-th">ใครได้ประโยชน์</span></h3>
-  <p>{{WHO_BENEFITS}}</p>
+  <p><span class="lang-en">All DevStarter users and teams adopting the workflow.</span><span class="lang-th">ผู้ใช้และทีมที่ใช้ DevStarter ทั้งหมด</span></p>
 
   <h3><span class="lang-en">Cost of not doing this</span><span class="lang-th">ผลกระทบหากไม่ดำเนินการ</span></h3>
-  <p>{{IMPACT_IF_DEFERRED}}</p>
+  <p><span class="lang-en">Minor — users keep guessing or reading runbooks to learn the document outputs.</span><span class="lang-th">เล็กน้อย — ผู้ใช้ต้องเดาหรืออ่าน runbook เพื่อรู้เอกสารที่ได้</span></p>
 
   <!-- ══ Section 5: Effort, Timeline & Risk ══ -->
   <div class="section-header" id="section-5">
@@ -333,16 +336,16 @@
   <table>
     <thead><tr><th>Aspect</th><th>Estimate</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td><span class="lang-en">Effort</span><span class="lang-th">ความพยายาม</span></td><td>{{EFFORT}}</td><td>{{EFFORT_DETAIL}}</td></tr>
-      <tr><td><span class="lang-en">Timeline</span><span class="lang-th">ระยะเวลา</span></td><td>{{TIMELINE_ESTIMATE}}</td><td>{{TIMELINE_NOTES}}</td></tr>
-      <tr><td><span class="lang-en">Priority</span><span class="lang-th">ลำดับความสำคัญ</span></td><td>{{PRIORITY}}</td><td>{{PRIORITY_NOTES}}</td></tr>
+      <tr><td><span class="lang-en">Effort</span><span class="lang-th">ความพยายาม</span></td><td>S</td><td><span class="lang-en">Single README section, no code.</span><span class="lang-th">แก้ไขส่วนเดียวใน README ไม่มีโค้ด</span></td></tr>
+      <tr><td><span class="lang-en">Timeline</span><span class="lang-th">ระยะเวลา</span></td><td><span class="lang-en">Under 1 day</span><span class="lang-th">ไม่ถึง 1 วัน</span></td><td><span class="lang-en">Single edit, no review dependencies.</span><span class="lang-th">แก้ไขจุดเดียว ไม่มีสิ่งที่ต้องรอ</span></td></tr>
+      <tr><td><span class="lang-en">Priority</span><span class="lang-th">ลำดับความสำคัญ</span></td><td>Low</td><td><span class="lang-en">Nice-to-have documentation improvement.</span><span class="lang-th">สิ่งที่ปรับปรุงเอกสารที่ดีหากมี</span></td></tr>
     </tbody>
   </table>
 
   <h3><span class="lang-en">Risk assessment</span><span class="lang-th">การประเมินความเสี่ยง</span></h3>
   <div class="card warning">
-    <div class="card-title">{{RISK_LEVEL}} <span class="lang-en">Risk</span><span class="lang-th">ความเสี่ยง</span></div>
-    <p>{{RISK_DETAIL}}</p>
+    <div class="card-title">Low <span class="lang-en">Risk</span><span class="lang-th">ความเสี่ยง</span></div>
+    <p><span class="lang-en">Documentation-only change; no runtime impact.</span><span class="lang-th">แก้ไขเอกสารเท่านั้น ไม่กระทบการทำงาน</span></p>
   </div>
 
   <!-- ══ Section 6: Sign-off ══ -->
@@ -353,11 +356,11 @@
 
   <div class="signoff-box">
     <div class="card-title">&#9997; <span class="lang-en">Approving this document means</span><span class="lang-th">การอนุมัติเอกสารนี้หมายถึง</span></div>
-    <p>{{SIGN_OFF_MEANING}}</p>
+    <p><span class="lang-en">Approving authorises editing README.md to add the section.</span><span class="lang-th">การอนุมัติคืออนุญาตให้แก้ไข README.md เพื่อเพิ่มส่วนนี้</span></p>
     <table>
       <thead><tr><th><span class="lang-en">Role</span><span class="lang-th">บทบาท</span></th><th><span class="lang-en">Name</span><span class="lang-th">ชื่อ</span></th><th><span class="lang-en">Decision</span><span class="lang-th">การตัดสิน</span></th><th><span class="lang-en">Date</span><span class="lang-th">วันที่</span></th></tr></thead>
       <tbody>
-        {{APPROVER_ROWS}}
+        <tr><td><span class="lang-en">Requester</span><span class="lang-th">ผู้ร้องขอ</span></td><td>Natthaphat Wajanavisit</td><td>&#9744; Approve / &#9744; Revise</td><td>2026-05-24</td></tr><tr><td><span class="lang-en">Manager</span><span class="lang-th">ผู้จัดการ</span></td><td>&mdash;</td><td>&#9744; Approve / &#9744; Revise</td><td>&mdash;</td></tr>
         <!-- <tr><td>Requester</td><td>&mdash;</td><td>&#9744; Approve / &#9744; Revise</td><td>&mdash;</td></tr> -->
       </tbody>
     </table>
@@ -380,10 +383,10 @@
     <thead><tr><th>Reference</th><th>Date</th><th>Description</th><th>Author</th></tr></thead>
     <tbody>
       <tr>
-        <td>{{CHANGE_ID}}</td>
-        <td>{{DATE}}</td>
+        <td>CR-2026-05-24-001</td>
+        <td>2026-05-24</td>
         <td><span class="lang-en">Kickoff &amp; sign-off document generated before development</span><span class="lang-th">สร้างเอกสารเริ่มต้นและการอนุมัติก่อนเริ่มพัฒนา</span></td>
-        <td>{{AUTHOR}}</td>
+        <td>Natthaphat Wajanavisit</td>
       </tr>
     </tbody>
   </table>

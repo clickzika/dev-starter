@@ -171,12 +171,12 @@ Replace all `{{PLACEHOLDER}}` tokens:
 | `{{FEATURE_NAME}}` | from A-Q1 / intake Section 1.1 |
 | `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
 | `{{DATE}}` | today |
-| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{AUTHOR}}` | Name from install-root `~/.claude/USER.md` Identity section (fallback `IT Dept`) — never an agent alias |
 | `{{PRIORITY}}` / `{{PRIORITY_PILL_COLOR}}` | from A-Q7; pill: red/yellow/blue/gray |
 | `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | from A-Q8 + one-line rationale |
 | `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | from impact analysis; pill: green(Low)/yellow(Medium)/red(High) |
 | `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: what is being approved |
-| `{{CONFIRMATION_HEADING}}` | `What We Will Build` (Add) / `What We Will Change` (Modify) |
+| `{{CONFIRMATION_HEADING}}` | bilingual span — Add: `<span class="lang-en">What We Will Build</span><span class="lang-th">สิ่งที่เราจะสร้าง</span>` · Modify: `What We Will Change` / `สิ่งที่เราจะเปลี่ยน` |
 | `{{CONFIRMATION_DETAIL}}` | plain description of the feature from intake Section 1.3 / 2.2 |
 | `{{CONFIRMATION_SECONDARY_TITLE}}` | `User Story` |
 | `{{CONFIRMATION_SECONDARY}}` | `As a [role], I want [want], so that [benefit]` from Section 2.2 |
@@ -242,7 +242,7 @@ Replace all `{{PLACEHOLDER}}` tokens with values from the intake + impact analys
 | `{{FEATURE_NAME}}` | from A-Q1 or intake Section 1.1 |
 | `{{SLUG}}` | derived slug |
 | `{{DATE}}` | today |
-| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{AUTHOR}}` | Name from install-root `~/.claude/USER.md` Identity section (fallback `IT Dept`) — never an agent alias |
 | `{{PRIORITY}}` / `{{PRIORITY_COLOR}}` | from A-Q7; color: red/orange/yellow/gray |
 | `{{EFFORT}}` | from A-Q8 |
 | `{{BRANCH_NAME}}` | `feature/[slug]` (created after approval) |
@@ -940,7 +940,7 @@ If "Testing passed": proceed to Phase A-END below.
 | `{{PR_NUMBER}}` | from A-PHASE 5 |
 | `{{GITHUB_ISSUE}}` | from A-PHASE 4 |
 | `{{NOTION_TASK}}` | Notion task URL |
-| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{AUTHOR}}` | Name from install-root `~/.claude/USER.md` Identity section (fallback `IT Dept`) — never an agent alias |
 | `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
 | `{{PLAN_APPROVED_DATE}}` | date of Gate A1-DOC approval |
 | `{{DEV_COMPLETED_DATE}}` | date of Gate A4 approval |

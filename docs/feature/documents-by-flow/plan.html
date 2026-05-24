@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{CHANGE_TYPE}} Plan — {{FEATURE_NAME}} — {{PROJECT_NAME}}</title>
+<title>Add Feature Plan — Documents by Flow (README reference) — DevStarter</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* Standard DevStarter document template */
@@ -135,16 +135,16 @@
 
 <header class="doc-header">
   <div class="doc-header-left">
-    <div class="doc-header-logo">{{PROJECT_INITIALS}}</div>
+    <div class="doc-header-logo">DS</div>
     <div class="doc-header-title">
-      <div class="doc-header-project">{{PROJECT_NAME}}</div>
-      <div class="doc-header-docname">{{CHANGE_TYPE}} Plan — {{FEATURE_NAME}}</div>
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Add Feature Plan — Documents by Flow (README reference)</div>
     </div>
   </div>
   <div class="doc-header-right">
     <div class="doc-header-meta">
-      <div>{{CHANGE_ID}} · {{DATE}}</div>
-      <div>Author: {{AUTHOR}}</div>
+      <div>CR-2026-05-24-001 · 2026-05-24</div>
+      <div>Author: Natthaphat Wajanavisit</div>
     </div>
     <span class="doc-status-badge pending">● PENDING APPROVAL</span>
     <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
@@ -168,11 +168,11 @@
     <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> <span class="lang-en">Approval</span><span class="lang-th">การอนุมัติ</span></a></li>
   </ul>
   <div class="doc-info-card">
-    <div class="doc-info-row"><span>Change ID</span> <span>{{CHANGE_ID}}</span></div>
-    <div class="doc-info-row"><span>Type</span> <span>{{CHANGE_TYPE}}</span></div>
-    <div class="doc-info-row"><span>Effort</span> <span>{{EFFORT}}</span></div>
-    <div class="doc-info-row"><span>Priority</span> <span>{{PRIORITY}}</span></div>
-    <div class="doc-info-row"><span>Date</span> <span>{{DATE}}</span></div>
+    <div class="doc-info-row"><span>Change ID</span> <span>CR-2026-05-24-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Add Feature</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>S</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>Low</span></div>
+    <div class="doc-info-row"><span>Date</span> <span>2026-05-24</span></div>
     <div class="doc-info-row"><span>Status</span> <span>Pending Approval</span></div>
   </div>
 </nav>
@@ -187,15 +187,15 @@
   <table>
     <thead><tr><th>Field</th><th>Value</th></tr></thead>
     <tbody>
-      <tr><td>Change ID</td><td><code>{{CHANGE_ID}}</code></td></tr>
-      <tr><td>Change Type</td><td><span class="badge badge-blue">{{CHANGE_TYPE}}</span></td></tr>
-      <tr><td>Feature / Fix Name</td><td>{{FEATURE_NAME}}</td></tr>
-      <tr><td>Slug</td><td><code>{{SLUG}}</code></td></tr>
-      <tr><td>Date</td><td>{{DATE}}</td></tr>
-      <tr><td>Author</td><td>{{AUTHOR}}</td></tr>
-      <tr><td>Priority</td><td><span class="badge badge-{{PRIORITY_COLOR}}">{{PRIORITY}}</span></td></tr>
-      <tr><td>Effort</td><td>{{EFFORT}}</td></tr>
-      <tr><td>Branch</td><td><code>{{BRANCH_NAME}}</code></td></tr>
+      <tr><td>Change ID</td><td><code>CR-2026-05-24-001</code></td></tr>
+      <tr><td>Change Type</td><td><span class="badge badge-blue">Add Feature</span></td></tr>
+      <tr><td>Feature / Fix Name</td><td>Documents by Flow (README reference)</td></tr>
+      <tr><td>Slug</td><td><code>documents-by-flow</code></td></tr>
+      <tr><td>Date</td><td>2026-05-24</td></tr>
+      <tr><td>Author</td><td>Natthaphat Wajanavisit</td></tr>
+      <tr><td>Priority</td><td><span class="badge badge-gray">Low</span></td></tr>
+      <tr><td>Effort</td><td>S</td></tr>
+      <tr><td>Branch</td><td><code>feature/documents-by-flow</code></td></tr>
       <tr><td>Status</td><td><span class="badge badge-purple">Pending Approval</span></td></tr>
     </tbody>
   </table>
@@ -207,21 +207,22 @@
   </div>
 
   <h3><span class="lang-en">Root Problem</span><span class="lang-th">ต้นตอของปัญหา</span></h3>
-  <p>{{ROOT_PROBLEM}}</p>
+  <p><span class="lang-en">No single place documents which artifacts each flow emits.</span><span class="lang-th">ไม่มีที่เดียวที่ระบุว่าแต่ละโฟลว์สร้างเอกสารใด</span></p>
 
   <h3><span class="lang-en">Business Requirement</span><span class="lang-th">ความต้องการทางธุรกิจ</span></h3>
-  <p>{{BUSINESS_REQUIREMENT}}</p>
+  <p><span class="lang-en">A discoverable reference in the README.</span><span class="lang-th">คู่มืออ้างอิงที่ค้นเจอได้ใน README</span></p>
 
   <h3><span class="lang-en">User Story</span><span class="lang-th">เรื่องราวของผู้ใช้</span></h3>
   <div class="card note">
-    <p><strong>As a</strong> {{USER_ROLE}},<br>
-    <strong>I want to</strong> {{USER_WANT}},<br>
-    <strong>So that</strong> {{USER_BENEFIT}}.</p>
+    <p><strong>As a</strong> <span class="lang-en">DevStarter user</span><span class="lang-th">ผู้ใช้ DevStarter</span>,<br>
+    <strong>I want to</strong> <span class="lang-en">a per-flow document reference</span><span class="lang-th">คู่มือเอกสารต่อโฟลว์</span>,<br>
+    <strong>So that</strong> <span class="lang-en">know expected artifacts up front</span><span class="lang-th">รู้เอกสารที่จะได้ล่วงหน้า</span>.</p>
   </div>
 
   <h3><span class="lang-en">Acceptance Criteria</span><span class="lang-th">เกณฑ์การยอมรับ</span></h3>
   <ul>
-    {{ACCEPTANCE_CRITERIA_LIST}}
+    <li><span class="lang-en">Given the README, When a reader scans it, Then a 'Documents by Flow' section exists</span><span class="lang-th">เมื่อเปิด README จะพบส่วน 'Documents by Flow'</span></li>
+        <li><span class="lang-en">All five flows are listed with their plain + technical docs</span><span class="lang-th">ระบุครบทั้งห้าโฟลว์พร้อมเอกสารภาษาคนและเชิงเทคนิค</span></li>
   </ul>
 
   <!-- Section 3: Proposed Solution -->
@@ -231,16 +232,16 @@
   </div>
 
   <h3><span class="lang-en">Approach</span><span class="lang-th">แนวทาง</span></h3>
-  <p>{{SOLUTION_APPROACH}}</p>
+  <p><span class="lang-en">Add a markdown table section to README mapping flows to documents.</span><span class="lang-th">เพิ่มตารางใน README จับคู่โฟลว์กับเอกสาร</span></p>
 
   <h3><span class="lang-en">Why This Approach</span><span class="lang-th">เหตุผลที่เลือกแนวทางนี้</span></h3>
-  <p>{{WHY_THIS_APPROACH}}</p>
+  <p><span class="lang-en">README is the canonical entry point; a table is scannable and low-maintenance.</span><span class="lang-th">README เป็นจุดเริ่มหลัก ตารางอ่านง่ายและดูแลรักษาง่าย</span></p>
 
   <h3><span class="lang-en">Alternatives Considered</span><span class="lang-th">ทางเลือกอื่นที่พิจารณา</span></h3>
   <table>
     <thead><tr><th>Option</th><th>Reason Rejected</th></tr></thead>
     <tbody>
-      {{ALTERNATIVES_ROWS}}
+      <tr><td><span class="lang-en">Separate docs page</span><span class="lang-th">หน้าเอกสารแยก</span></td><td><span class="lang-en">Rejected — extra file to maintain, less discoverable</span><span class="lang-th">ปฏิเสธ — มีไฟล์เพิ่มต้องดูแล ค้นเจอยากกว่า</span></td></tr>
     </tbody>
   </table>
 
@@ -254,23 +255,23 @@
   <table>
     <thead><tr><th>File Path</th><th>Change Type</th><th>Reason</th></tr></thead>
     <tbody>
-      {{FILES_TO_MODIFY_ROWS}}
+      <tr><td>README.md</td><td><span class="lang-en">Add Documents by Flow section</span><span class="lang-th">เพิ่มส่วน Documents by Flow</span></td></tr>
     </tbody>
   </table>
 
   <h3><span class="lang-en">Files NOT to Touch (Regression Guard)</span><span class="lang-th">ไฟล์ที่ต้องไม่แก้ไข (ป้องกันผลกระทบ)</span></h3>
   <ul>
-    {{REGRESSION_GUARD_LIST}}
+    <li><span class="lang-en">Existing README sections unchanged</span><span class="lang-th">ส่วนอื่นของ README ไม่เปลี่ยน</span></li>
   </ul>
 
   <h3><span class="lang-en">System Impact</span><span class="lang-th">ผลกระทบต่อระบบ</span></h3>
   <table>
     <thead><tr><th>Area</th><th>Impact</th><th>Details</th></tr></thead>
     <tbody>
-      <tr><td>Database</td><td><span class="badge {{DB_IMPACT_CLASS}}">{{DB_IMPACT}}</span></td><td>{{DB_IMPACT_DETAIL}}</td></tr>
-      <tr><td>API</td><td><span class="badge {{API_IMPACT_CLASS}}">{{API_IMPACT}}</span></td><td>{{API_IMPACT_DETAIL}}</td></tr>
-      <tr><td>UI</td><td><span class="badge {{UI_IMPACT_CLASS}}">{{UI_IMPACT}}</span></td><td>{{UI_IMPACT_DETAIL}}</td></tr>
-      <tr><td>Security</td><td><span class="badge {{SEC_IMPACT_CLASS}}">{{SEC_IMPACT}}</span></td><td>{{SEC_IMPACT_DETAIL}}</td></tr>
+      <tr><td>Database</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">No database.</span><span class="lang-th">ไม่มีฐานข้อมูล</span></td></tr>
+      <tr><td>API</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">No API.</span><span class="lang-th">ไม่มี API</span></td></tr>
+      <tr><td>UI</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">Docs only.</span><span class="lang-th">เอกสารเท่านั้น</span></td></tr>
+      <tr><td>Security</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">No security impact.</span><span class="lang-th">ไม่กระทบความปลอดภัย</span></td></tr>
     </tbody>
   </table>
 
@@ -281,16 +282,17 @@
   </div>
 
   <ol>
-    {{IMPLEMENTATION_STEPS_LIST}}
+    <li><span class="lang-en">Add section after Release Flow in README.md</span><span class="lang-th">เพิ่มส่วนหลัง Release Flow ใน README.md</span></li>
+        <li><span class="lang-en">Fill the per-flow document table</span><span class="lang-th">กรอกตารางเอกสารต่อโฟลว์</span></li>
   </ol>
 
   <h3><span class="lang-en">Dependencies</span><span class="lang-th">สิ่งที่ต้องพึ่งพา</span></h3>
   <ul>
-    {{DEPENDENCIES_LIST}}
+    <li><span class="lang-en">None</span><span class="lang-th">ไม่มี</span></li>
   </ul>
 
   <h3><span class="lang-en">Testing Approach</span><span class="lang-th">แนวทางการทดสอบ</span></h3>
-  <p>{{TESTING_APPROACH}}</p>
+  <p><span class="lang-en">Visual review of rendered README on GitHub.</span><span class="lang-th">ตรวจสอบ README ที่เรนเดอร์บน GitHub</span></p>
 
   <!-- Section 6: Risk & Rollback -->
   <div class="section-header" id="section-6">
@@ -302,12 +304,12 @@
   <table>
     <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
     <tbody>
-      {{RISKS_ROWS}}
+      <tr><td><span class="lang-en">Table drifts from actual flows</span><span class="lang-th">ตารางไม่ตรงกับโฟลว์จริง</span></td><td><span class="lang-en">Low</span><span class="lang-th">ต่ำ</span></td><td><span class="lang-en">Update when flows change</span><span class="lang-th">อัปเดตเมื่อโฟลว์เปลี่ยน</span></td></tr>
     </tbody>
   </table>
 
   <h3><span class="lang-en">Rollback Plan</span><span class="lang-th">แผนการย้อนกลับ</span></h3>
-  <p>{{ROLLBACK_PLAN}}</p>
+  <p><span class="lang-en">Revert the branch; README section removed.</span><span class="lang-th">รีเวิร์ตสาขา ลบส่วนใน README</span></p>
 
   <!-- Section 7: Approval -->
   <div class="section-header" id="section-7">
@@ -317,7 +319,7 @@
 
   <div class="card warning">
     <div class="card-title">Action Required</div>
-    <p>Review all sections above. When satisfied, approve in the Claude Code terminal to start development on branch <code>{{BRANCH_NAME}}</code>.</p>
+    <p>Review all sections above. When satisfied, approve in the Claude Code terminal to start development on branch <code>feature/documents-by-flow</code>.</p>
   </div>
 
   <div class="approval-block pending" id="approval-block">
@@ -326,10 +328,10 @@
     <table style="margin:16px auto;width:auto;min-width:320px;">
       <thead><tr><th>Field</th><th>Value</th></tr></thead>
       <tbody>
-        <tr><td>Change ID</td><td><code>{{CHANGE_ID}}</code></td></tr>
-        <tr><td>Branch to create</td><td><code>{{BRANCH_NAME}}</code></td></tr>
-        <tr><td>Requested by</td><td>{{AUTHOR}}</td></tr>
-        <tr><td>Date</td><td>{{DATE}}</td></tr>
+        <tr><td>Change ID</td><td><code>CR-2026-05-24-001</code></td></tr>
+        <tr><td>Branch to create</td><td><code>feature/documents-by-flow</code></td></tr>
+        <tr><td>Requested by</td><td>Natthaphat Wajanavisit</td></tr>
+        <tr><td>Date</td><td>2026-05-24</td></tr>
       </tbody>
     </table>
     <div class="approval-status">Status: <span class="badge badge-purple">PENDING APPROVAL</span></div>
@@ -344,11 +346,11 @@
     <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
     <tbody>
       <tr>
-        <td><code>{{CHANGE_ID}}</code></td>
-        <td>{{DATE}}</td>
+        <td><code>CR-2026-05-24-001</code></td>
+        <td>2026-05-24</td>
         <td>ADD</td>
         <td>Initial change plan created</td>
-        <td>{{AUTHOR}}</td>
+        <td>Natthaphat Wajanavisit</td>
       </tr>
     </tbody>
   </table>
