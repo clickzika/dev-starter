@@ -146,7 +146,7 @@ hyphenated bug summary, max 4 words). Replace all `{{PLACEHOLDER}}` tokens:
 | `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | estimated from analysis + one-line rationale |
 | `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | risk of the fix; pill: green(Low)/yellow(Medium)/red(High) |
 | `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: the bug + the fix being approved |
-| `{{CONFIRMATION_HEADING}}` | `Root Cause & Fix Solution` |
+| `{{CONFIRMATION_HEADING}}` | bilingual span — `<span class="lang-en">Root Cause & Fix Solution</span><span class="lang-th">ต้นตอของปัญหาและวิธีแก้ไข</span>` |
 | `{{CONFIRMATION_DETAIL}}` | plain-language root cause from analysis (no jargon) |
 | `{{CONFIRMATION_SECONDARY_TITLE}}` | `The Fix We Will Apply` |
 | `{{CONFIRMATION_SECONDARY}}` | plain description of the fix approach + how the user will know it is fixed |

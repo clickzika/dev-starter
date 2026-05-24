@@ -194,7 +194,7 @@ Fill `{{PLACEHOLDER}}` tokens, migration-framed:
 | Placeholder | Source |
 |-------------|--------|
 | `{{CHANGE_TYPE}}` | `Migration` |
-| `{{CONFIRMATION_HEADING}}` | `What We Will Migrate` |
+| `{{CONFIRMATION_HEADING}}` | bilingual span — `<span class="lang-en">What We Will Migrate</span><span class="lang-th">สิ่งที่เราจะย้ายระบบ</span>` |
 | `{{FEATURE_NAME}}` | `[FROM] → [TO]` (from Q2/Q3) |
 | `{{AUTHOR}}` | Name from install-root `~/.claude/USER.md` Identity section (fallback `IT Dept`) — never an agent alias |
 | `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: what is moving, why, expected outcome |

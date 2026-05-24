@@ -176,7 +176,7 @@ Replace all `{{PLACEHOLDER}}` tokens:
 | `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | from A-Q8 + one-line rationale |
 | `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | from impact analysis; pill: green(Low)/yellow(Medium)/red(High) |
 | `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: what is being approved |
-| `{{CONFIRMATION_HEADING}}` | `What We Will Build` (Add) / `What We Will Change` (Modify) |
+| `{{CONFIRMATION_HEADING}}` | bilingual span — Add: `<span class="lang-en">What We Will Build</span><span class="lang-th">สิ่งที่เราจะสร้าง</span>` · Modify: `What We Will Change` / `สิ่งที่เราจะเปลี่ยน` |
 | `{{CONFIRMATION_DETAIL}}` | plain description of the feature from intake Section 1.3 / 2.2 |
 | `{{CONFIRMATION_SECONDARY_TITLE}}` | `User Story` |
 | `{{CONFIRMATION_SECONDARY}}` | `As a [role], I want [want], so that [benefit]` from Section 2.2 |

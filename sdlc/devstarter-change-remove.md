@@ -97,7 +97,7 @@ hyphenated, max 4 words). Replace all `{{PLACEHOLDER}}` tokens:
 | `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | estimated removal effort + rationale |
 | `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | risk of removing (dependents, data loss); pill green/yellow/red |
 | `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: what is being removed and why |
-| `{{CONFIRMATION_HEADING}}` | `What We Will Remove` |
+| `{{CONFIRMATION_HEADING}}` | bilingual span — `<span class="lang-en">What We Will Remove</span><span class="lang-th">สิ่งที่เราจะนำออก</span>` |
 | `{{CONFIRMATION_DETAIL}}` | plain-language description of the feature + why it is going away (from B-Q2) |
 | `{{CONFIRMATION_SECONDARY_TITLE}}` | `Rollback Plan` |
 | `{{CONFIRMATION_SECONDARY}}` | how the removal can be reverted if needed |
