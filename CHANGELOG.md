@@ -1,5 +1,30 @@
 # Changelog
 
+## v5.4.0 — Document family across all flows + Author from USER.md (2026-05-24)
+
+A plain-language / technical document pair at every phase of every build, change,
+incident, migration, and launch — plus correct authorship on every generated doc.
+
+### New
+- **Pre-dev kickoff document** — `templates/docs/devstarter-change-kickoff-template.html`. Plain-language sign-off generated BEFORE `plan.html` in `/devstarter-change` (add + modify + bug + remove). One bilingual doc, two audiences: the requester (requirement confirmation / root-cause + fix solution / what-we-remove) and management (scope, why, effort, risk). Gated at A1-DOC / B1-DOC / C1-DOC with a pre-gate preflight (no `{{ }}` left, bilingual present, both audience sections populated). (CR-2026-05-24-001)
+- **Incident brief** — `templates/docs/devstarter-incident-brief-template.html`. Plain-language, management-facing post-incident document; the pair of the technical `postmortem.html`. Generated in `/devstarter-hotfix` PHASE 7 (P0/P1) and referenced from `/devstarter-postmortem`. No pre-fix kickoff (hotfixes are expedited). (CR-2026-05-24-002)
+- **Release launch brief** — `/devstarter-release` PHASE 9.5 generates `summary.html` (technical) + `mgmt-brief.html` (plain) on initial / major launches, reusing existing change templates. Fills the post-build delivery-brief gap. (CR-2026-05-24-003)
+
+### Changed
+- **Symmetric document family** — every build/change flow now produces plain + technical docs at each phase:
+  - Pre-dev: `kickoff.html` (plain) + `plan.html` (technical)
+  - Post-test: `mgmt-brief.html` (plain) + `summary.html` (technical)
+  - Post-incident: `incident-brief.html` (plain) + `postmortem.html` (technical)
+- `/devstarter-change` (add + bug) — A-PHASE 2.4 / C-PHASE 2.4 generate kickoff before plan; Gate A1-DOC/C1-DOC review both; folder ownership corrected; `{{CONFIRMATION_HEADING}}` = Build (Add) / Change (Modify).
+- `/devstarter-change` (remove) — full doc family added: kickoff + plan pre-removal (Gate B1-DOC, branch on sign-off), summary + mgmt-brief post-test. All three change paths now symmetric.
+- `/devstarter-migrate` — pre-migration kickoff (Gate 2, plain stakeholder/mgmt sign-off) + post-cutover mgmt-brief (PHASE 5); does not duplicate migration-plan / schema-mapping / risk-register.
+- **Document Author rule (MANDATORY)** — every generated doc's `{{AUTHOR}}` / Author / Prepared-by field = the **Name** from `USER.md` (Identity section), never an agent alias (`@devstarter-*`). Added to Rule 8; all `{{AUTHOR}}` mapping rows updated across add/bug/remove/hotfix/migrate/release.
+- `/devstarter-new` — intentionally unchanged: its Gate 1 (BRD/SRS) + Gate 2 architecture suite already cover the pre-build kickoff/plan roles (richer); only the post-build delivery brief was missing, now at the release launch trigger.
+
+### Notes
+- Historical generated docs (e.g. `docs/feature/branch-guard-hook/mgmt-brief.html`) are left as-is — they were correct under v5.2.0, before the Author rule.
+- All new docs inherit Rule 8: `document-template.html` base, bilingual EN/TH, PDF export, `docs/index.html` registration.
+
 ## v5.2.0 — Branch Guard hook + Bilingual PDF export (2026-05-23)
 
 ### New

@@ -245,6 +245,16 @@ Include all 5 phases + Customer & Communications + Action Items table.
 Add a row to `docs/postmortems/index.html` (create if missing) with:
 - Date | Slug | Severity | Action items P0 count (open / total) | Link
 
+### Management pair — Incident Brief
+
+The post-mortem is the **technical** record. Generate its **plain-language**
+management pair from `~/.claude/templates/docs/devstarter-incident-brief-template.html`
+(no code, bilingual, `{{AUTHOR}}` = Name from `USER.md`). Save to
+`docs/postmortems/[date]-[slug]-incident-brief.html`, link it from the
+post-mortem and the index. See the placeholder mapping in
+`~/.claude/sdlc/devstarter-hotfix.md` → "Generate Incident Brief".
+(Symmetric family — post-incident: incident-brief = plain, postmortem = technical.)
+
 ---
 
 ## PHASE 7 — Blameless Review Gate

@@ -306,6 +306,61 @@ Commit: `docs: release notes v[X.Y.Z]`
 
 ---
 
+## PHASE 9.5 — Launch Brief (initial / major launch only)
+
+Generate the post-build **launch brief** — the delivery counterpart that
+`/devstarter-new` does not produce (its Gate 1 + Gate 2 docs cover the pre-build
+requirement + technical plan, richer than kickoff/plan; the delivered-outcome
+brief belongs here, at the launch trigger).
+
+**When to generate:**
+- ✅ Initial production launch (first `v1.0.0` / first deploy of a new project)
+- ✅ Major version (`vX.0.0`) — significant delivered scope
+- ❌ Skip for minor / patch releases (release notes alone suffice)
+
+If unsure whether this release qualifies, ask the user once.
+
+**Generate two documents (reuse existing templates — no new template):**
+
+1. **summary.html (technical delivery summary)** — Read
+   `~/.claude/templates/docs/devstarter-change-summary-template.html`. Launch-frame:
+   - `{{CHANGE_TYPE}}` = `Launch` / `Major Release`; `{{FEATURE_NAME}}` = project name + version
+   - `{{AUTHOR}}` = Name from `USER.md` (Identity section) — never an agent alias
+   - `{{HOW_RESOLVED}}` = what the project delivers; key components / modules shipped
+   - `{{FILES_CHANGED_ROWS}}` / `{{TESTS_ADDED_ROWS}}` = high-level component + test inventory
+   - reviewer/QA sections = what to focus on for this launch
+   Save to `docs/releases/[version]/summary.html`.
+
+2. **mgmt-brief.html (plain launch brief)** — Read
+   `~/.claude/templates/docs/devstarter-change-mgmt-template.html`. Plain business language:
+   - `{{CHANGE_TYPE}}` = `Launch`; `{{AUTHOR}}` = Name from `USER.md`
+   - `{{EXECUTIVE_SUMMARY}}` = what launched + business value
+   - `{{SITUATION_BEFORE}}` / `{{SITUATION_AFTER}}` = before the product vs now live
+   - `{{METRICS_ROWS}}` = launch metrics if available (else "n/a — initial launch")
+   - `{{RESIDUAL_RISK_DETAIL}}` / `{{ROLLBACK_CAPABILITY}}` = post-launch risk + rollback window
+   - `{{NEXT_STEPS_ROWS}}` = post-launch monitoring, next milestones
+   Save to `docs/releases/[version]/mgmt-brief.html`.
+
+**Bilingual (MANDATORY):** EN + TH in every text block (Rule 8).
+Register both in `docs/index.html` under "Releases":
+```html
+<a href="releases/[version]/mgmt-brief.html">v[version] — Launch Brief (Management) — [Date]</a>
+<a href="releases/[version]/summary.html">v[version] — Delivery Summary (Technical) — [Date]</a>
+```
+
+Announce:
+```
+🚀 Launch brief generated:
+   📊 docs/releases/[version]/mgmt-brief.html  (management)
+   📝 docs/releases/[version]/summary.html     (technical)
+```
+
+> Note: `/devstarter-new` is intentionally NOT modified — its discovery +
+> architecture docs already cover the pre-build kickoff/plan roles. Only the
+> post-build delivery brief was missing, and it lives here at the launch trigger.
+
+---
+
 ## PHASE 10 — Secondary VCS Mirror (if configured)
 
 After successful production deploy, mirror main + tags to secondary VCS:
