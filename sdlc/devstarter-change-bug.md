@@ -141,7 +141,7 @@ hyphenated bug summary, max 4 words). Replace all `{{PLACEHOLDER}}` tokens:
 | `{{FEATURE_NAME}}` | bug summary (one line) |
 | `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
 | `{{DATE}}` | today |
-| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
 | `{{PRIORITY}}` / `{{PRIORITY_PILL_COLOR}}` | from C-Q3 severity; pill: red(Critical)/yellow(High/Medium)/gray(Low) |
 | `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | estimated from analysis + one-line rationale |
 | `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | risk of the fix; pill: green(Low)/yellow(Medium)/red(High) |
@@ -212,7 +212,7 @@ Replace all `{{PLACEHOLDER}}` tokens with values from the bug report + analysis:
 | `{{FEATURE_NAME}}` | bug summary (one line) |
 | `{{SLUG}}` | derived slug |
 | `{{DATE}}` | today |
-| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
 | `{{PRIORITY}}` / `{{PRIORITY_COLOR}}` | from C-Q3 severity; Critical=red, High=orange, Medium=yellow, Low=gray |
 | `{{EFFORT}}` | estimated from analysis (S/M/L) |
 | `{{BRANCH_NAME}}` | `fix/[slug]` (created after approval) |
@@ -511,7 +511,7 @@ If "Testing passed": proceed to Phase C-END below.
 | `{{PR_NUMBER}}` | from C-PHASE 4 |
 | `{{GITHUB_ISSUE}}` | from C-PHASE 3 |
 | `{{NOTION_TASK}}` | Notion task URL |
-| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
 | `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
 | `{{PLAN_APPROVED_DATE}}` | date of Gate C1-DOC approval |
 | `{{DEV_COMPLETED_DATE}}` | date of Gate C2 approval |

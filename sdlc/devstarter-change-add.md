@@ -171,7 +171,7 @@ Replace all `{{PLACEHOLDER}}` tokens:
 | `{{FEATURE_NAME}}` | from A-Q1 / intake Section 1.1 |
 | `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
 | `{{DATE}}` | today |
-| `{{AUTHOR}}` | `@devstarter-ba` (requirements) |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
 | `{{PRIORITY}}` / `{{PRIORITY_PILL_COLOR}}` | from A-Q7; pill: red/yellow/blue/gray |
 | `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | from A-Q8 + one-line rationale |
 | `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | from impact analysis; pill: green(Low)/yellow(Medium)/red(High) |
@@ -242,7 +242,7 @@ Replace all `{{PLACEHOLDER}}` tokens with values from the intake + impact analys
 | `{{FEATURE_NAME}}` | from A-Q1 or intake Section 1.1 |
 | `{{SLUG}}` | derived slug |
 | `{{DATE}}` | today |
-| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
 | `{{PRIORITY}}` / `{{PRIORITY_COLOR}}` | from A-Q7; color: red/orange/yellow/gray |
 | `{{EFFORT}}` | from A-Q8 |
 | `{{BRANCH_NAME}}` | `feature/[slug]` (created after approval) |
@@ -940,7 +940,7 @@ If "Testing passed": proceed to Phase A-END below.
 | `{{PR_NUMBER}}` | from A-PHASE 5 |
 | `{{GITHUB_ISSUE}}` | from A-PHASE 4 |
 | `{{NOTION_TASK}}` | Notion task URL |
-| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
 | `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
 | `{{PLAN_APPROVED_DATE}}` | date of Gate A1-DOC approval |
 | `{{DEV_COMPLETED_DATE}}` | date of Gate A4 approval |

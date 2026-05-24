@@ -44,7 +44,7 @@ Generate plain-language + technical HTML documents BEFORE writing any code. The 
 
 Order: Impact Analysis → **kickoff.html** (plain sign-off) → **plan.html** (technical) → **Gate A1-DOC/C1-DOC approval** → **branch creation** → domain docs → Code
 
-- Add Feature / Modify: kickoff + plan saved to `docs/feature/[slug]/kickoff.html` + `docs/feature/[slug]/plan.html`
+- Add Feature / Modify / Remove Feature: kickoff + plan saved to `docs/feature/[slug]/kickoff.html` + `docs/feature/[slug]/plan.html`
 - Fix Bug: kickoff + plan saved to `docs/fix/[slug]/kickoff.html` + `docs/fix/[slug]/plan.html`
 - After dev + user testing confirmed: generate `summary.html` in the same folder
 - Existing domain docs (brd.html, api-reference.html, etc.) continue to be updated — kickoff.html, plan.html and summary.html supplement, not replace, those docs
@@ -87,6 +87,7 @@ If Track B depends on Track A output (e.g. API response shape), complete Track A
 - **docs/feature/[slug]/summary.html** and **docs/fix/[slug]/summary.html** — generated from `~/.claude/templates/docs/devstarter-change-summary-template.html`. Generated after testing confirmed.
 - **docs/feature/[slug]/mgmt-brief.html** and **docs/fix/[slug]/mgmt-brief.html** — generated from `~/.claude/templates/docs/devstarter-change-mgmt-template.html`. Non-technical management brief. Generated alongside summary.html after testing confirmed. Plain business language — no code, no technical terms.
 - **Function-level change tracking** — agents append to `memory/change-log-[slug].md` during development. Summary phase reads this file. Format: `### file.ext` → `- ADDED/MODIFIED/FIXED: functionName — description`.
+- **Document Author (MANDATORY)** — the `{{AUTHOR}}` / "Author" / "Prepared by" field in EVERY generated document MUST be the **Name** from `USER.md` (Identity section, e.g. `Name: Dev`). NEVER an agent alias (`@devstarter-ba`, `@devstarter-techlead`, etc.). Read USER.md at generation time and use the current Name value. This applies to kickoff, plan, summary, mgmt-brief, incident-brief, and any other generated doc across all flows.
 - **Bilingual content (MANDATORY)** — ALL generated documents MUST contain both English and Thai for every text block using `<span class="lang-en">` / `<span class="lang-th">` pairs. See Bilingual Content Rule in `agents/shared/devstarter-agent-base.md`. Code blocks, file paths, and technical identifiers are NOT translated. Lang toggle + PDF export buttons are built into all templates.
 
 ### Rule 9 — Branch Guard (ALWAYS active, no exceptions)

@@ -451,6 +451,7 @@ Every slash command requires:
 | v4.7.0 | Multi-AI Support Phase 1 — Universal Prompt blocks in all 51 SKILL.md files, docs/multi-ai-guide.md, README multi-AI section |
 | v5.0.0 | Multi-AI Support Phase 2 — provider-detect install (AI_PROVIDER → ~/.{provider}/), devstarter-resolve-home.sh, PROJECT.md.template, conditional hooks, devstarter-invoke.sh universal runner |
 | v5.3.0 (in progress) | Pre-dev kickoff.html — plain-language sign-off doc generated before plan.html in /devstarter-change (add + bug). Two audiences: requester (requirement / root-cause + fix) + management (scope, why, effort, risk). Bilingual, gated at A1-DOC/C1-DOC. Doc family now symmetric: kickoff+plan (pre-dev), mgmt-brief+summary (post-test) |
+| v5.4.0 (in progress) | Doc family extended to all build/change flows: change-remove (full family, Gate B1-DOC), hotfix (incident-brief.html — mgmt pair for postmortem, post-incident only), migrate (pre-migration kickoff + post-cutover mgmt-brief). New requirement: every generated doc's Author = Name from USER.md, never an agent alias (Rule 8) |
 
 ---
 
