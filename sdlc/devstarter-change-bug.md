@@ -184,9 +184,8 @@ Add under "Fix Kickoffs" section (create section if absent):
 
 Immediately after the kickoff document, before any gate, generate the plan HTML:
 
-**Step 1 — Create folder and initialize change log:**
-- Create folder: `docs/fix/[slug]/`
-  Slug = lowercase-hyphenated bug summary, max 4 words (e.g. `login-null-crash`)
+**Step 1 — Initialize change log:**
+(Folder `docs/fix/[slug]/` already created in C-PHASE 2.4 Step 1.)
 - Create `memory/change-log-[slug].md`:
   ```markdown
   # Change Log — [bug-slug]
@@ -249,6 +248,20 @@ Add entry under "Fix Plans" section (create section if absent):
 ```
 
 ---
+
+### Pre-Gate C1-DOC — Kickoff Preflight (mandatory)
+
+Before showing the Gate C1-DOC picker, verify both pre-dev docs are complete.
+Do NOT show the picker until all rows pass:
+
+1. **No unfilled placeholders** — `docs/fix/[slug]/kickoff.html` and `plan.html`
+   contain zero `{{` tokens (grep both files for `{{` → must be empty)
+2. **Bilingual present** — kickoff.html contains both `lang-en` and `lang-th`
+   spans in the filled content (Rule 8)
+3. **Both audience sections populated** — kickoff Section 2 (root cause + fix) and
+   Section 4 (Management Summary) have real content, not template comments
+
+If any row fails, fix the doc and re-run this preflight. Only then show the picker.
 
 Use `AskUserQuestion` with:
 - question: "Gate C1-DOC — Open kickoff.html (plain-language root cause + fix) and plan.html (technical) in browser, review both, then approve to create branch and start fix."

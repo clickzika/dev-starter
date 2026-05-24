@@ -160,8 +160,9 @@ document** — a plain-language pre-development sign-off for the requester
 
 **Step 1 — Fill and save kickoff.html:**
 Read `~/.claude/templates/docs/devstarter-change-kickoff-template.html`.
-Use the same `[slug]` folder created in A-PHASE 2.5 Step 1 (create it now if not
-yet created). Replace all `{{PLACEHOLDER}}` tokens:
+Create folder `docs/feature/[slug]/` now if not yet created (slug =
+lowercase-hyphenated feature name, max 4 words, e.g. `auth-refresh-token`).
+Replace all `{{PLACEHOLDER}}` tokens:
 
 | Placeholder | Source |
 |-------------|--------|
@@ -175,7 +176,7 @@ yet created). Replace all `{{PLACEHOLDER}}` tokens:
 | `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | from A-Q8 + one-line rationale |
 | `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | from impact analysis; pill: green(Low)/yellow(Medium)/red(High) |
 | `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: what is being approved |
-| `{{CONFIRMATION_HEADING}}` | `What We Will Build` (feature) |
+| `{{CONFIRMATION_HEADING}}` | `What We Will Build` (Add) / `What We Will Change` (Modify) |
 | `{{CONFIRMATION_DETAIL}}` | plain description of the feature from intake Section 1.3 / 2.2 |
 | `{{CONFIRMATION_SECONDARY_TITLE}}` | `User Story` |
 | `{{CONFIRMATION_SECONDARY}}` | `As a [role], I want [want], so that [benefit]` from Section 2.2 |
@@ -213,9 +214,8 @@ Add under "Change Kickoffs" section (create section if absent):
 
 Immediately after the kickoff document, before any gate, generate the plan HTML:
 
-**Step 1 — Create folder and initialize change log:**
-- Create folder: `docs/feature/[slug]/`
-  Slug = lowercase-hyphenated feature name, max 4 words (e.g. `auth-refresh-token`)
+**Step 1 — Initialize change log:**
+(Folder `docs/feature/[slug]/` already created in A-PHASE 2.4 Step 1.)
 - Create `memory/change-log-[slug].md`:
   ```markdown
   # Change Log — [feature-name]
@@ -279,6 +279,20 @@ Add entry under "Change Plans" section (create section if absent):
 ```
 
 ---
+
+### Pre-Gate A1-DOC — Kickoff Preflight (mandatory)
+
+Before showing the Gate A1-DOC picker, verify both pre-dev docs are complete.
+Do NOT show the picker until all rows pass:
+
+1. **No unfilled placeholders** — `docs/feature/[slug]/kickoff.html` and `plan.html`
+   contain zero `{{` tokens (grep both files for `{{` → must be empty)
+2. **Bilingual present** — kickoff.html contains both `lang-en` and `lang-th`
+   spans in the filled content (Rule 8)
+3. **Both audience sections populated** — kickoff Section 2 (requirement) and
+   Section 4 (Management Summary) have real content, not template comments
+
+If any row fails, fix the doc and re-run this preflight. Only then show the picker.
 
 Use `AskUserQuestion` with:
 - question: "Gate A1-DOC — Open kickoff.html (plain-language sign-off) and plan.html (technical) in browser, review both, then approve to create branch and start development."
