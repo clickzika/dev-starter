@@ -206,6 +206,48 @@ Version:   v[version]-hotfix.[N]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+### Generate Incident Brief (management-facing, plain language)
+
+The incident brief is the **plain-language pair** of the technical post-mortem
+(`docs/postmortems/[date]-[slug].html`, produced by `/devstarter-postmortem`).
+There is NO pre-fix kickoff — hotfixes are expedited; this is the post-incident
+management document only.
+
+Read `~/.claude/templates/docs/devstarter-incident-brief-template.html`. Fill the
+`{{PLACEHOLDER}}` tokens from the triage + investigation + fix:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{INCIDENT_ID}}` | `HOTFIX-[YYYY-MM-DD]-[N]` |
+| `{{INCIDENT_TITLE}}` | one-line incident name |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{SEVERITY}}` / `{{SEVERITY_PILL_COLOR}}` | P0/P1; pill red(P0)/yellow(P1) |
+| `{{DETECTED_AT}}` / `{{RESOLVED_AT}}` / `{{RESOLVED_DATE}}` / `{{DURATION}}` | from triage + resolution times |
+| `{{RESIDUAL_RISK}}` / `{{RISK_PILL_COLOR}}` / `{{RESIDUAL_RISK_DETAIL}}` | remaining risk after fix |
+| `{{EXECUTIVE_SUMMARY}}` | 2–3 plain sentences: what broke, impact, that it is fixed |
+| `{{WHAT_HAPPENED_PLAIN}}` | plain narrative of the incident |
+| `{{TIMELINE_ROWS}}` | `<tr>` per timeline event (detected → mitigated → resolved) |
+| `{{IMPACT_DURING}}` / `{{IMPACT_AFTER}}` | what users experienced vs now |
+| `{{WHO_AFFECTED}}` | users/teams affected |
+| `{{ROOT_CAUSE_PLAIN}}` | root cause in plain language (no stack traces) |
+| `{{FIX_PLAIN}}` | what was changed, plain language |
+| `{{PREVENTION_INTRO}}` / `{{PREVENTION_TILES}}` | safeguards added (from Post-Hotfix Action Items) |
+| `{{CURRENT_STATUS}}` | live + verified statement |
+| `{{FOLLOWUP_ROWS}}` | `<tr>` per follow-up action: action, owner, timeline |
+| `{{POSTMORTEM_PATH}}` | relative link to the technical post-mortem HTML |
+
+**Bilingual (MANDATORY):** both English and Thai in every text block (Rule 8).
+
+Save to: `docs/postmortems/[date]-[slug]-incident-brief.html`
+Register in `docs/postmortems/index.html` (create if missing) alongside the post-mortem:
+```html
+<a href="[date]-[slug]-incident-brief.html">[INCIDENT_ID] — [Title] — Incident Brief (Management)</a>
+```
+
+> Skip ONLY if the hotfix is trivial (P2, no user impact). For P0/P1 the
+> incident brief is mandatory.
+
 ---
 
 ## Secondary VCS Mirror (if configured)

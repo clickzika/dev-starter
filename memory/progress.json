@@ -1,22 +1,13 @@
 {
-  "workflow": "devstarter-change — Modify Feature",
-  "feature": "bilingual-pdf-export",
-  "change_id": "CR-2026-05-23-002",
+  "workflow": "devstarter-release",
+  "version": "v5.2.0",
   "status": "completed",
-  "branch": "feature/bilingual-pdf-export",
+  "branch": "main",
   "started_at": "2026-05-23",
   "completed_at": "2026-05-23",
-  "pr": "#71 (merged to develop)",
-  "deliverables": {
-    "template_doc": "~/.claude/templates/docs/document-template.html",
-    "template_plan": "~/.claude/templates/docs/devstarter-change-plan-template.html",
-    "template_summary": "~/.claude/templates/docs/devstarter-change-summary-template.html",
-    "template_mgmt": "~/.claude/templates/docs/devstarter-change-mgmt-template.html",
-    "agent_base": "agents/shared/devstarter-agent-base.md",
-    "sdlc_change": "sdlc/devstarter-change.md",
-    "plan_doc": "docs/feature/branch-guard-hook/plan.html",
-    "summary_doc": "docs/feature/branch-guard-hook/summary.html",
-    "mgmt_brief": "docs/feature/branch-guard-hook/mgmt-brief.html",
-    "change_log": "memory/change-log-bilingual-pdf-export.md"
-  }
+  "tag": "v5.2.0",
+  "features": [
+    "CR-2026-05-23-001 — branch-guard-hook (PR #70)",
+    "CR-2026-05-23-002 — bilingual-pdf-export (PR #71)"
+  ]
 }

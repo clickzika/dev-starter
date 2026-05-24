@@ -122,13 +122,70 @@ Risk of fix:
 
 ---
 
+## C-PHASE 2.4 — Generate Kickoff & Sign-off Document (plain language)
+
+Immediately after bug analysis, before plan.html, generate the **kickoff
+document** — a plain-language pre-fix sign-off confirming the root cause and the
+fix solution for the requester (Sections 1–3) and management (Sections 4–5).
+No code exists yet.
+
+**Step 1 — Fill and save kickoff.html:**
+Read `~/.claude/templates/docs/devstarter-change-kickoff-template.html`.
+Create folder `docs/fix/[slug]/` now if not yet created (slug = lowercase-
+hyphenated bug summary, max 4 words). Replace all `{{PLACEHOLDER}}` tokens:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_ID}}` | `BUG-[YYYY-MM-DD]-NNN` (same ID used by plan.html) |
+| `{{CHANGE_TYPE}}` | `Fix Bug` |
+| `{{FEATURE_NAME}}` | bug summary (one line) |
+| `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
+| `{{DATE}}` | today |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{PRIORITY}}` / `{{PRIORITY_PILL_COLOR}}` | from C-Q3 severity; pill: red(Critical)/yellow(High/Medium)/gray(Low) |
+| `{{EFFORT}}` / `{{EFFORT_DETAIL}}` | estimated from analysis + one-line rationale |
+| `{{RISK_LEVEL}}` / `{{RISK_PILL_COLOR}}` / `{{RISK_DETAIL}}` | risk of the fix; pill: green(Low)/yellow(Medium)/red(High) |
+| `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: the bug + the fix being approved |
+| `{{CONFIRMATION_HEADING}}` | `Root Cause & Fix Solution` |
+| `{{CONFIRMATION_DETAIL}}` | plain-language root cause from analysis (no jargon) |
+| `{{CONFIRMATION_SECONDARY_TITLE}}` | `The Fix We Will Apply` |
+| `{{CONFIRMATION_SECONDARY}}` | plain description of the fix approach + how the user will know it is fixed |
+| `{{IN_SCOPE_LIST}}` | `<li>` — what the fix changes |
+| `{{OUT_OF_SCOPE_LIST}}` | `<li>` — what stays untouched (regression guard) |
+| `{{ACCEPTANCE_CRITERIA_LIST}}` | `<li>` Given/When/Then fix acceptance criteria |
+| `{{BUSINESS_NEED}}` | user/business impact of the bug — why fix now |
+| `{{WHO_BENEFITS}}` | affected users |
+| `{{IMPACT_IF_DEFERRED}}` | cost/risk of not fixing |
+| `{{TIMELINE_ESTIMATE}}` / `{{TIMELINE_NOTES}}` | rough fix window |
+| `{{PRIORITY_NOTES}}` | one line on severity rationale |
+| `{{SIGN_OFF_MEANING}}` | "Approving authorises branch creation and the fix to begin against this root-cause analysis." |
+| `{{APPROVER_ROWS}}` | `<tr>` per approver (Requester, Manager) with Approve/Revise checkbox |
+
+**Bilingual (MANDATORY):** every filled text block contains both English and Thai
+via `<span class="lang-en">` / `<span class="lang-th">` pairs (Rule 8).
+
+Save to: `docs/fix/[slug]/kickoff.html`
+
+**Step 2 — Register in docs/index.html:**
+Add under "Fix Kickoffs" section (create section if absent):
+```html
+<a href="fix/[slug]/kickoff.html">[CHANGE_ID] — [Bug Summary] — Kickoff — [Date] (Pending Sign-off)</a>
+```
+
+**Step 3 — Announce:**
+```
+📝 Kickoff document created: docs/fix/[slug]/kickoff.html
+   Plain-language sign-off (root cause + fix) — review before plan.
+```
+
+---
+
 ## C-PHASE 2.5 — Generate Bug Fix Plan Document
 
-Immediately after bug analysis, before any gate, generate the plan HTML:
+Immediately after the kickoff document, before any gate, generate the plan HTML:
 
-**Step 1 — Create folder and initialize change log:**
-- Create folder: `docs/fix/[slug]/`
-  Slug = lowercase-hyphenated bug summary, max 4 words (e.g. `login-null-crash`)
+**Step 1 — Initialize change log:**
+(Folder `docs/fix/[slug]/` already created in C-PHASE 2.4 Step 1.)
 - Create `memory/change-log-[slug].md`:
   ```markdown
   # Change Log — [bug-slug]
@@ -155,7 +212,7 @@ Replace all `{{PLACEHOLDER}}` tokens with values from the bug report + analysis:
 | `{{FEATURE_NAME}}` | bug summary (one line) |
 | `{{SLUG}}` | derived slug |
 | `{{DATE}}` | today |
-| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
 | `{{PRIORITY}}` / `{{PRIORITY_COLOR}}` | from C-Q3 severity; Critical=red, High=orange, Medium=yellow, Low=gray |
 | `{{EFFORT}}` | estimated from analysis (S/M/L) |
 | `{{BRANCH_NAME}}` | `fix/[slug]` (created after approval) |
@@ -192,8 +249,22 @@ Add entry under "Fix Plans" section (create section if absent):
 
 ---
 
+### Pre-Gate C1-DOC — Kickoff Preflight (mandatory)
+
+Before showing the Gate C1-DOC picker, verify both pre-dev docs are complete.
+Do NOT show the picker until all rows pass:
+
+1. **No unfilled placeholders** — `docs/fix/[slug]/kickoff.html` and `plan.html`
+   contain zero `{{` tokens (grep both files for `{{` → must be empty)
+2. **Bilingual present** — kickoff.html contains both `lang-en` and `lang-th`
+   spans in the filled content (Rule 8)
+3. **Both audience sections populated** — kickoff Section 2 (root cause + fix) and
+   Section 4 (Management Summary) have real content, not template comments
+
+If any row fails, fix the doc and re-run this preflight. Only then show the picker.
+
 Use `AskUserQuestion` with:
-- question: "Gate C1-DOC — Open docs/fix/[slug]/plan.html in browser, review root cause and fix approach, then approve to create branch and start fix."
+- question: "Gate C1-DOC — Open kickoff.html (plain-language root cause + fix) and plan.html (technical) in browser, review both, then approve to create branch and start fix."
 - options: ["Approved — create branch and start fix", "Request changes (describe in notes)"]
 
 **If "Approved — create branch and start fix":**
@@ -205,8 +276,8 @@ Use `AskUserQuestion` with:
 6. Proceed to C-PHASE 3
 
 **If "Request changes":**
-1. Apply requested changes to `docs/fix/[slug]/plan.html`
-2. Announce: `📋 Fix plan updated: docs/fix/[slug]/plan.html`
+1. Apply requested changes to `docs/fix/[slug]/kickoff.html` and/or `docs/fix/[slug]/plan.html`
+2. Announce: `📋 Updated: kickoff.html / plan.html`
 3. Loop back to Gate C1-DOC AskUserQuestion
 
 ⛔ GATE C1-DOC — branch is NOT created and NO code is written until this gate is approved.
@@ -440,7 +511,7 @@ If "Testing passed": proceed to Phase C-END below.
 | `{{PR_NUMBER}}` | from C-PHASE 4 |
 | `{{GITHUB_ISSUE}}` | from C-PHASE 3 |
 | `{{NOTION_TASK}}` | Notion task URL |
-| `{{AUTHOR}}` | `@devstarter-techlead` |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
 | `{{PROJECT_NAME}}` / `{{PROJECT_INITIALS}}` | from CLAUDE.md |
 | `{{PLAN_APPROVED_DATE}}` | date of Gate C1-DOC approval |
 | `{{DEV_COMPLETED_DATE}}` | date of Gate C2 approval |
