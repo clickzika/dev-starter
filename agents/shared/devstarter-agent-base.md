@@ -35,10 +35,11 @@ Every document you generate MUST contain BOTH English and Thai for every text bl
 
 **Rules:**
 - NEVER output English-only content in a document body — always pair with Thai
-- Static UI chrome (section numbers, status badges, code blocks, table headers) stays English-only
+- **Headings and labels ARE content** — section titles (`<h2 class="section-title">`), sidebar TOC labels, `<h3>` subheadings, and table column headers (`<th>`) MUST be bilingual. A heading left English-only is a bug.
+- Only truly non-textual chrome stays as-is: section-number badges (`1`, `2`…), status-badge glyphs, and code blocks
 - Code snippets, file paths, and technical identifiers are NOT translated
 - The lang toggle button and PDF export button are already built into all templates
-- Thai translation must be accurate and professional — not a literal word-for-word machine translation
+- **Human-style Thai (MANDATORY)** — Thai must read as natural, human-written Thai, NOT literal word-for-word machine translation. Use idiomatic phrasing (`และ` not `&`, natural word order), keep common English technical terms where Thai engineers keep them (`API`, `endpoint`, `commit`, `deploy`), and avoid stiff calques (prefer `ต้นตอของปัญหา` over literal `สาเหตุราก`; `เรื่องราวของผู้ใช้` over `เรื่องราวผู้ใช้`). Phrase it the way a Thai developer would actually say it.
 
 ---
 

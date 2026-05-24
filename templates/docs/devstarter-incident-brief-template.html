@@ -138,7 +138,7 @@
 
   BILINGUAL RULE (Rule 8 — MANDATORY): every filled text block contains BOTH
   English and Thai via <span class="lang-en">…</span><span class="lang-th">…</span>.
-  AUTHOR RULE: {{AUTHOR}} = Name from USER.md (Identity), never an agent alias.
+  AUTHOR RULE: {{AUTHOR}} = Name from install-root ~/.claude/USER.md (Identity); fallback 'IT Dept'; never an agent alias.
   ════════════════════════════════════════════════════════════════════════
 -->
 
@@ -168,12 +168,12 @@
 <nav class="doc-sidebar">
   <div class="doc-sidebar-title">Contents</div>
   <ul class="toc-list">
-    <li><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> Summary</a></li>
-    <li><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> What Happened</a></li>
-    <li><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> Impact</a></li>
-    <li><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> Cause &amp; Fix</a></li>
-    <li><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> Prevention</a></li>
-    <li><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> Status &amp; Follow-up</a></li>
+    <li><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Summary</span><span class="lang-th">สรุป</span></a></li>
+    <li><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">What Happened</span><span class="lang-th">เกิดอะไรขึ้น</span></a></li>
+    <li><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Impact</span><span class="lang-th">ผลกระทบ</span></a></li>
+    <li><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Cause &amp; Fix</span><span class="lang-th">สาเหตุและการแก้ไข</span></a></li>
+    <li><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Prevention</span><span class="lang-th">การป้องกัน</span></a></li>
+    <li><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Status &amp; Follow-up</span><span class="lang-th">สถานะและการติดตาม</span></a></li>
   </ul>
   <div class="doc-info-card">
     <div class="doc-info-row"><span>Reference</span> <span>{{INCIDENT_ID}}</span></div>
@@ -190,7 +190,7 @@
   <!-- Section 1: Summary -->
   <div class="section-header" id="section-1">
     <span class="section-number s1">1</span>
-    <h2 class="section-title">Summary</h2>
+    <h2 class="section-title"><span class="lang-en">Summary</span><span class="lang-th">สรุป</span></h2>
   </div>
 
   <div class="exec-hero">
@@ -221,12 +221,12 @@
   <!-- Section 2: What Happened -->
   <div class="section-header" id="section-2">
     <span class="section-number s2">2</span>
-    <h2 class="section-title">What Happened</h2>
+    <h2 class="section-title"><span class="lang-en">What Happened</span><span class="lang-th">เกิดอะไรขึ้น</span></h2>
   </div>
 
   <p>{{WHAT_HAPPENED_PLAIN}}</p>
 
-  <h3>Timeline</h3>
+  <h3><span class="lang-en">Timeline</span><span class="lang-th">ลำดับเวลา</span></h3>
   <table>
     <thead><tr><th>Time</th><th>Event</th></tr></thead>
     <tbody>
@@ -238,7 +238,7 @@
   <!-- Section 3: Impact -->
   <div class="section-header" id="section-3">
     <span class="section-number s3">3</span>
-    <h2 class="section-title">Impact</h2>
+    <h2 class="section-title"><span class="lang-en">Impact</span><span class="lang-th">ผลกระทบ</span></h2>
   </div>
 
   <div class="before-after">
@@ -252,25 +252,25 @@
     </div>
   </div>
 
-  <h3>Who Was Affected</h3>
+  <h3><span class="lang-en">Who Was Affected</span><span class="lang-th">ใครได้รับผลกระทบ</span></h3>
   <p>{{WHO_AFFECTED}}</p>
 
   <!-- Section 4: Cause & Fix -->
   <div class="section-header" id="section-4">
     <span class="section-number s4">4</span>
-    <h2 class="section-title">Cause &amp; Fix</h2>
+    <h2 class="section-title"><span class="lang-en">Cause &amp; Fix</span><span class="lang-th">สาเหตุและการแก้ไข</span></h2>
   </div>
 
-  <h3>Root Cause (plain language)</h3>
+  <h3><span class="lang-en">Root Cause (plain language)</span><span class="lang-th">ต้นตอของปัญหา (ภาษาเข้าใจง่าย)</span></h3>
   <p>{{ROOT_CAUSE_PLAIN}}</p>
 
-  <h3>What We Did to Fix It</h3>
+  <h3><span class="lang-en">What We Did to Fix It</span><span class="lang-th">เราแก้ไขอย่างไร</span></h3>
   <p>{{FIX_PLAIN}}</p>
 
   <!-- Section 5: Prevention -->
   <div class="section-header" id="section-5">
     <span class="section-number s5">5</span>
-    <h2 class="section-title">Prevention</h2>
+    <h2 class="section-title"><span class="lang-en">Prevention</span><span class="lang-th">การป้องกัน</span></h2>
   </div>
 
   <p>{{PREVENTION_INTRO}}</p>
@@ -289,7 +289,7 @@
   <!-- Section 6: Status & Follow-up -->
   <div class="section-header" id="section-6">
     <span class="section-number s6">6</span>
-    <h2 class="section-title">Status &amp; Follow-up</h2>
+    <h2 class="section-title"><span class="lang-en">Status &amp; Follow-up</span><span class="lang-th">สถานะและการติดตาม</span></h2>
   </div>
 
   <div class="card success">
@@ -297,10 +297,10 @@
     <p>{{CURRENT_STATUS}}</p>
   </div>
 
-  <h3>Residual Risk</h3>
+  <h3><span class="lang-en">Residual Risk</span><span class="lang-th">ความเสี่ยงที่เหลืออยู่</span></h3>
   <p>{{RESIDUAL_RISK_DETAIL}}</p>
 
-  <h3>Follow-up Actions</h3>
+  <h3><span class="lang-en">Follow-up Actions</span><span class="lang-th">การดำเนินการติดตาม</span></h3>
   <table>
     <thead><tr><th>Action</th><th>Owner</th><th>Timeline</th></tr></thead>
     <tbody>
@@ -319,7 +319,7 @@
   <!-- Revision History -->
   <div class="section-header" id="revision-history">
     <span class="section-number s1">R</span>
-    <h2 class="section-title">Revision History</h2>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
   </div>
   <table>
     <thead><tr><th>Reference</th><th>Date</th><th>Description</th><th>Author</th></tr></thead>
