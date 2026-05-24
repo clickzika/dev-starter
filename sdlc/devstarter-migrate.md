@@ -179,7 +179,42 @@ Show:
 
 ## PHASE 3 — Migration Plan
 
-After Gate 1 approved, Tech Lead generates migration plan:
+After Gate 1 approved, Tech Lead generates the migration documents.
+
+**First — the plain-language Kickoff (stakeholder + management sign-off).**
+A migration is a large, long-lead-time commitment; before the technical plan,
+produce a plain-language kickoff so stakeholders and management can approve the
+direction. This is the PLAIN pair of the technical `migration-plan.html` — do
+NOT duplicate the strategy detail; keep it business-level.
+
+Read `~/.claude/templates/docs/devstarter-change-kickoff-template.html`. Create
+folder `docs/migration/[slug]/` (slug = migration name, lowercase-hyphenated).
+Fill `{{PLACEHOLDER}}` tokens, migration-framed:
+
+| Placeholder | Source |
+|-------------|--------|
+| `{{CHANGE_TYPE}}` | `Migration` |
+| `{{CONFIRMATION_HEADING}}` | `What We Will Migrate` |
+| `{{FEATURE_NAME}}` | `[FROM] → [TO]` (from Q2/Q3) |
+| `{{AUTHOR}}` | Name from `USER.md` (Identity section) — never an agent alias |
+| `{{PLAIN_SUMMARY}}` | 2–3 plain sentences: what is moving, why, expected outcome |
+| `{{CONFIRMATION_DETAIL}}` | plain description of the FROM→TO change (no deep tech) |
+| `{{CONFIRMATION_SECONDARY_TITLE}}` / `{{CONFIRMATION_SECONDARY}}` | `Migration Strategy` + plain note (strangler/big-bang/parallel) |
+| `{{IN_SCOPE_LIST}}` / `{{OUT_OF_SCOPE_LIST}}` | components migrated vs kept (from Q5 + analysis) |
+| `{{ACCEPTANCE_CRITERIA_LIST}}` | `<li>` — parity verified, zero data loss, rollback works |
+| `{{BUSINESS_NEED}}` | from Q4 reasons, plain language |
+| `{{WHO_BENEFITS}}` | teams/users benefiting |
+| `{{IMPACT_IF_DEFERRED}}` | cost/risk of staying on current stack (EOL, security, cost) |
+| `{{EFFORT}}` / `{{TIMELINE_ESTIMATE}}` | from analysis effort estimate |
+| `{{RISK_LEVEL}}` / `{{RISK_DETAIL}}` | from Q6 risk tolerance + risk register summary |
+| `{{SIGN_OFF_MEANING}}` | "Approving authorises the migration branch and the full migration plan to proceed." |
+| `{{APPROVER_ROWS}}` | `<tr>` per approver (Requester, Manager/Sponsor) |
+
+**Bilingual (MANDATORY):** EN + TH in every text block (Rule 8).
+Save to `docs/migration/[slug]/kickoff.html`; register in docs/index.html under
+"Migrations".
+
+Then generate the technical migration documents below.
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -188,7 +223,8 @@ After Gate 1 approved, Tech Lead generates migration plan:
 Gate: 2 — Migration Plan
 
 Output produced:
-  📄 docs/migration-plan.html  — full migration strategy
+  📝 docs/migration/[slug]/kickoff.html  — plain-language sign-off (stakeholder + mgmt)
+  📄 docs/migration-plan.html  — full migration strategy (technical)
   📄 docs/schema-mapping.html  — old schema → new schema mapping
   📄 docs/risk-register.html   — risks + mitigation
 
@@ -284,6 +320,29 @@ Use `AskUserQuestion` with:
 ```
 
 Only proceed when user types exactly "CUTOVER APPROVED".
+
+---
+
+## PHASE 5 — Post-Migration Management Brief
+
+After successful cutover and verification, generate the plain-language
+management brief — the PLAIN pair that closes the migration for stakeholders
+(the technical record lives in migration-plan.html + the verification report).
+
+Read `~/.claude/templates/docs/devstarter-change-mgmt-template.html`. Fill with
+plain business language (no code, no stack detail):
+- `{{CHANGE_TYPE}}` = `Migration`; `{{FEATURE_NAME}}` = `[FROM] → [TO]`
+- `{{AUTHOR}}` = Name from `USER.md` (Identity section) — never an agent alias
+- `{{EXECUTIVE_SUMMARY}}` = what migrated, outcome, business value
+- `{{SITUATION_BEFORE}}` / `{{SITUATION_AFTER}}` = old stack pain vs new stack gains
+- `{{METRICS_ROWS}}` = before/after numbers (response time, cost, etc. from Gate 6)
+- `{{RESIDUAL_RISK_DETAIL}}` / `{{ROLLBACK_CAPABILITY}}` = remaining risk + revert window
+- `{{NEXT_STEPS_ROWS}}` = decommission old stack, monitoring, follow-ups
+
+**Bilingual (MANDATORY):** EN + TH in every text block (Rule 8).
+Save to `docs/migration/[slug]/mgmt-brief.html`; register in docs/index.html
+alongside the kickoff. Symmetric family — Migration: kickoff (plain pre) +
+migration-plan (technical pre); mgmt-brief (plain post) + verification (technical post).
 
 ---
 
