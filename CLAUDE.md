@@ -453,6 +453,7 @@ Every slash command requires:
 | v5.4.0 | Pre-dev kickoff.html — plain-language sign-off doc generated before plan.html in /devstarter-change (add + bug). Two audiences: requester (requirement / root-cause + fix) + management (scope, why, effort, risk). Bilingual, gated at A1-DOC/C1-DOC. Doc family symmetric: kickoff+plan (pre-dev), mgmt-brief+summary (post-test) |
 | v5.4.0 | Doc family extended to all build/change flows: change-remove (full family, Gate B1-DOC), hotfix (incident-brief.html — mgmt pair for postmortem, post-incident only), migrate (pre-migration kickoff + post-cutover mgmt-brief). New requirement: every generated doc's Author = Name from USER.md, never an agent alias (Rule 8) |
 | v5.4.0 | Release launch brief — /devstarter-release PHASE 9.5 generates summary.html + mgmt-brief.html on initial/major launch (reuses existing templates). Fills the post-build delivery-brief gap; /devstarter-new left unchanged (its Gate 1+2 docs already cover pre-build kickoff/plan) |
+| v5.5.0 | Bilingual doc chrome — section titles/TOC/h3 now bilingual across all 6 templates (were English-only in Thai mode); Author resolves from install-root ~/.claude/USER.md (fallback IT Dept); human-style Thai rule (natural, not literal MT); README "Documents by Flow" reference + sample doc family |
 
 ---
 
