@@ -214,6 +214,11 @@ Fill `{{PLACEHOLDER}}` tokens, migration-framed:
 Save to `docs/migration/[slug]/kickoff.html`; register in docs/index.html under
 "Migrations".
 
+> ⚠️ Link fix: the kickoff template's "Next document" footer hard-links
+> `plan.html` (same-folder, for change flows). The migration technical plan lives
+> at top-level `docs/migration-plan.html`, so replace that href with
+> `../../migration-plan.html` when filling the migration kickoff.
+
 Then generate the technical migration documents below.
 
 ```
