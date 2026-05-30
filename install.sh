@@ -296,6 +296,11 @@ if [ "$DEVSTARTER_PROVIDER" = "claude" ]; then
   echo -e "  ${CYAN}bash install.sh --hooks${RESET}"
   echo ""
   fi
+  echo -e "  ${YELLOW}Optional: the /devstarter-understand* commands (analyze codebase → knowledge graph)${RESET}"
+  echo -e "  ${YELLOW}delegate to the Understand-Anything plugin. Install it once:${RESET}"
+  echo -e "  ${CYAN}/plugin marketplace add Lum1104/Understand-Anything${RESET}"
+  echo -e "  ${CYAN}/plugin install understand-anything${RESET}"
+  echo ""
 else
   echo -e "  To start with ${YELLOW}${DEVSTARTER_PROVIDER}${RESET}:"
   echo -e "  ${CYAN}bash ${CLAUDE_DIR}/devstarter-invoke.sh menu${RESET}"
