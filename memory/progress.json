@@ -1,31 +1,24 @@
 {
-  "workflow": "devstarter-change",
-  "change_id": "CR-2026-05-30-001",
-  "change_type": "Add Feature",
-  "feature": "Understand-Anything Wrapper Commands",
+  "workflow": "devstarter-release",
   "version": "v5.6.0",
-  "status": "waiting_test",
+  "status": "released",
   "branch": "develop",
-  "slug": "understand-wrappers",
+  "tag": "v5.6.0",
   "started_at": "2026-05-30",
-  "merged_at": "2026-05-30",
-  "pushed": true,
-  "last_done": "Merged 8 devstarter-understand* wrappers to develop, pushed to origin; full doc family (kickoff, plan, summary, mgmt-brief) + ADR-0001 generated",
-  "next": "Live two-path delegation test: install understand-anything plugin, restart Claude Code, run /devstarter-understand (present -> pass-through) and one command absent (-> install prompt). After pass, flip summary/mgmt-brief 'Pending live test' rows to verified.",
+  "completed_at": "2026-05-30",
+  "release_change": "CR-2026-05-30-001",
+  "public_release": "https://github.com/clickzika/dev-starter/releases/tag/v5.6.0",
+  "flow": "release/v5.6.0 -> uat -> main -> tag -> publish.sh(public) -> back-merge develop",
   "features": [
-    "8 thin /devstarter-understand* commands (understand, dashboard, chat, diff, explain, onboard, domain, knowledge)",
-    "Path A thin wrappers delegate to coexisting understand-anything plugin via Skill tool (understand-anything:understand*)",
-    "Preflight detect-and-prompt per command; no vendoring, no build step",
-    "ADR-0001 (Accepted) + bilingual kickoff/plan/summary/mgmt-brief docs",
-    "devstarter-menu items 37-44, install.sh plugin hint, CLAUDE.md v5.6.0"
+    "8 devstarter-understand* wrapper commands delegating to understand-anything plugin",
+    "ADR-0001 + bilingual kickoff/plan/summary/mgmt-brief doc family",
+    "devstarter-menu items 37-44, install.sh plugin hint"
   ],
   "open_items": [
-    "Live delegation end-to-end test not yet run (acceptance criteria unmet until verified)"
+    "Live delegation two-path test still NOT run — shipped with this known limitation (CHANGELOG v5.6.0 'Known limitation'). Verify post-release: install understand-anything, restart, run /devstarter-understand (present -> pass-through) and one command absent (-> install prompt)."
   ],
   "previous_release": {
-    "workflow": "devstarter-release",
     "version": "v5.5.0",
-    "status": "completed",
     "tag": "v5.5.0",
     "completed_at": "2026-05-24"
   }
