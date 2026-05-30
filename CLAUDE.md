@@ -84,7 +84,7 @@ DevStarter/
 │   │   └── devstarter-vcs-pm-guide.md
 │   └── custom/             ← user custom agents (preserved by update.sh)
 │
-├── skills/                 ← 41 Claude Code skills (25 workflows + 13 agent direct-invoke + 3 registry/util)
+├── skills/                 ← 49 Claude Code skills (25 workflows + 8 understand wrappers + 13 agent direct-invoke + 3 registry/util)
 │   ├── devstarter-new/SKILL.md
 │   ├── devstarter-change/SKILL.md
 │   ├── devstarter-existing/SKILL.md
@@ -454,6 +454,7 @@ Every slash command requires:
 | v5.4.0 | Doc family extended to all build/change flows: change-remove (full family, Gate B1-DOC), hotfix (incident-brief.html — mgmt pair for postmortem, post-incident only), migrate (pre-migration kickoff + post-cutover mgmt-brief). New requirement: every generated doc's Author = Name from USER.md, never an agent alias (Rule 8) |
 | v5.4.0 | Release launch brief — /devstarter-release PHASE 9.5 generates summary.html + mgmt-brief.html on initial/major launch (reuses existing templates). Fills the post-build delivery-brief gap; /devstarter-new left unchanged (its Gate 1+2 docs already cover pre-build kickoff/plan) |
 | v5.5.0 | Bilingual doc chrome — section titles/TOC/h3 now bilingual across all 6 templates (were English-only in Thai mode); Author resolves from install-root ~/.claude/USER.md (fallback IT Dept); human-style Thai rule (natural, not literal MT); README "Documents by Flow" reference + sample doc family |
+| v5.6.0 | Understand-Anything integration (Path A — thin wrappers). 8 new `/devstarter-understand*` commands (understand, dashboard, chat, diff, explain, onboard, domain, knowledge) delegate to the coexisting Understand-Anything plugin via a preflight detect-and-prompt; no vendoring, no build step. Menu items 37–44, install.sh plugin hint, ADR-0001. |
 
 ---
 
