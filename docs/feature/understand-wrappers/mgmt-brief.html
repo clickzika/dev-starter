@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Feature Brief — Understand-Anything Wrapper Commands — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
+    --bg-card:#f8f9fb; --bg-hover:#e8ebf0; --accent:#e94560; --accent-light:#d63851;
+    --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4;
+    --border-light:#e2e7ed; --status-approved:#10b981; --status-draft:#f59e0b;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
+    --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316;
+    --header-h:64px; --sidebar-w:260px;
+    --code-bg:#f1f5f9; --table-even-bg:rgba(0,0,0,0.02);
+    --table-hover-bg:rgba(233,69,96,0.04); --shadow:0 1px 3px rgba(0,0,0,0.06);
+    --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-header:#1a1a2e; --bg-sidebar:#16213e; --bg-content:#1e1e3a;
+    --bg-card:#252547; --bg-hover:#0f3460; --accent:#e94560; --accent-light:#ff6b81;
+    --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f;
+    --border-light:#2d4a6f; --table-even-bg:rgba(255,255,255,0.02);
+    --table-hover-bg:rgba(233,69,96,0.05); --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.7; height:100vh; overflow:hidden; transition:background 0.3s,color 0.3s; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--bg-header); border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; letter-spacing:-0.3px; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); font-weight:500; }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; background:rgba(16,185,129,0.15); color:var(--status-approved); border:1px solid rgba(16,185,129,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s; border-left:3px solid transparent; }
+  .toc-link:hover { background:var(--bg-hover); color:var(--text); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent-light); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; flex-shrink:0; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
+  .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; }
+  .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
+  .doc-info-row span:first-child { color:var(--text-muted); }
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:48px 56px 100px; background:var(--bg-content); }
+  .section-header { display:flex; align-items:center; gap:14px; margin:56px 0 24px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
+  .section-title { font-size:24px; font-weight:700; letter-spacing:-0.3px; }
+  h3 { font-size:17px; font-weight:600; color:var(--text); margin:32px 0 14px; border-left:3px solid var(--accent); padding-left:12px; }
+  p { color:var(--text-dim); margin-bottom:18px; font-size:15px; line-height:1.8; }
+  ul, ol { margin:8px 0 20px 28px; color:var(--text-dim); font-size:15px; }
+  li { margin-bottom:8px; line-height:1.8; }
+  .exec-hero { background:linear-gradient(135deg, rgba(233,69,96,0.08) 0%, rgba(59,130,246,0.06) 100%); border:1px solid rgba(233,69,96,0.2); border-radius:16px; padding:32px 40px; margin:0 0 40px; }
+  .exec-hero-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); margin-bottom:12px; }
+  .exec-hero-text { font-size:18px; line-height:1.7; color:var(--text); font-weight:400; }
+  .before-after { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0 28px; }
+  .ba-card { border-radius:12px; padding:24px 28px; }
+  .ba-card.before { background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); }
+  .ba-card.after { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); }
+  .ba-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+  .ba-card.before .ba-label { color:#ef4444; }
+  .ba-card.after .ba-label { color:#10b981; }
+  .ba-card p { font-size:14px; margin-bottom:0; color:var(--text-dim); }
+  .improvement-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:16px; margin:20px 0 28px; }
+  .improvement-tile { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:20px 24px; transition:border-color 0.2s; }
+  .improvement-tile:hover { border-color:var(--accent); }
+  .improvement-icon { font-size:28px; margin-bottom:10px; }
+  .improvement-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:6px; }
+  .improvement-desc { font-size:13px; color:var(--text-dim); line-height:1.6; margin-bottom:0; }
+  .status-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:16px 0 28px; }
+  .status-pill { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:24px; font-size:13px; font-weight:600; }
+  .pill-green { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+  .pill-yellow { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.3); }
+  .pill-red { background:rgba(239,68,68,0.12); color:#ef4444; border:1px solid rgba(239,68,68,0.3); }
+  .pill-blue { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+  table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:14px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  thead th { background:var(--bg-sidebar); color:var(--text); font-weight:600; text-align:left; padding:12px 16px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--accent); }
+  tbody tr { border-bottom:1px solid var(--border); transition:background 0.1s; }
+  tbody tr:nth-child(even) { background:var(--table-even-bg); }
+  tbody tr:hover { background:var(--table-hover-bg); }
+  td { padding:12px 16px; color:var(--text-dim); vertical-align:top; line-height:1.6; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px 28px; margin:16px 0 24px; }
+  .card-title { font-size:15px; font-weight:600; margin-bottom:10px; color:var(--text); }
+  .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
+  .success { border-left:4px solid var(--section-4); background:rgba(16,185,129,0.05); }
+  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
+  hr { border:none; border-top:1px solid var(--border); margin:36px 0; }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); transition:all 0.2s; }
+  .lang-btn:hover { background:var(--bg-hover); color:var(--text); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); transition:all 0.2s; }
+  .pdf-btn:hover { background:rgba(233,69,96,0.2); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3, [data-lang="th"] h4 { font-family:'Sarabun',system-ui,sans-serif; }
+  @media (max-width:900px) { .before-after{grid-template-columns:1fr;} }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:28px 20px 80px;} }
+  @media print {
+    .doc-header{position:static;border-bottom:2px solid #000;box-shadow:none;}
+    .doc-sidebar{display:none;}
+    .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;}
+    body{background:#fff;color:#000;overflow:auto;}
+    table{page-break-inside:avoid;} .section-header{page-break-after:avoid;} h3{page-break-after:avoid;}
+    .theme-toggle,.lang-btn,.pdf-btn{display:none;}
+    .exec-hero{background:#f9f9f9;border-color:#ccc;}
+    .before-after{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Management Brief — Understand-Anything Wrapper Commands</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>CR-2026-05-30-001 · 2026-05-30</div>
+      <div>Prepared by: Natthaphat Wajanavisit</div>
+    </div>
+    <span class="doc-status-badge">&#10003; DELIVERED</span>
+    <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()" title="Switch language / เปลี่ยนภาษา"><span id="langLabel">EN</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Executive Summary</span><span class="lang-th">บทสรุปผู้บริหาร</span></a></li>
+    <li><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">What Was the Problem</span><span class="lang-th">ปัญหาที่เกิดขึ้นคืออะไร</span></a></li>
+    <li><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></a></li>
+    <li><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Improvements</span><span class="lang-th">สิ่งที่ปรับปรุง</span></a></li>
+    <li><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Risk &amp; Status</span><span class="lang-th">ความเสี่ยงและสถานะ</span></a></li>
+    <li><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Next Steps</span><span class="lang-th">ขั้นตอนถัดไป</span></a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Reference</span> <span>CR-2026-05-30-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Add Feature</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>Medium</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>M</span></div>
+    <div class="doc-info-row"><span>Delivered</span> <span>2026-05-30</span></div>
+    <div class="doc-info-row"><span>Risk</span> <span>Low</span></div>
+  </div>
+</nav>
+
+<main class="doc-content">
+
+  <!-- Section 1: Executive Summary -->
+  <div class="section-header" id="section-1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Executive Summary</span><span class="lang-th">บทสรุปผู้บริหาร</span></h2>
+  </div>
+
+  <div class="exec-hero">
+    <div class="exec-hero-label">&#128203; Summary</div>
+    <p class="exec-hero-text"><span class="lang-en">DevStarter now includes eight new built-in commands that let anyone analyse, visualise, and ask questions about any codebase — turning an unfamiliar project into a clear, navigable map. The work reuses a proven open-source engine rather than rebuilding it, so it was delivered quickly and stays easy to maintain.</span><span class="lang-th">ตอนนี้ DevStarter มีคำสั่งในตัวใหม่แปดตัว ที่ให้ทุกคนวิเคราะห์ มองเห็นภาพ และตั้งคำถามกับโค้ดเบสใด ๆ ได้ — เปลี่ยนโปรเจกต์ที่ไม่คุ้นเคยให้เป็นแผนที่ที่ชัดเจนและสำรวจง่าย งานนี้นำเอนจินโอเพนซอร์สที่พิสูจน์แล้วมาใช้ซ้ำแทนที่จะสร้างใหม่ จึงส่งมอบได้เร็วและดูแลรักษาง่าย</span></p>
+  </div>
+
+  <div class="status-row">
+    <span class="status-pill pill-green">&#10003; Delivered</span>
+    <span class="status-pill pill-yellow">Priority: Medium</span>
+    <span class="status-pill pill-blue">Add Feature</span>
+    <span class="status-pill pill-green">Risk: Low</span>
+  </div>
+
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Reference Number</td><td>CR-2026-05-30-001</td></tr>
+      <tr><td>Project</td><td>DevStarter</td></tr>
+      <tr><td>Change Title</td><td>Understand-Anything Wrapper Commands</td></tr>
+      <tr><td>Type</td><td>Add Feature</td></tr>
+      <tr><td>Requested</td><td>2026-05-30</td></tr>
+      <tr><td>Delivered</td><td>2026-05-30</td></tr>
+      <tr><td>Prepared by</td><td>Natthaphat Wajanavisit</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 2: What Was the Problem -->
+  <div class="section-header" id="section-2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">What Was the Problem</span><span class="lang-th">ปัญหาที่เกิดขึ้นคืออะไร</span></h2>
+  </div>
+
+  <p><span class="lang-en">Understanding an unfamiliar codebase is the slowest, most error-prone part of joining a project or reviewing someone else's work. A capable tool for this already existed, but it was a separate product with its own commands — so DevStarter users had to step outside their normal workflow to use it, and many never discovered it at all.</span><span class="lang-th">การทำความเข้าใจโค้ดเบสที่ไม่คุ้นเคยคือส่วนที่ช้าที่สุดและผิดพลาดง่ายที่สุดของการเข้าร่วมโปรเจกต์หรือการรีวิวงานของคนอื่น เครื่องมือที่ทำเรื่องนี้ได้ดีมีอยู่แล้ว แต่เป็นผลิตภัณฑ์แยกที่มีคำสั่งของตัวเอง ผู้ใช้ DevStarter จึงต้องออกจาก workflow ปกติเพื่อใช้มัน และหลายคนไม่เคยรู้ว่ามีเลย</span></p>
+
+  <div class="before-after">
+    <div class="ba-card before">
+      <div class="ba-label">&#10006; <span class="lang-en">Before — The Situation</span><span class="lang-th">ก่อน — สถานการณ์</span></div>
+      <p><span class="lang-en">Codebase analysis lived in a separate tool. Users switched context or skipped it; onboarding to a new project stayed slow and manual.</span><span class="lang-th">การวิเคราะห์โค้ดเบสอยู่ในเครื่องมือแยก ผู้ใช้ต้องสลับบริบทหรือข้ามไป การ onboard เข้าโปรเจกต์ใหม่ยังช้าและต้องทำเอง</span></p>
+    </div>
+    <div class="ba-card after">
+      <div class="ba-label">&#10003; <span class="lang-en">After — The Resolution</span><span class="lang-th">หลัง — ผลลัพธ์</span></div>
+      <p><span class="lang-en">Eight analysis commands now live inside DevStarter. Users stay in one workflow, with a one-step prompt to install the engine the first time.</span><span class="lang-th">ตอนนี้มีคำสั่งวิเคราะห์แปดตัวอยู่ใน DevStarter ผู้ใช้อยู่ใน workflow เดียว พร้อมคำแนะนำติดตั้งเอนจินขั้นตอนเดียวในครั้งแรก</span></p>
+    </div>
+  </div>
+
+  <h3><span class="lang-en">Who Was Affected</span><span class="lang-th">ใครได้รับผลกระทบ</span></h3>
+  <p><span class="lang-en">Every DevStarter user — especially developers onboarding to a new project, reviewers assessing the impact of a change, and teams handing over a codebase.</span><span class="lang-th">ผู้ใช้ DevStarter ทุกคน — โดยเฉพาะนักพัฒนาที่ onboard เข้าโปรเจกต์ใหม่ ผู้รีวิวที่ประเมินผลกระทบของการเปลี่ยนแปลง และทีมที่ส่งมอบโค้ดเบส</span></p>
+
+  <h3><span class="lang-en">Business Impact of Not Acting</span><span class="lang-th">ผลกระทบทางธุรกิจหากไม่ดำเนินการ</span></h3>
+  <p><span class="lang-en">Slower onboarding and reviews, and a high-value capability left undiscovered — a gap competitors increasingly close.</span><span class="lang-th">การ onboard และการรีวิวที่ช้าลง และความสามารถที่มีคุณค่าสูงที่ไม่มีใครค้นพบ — ช่องว่างที่คู่แข่งเริ่มปิดมากขึ้น</span></p>
+
+  <!-- Section 3: What Was Delivered -->
+  <div class="section-header" id="section-3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></h2>
+  </div>
+
+  <p><span class="lang-en">Eight new DevStarter commands, each covering one analysis task:</span><span class="lang-th">คำสั่ง DevStarter ใหม่แปดตัว แต่ละตัวครอบคลุมงานวิเคราะห์หนึ่งอย่าง:</span></p>
+
+  <ul>
+    <li><span class="lang-en">Analyse a project into a visual knowledge map</span><span class="lang-th">วิเคราะห์โปรเจกต์ให้เป็นแผนที่ความรู้แบบเห็นภาพ</span></li>
+    <li><span class="lang-en">Open an interactive dashboard of that map</span><span class="lang-th">เปิด dashboard แบบโต้ตอบของแผนที่นั้น</span></li>
+    <li><span class="lang-en">Ask plain-language questions about the code</span><span class="lang-th">ถามคำถามภาษาธรรมดาเกี่ยวกับโค้ด</span></li>
+    <li><span class="lang-en">See the impact of a change before committing</span><span class="lang-th">ดูผลกระทบของการเปลี่ยนแปลงก่อน commit</span></li>
+    <li><span class="lang-en">Get a deep explanation of any file or function</span><span class="lang-th">ได้คำอธิบายเชิงลึกของไฟล์หรือฟังก์ชันใด ๆ</span></li>
+    <li><span class="lang-en">Generate a codebase onboarding guide</span><span class="lang-th">สร้างคู่มือ onboarding โค้ดเบส</span></li>
+    <li><span class="lang-en">Extract the business domains and flows in the code</span><span class="lang-th">สกัด business domain และ flow ในโค้ด</span></li>
+    <li><span class="lang-en">Analyse a knowledge wiki into a connected graph</span><span class="lang-th">วิเคราะห์ wiki ความรู้ให้เป็นกราฟที่เชื่อมโยงกัน</span></li>
+  </ul>
+
+  <h3><span class="lang-en">What Was NOT Changed</span><span class="lang-th">อะไรที่ไม่ได้เปลี่ยน</span></h3>
+  <p><span class="lang-en">No existing DevStarter command was altered. The analysis engine itself was not copied or modified — DevStarter simply points to it. There is no new installation burden beyond a one-time, one-step plugin install.</span><span class="lang-th">ไม่มีคำสั่ง DevStarter เดิมถูกแก้ไข เอนจินวิเคราะห์เองไม่ได้ถูกคัดลอกหรือดัดแปลง — DevStarter เพียงชี้ไปหามัน ไม่มีภาระการติดตั้งใหม่นอกจากการติดตั้งปลั๊กอินครั้งเดียวขั้นตอนเดียว</span></p>
+
+  <h3><span class="lang-en">Timeline</span><span class="lang-th">ลำดับเวลา</span></h3>
+  <table>
+    <thead><tr><th>Milestone</th><th>Date</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Plan approved</span><span class="lang-th">อนุมัติแผน</span></td><td>2026-05-30</td><td><span class="lang-en">Scope and approach signed off</span><span class="lang-th">อนุมัติขอบเขตและแนวทาง</span></td></tr>
+      <tr><td><span class="lang-en">Development completed</span><span class="lang-th">พัฒนาเสร็จ</span></td><td>2026-05-30</td><td><span class="lang-en">Build finished, internal review passed</span><span class="lang-th">สร้างเสร็จ ผ่านการรีวิวภายใน</span></td></tr>
+      <tr><td><span class="lang-en">Merged to develop</span><span class="lang-th">รวมเข้า develop</span></td><td>2026-05-30</td><td><span class="lang-en">Live two-path test still pending (see Section 5)</span><span class="lang-th">ยังต้องทดสอบสองเส้นทางแบบสด (ดูหัวข้อ 5)</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 4: Improvements -->
+  <div class="section-header" id="section-4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">What Improved</span><span class="lang-th">สิ่งที่ดีขึ้น</span></h2>
+  </div>
+
+  <p><span class="lang-en">The change strengthens DevStarter where it matters most for new and reviewing users:</span><span class="lang-th">การเปลี่ยนแปลงนี้เสริม DevStarter ในจุดที่สำคัญที่สุดสำหรับผู้ใช้ใหม่และผู้รีวิว:</span></p>
+
+  <div class="improvement-grid">
+    <div class="improvement-tile">
+      <div class="improvement-icon">&#129504;</div>
+      <div class="improvement-title"><span class="lang-en">Faster Onboarding</span><span class="lang-th">Onboard เร็วขึ้น</span></div>
+      <p class="improvement-desc"><span class="lang-en">New developers see a project's structure as a map instead of reading it blind.</span><span class="lang-th">นักพัฒนาใหม่เห็นโครงสร้างโปรเจกต์เป็นแผนที่แทนการอ่านแบบมองไม่เห็นภาพรวม</span></p>
+    </div>
+    <div class="improvement-tile">
+      <div class="improvement-icon">&#128269;</div>
+      <div class="improvement-title"><span class="lang-en">Safer Reviews</span><span class="lang-th">รีวิวปลอดภัยขึ้น</span></div>
+      <p class="improvement-desc"><span class="lang-en">Reviewers see the ripple effect of a change before it ships.</span><span class="lang-th">ผู้รีวิวเห็นผลกระทบลูกโซ่ของการเปลี่ยนแปลงก่อนปล่อย</span></p>
+    </div>
+    <div class="improvement-tile">
+      <div class="improvement-icon">&#9889;</div>
+      <div class="improvement-title"><span class="lang-en">One Workflow</span><span class="lang-th">workflow เดียว</span></div>
+      <p class="improvement-desc"><span class="lang-en">No context-switching — analysis lives beside the rest of DevStarter.</span><span class="lang-th">ไม่ต้องสลับบริบท — การวิเคราะห์อยู่ข้างเครื่องมือ DevStarter อื่น</span></p>
+    </div>
+    <div class="improvement-tile">
+      <div class="improvement-icon">&#127757;</div>
+      <div class="improvement-title"><span class="lang-en">Low Maintenance</span><span class="lang-th">ดูแลน้อย</span></div>
+      <p class="improvement-desc"><span class="lang-en">Reuses an external engine, so its improvements arrive automatically.</span><span class="lang-th">ใช้เอนจินภายนอกซ้ำ การปรับปรุงจึงมาถึงโดยอัตโนมัติ</span></p>
+    </div>
+  </div>
+
+  <h3><span class="lang-en">Measurable Outcomes</span><span class="lang-th">ผลลัพธ์ที่วัดได้</span></h3>
+  <table>
+    <thead><tr><th>Metric</th><th>Before</th><th>After</th><th>Improvement</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Native analysis commands in DevStarter</span><span class="lang-th">คำสั่งวิเคราะห์ในตัวของ DevStarter</span></td><td>0</td><td>8</td><td><span class="lang-en">New capability</span><span class="lang-th">ความสามารถใหม่</span></td></tr>
+      <tr><td><span class="lang-en">Tools to learn for codebase analysis</span><span class="lang-th">เครื่องมือที่ต้องเรียนรู้เพื่อวิเคราะห์โค้ดเบส</span></td><td><span class="lang-en">2 (separate)</span><span class="lang-th">2 (แยก)</span></td><td>1</td><td><span class="lang-en">Unified</span><span class="lang-th">รวมเป็นหนึ่ง</span></td></tr>
+      <tr><td><span class="lang-en">Engineering cost to add</span><span class="lang-th">ต้นทุนวิศวกรรมในการเพิ่ม</span></td><td>&mdash;</td><td><span class="lang-en">~1 day</span><span class="lang-th">~1 วัน</span></td><td><span class="lang-en">Near-zero via reuse</span><span class="lang-th">แทบเป็นศูนย์ด้วยการใช้ซ้ำ</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 5: Risk & Status -->
+  <div class="section-header" id="section-5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title"><span class="lang-en">Risk &amp; Status</span><span class="lang-th">ความเสี่ยงและสถานะ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Current Status</span><span class="lang-th">สถานะปัจจุบัน</span></h3>
+  <div class="card warning">
+    <div class="card-title">&#9888; <span class="lang-en">Merged — one verification step remaining</span><span class="lang-th">รวมแล้ว — เหลือขั้นตอนตรวจสอบหนึ่งอย่าง</span></div>
+    <p><span class="lang-en">The eight commands are built and merged into the development branch. One step remains before they are announced as fully working: a live end-to-end test, which requires installing the analysis engine and restarting the tool. This is a routine confirmation, not a blocker.</span><span class="lang-th">คำสั่งทั้งแปดถูกสร้างและรวมเข้า branch สำหรับพัฒนาแล้ว เหลือหนึ่งขั้นตอนก่อนประกาศว่าทำงานเต็มที่: การทดสอบ end-to-end แบบสด ซึ่งต้องติดตั้งเอนจินวิเคราะห์และรีสตาร์ทเครื่องมือ นี่เป็นการยืนยันตามปกติ ไม่ใช่อุปสรรค</span></p>
+  </div>
+
+  <h3><span class="lang-en">Residual Risk</span><span class="lang-th">ความเสี่ยงที่เหลืออยู่</span></h3>
+  <p><span class="lang-en">Low. The change only adds new files; it can be reversed instantly with no data or system impact. The only dependency is the external analysis engine, which the commands check for and prompt to install when missing.</span><span class="lang-th">ต่ำ การเปลี่ยนแปลงเพิ่มเฉพาะไฟล์ใหม่ ย้อนกลับได้ทันทีโดยไม่กระทบข้อมูลหรือระบบ dependency เดียวคือเอนจินวิเคราะห์ภายนอก ซึ่งคำสั่งจะตรวจหาและแจ้งให้ติดตั้งเมื่อไม่มี</span></p>
+
+  <h3><span class="lang-en">What Was Tested</span><span class="lang-th">ทดสอบอะไรบ้าง</span></h3>
+  <ul>
+    <li><span class="lang-en">The engine's exact technical name was confirmed against its source, so the commands point to the right place.</span><span class="lang-th">ยืนยันชื่อทางเทคนิคที่แน่นอนของเอนจินกับซอร์สแล้ว คำสั่งจึงชี้ไปถูกที่</span></li>
+    <li><span class="lang-en">All sign-off documents were checked complete and bilingual.</span><span class="lang-th">ตรวจเอกสารอนุมัติทั้งหมดว่าครบและเป็นสองภาษา</span></li>
+    <li><span class="lang-en">Confirmed no existing command was affected, including the separate team-onboarding command.</span><span class="lang-th">ยืนยันว่าไม่มีคำสั่งเดิมได้รับผลกระทบ รวมถึงคำสั่ง onboarding ทีมที่แยกต่างหาก</span></li>
+    <li><span class="lang-en">Pending: the live two-path run (engine present vs absent).</span><span class="lang-th">ค้างอยู่: การรันสองเส้นทางแบบสด (มีเอนจิน เทียบกับไม่มี)</span></li>
+  </ul>
+
+  <h3><span class="lang-en">Rollback Capability</span><span class="lang-th">ความสามารถย้อนกลับ</span></h3>
+  <p><span class="lang-en">Immediate and complete — reverting the branch removes the new files. No migrations, no data, no external state.</span><span class="lang-th">ทันทีและครบถ้วน — การย้อน branch ลบไฟล์ใหม่ออก ไม่มี migration ไม่มีข้อมูล ไม่มี state ภายนอก</span></p>
+
+  <!-- Section 6: Next Steps -->
+  <div class="section-header" id="section-6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title"><span class="lang-en">Next Steps</span><span class="lang-th">ขั้นตอนถัดไป</span></h2>
+  </div>
+
+  <p><span class="lang-en">One confirmation step remains before this is announced as shipped:</span><span class="lang-th">เหลือหนึ่งขั้นตอนยืนยันก่อนประกาศว่าพร้อมใช้:</span></p>
+
+  <table>
+    <thead><tr><th>Action</th><th>Owner</th><th>Timeline</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Run the live two-path test (engine present + absent)</span><span class="lang-th">รันการทดสอบสองเส้นทางแบบสด (มีเอนจิน + ไม่มี)</span></td><td>Natthaphat Wajanavisit</td><td><span class="lang-en">Next session</span><span class="lang-th">เซสชันถัดไป</span></td></tr>
+      <tr><td><span class="lang-en">Announce as shipped / include in next release</span><span class="lang-th">ประกาศว่าพร้อมใช้ / รวมในรีลีสถัดไป</span></td><td>Natthaphat Wajanavisit</td><td><span class="lang-en">After test passes</span><span class="lang-th">หลังการทดสอบผ่าน</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="card note">
+    <div class="card-title">&#128203; <span class="lang-en">Related Documents</span><span class="lang-th">เอกสารที่เกี่ยวข้อง</span></div>
+    <p>
+      <span class="lang-en">Technical detail:</span><span class="lang-th">รายละเอียดเชิงเทคนิค:</span> <a href="summary.html" style="color:var(--accent)">summary.html</a><br>
+      <span class="lang-en">Implementation plan:</span><span class="lang-th">แผนการดำเนินงาน:</span> <a href="plan.html" style="color:var(--accent)">plan.html</a><br>
+      <span class="lang-en">Decision record:</span><span class="lang-th">บันทึกการตัดสินใจ:</span> <a href="../../adr/0001-understand-anything-integration.html" style="color:var(--accent)">ADR-0001</a>
+    </p>
+  </div>
+
+  <!-- Revision History -->
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>Reference</th><th>Date</th><th>Description</th><th>Author</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>CR-2026-05-30-001</td>
+        <td>2026-05-30</td>
+        <td><span class="lang-en">Management brief generated after merge; live test pending</span><span class="lang-th">สร้างบรีฟผู้บริหารหลังรวมโค้ด การทดสอบแบบสดยังค้าง</span></td>
+        <td>Natthaphat Wajanavisit</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function toggleLang() {
+    var html = document.documentElement; var isThai = html.getAttribute('data-lang') === 'th'; var label = document.getElementById('langLabel');
+    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
+    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
+  }
+  (function() { var l=localStorage.getItem('docportal-lang'); if (l==='th') { document.documentElement.setAttribute('data-lang','th'); var lb=document.getElementById('langLabel'); if(lb) lb.textContent='TH'; } })();
+  function toggleTheme() {
+    var html = document.documentElement;
+    var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function() {
+    var saved = localStorage.getItem('docportal-theme');
+    if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  })();
+  const sections = document.querySelectorAll('.section-header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const content = document.querySelector('.doc-content');
+  content.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (content.scrollTop >= s.offsetTop - content.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+  });
+  tocLinks.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(l.getAttribute('href'));
+      if (t) content.scrollTo({ top: t.offsetTop - content.offsetTop - 20, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
