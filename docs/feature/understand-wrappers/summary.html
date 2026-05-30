@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Feature Summary — Understand-Anything Wrapper Commands — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
+    --bg-card:#f8f9fb; --bg-hover:#e8ebf0; --accent:#e94560; --accent-light:#d63851;
+    --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4;
+    --border-light:#e2e7ed; --status-draft:#f59e0b; --status-review:#3b82f6;
+    --status-approved:#10b981; --status-pending:#8b5cf6;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
+    --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316;
+    --section-7:#06b6d4; --section-8:#ec4899;
+    --header-h:64px; --sidebar-w:280px;
+    --code-bg:#f1f5f9; --code-inline-bg:rgba(233,69,96,0.08);
+    --code-inline-color:#d63851; --table-even-bg:rgba(0,0,0,0.02);
+    --table-hover-bg:rgba(233,69,96,0.04); --shadow:0 1px 3px rgba(0,0,0,0.06);
+    --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-header:#1a1a2e; --bg-sidebar:#16213e; --bg-content:#1e1e3a;
+    --bg-card:#252547; --bg-hover:#0f3460; --accent:#e94560; --accent-light:#ff6b81;
+    --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f;
+    --border-light:#2d4a6f; --code-bg:#0d0d1a; --code-inline-bg:rgba(233,69,96,0.1);
+    --code-inline-color:#ff6b81; --table-even-bg:rgba(255,255,255,0.02);
+    --table-hover-bg:rgba(233,69,96,0.05); --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.6; height:100vh; overflow:hidden; transition:background 0.3s,color 0.3s; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--bg-header); border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; letter-spacing:-0.3px; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); font-weight:500; }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+  .doc-status-badge.approved { background:rgba(16,185,129,0.15); color:var(--status-approved); border:1px solid rgba(16,185,129,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s; border-left:3px solid transparent; }
+  .toc-link:hover { background:var(--bg-hover); color:var(--text); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent-light); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; flex-shrink:0; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
+  .toc-number.s7{background:var(--section-7);}
+  .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; }
+  .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
+  .doc-info-row span:first-child { color:var(--text-muted); }
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:40px 48px 80px; background:var(--bg-content); }
+  .section-header { display:flex; align-items:center; gap:14px; margin:48px 0 20px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
+  .section-number.s7{background:var(--section-7);}
+  .section-title { font-size:22px; font-weight:700; letter-spacing:-0.3px; }
+  h3 { font-size:16px; font-weight:600; color:var(--text); margin:28px 0 12px; border-left:3px solid var(--accent); padding-left:12px; }
+  h4 { font-size:14px; font-weight:600; color:var(--text-dim); margin:20px 0 8px; }
+  p { color:var(--text-dim); margin-bottom:16px; font-size:14px; line-height:1.7; }
+  table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:13px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  thead th { background:var(--bg-sidebar); color:var(--text); font-weight:600; text-align:left; padding:12px 16px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--accent); }
+  tbody tr { border-bottom:1px solid var(--border); }
+  tbody tr:nth-child(even) { background:var(--table-even-bg); }
+  tbody tr:hover { background:var(--table-hover-bg); }
+  td { padding:10px 16px; color:var(--text-dim); vertical-align:top; }
+  code { font-family:'JetBrains Mono','Fira Code','Consolas',monospace; font-size:13px; }
+  :not(pre) > code { background:var(--code-inline-bg); color:var(--code-inline-color); padding:2px 6px; border-radius:4px; font-size:12px; }
+  ul,ol { margin:8px 0 16px 24px; color:var(--text-dim); font-size:14px; }
+  li { margin-bottom:6px; line-height:1.6; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin:16px 0 24px; }
+  .card-title { font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text); }
+  .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
+  .success { border-left:4px solid var(--section-4); background:rgba(16,185,129,0.05); }
+  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
+  .badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.3px; }
+  .badge-red{background:rgba(239,68,68,0.15);color:#ef4444;}
+  .badge-orange{background:rgba(249,115,22,0.15);color:#f97316;}
+  .badge-yellow{background:rgba(245,158,11,0.15);color:#f59e0b;}
+  .badge-green{background:rgba(16,185,129,0.15);color:#10b981;}
+  .badge-blue{background:rgba(59,130,246,0.15);color:#3b82f6;}
+  .badge-purple{background:rgba(139,92,246,0.15);color:#8b5cf6;}
+  .badge-gray{background:rgba(100,116,139,0.15);color:#94a3b8;}
+  hr { border:none; border-top:1px solid var(--border); margin:32px 0; }
+  .handoff-grid { display:grid; grid-template-columns:1fr; gap:20px; margin:16px 0; }
+  .handoff-card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; }
+  .handoff-card-title { font-size:14px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .handoff-card-title .icon { font-size:18px; }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); transition:all 0.2s; }
+  .lang-btn:hover { background:var(--bg-hover); color:var(--text); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); transition:all 0.2s; }
+  .pdf-btn:hover { background:rgba(233,69,96,0.2); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3, [data-lang="th"] h4 { font-family:'Sarabun',system-ui,sans-serif; }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:24px 16px 60px;} }
+  @media print {
+    .doc-header{position:static;border-bottom:2px solid #000;box-shadow:none;}
+    .doc-sidebar{display:none;}
+    .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;}
+    body{background:#fff;color:#000;overflow:auto;}
+    table{page-break-inside:avoid;} .section-header{page-break-after:avoid;} h3{page-break-after:avoid;}
+    .theme-toggle,.lang-btn,.pdf-btn{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Add Feature Summary — Understand-Anything Wrapper Commands</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>CR-2026-05-30-001 · Completed 2026-05-30</div>
+      <div>Author: Natthaphat Wajanavisit</div>
+    </div>
+    <span class="doc-status-badge approved">&#10003; COMPLETED</span>
+    <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()" title="Switch language / เปลี่ยนภาษา"><span id="langLabel">EN</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวมการเปลี่ยนแปลง</span></a></li>
+    <li><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Root Problem / Requirement</span><span class="lang-th">ต้นตอของปัญหา / ความต้องการ</span></a></li>
+    <li><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Files Changed</span><span class="lang-th">ไฟล์ที่เปลี่ยน</span></a></li>
+    <li><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Commands Added</span><span class="lang-th">คำสั่งที่เพิ่ม</span></a></li>
+    <li><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Implementation Notes</span><span class="lang-th">บันทึกการพัฒนา</span></a></li>
+    <li><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Testing &amp; Validation</span><span class="lang-th">การทดสอบและการตรวจสอบ</span></a></li>
+    <li><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> <span class="lang-en">Handoff</span><span class="lang-th">การส่งมอบ</span></a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Change ID</span> <span>CR-2026-05-30-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Add Feature</span></div>
+    <div class="doc-info-row"><span>Branch</span> <span>feature/understand-wrappers</span></div>
+    <div class="doc-info-row"><span>PR</span> <span>local merge</span></div>
+    <div class="doc-info-row"><span>Completed</span> <span>2026-05-30</span></div>
+    <div class="doc-info-row"><span>Status</span> <span style="color:var(--status-approved)">&#10003; Merged to develop</span></div>
+  </div>
+</nav>
+
+<main class="doc-content">
+
+  <!-- Section 1: Change Overview -->
+  <div class="section-header" id="section-1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวมการเปลี่ยนแปลง</span></h2>
+  </div>
+  <div class="card success">
+    <div class="card-title">&#10003; <span class="lang-en">Change Merged to develop</span><span class="lang-th">การเปลี่ยนแปลงถูกรวมเข้า develop แล้ว</span></div>
+    <p><span class="lang-en">This document records what was changed, why, and how to validate it. Use the Handoff section (Section 7) for reviewer, QA, and management briefings.</span><span class="lang-th">เอกสารนี้บันทึกสิ่งที่เปลี่ยน เหตุผล และวิธีตรวจสอบ ใช้หัวข้อการส่งมอบ (หัวข้อ 7) สำหรับการบรีฟผู้รีวิว QA และผู้บริหาร</span></p>
+  </div>
+  <div class="card warning">
+    <div class="card-title">&#9888; <span class="lang-en">One item still open — live delegation test</span><span class="lang-th">มีหนึ่งรายการที่ยังค้าง — การทดสอบการส่งต่อแบบสด</span></div>
+    <p><span class="lang-en">The code is merged and the delegation is fully specified, but the live end-to-end pass-through has not yet been exercised (the new commands and the Understand-Anything plugin only register after a Claude Code restart). See Section 6 for the exact two-path test.</span><span class="lang-th">โค้ดถูกรวมแล้วและการส่งต่อถูกระบุครบถ้วน แต่ยังไม่ได้ทดสอบการส่งต่อแบบ end-to-end จริง (คำสั่งใหม่และปลั๊กอิน Understand-Anything จะลงทะเบียนหลังรีสตาร์ท Claude Code เท่านั้น) ดูการทดสอบสองเส้นทางในหัวข้อ 6</span></p>
+  </div>
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Change ID</td><td><code>CR-2026-05-30-001</code></td></tr>
+      <tr><td>Change Type</td><td><span class="badge badge-blue">Add Feature</span></td></tr>
+      <tr><td>Feature Name</td><td>Understand-Anything Wrapper Commands</td></tr>
+      <tr><td>Slug</td><td><code>understand-wrappers</code></td></tr>
+      <tr><td>Branch</td><td><code>feature/understand-wrappers</code></td></tr>
+      <tr><td>Pull Request</td><td><span class="lang-en">Local merge to develop (no remote PR)</span><span class="lang-th">รวมเข้า develop แบบโลคัล (ไม่มี PR ระยะไกล)</span></td></tr>
+      <tr><td>Author</td><td>Natthaphat Wajanavisit</td></tr>
+      <tr><td>Plan Approved</td><td>2026-05-30</td></tr>
+      <tr><td>Development Completed</td><td>2026-05-30</td></tr>
+      <tr><td>Merged</td><td>2026-05-30</td></tr>
+      <tr><td>Total Files Changed</td><td>24</td></tr>
+      <tr><td>Commands Added</td><td>8</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 2: Root Problem / Requirement -->
+  <div class="section-header" id="section-2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">Root Problem / Requirement</span><span class="lang-th">ต้นตอของปัญหา / ความต้องการ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Original Requirement</span><span class="lang-th">ความต้องการเดิม</span></h3>
+  <p><span class="lang-en">Bring the Understand-Anything codebase-analysis tools (knowledge graph, dashboard, chat, change-impact, explain, onboard, domain, wiki knowledge) into DevStarter as native commands.</span><span class="lang-th">นำเครื่องมือวิเคราะห์โค้ดเบสของ Understand-Anything (knowledge graph, dashboard, chat, การวิเคราะห์ผลกระทบ, explain, onboard, domain, wiki) เข้ามาใน DevStarter เป็นคำสั่งในตัว</span></p>
+
+  <h3><span class="lang-en">Business Gap</span><span class="lang-th">ช่องว่างทางธุรกิจ</span></h3>
+  <p><span class="lang-en">The tools existed only as a separate plugin with its own command set, forcing users to context-switch. DevStarter had no native entry point to codebase analysis.</span><span class="lang-th">เครื่องมือมีอยู่เฉพาะในรูปปลั๊กอินแยกที่มีชุดคำสั่งของตัวเอง ทำให้ผู้ใช้ต้องสลับบริบท DevStarter ไม่มีจุดเข้าใช้การวิเคราะห์โค้ดเบสในตัว</span></p>
+
+  <h3><span class="lang-en">How This Change Resolves It</span><span class="lang-th">การเปลี่ยนแปลงนี้แก้ไขอย่างไร</span></h3>
+  <p><span class="lang-en">Eight thin <code>/devstarter-understand*</code> wrappers now delegate to the coexisting Understand-Anything plugin via the Skill tool, each with a preflight that detects the plugin and prompts to install it if absent. DevStarter stays pure Markdown — no vendoring, no build step.</span><span class="lang-th">ตัวห่อหุ้มแบบบาง <code>/devstarter-understand*</code> จำนวนแปดตัวส่งต่อไปยังปลั๊กอิน Understand-Anything ที่อยู่ร่วมกันผ่าน Skill tool โดยแต่ละตัวมี preflight ตรวจหาปลั๊กอินและแจ้งเตือนให้ติดตั้งหากไม่มี DevStarter ยังเป็น Markdown ล้วน ไม่มีการ vendor ไม่มีขั้นตอน build</span></p>
+
+  <h3><span class="lang-en">Acceptance Criteria — Status</span><span class="lang-th">เกณฑ์การยอมรับ — สถานะ</span></h3>
+  <table>
+    <thead><tr><th>Criterion</th><th>Result</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Plugin present → command delegates with args passed through</span><span class="lang-th">มีปลั๊กอิน → คำสั่งส่งต่อพร้อม args</span></td><td><span class="badge badge-yellow">Pending live test</span></td><td><span class="lang-en">Built &amp; specified; not yet run end-to-end (needs restart + UA installed)</span><span class="lang-th">สร้างและระบุแล้ว ยังไม่ได้รัน end-to-end (ต้องรีสตาร์ท + ติดตั้ง UA)</span></td></tr>
+      <tr><td><span class="lang-en">Plugin absent → one-step install prompt</span><span class="lang-th">ไม่มีปลั๊กอิน → คำแนะนำติดตั้งขั้นตอนเดียว</span></td><td><span class="badge badge-yellow">Pending live test</span></td><td><span class="lang-en">Preflight written in all 8 runbooks; verify live</span><span class="lang-th">เขียน preflight ใน runbook ทั้ง 8 แล้ว ตรวจสอบแบบสด</span></td></tr>
+      <tr><td><span class="lang-en">All 8 commands appear in devstarter-menu.md</span><span class="lang-th">คำสั่งทั้ง 8 ปรากฏใน devstarter-menu.md</span></td><td><span class="badge badge-green">Pass</span></td><td><span class="lang-en">Items 37–44 + routing rows added</span><span class="lang-th">เพิ่มรายการ 37–44 + แถว routing</span></td></tr>
+      <tr><td><span class="lang-en">devstarter- prefix + one-command-two-files preserved</span><span class="lang-th">คง prefix devstarter- + กฎหนึ่งคำสั่งสองไฟล์</span></td><td><span class="badge badge-green">Pass</span></td><td><span class="lang-en">8 SKILL.md + 8 SDLC; no naming clash with /devstarter-onboard</span><span class="lang-th">8 SKILL.md + 8 SDLC ไม่ชนชื่อกับ /devstarter-onboard</span></td></tr>
+      <tr><td><span class="lang-en">Plugin namespace correct</span><span class="lang-th">namespace ปลั๊กอินถูกต้อง</span></td><td><span class="badge badge-green">Pass</span></td><td><span class="lang-en">Verified vs plugin.json (understand-anything) + 8 skill names</span><span class="lang-th">ตรวจกับ plugin.json (understand-anything) + ชื่อ skill ทั้ง 8</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 3: Files Changed -->
+  <div class="section-header" id="section-3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">Files Changed</span><span class="lang-th">ไฟล์ที่เปลี่ยน</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>File Path</th><th>Change Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>skills/devstarter-understand*/SKILL.md</code> (×8)</td><td><span class="badge badge-green">Created</span></td><td><span class="lang-en">Thin skill entry points</span><span class="lang-th">จุดเข้าใช้ skill แบบบาง</span></td></tr>
+      <tr><td><code>sdlc/devstarter-understand*.md</code> (×8)</td><td><span class="badge badge-green">Created</span></td><td><span class="lang-en">Runbooks — preflight + Skill-tool delegation</span><span class="lang-th">runbook — preflight + การส่งต่อด้วย Skill tool</span></td></tr>
+      <tr><td><code>docs/adr/0001-understand-anything-integration.html</code></td><td><span class="badge badge-green">Created</span></td><td><span class="lang-en">Integration decision (Accepted)</span><span class="lang-th">การตัดสินใจผสานรวม (รับแล้ว)</span></td></tr>
+      <tr><td><code>docs/feature/understand-wrappers/{kickoff,plan}.html</code></td><td><span class="badge badge-green">Created</span></td><td><span class="lang-en">Pre-dev docs (bilingual)</span><span class="lang-th">เอกสารก่อนพัฒนา (สองภาษา)</span></td></tr>
+      <tr><td><code>devstarter-menu.md</code></td><td><span class="badge badge-yellow">Modified</span></td><td><span class="lang-en">Items 37–44 + routing rows</span><span class="lang-th">รายการ 37–44 + แถว routing</span></td></tr>
+      <tr><td><code>install.sh</code></td><td><span class="badge badge-yellow">Modified</span></td><td><span class="lang-en">Plugin install hint</span><span class="lang-th">คำแนะนำติดตั้งปลั๊กอิน</span></td></tr>
+      <tr><td><code>docs/index.html</code></td><td><span class="badge badge-yellow">Modified</span></td><td><span class="lang-en">Registered kickoff, plan, ADR</span><span class="lang-th">ลงทะเบียน kickoff, plan, ADR</span></td></tr>
+      <tr><td><code>CLAUDE.md</code></td><td><span class="badge badge-yellow">Modified</span></td><td><span class="lang-en">Skill count + Recently Shipped v5.6.0</span><span class="lang-th">จำนวน skill + Recently Shipped v5.6.0</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 4: Commands Added -->
+  <div class="section-header" id="section-4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">Commands Added</span><span class="lang-th">คำสั่งที่เพิ่ม</span></h2>
+  </div>
+  <p><span class="lang-en">Each command pairs a SKILL.md with an SDLC runbook and delegates to one Understand-Anything skill. Source: </span><span class="lang-th">แต่ละคำสั่งจับคู่ SKILL.md กับ SDLC runbook และส่งต่อไปยัง skill ของ Understand-Anything หนึ่งตัว ที่มา: </span><code>memory/change-log-understand-wrappers.md</code>.</p>
+  <table>
+    <thead><tr><th>Command</th><th>Delegates to (skill)</th><th>Type</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>/devstarter-understand</code></td><td><code>understand-anything:understand</code></td><td><span class="badge badge-green">Added</span></td><td><span class="lang-en">Analyze → knowledge graph</span><span class="lang-th">วิเคราะห์ → knowledge graph</span></td></tr>
+      <tr><td><code>/devstarter-understand-dashboard</code></td><td><code>understand-anything:understand-dashboard</code></td><td><span class="badge badge-green">Added</span></td><td><span class="lang-en">Interactive graph viewer</span><span class="lang-th">ตัวดูกราฟแบบโต้ตอบ</span></td></tr>
+      <tr><td><code>/devstarter-understand-chat</code></td><td><code>understand-anything:understand-chat</code></td><td><span class="badge badge-green">Added</span></td><td><span class="lang-en">Ask questions</span><span class="lang-th">ถามคำถาม</span></td></tr>
+      <tr><td><code>/devstarter-understand-diff</code></td><td><code>understand-anything:understand-diff</code></td><td><span class="badge badge-green">Added</span></td><td><span class="lang-en">Change impact</span><span class="lang-th">ผลกระทบของการเปลี่ยนแปลง</span></td></tr>
+      <tr><td><code>/devstarter-understand-explain</code></td><td><code>understand-anything:understand-explain</code></td><td><span class="badge badge-green">Added</span></td><td><span class="lang-en">Deep-dive a file/function</span><span class="lang-th">เจาะลึกไฟล์/ฟังก์ชัน</span></td></tr>
+      <tr><td><code>/devstarter-understand-onboard</code></td><td><code>understand-anything:understand-onboard</code></td><td><span class="badge badge-green">Added</span></td><td><span class="lang-en">Codebase onboarding guide</span><span class="lang-th">คู่มือ onboarding โค้ดเบส</span></td></tr>
+      <tr><td><code>/devstarter-understand-domain</code></td><td><code>understand-anything:understand-domain</code></td><td><span class="badge badge-green">Added</span></td><td><span class="lang-en">Business domains &amp; flows</span><span class="lang-th">business domain และ flow</span></td></tr>
+      <tr><td><code>/devstarter-understand-knowledge</code></td><td><code>understand-anything:understand-knowledge</code></td><td><span class="badge badge-green">Added</span></td><td><span class="lang-en">Analyze an LLM wiki</span><span class="lang-th">วิเคราะห์ wiki แบบ LLM</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 5: Implementation Notes -->
+  <div class="section-header" id="section-5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title"><span class="lang-en">Implementation Notes</span><span class="lang-th">บันทึกการพัฒนา</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Key Decisions Made</span><span class="lang-th">การตัดสินใจสำคัญ</span></h3>
+  <ul>
+    <li><span class="lang-en">Path A (thin wrappers) chosen over full port — UA already coexists in ~/.claude/, so porting buys nothing. See ADR-0001.</span><span class="lang-th">เลือกแนวทาง A (ตัวห่อหุ้มบาง) แทนการ port ทั้งหมด — UA อยู่ร่วมกันใน ~/.claude/ อยู่แล้ว การ port จึงไม่ได้ประโยชน์ ดู ADR-0001</span></li>
+    <li><span class="lang-en">Delegation uses the Skill tool with the plugin-namespaced skill name, not a typed slash command (the model cannot type slash commands).</span><span class="lang-th">การส่งต่อใช้ Skill tool พร้อมชื่อ skill แบบ namespace ของปลั๊กอิน ไม่ใช่การพิมพ์ slash command (โมเดลพิมพ์ slash command ไม่ได้)</span></li>
+    <li><span class="lang-en">No naming exception needed — the devstarter- prefix keeps devstarter-understand-onboard distinct from devstarter-onboard.</span><span class="lang-th">ไม่ต้องยกเว้นการตั้งชื่อ — prefix devstarter- ทำให้ devstarter-understand-onboard ต่างจาก devstarter-onboard</span></li>
+  </ul>
+
+  <h3><span class="lang-en">Technical Approach</span><span class="lang-th">แนวทางเชิงเทคนิค</span></h3>
+  <p><span class="lang-en">Each runbook runs a PHASE 1 preflight (check the plugin cache dir; if absent, show a one-step install prompt and stop) then a PHASE 2 delegate (invoke the namespaced UA skill via the Skill tool, forwarding the user's arguments). No DevStarter logic re-implements analysis.</span><span class="lang-th">แต่ละ runbook รัน preflight ใน PHASE 1 (ตรวจ cache dir ของปลั๊กอิน ถ้าไม่มีให้แสดงคำแนะนำติดตั้งขั้นตอนเดียวแล้วหยุด) จากนั้น PHASE 2 ส่งต่อ (เรียก skill UA แบบ namespace ผ่าน Skill tool พร้อมส่ง argument ของผู้ใช้) ไม่มีตรรกะของ DevStarter ที่เขียนการวิเคราะห์ใหม่</span></p>
+
+  <h3><span class="lang-en">Deviations from Plan</span><span class="lang-th">ความแตกต่างจากแผน</span></h3>
+  <p><span class="lang-en">One addition beyond the plan: after an advisor review, the delegation step was tightened to name the Skill-tool mechanism and namespaced skill explicitly (initially it read like a typed slash command). Committed as a follow-up fix.</span><span class="lang-th">มีหนึ่งสิ่งที่เพิ่มจากแผน: หลังการรีวิวจากที่ปรึกษา ขั้นตอนการส่งต่อถูกปรับให้ระบุกลไก Skill tool และ skill แบบ namespace อย่างชัดเจน (ตอนแรกอ่านเหมือน slash command ที่พิมพ์) commit เป็นการแก้ตามมา</span></p>
+
+  <!-- Section 6: Testing & Validation -->
+  <div class="section-header" id="section-6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title"><span class="lang-en">Testing &amp; Validation</span><span class="lang-th">การทดสอบและการตรวจสอบ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Verified at build time</span><span class="lang-th">ตรวจสอบแล้วตอนสร้าง</span></h3>
+  <ul>
+    <li><span class="lang-en">Plugin namespace + 8 skill names checked against the UA plugin.json and skill frontmatter.</span><span class="lang-th">ตรวจ namespace ปลั๊กอิน + ชื่อ skill ทั้ง 8 กับ plugin.json และ frontmatter ของ skill</span></li>
+    <li><span class="lang-en">All pre-dev docs filled (0 unfilled placeholders), bilingual, registered in the portal.</span><span class="lang-th">เอกสารก่อนพัฒนาเติมครบ (ไม่มี placeholder ค้าง) สองภาษา ลงทะเบียนใน portal</span></li>
+    <li><span class="lang-en">No naming clash with the existing /devstarter-onboard.</span><span class="lang-th">ไม่ชนชื่อกับ /devstarter-onboard เดิม</span></li>
+  </ul>
+
+  <h3><span class="lang-en">Live test still required (two paths)</span><span class="lang-th">ยังต้องทดสอบแบบสด (สองเส้นทาง)</span></h3>
+  <ol>
+    <li><span class="lang-en">Install the plugin: <code>/plugin marketplace add Lum1104/Understand-Anything</code> then <code>/plugin install understand-anything</code>.</span><span class="lang-th">ติดตั้งปลั๊กอิน: <code>/plugin marketplace add Lum1104/Understand-Anything</code> แล้ว <code>/plugin install understand-anything</code></span></li>
+    <li><span class="lang-en">Restart Claude Code (new skills register only on restart).</span><span class="lang-th">รีสตาร์ท Claude Code (skill ใหม่ลงทะเบียนตอนรีสตาร์ทเท่านั้น)</span></li>
+    <li><span class="lang-en">Present path: run <code>/devstarter-understand</code> → expect pass-through to the UA skill.</span><span class="lang-th">เส้นทางมีปลั๊กอิน: รัน <code>/devstarter-understand</code> → คาดว่าจะส่งต่อไป skill ของ UA</span></li>
+    <li><span class="lang-en">Absent path: with the plugin uninstalled, run any <code>/devstarter-understand*</code> → expect the install prompt.</span><span class="lang-th">เส้นทางไม่มีปลั๊กอิน: ถอนปลั๊กอินแล้วรัน <code>/devstarter-understand*</code> ใด ๆ → คาดว่าจะได้คำแนะนำติดตั้ง</span></li>
+  </ol>
+
+  <h3><span class="lang-en">Regression Checks</span><span class="lang-th">การตรวจสอบการถดถอย</span></h3>
+  <table>
+    <thead><tr><th>Area</th><th>Test</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Existing commands</span><span class="lang-th">คำสั่งเดิม</span></td><td><span class="lang-en">Only additive files + 4 doc/menu/install appends; no existing runbook edited</span><span class="lang-th">เพิ่มไฟล์อย่างเดียว + เพิ่ม 4 จุด doc/menu/install ไม่แก้ runbook เดิม</span></td><td><span class="badge badge-green">Pass</span></td></tr>
+      <tr><td><code>/devstarter-onboard</code></td><td><span class="lang-en">Untouched; distinct from devstarter-understand-onboard</span><span class="lang-th">ไม่ถูกแตะ ต่างจาก devstarter-understand-onboard</span></td><td><span class="badge badge-green">Pass</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 7: Handoff -->
+  <div class="section-header" id="section-7">
+    <span class="section-number s7">7</span>
+    <h2 class="section-title"><span class="lang-en">Handoff</span><span class="lang-th">การส่งมอบ</span></h2>
+  </div>
+
+  <div class="handoff-grid">
+
+    <div class="handoff-card">
+      <div class="handoff-card-title"><span class="icon">&#128065;</span> <span class="lang-en">For Code Reviewers</span><span class="lang-th">สำหรับผู้รีวิวโค้ด</span></div>
+      <h4><span class="lang-en">What to Focus On</span><span class="lang-th">สิ่งที่ควรเน้น</span></h4>
+      <ul>
+        <li><span class="lang-en">PHASE 2 delegation wording in each sdlc/devstarter-understand*.md — does it unambiguously invoke the Skill tool?</span><span class="lang-th">ถ้อยคำการส่งต่อใน PHASE 2 ของ sdlc/devstarter-understand*.md แต่ละไฟล์ — เรียก Skill tool ชัดเจนหรือไม่</span></li>
+        <li><span class="lang-en">Whether the plugin-cache detection path is correct cross-platform.</span><span class="lang-th">เส้นทางตรวจ cache ของปลั๊กอินถูกต้องข้ามแพลตฟอร์มหรือไม่</span></li>
+      </ul>
+      <h4><span class="lang-en">Files Requiring Closest Review</span><span class="lang-th">ไฟล์ที่ต้องรีวิวใกล้ชิด</span></h4>
+      <ul>
+        <li><code>sdlc/devstarter-understand.md</code> <span class="lang-en">(canonical delegation pattern)</span><span class="lang-th">(รูปแบบการส่งต่อหลัก)</span></li>
+      </ul>
+      <h4><span class="lang-en">Known Trade-offs / Tech Debt</span><span class="lang-th">สิ่งที่ต้องแลก / หนี้เชิงเทคนิค</span></h4>
+      <p><span class="lang-en">Runtime dependency on the UA plugin; the exact namespaced skill name should be confirmed against a live install.</span><span class="lang-th">มี dependency ตอนรันไทม์กับปลั๊กอิน UA ควรยืนยันชื่อ skill แบบ namespace กับการติดตั้งจริง</span></p>
+    </div>
+
+    <div class="handoff-card">
+      <div class="handoff-card-title"><span class="icon">&#9989;</span> <span class="lang-en">For QA / Testers</span><span class="lang-th">สำหรับ QA / ผู้ทดสอบ</span></div>
+      <h4><span class="lang-en">Test Scenarios</span><span class="lang-th">สถานการณ์ทดสอบ</span></h4>
+      <ol>
+        <li><span class="lang-en">Plugin installed → each of the 8 commands forwards to the matching UA skill.</span><span class="lang-th">ติดตั้งปลั๊กอิน → คำสั่งทั้ง 8 ส่งต่อไป skill UA ที่ตรงกัน</span></li>
+        <li><span class="lang-en">Plugin not installed → install prompt appears, no delegation.</span><span class="lang-th">ไม่ได้ติดตั้งปลั๊กอิน → แสดงคำแนะนำติดตั้ง ไม่ส่งต่อ</span></li>
+      </ol>
+      <h4><span class="lang-en">Edge Cases to Check</span><span class="lang-th">กรณีขอบที่ต้องตรวจ</span></h4>
+      <ul>
+        <li><span class="lang-en">Arguments with spaces/paths forward intact (e.g. explain a nested file path).</span><span class="lang-th">argument ที่มีช่องว่าง/พาธส่งต่อครบ (เช่น explain พาธไฟล์ซ้อน)</span></li>
+        <li><span class="lang-en">Dashboard command on a machine without Node.js — error owned by the plugin.</span><span class="lang-th">คำสั่ง dashboard บนเครื่องที่ไม่มี Node.js — error เป็นของปลั๊กอิน</span></li>
+      </ul>
+      <h4><span class="lang-en">Regression Areas</span><span class="lang-th">พื้นที่การถดถอย</span></h4>
+      <ul>
+        <li><span class="lang-en">/devstarter-onboard still resolves to the team-onboarding runbook.</span><span class="lang-th">/devstarter-onboard ยังชี้ไป runbook onboarding ทีม</span></li>
+      </ul>
+      <h4><span class="lang-en">Environment Notes</span><span class="lang-th">หมายเหตุสภาพแวดล้อม</span></h4>
+      <p><span class="lang-en">Requires a Claude Code restart after install before the new skills appear.</span><span class="lang-th">ต้องรีสตาร์ท Claude Code หลังติดตั้งก่อน skill ใหม่จะปรากฏ</span></p>
+    </div>
+
+    <div class="handoff-card">
+      <div class="handoff-card-title"><span class="icon">&#128200;</span> <span class="lang-en">For Management</span><span class="lang-th">สำหรับผู้บริหาร</span></div>
+      <h4><span class="lang-en">Business Impact</span><span class="lang-th">ผลกระทบทางธุรกิจ</span></h4>
+      <p><span class="lang-en">DevStarter now offers full codebase-analysis capability natively, strengthening its onboarding and review story at near-zero engineering cost.</span><span class="lang-th">DevStarter ให้ความสามารถวิเคราะห์โค้ดเบสครบในตัวแล้ว เสริมจุดแข็งด้าน onboarding และการรีวิวด้วยต้นทุนวิศวกรรมที่แทบเป็นศูนย์</span></p>
+      <h4><span class="lang-en">User Impact</span><span class="lang-th">ผลกระทบต่อผู้ใช้</span></h4>
+      <p><span class="lang-en">Users analyse, visualise, and question any codebase from inside DevStarter, with a one-step prompt to install the engine if missing.</span><span class="lang-th">ผู้ใช้วิเคราะห์ มองเห็นภาพ และตั้งคำถามกับโค้ดเบสใด ๆ จากภายใน DevStarter พร้อมคำแนะนำติดตั้งเอนจินขั้นตอนเดียวหากไม่มี</span></p>
+      <h4><span class="lang-en">Risk Assessment</span><span class="lang-th">การประเมินความเสี่ยง</span></h4>
+      <p><span class="lang-en">Low — additive only, fully reversible. One open item: the live delegation test before it is announced as shipped.</span><span class="lang-th">ต่ำ — เพิ่มอย่างเดียว ย้อนกลับได้เต็มที่ มีหนึ่งรายการค้าง: การทดสอบการส่งต่อแบบสดก่อนประกาศว่าพร้อมใช้</span></p>
+      <h4><span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></h4>
+      <ul>
+        <li><span class="lang-en">8 new native codebase-analysis commands</span><span class="lang-th">คำสั่งวิเคราะห์โค้ดเบสในตัวใหม่ 8 ตัว</span></li>
+        <li><span class="lang-en">Decision record + bilingual sign-off docs</span><span class="lang-th">บันทึกการตัดสินใจ + เอกสารอนุมัติสองภาษา</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Revision History -->
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>CR-2026-05-30-001</code></td>
+        <td>2026-05-30</td>
+        <td>ADD</td>
+        <td><span class="lang-en">Change summary generated after merge; live delegation test still pending</span><span class="lang-th">สร้างสรุปการเปลี่ยนแปลงหลังรวมโค้ด การทดสอบการส่งต่อแบบสดยังค้าง</span></td>
+        <td>Natthaphat Wajanavisit</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function toggleLang() {
+    var html = document.documentElement; var isThai = html.getAttribute('data-lang') === 'th'; var label = document.getElementById('langLabel');
+    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
+    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
+  }
+  (function() { var l=localStorage.getItem('docportal-lang'); if (l==='th') { document.documentElement.setAttribute('data-lang','th'); var lb=document.getElementById('langLabel'); if(lb) lb.textContent='TH'; } })();
+  function toggleTheme() {
+    var html = document.documentElement;
+    var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function() {
+    var saved = localStorage.getItem('docportal-theme');
+    if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  })();
+  const sections = document.querySelectorAll('.section-header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const content = document.querySelector('.doc-content');
+  content.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (content.scrollTop >= s.offsetTop - content.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+  });
+  tocLinks.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(l.getAttribute('href'));
+      if (t) content.scrollTo({ top: t.offsetTop - content.offsetTop - 20, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>

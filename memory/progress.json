@@ -1,15 +1,32 @@
 {
-  "workflow": "devstarter-release",
-  "version": "v5.4.0",
-  "status": "completed",
-  "branch": "main",
-  "started_at": "2026-05-24",
-  "completed_at": "2026-05-24",
-  "tag": "v5.4.0",
+  "workflow": "devstarter-change",
+  "change_id": "CR-2026-05-30-001",
+  "change_type": "Add Feature",
+  "feature": "Understand-Anything Wrapper Commands",
+  "version": "v5.6.0",
+  "status": "waiting_test",
+  "branch": "develop",
+  "slug": "understand-wrappers",
+  "started_at": "2026-05-30",
+  "merged_at": "2026-05-30",
+  "pushed": true,
+  "last_done": "Merged 8 devstarter-understand* wrappers to develop, pushed to origin; full doc family (kickoff, plan, summary, mgmt-brief) + ADR-0001 generated",
+  "next": "Live two-path delegation test: install understand-anything plugin, restart Claude Code, run /devstarter-understand (present -> pass-through) and one command absent (-> install prompt). After pass, flip summary/mgmt-brief 'Pending live test' rows to verified.",
   "features": [
-    "CR-2026-05-24-001 — kickoff.html pre-dev sign-off (add/bug) (PR #72)",
-    "CR-2026-05-24-001 — doc family all flows: remove + hotfix incident-brief + migrate (PR #73)",
-    "CR-2026-05-24-003 — release launch brief PHASE 9.5 (PR #74)",
-    "Author from USER.md (Rule 8) across all generated docs"
-  ]
+    "8 thin /devstarter-understand* commands (understand, dashboard, chat, diff, explain, onboard, domain, knowledge)",
+    "Path A thin wrappers delegate to coexisting understand-anything plugin via Skill tool (understand-anything:understand*)",
+    "Preflight detect-and-prompt per command; no vendoring, no build step",
+    "ADR-0001 (Accepted) + bilingual kickoff/plan/summary/mgmt-brief docs",
+    "devstarter-menu items 37-44, install.sh plugin hint, CLAUDE.md v5.6.0"
+  ],
+  "open_items": [
+    "Live delegation end-to-end test not yet run (acceptance criteria unmet until verified)"
+  ],
+  "previous_release": {
+    "workflow": "devstarter-release",
+    "version": "v5.5.0",
+    "status": "completed",
+    "tag": "v5.5.0",
+    "completed_at": "2026-05-24"
+  }
 }
