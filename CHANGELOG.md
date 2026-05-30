@@ -1,5 +1,19 @@
 # Changelog
 
+## v5.6.0 — Understand-Anything integration (2026-05-30)
+
+Eight new `/devstarter-understand*` commands bring codebase-analysis (knowledge graph, dashboard, chat, change-impact, explain, onboard, domain, wiki) into DevStarter as native commands, via thin wrappers that delegate to the coexisting Understand-Anything plugin (MIT, Lum1104). No vendoring, no build step.
+
+### New
+- **8 understand wrappers** — `/devstarter-understand`, `-dashboard`, `-chat`, `-diff`, `-explain`, `-onboard`, `-domain`, `-knowledge`. Each pairs a `skills/devstarter-understand*/SKILL.md` with an `sdlc/devstarter-understand*.md` runbook.
+- **Path A delegation** — each runbook runs a preflight that detects the `understand-anything` plugin (prompts a one-step `/plugin install` if absent), then invokes the plugin-namespaced skill (`understand-anything:understand*`) via the Skill tool, forwarding the user's arguments.
+- **ADR-0001** — `docs/adr/0001-understand-anything-integration.html` records the thin-wrapper decision, coexistence rationale, and rejected alternatives (full port, native reimplementation).
+- **Doc family** — bilingual kickoff / plan / summary / mgmt-brief under `docs/feature/understand-wrappers/`.
+- **Menu** — `devstarter-menu.md` items 37–44 + routing rows; `install.sh` plugin install hint.
+
+### Known limitation
+- **Live delegation unverified at release** — the new commands and the plugin only register after a Claude Code restart, so the end-to-end two-path delegation test (plugin present → pass-through; absent → install prompt) had not been run when this version was cut. The wrappers are additive and reversible; the exact namespaced skill name should be confirmed against a live install.
+
 ## v5.5.0 — Bilingual document chrome + human-style Thai (2026-05-24)
 
 Generated documents are now fully bilingual including headings, and the Author field resolves correctly.
