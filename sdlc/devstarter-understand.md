@@ -51,11 +51,17 @@ Before delegating, confirm the Understand-Anything plugin is installed.
 
 ## PHASE 2 — Delegate
 
-Pass all user arguments through verbatim to the plugin command:
+**Invocation mechanism (important).** A slash command like `/understand` is a
+user-side CLI expansion — the model cannot "type" it. To run the plugin command,
+invoke it with the **Skill tool**, forwarding the user's arguments verbatim:
 
-```
-/understand $ARGS
-```
+- Skill name: `understand-anything:understand` (plugin-namespaced form).
+- If that name is not found in the available-skills list, the plugin is not yet
+  registered for this session — confirm the exact registered name against the live
+  install (the user-facing command is `/understand`); a Claude Code restart after
+  `/plugin install` is usually required before the skill appears.
+- Pass the user's arguments as the skill args (the `$ARGS` below is a placeholder for
+  whatever the user supplied, forwarded unchanged).
 
 Arguments supported by `/understand` (forwarded unchanged):
 - `[path]` — scope analysis to a subdirectory

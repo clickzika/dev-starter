@@ -40,12 +40,19 @@ See `docs/adr/0001-understand-anything-integration.html`.
 
 ## PHASE 2 — Delegate
 
-Pass the wiki path through verbatim:
-
-```
-/understand-knowledge $ARGS
-```
-
 If no path is given, ask the user for the wiki directory (must contain an `index.md`
-with wikilinks/categories), then forward it. The plugin's `article-analyzer` extracts
-entities, claims, and implicit relationships. Nothing further is required from DevStarter.
+with wikilinks/categories) first.
+
+**Invocation mechanism (important).** A slash command is a user-side CLI expansion —
+the model cannot "type" it. Invoke the plugin command with the **Skill tool**,
+forwarding the wiki path verbatim:
+
+- Skill name: `understand-anything:understand-knowledge` (plugin-namespaced form).
+- If not found in the available-skills list, the plugin is not registered for this
+  session — confirm the exact registered name against the live install (user-facing
+  command: `/understand-knowledge`); a Claude Code restart after `/plugin install` is
+  usually required.
+- Forward the wiki path unchanged.
+
+The plugin's `article-analyzer` extracts entities, claims, and implicit relationships.
+Nothing further is required from DevStarter.

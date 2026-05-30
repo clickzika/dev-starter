@@ -45,11 +45,17 @@ See `docs/adr/0001-understand-anything-integration.html`.
 ## PHASE 2 — Delegate
 
 A knowledge graph must exist first (run `/devstarter-understand` if not).
-Pass all arguments through verbatim:
 
-```
-/understand-dashboard $ARGS
-```
+**Invocation mechanism (important).** A slash command is a user-side CLI expansion —
+the model cannot "type" it. Invoke the plugin command with the **Skill tool**,
+forwarding the user's arguments verbatim:
+
+- Skill name: `understand-anything:understand-dashboard` (plugin-namespaced form).
+- If not found in the available-skills list, the plugin is not registered for this
+  session — confirm the exact registered name against the live install (user-facing
+  command: `/understand-dashboard`); a Claude Code restart after `/plugin install` is
+  usually required.
+- Forward the user's arguments unchanged.
 
 The plugin opens the dashboard — graph color-coded by architectural layer, searchable,
 clickable. Nothing further is required from DevStarter.

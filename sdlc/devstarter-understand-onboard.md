@@ -44,11 +44,17 @@ See `docs/adr/0001-understand-anything-integration.html`.
 
 ## PHASE 2 — Delegate
 
-Pass all arguments through verbatim:
+A knowledge graph must exist first (run `/devstarter-understand` if not).
 
-```
-/understand-onboard $ARGS
-```
+**Invocation mechanism (important).** A slash command is a user-side CLI expansion —
+the model cannot "type" it. Invoke the plugin command with the **Skill tool**,
+forwarding the user's arguments verbatim:
 
-A knowledge graph must exist first (run `/devstarter-understand` if not). The plugin
-generates the onboarding guide. Nothing further is required from DevStarter.
+- Skill name: `understand-anything:understand-onboard` (plugin-namespaced form).
+- If not found in the available-skills list, the plugin is not registered for this
+  session — confirm the exact registered name against the live install (user-facing
+  command: `/understand-onboard`); a Claude Code restart after `/plugin install` is
+  usually required.
+- Forward the user's arguments unchanged.
+
+The plugin generates the onboarding guide. Nothing further is required from DevStarter.
