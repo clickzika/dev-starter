@@ -1,42 +1,24 @@
 {
-  "workflow": "devstarter-change",
-  "change_id": "CR-2026-05-31-001",
-  "feature": "obsidian-knowledge-vault",
-  "status": "release_v5.7.0_awaiting_publish",
+  "workflow": "devstarter-release",
+  "version": "v5.7.0",
+  "status": "released",
   "branch": "develop",
-  "feature_branch": "feature/obsidian-knowledge-vault (merged --no-ff, not deleted)",
-  "release": {
-    "version": "5.7.0",
-    "release_branch": "release/v5.7.0",
-    "version_bumped": true,
-    "changelog_updated": true,
-    "merged_to": ["uat (pushed)", "develop (pushed)"],
-    "gates": { "DEV": "approved", "UAT": "approved", "DEPLOY": "approved — user running publish.sh" },
-    "publish_cmd": "bash scripts/publish.sh 5.7.0 \"Obsidian Knowledge Vault\"",
-    "publish_does": "develop->main, strip docs+memory, push public release/main, tag v5.7.0 both remotes, gh release on clickzika/dev-starter, back to develop",
-    "pending": "user runs publish.sh; then optionally delete feature/obsidian-knowledge-vault + release/v5.7.0"
-  },
+  "tag": "v5.7.0",
   "started_at": "2026-05-31",
-  "commits": ["fae8224 feat(knowledge): add Obsidian Knowledge Vault", "905d466 fix(knowledge): inline redaction step"],
-  "intake": "memory/consult-2026-05-31-obsidian-knowledge-vault.md",
-  "adr": "docs/adr/0002-obsidian-knowledge-vault.html",
-  "scope": "capture from /devstarter-knowledge + bug-postmortem + postmortem; recall in /devstarter-debug; git-default transport; inline sanitize-on-write",
-  "done": [
-    "obsidian: config block (template + project yml)",
-    "3 note templates (templates/obsidian/)",
-    "new /devstarter-knowledge SKILL + sdlc (shared Vault Emit/Recall spec)",
-    "emit wired into bug-postmortem + postmortem",
-    "recall wired into debug Phase 1",
-    "docs/obsidian-vault-guide.md + ADR-0002",
-    "menu item 45 + docs/index.html registration",
-    "CLAUDE.md v5.7.0 Recently Shipped row",
-    "security fix: inline deny-list redaction (advisor blocker resolved)"
+  "completed_at": "2026-05-31",
+  "release_change": "CR-2026-05-31-001",
+  "public_release": "https://github.com/clickzika/dev-starter/releases/tag/v5.7.0",
+  "flow": "feature/obsidian-knowledge-vault -> develop -> release/v5.7.0 -> uat + develop -> publish.sh (develop->main, strip docs+memory, public release/main, tag both, gh release) -> develop",
+  "feature": "Obsidian Knowledge Vault",
+  "features": [
+    "/devstarter-knowledge command (SKILL + SDLC, menu item 45) + shared Vault Emit/Recall spec",
+    "obsidian: config block (git default, network fallback) + 3 note templates (templates/obsidian/)",
+    "emit wired into /devstarter-bug-postmortem + /devstarter-postmortem; recall in /devstarter-debug Phase 1",
+    "inline deny-list sanitize-on-write; ADR-0002; docs/obsidian-vault-guide.md"
   ],
+  "branches_deleted": ["feature/obsidian-knowledge-vault", "release/v5.7.0"],
   "open_items": [
-    "NOT exercised end-to-end (enabled:false, no vault configured). Verify: set obsidian.enabled+vault_path, run /devstarter-knowledge then /devstarter-bug-postmortem, confirm sanitized note lands + /devstarter-debug recall hits it.",
-    "No PR / merge yet. Runbook A-PHASE 4/5 (GitHub issues, fitness/TechLead review) compressed — solo framework feature.",
-    "VERSION/CHANGELOG bump (v5.7.0) deferred to /devstarter-release.",
-    "Optional: extend config-sync to project obsidian keys into .project.env (feature reads from devstarter-config.yml directly, so not required)."
+    "Feature shipped opt-in + OFF (obsidian.enabled:false) and NOT exercised end-to-end — disclosed in CHANGELOG v5.7.0 'Known limitation'. Verify against a live vault per docs/obsidian-vault-guide.md."
   ],
-  "previous": { "workflow": "devstarter-release", "version": "v5.6.0", "tag": "v5.6.0", "completed_at": "2026-05-30" }
+  "previous_release": { "version": "v5.6.0", "tag": "v5.6.0", "completed_at": "2026-05-30" }
 }
