@@ -368,6 +368,24 @@ AI_PROVIDER=claude
 
 ---
 
+## Knowledge Vault (Obsidian)
+
+```
+OBSIDIAN_ENABLED=true
+VAULT_PATH=C:\Users\click\Projects\Obsidian
+VAULT_REPO=https://github.com/clickzika/obsidian.git
+TRANSPORT=git
+SANITIZE=true
+SUBDIR=knowledge
+```
+
+Status: **active** — vault is a git repo (branch `main`, tracks `origin/main`).
+Notes captured via `/devstarter-knowledge` (+ postmortem emit) are sanitized,
+written to `knowledge/`, then committed + pushed to share across projects.
+`/devstarter-debug` greps the vault at session start for prior root causes.
+
+---
+
 ## Workflow Rules (applies to all agents)
 
 ### Rule — Read Before Acting
