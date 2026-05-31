@@ -160,6 +160,18 @@ What this post-mortem does that the management-talk version didn't:
 
 ---
 
+## Obsidian Vault Emit (optional)
+
+If `obsidian.enabled: true` in `devstarter-config.yml`, after the post-mortem is finalized, also emit a sanitized Markdown note to the shared knowledge vault so this root cause is reusable across projects.
+
+- Follow the **Vault Emit Procedure** (E1–E5) in `~/.claude/sdlc/devstarter-knowledge.md` using the `bug-note.md` template.
+- Map: Root cause → `{{ROOT_CAUSE}}`, Fix → `{{FIX}}`, "Why it slipped through" → `{{WHY_SLIPPED}}`, Symptom → `{{SYMPTOM}}` + `{{SYMPTOM_ONE_LINE}}`. Choose `root_cause_category` from the recall vocabulary.
+- **Sanitize before write** (`@devstarter-opensource-sanitizer`) — the engineering record keeps code identifiers, but the vault note must not carry secrets, internal URLs, credentials, or customer data. This is mandatory for `transport: network`.
+
+If `obsidian.enabled` is false or absent, skip this section silently.
+
+---
+
 ## 🌐 Universal Prompt — Works with Any AI
 
 > **Claude Code users:** Use `/devstarter-bug-postmortem` above.
