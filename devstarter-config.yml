@@ -9,7 +9,7 @@
 project:
   name: DevStarter
   description: "A complete development workflow system for Claude Code"
-  version: "3.4.0"         # mirrors VERSION file
+  version: "5.7.0"         # mirrors VERSION file
   status: active           # active | archived | migrating | maintenance
   type: framework          # app | api | framework | library | mobile | ml
   language: "markdown+bash"
@@ -39,6 +39,16 @@ ci:
 
 secrets:
   backend: env-file        # env-file | vault | aws-secrets-manager | azure-keyvault | gcp-secret-manager
+
+# ── Knowledge Vault (Obsidian) ───────────────────────
+# Capture know-how / bugs / root causes as Markdown notes into a shared
+# Obsidian vault, reusable across projects. See docs/obsidian-vault-guide.md + ADR-0002.
+obsidian:
+  enabled: false           # true to capture notes into the vault
+  vault_path: ""           # absolute path to vault root (git clone dir, or e.g. P:\obsidiandev)
+  transport: git           # git (recommended) | network (raw share)
+  sanitize: true           # scrub secrets/PII inline (deny-list) before write — REQUIRED for transport=network
+  subdir: knowledge        # folder inside the vault for DevStarter-emitted notes
 
 ai:
   provider: claude         # claude | litellm | openai | gemini | local

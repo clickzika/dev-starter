@@ -125,6 +125,16 @@ Repro:     [yes / intermittent / no]
 
 **STOP: Read everything before writing a single line of analysis.**
 
+### Step 1.0 — Knowledge Vault Recall (if `obsidian.enabled`)
+
+If `obsidian.enabled: true` and `obsidian.vault_path` is set in
+`devstarter-config.yml`, run the **Vault Recall Procedure** from
+`~/.claude/sdlc/devstarter-knowledge.md` before forming hypotheses: derive
+keywords from the symptom + suspected category, grep the vault, and surface the
+top 1–3 prior root causes (other projects included). Treat any match as a lead,
+not proof — still gather this project's own evidence (Rule 1). If the vault is
+off or nothing matches, say so in one line and continue.
+
 ### Step 1.1 — Read Error Messages
 
 If the user provided an error message or stack trace in Phase 0, read it carefully:
