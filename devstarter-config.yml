@@ -47,7 +47,7 @@ obsidian:
   enabled: false           # true to capture notes into the vault
   vault_path: ""           # absolute path to vault root (git clone dir, or e.g. P:\obsidiandev)
   transport: git           # git (recommended) | network (raw share)
-  sanitize: true           # strip secrets/PII via @oss-sanitizer before write — REQUIRED for transport=network
+  sanitize: true           # scrub secrets/PII inline (deny-list) before write — REQUIRED for transport=network
   subdir: knowledge        # folder inside the vault for DevStarter-emitted notes
 
 ai:

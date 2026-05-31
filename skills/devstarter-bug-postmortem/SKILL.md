@@ -166,7 +166,9 @@ If `obsidian.enabled: true` in `devstarter-config.yml`, after the post-mortem is
 
 - Follow the **Vault Emit Procedure** (E1–E5) in `~/.claude/sdlc/devstarter-knowledge.md` using the `bug-note.md` template.
 - Map: Root cause → `{{ROOT_CAUSE}}`, Fix → `{{FIX}}`, "Why it slipped through" → `{{WHY_SLIPPED}}`, Symptom → `{{SYMPTOM}}` + `{{SYMPTOM_ONE_LINE}}`. Choose `root_cause_category` from the recall vocabulary.
-- **Sanitize before write** (`@devstarter-opensource-sanitizer`) — the engineering record keeps code identifiers, but the vault note must not carry secrets, internal URLs, credentials, or customer data. This is mandatory for `transport: network`.
+- **Redact before write** — the emit step scrubs the note inline against the deny-list in Step E4 (secrets, internal URLs, credentials, customer data). The engineering record keeps code identifiers; the vault note keeps them too, minus anything that trips the deny-list. Mandatory for `transport: network`.
+
+> The "never post to non-JIRA destinations" rule above governs the *human-facing post-mortem*. Writing a redacted vault note is a local knowledge capture, not a post — this carve-out is the one exception, and only when `obsidian.enabled`.
 
 If `obsidian.enabled` is false or absent, skip this section silently.
 

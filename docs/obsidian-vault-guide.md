@@ -48,9 +48,11 @@ If you use it, make it safe:
 
 ---
 
-## 3. Security — sanitize on write
+## 3. Security — scrub on write
 
-Every note passes through `@devstarter-opensource-sanitizer` **before** it is written. It strips secrets, API keys, tokens, internal URLs/hostnames, credentials, customer/PII data, and unpatched-vulnerability detail. A public share must never receive raw bug notes (stack traces and internal URLs leak otherwise). `sanitize: true` is mandatory for `transport: network`.
+Before any note is written, the emit step **scrubs it inline** against a deny-list — API keys, tokens, JWTs, private keys, connection strings, `password/secret/token/key = "..."`, corporate emails, internal hostnames (`.internal`/`.corp`/`.local`), private IP ranges, and real `.env` values. Matches are replaced with `[REDACTED]` (keeping context), and if a note can't be safely redacted it is not written. The pattern set is the one documented by `@devstarter-opensource-sanitizer`, which you can also run over the vault afterward to *verify* it is clean (it FAILs on any remaining secret).
+
+A public share must never receive raw bug notes (stack traces and internal URLs leak otherwise). `sanitize: true` is mandatory for `transport: network` — DevStarter refuses to write to a network vault with it off.
 
 ---
 

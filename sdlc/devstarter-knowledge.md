@@ -17,8 +17,8 @@ This runbook serves two roles:
 ### Rule 1 — Opt-in
 If `obsidian.enabled` is `false` or the `obsidian:` block is absent → this feature is OFF. The `/devstarter-knowledge` command tells the user how to enable it; emit/recall steps in other skills silently skip.
 
-### Rule 2 — Sanitize before write (SECURITY — no exceptions)
-Every note passes through `@devstarter-opensource-sanitizer` **before** it is written to the vault: strip secrets, API keys, tokens, internal URLs/hostnames, credentials, customer/PII data, and unpatched-vulnerability detail. If `obsidian.sanitize` is `false` AND `obsidian.transport` is `network` → **refuse to write** and tell the user why (a public share must not receive raw notes).
+### Rule 2 — Redact before write (SECURITY — no exceptions)
+Before any note is written, the emit step itself **scrubs it inline** against the secret / PII / internal-infra deny-list (Step E4) — the redaction is performed by this skill, not delegated. `@devstarter-opensource-sanitizer` is the source of the pattern set and the optional post-write *verifier* (it scans and FAILs on any remaining secret); it does not do the inline stripping. If `obsidian.sanitize` is `false` AND `obsidian.transport` is `network` → **refuse to write** and tell the user why (a public share must not receive raw notes).
 
 ### Rule 3 — One note per file, unique name (network-safe)
 Never edit an existing shared note. Always write a new, uniquely-named file. This avoids concurrent-write corruption on a network share.
@@ -46,8 +46,17 @@ Recall only works if every note carries the schema below. A note without it is a
 ### Step E3 — Fill placeholders
 Fill every `{{PLACEHOLDER}}` from the source content. `{{AUTHOR}}` = Name from install-root `~/.claude/USER.md` Identity section (fallback `IT Dept`) — never an agent alias. `{{PROJECT}}` = `project.name` from `devstarter-config.yml`. `{{DATE}}` = today. Resolve `language` / `framework` from `stack` in config. Choose `root_cause_category` from the recall vocabulary (see Schema below) — reuse an existing category string when one fits, so notes cluster.
 
-### Step E4 — Sanitize (Rule 2)
-Pass the filled note through `@devstarter-opensource-sanitizer`. Apply its redactions. If it flags content it cannot safely redact → stop, show the user, do not write.
+### Step E4 — Redact inline (Rule 2)
+Scan the filled note text against the deny-list below (the pattern set documented by `@devstarter-opensource-sanitizer`) and redact in place **before** writing:
+
+| Class | Patterns (redact the match, keep context) |
+|-------|-------------------------------------------|
+| Secrets | `sk-[A-Za-z0-9]{20,}`, `ghp_[A-Za-z0-9]{36}`, `AKIA[A-Z0-9]{16}`, JWT `eyJ[A-Za-z0-9_-]{10,}`, private keys `-----BEGIN ... PRIVATE KEY-----`, conn strings `(postgresql\|mysql\|mongodb)://[^@]+@`, generic `(password\|secret\|token\|key)\s*=\s*['"][^'"]{8,}` |
+| PII | corporate-domain emails, employee names, internal ticket/employee IDs |
+| Internal infra | hostnames `.internal`/`.corp`/`.local`, private IPs `10.` `192.168.` `172.(16–31).`, internal service URLs |
+| Other | unpatched-vulnerability detail that would aid an attacker |
+
+For each match: replace the sensitive value with `[REDACTED]` while keeping the surrounding context readable (e.g. `Authorization: Bearer [REDACTED]`). If a match cannot be redacted without destroying the note's meaning → **stop, show the user, do not write**. After redacting, you MAY run `@devstarter-opensource-sanitizer` over the target dir to verify clean (it FAILs on any remaining secret). When `transport: network`, this step is mandatory — a note that still trips the deny-list must not be written.
 
 ### Step E5 — Write + confirm
 Write the file to the target path. Show:

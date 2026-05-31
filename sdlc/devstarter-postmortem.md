@@ -263,8 +263,9 @@ projects. Follow the **Vault Emit Procedure** (E1–E5) in
 `~/.claude/sdlc/devstarter-knowledge.md` using the `rca-note.md` template
 (map: 5-Whys root cause → `{{ROOT_CAUSE}}`, contributing factors →
 `{{CONTRIBUTING_FACTORS}}`, severity → `{{SEVERITY}}`; pick a
-`root_cause_category` from the recall vocabulary). **Sanitize before write**
-(`@devstarter-opensource-sanitizer`) — mandatory for `transport: network`.
+`root_cause_category` from the recall vocabulary). **Redact before write** —
+the emit step scrubs the note inline against the Step E4 deny-list (secrets,
+PII, internal URLs); mandatory for `transport: network`.
 If `obsidian.enabled` is false or absent, skip silently.
 
 ---
