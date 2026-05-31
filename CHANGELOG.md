@@ -18,6 +18,9 @@ Capture engineering knowledge — techniques, bugs, and root causes — as sanit
 ### Security
 - **Inline scrub-on-write** — the emit step redacts every note against a secret/PII/internal-infra deny-list (API keys, JWTs, private keys, connection strings, `password|secret|token|key = "..."`, corporate emails, internal hostnames, private IPs, real `.env` values) → `[REDACTED]` or refuse. `@devstarter-opensource-sanitizer` is the pattern source + optional post-write verifier, not the inline stripper. Mandatory (and write-blocking) when `transport: network`.
 
+### Known limitation
+- **Not exercised end-to-end at release** — the feature is opt-in and ships off (`obsidian.enabled: false`, no vault configured), so the full path (set `enabled` + `vault_path` → `/devstarter-knowledge` writes a sanitized note → `/devstarter-debug` recall hits it) had not been run when this version was cut. The change is additive and reversible. Verify against a live vault per `docs/obsidian-vault-guide.md`.
+
 ## v5.6.0 — Understand-Anything integration (2026-05-30)
 
 Eight new `/devstarter-understand*` commands bring codebase-analysis (knowledge graph, dashboard, chat, change-impact, explain, onboard, domain, wiki) into DevStarter as native commands, via thin wrappers that delegate to the coexisting Understand-Anything plugin (MIT, Lum1104). No vendoring, no build step.
