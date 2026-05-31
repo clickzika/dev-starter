@@ -1,5 +1,23 @@
 # Changelog
 
+## v5.7.0 — Obsidian Knowledge Vault (2026-05-31)
+
+Capture engineering knowledge — techniques, bugs, and root causes — as sanitized Markdown notes in a shared Obsidian vault, reusable across every project. A technique or root cause found on one project surfaces on the next: `/devstarter-debug` greps the vault at session start. Opt-in, off by default.
+
+### New
+- **`/devstarter-knowledge`** command — `skills/devstarter-knowledge/SKILL.md` + `sdlc/devstarter-knowledge.md`. Captures an ad-hoc technique/know-how note; the runbook also holds the shared **Vault Emit Procedure**, **Frontmatter Schema** (recall contract), and **Vault Recall Procedure** reused by the post-mortem and debug skills. Menu item 45.
+- **`obsidian:` config block** — `devstarter-config.yml` + template (`enabled`, `vault_path`, `transport: git|network`, `sanitize`, `subdir`).
+- **3 note templates** — `templates/obsidian/{bug-note,rca-note,technique-note}.md` with the recall frontmatter (`type`, `root_cause_category`, `language`, `framework`, `project`, `symptom`, `topic`, `tags`, `source`).
+- **ADR-0002** — `docs/adr/0002-obsidian-knowledge-vault.html` (bilingual) records the decision: Markdown emitter → git-backed vault → inline sanitize-on-write → structured recall.
+- **Setup guide** — `docs/obsidian-vault-guide.md` (git vs network transport, safe config, recall queries).
+
+### Changed
+- **Capture wired into existing skills** — `/devstarter-bug-postmortem` and `/devstarter-postmortem` now emit a sanitized vault note (bug-note / rca-note) when `obsidian.enabled`, alongside their existing output.
+- **Recall wired into `/devstarter-debug`** — Phase 1 Step 1.0 greps the vault for prior matching root causes (across projects) before forming hypotheses.
+
+### Security
+- **Inline scrub-on-write** — the emit step redacts every note against a secret/PII/internal-infra deny-list (API keys, JWTs, private keys, connection strings, `password|secret|token|key = "..."`, corporate emails, internal hostnames, private IPs, real `.env` values) → `[REDACTED]` or refuse. `@devstarter-opensource-sanitizer` is the pattern source + optional post-write verifier, not the inline stripper. Mandatory (and write-blocking) when `transport: network`.
+
 ## v5.6.0 — Understand-Anything integration (2026-05-30)
 
 Eight new `/devstarter-understand*` commands bring codebase-analysis (knowledge graph, dashboard, chat, change-impact, explain, onboard, domain, wiki) into DevStarter as native commands, via thin wrappers that delegate to the coexisting Understand-Anything plugin (MIT, Lum1104). No vendoring, no build step.
