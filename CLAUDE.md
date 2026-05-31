@@ -455,6 +455,7 @@ Every slash command requires:
 | v5.4.0 | Release launch brief — /devstarter-release PHASE 9.5 generates summary.html + mgmt-brief.html on initial/major launch (reuses existing templates). Fills the post-build delivery-brief gap; /devstarter-new left unchanged (its Gate 1+2 docs already cover pre-build kickoff/plan) |
 | v5.5.0 | Bilingual doc chrome — section titles/TOC/h3 now bilingual across all 6 templates (were English-only in Thai mode); Author resolves from install-root ~/.claude/USER.md (fallback IT Dept); human-style Thai rule (natural, not literal MT); README "Documents by Flow" reference + sample doc family |
 | v5.6.0 | Understand-Anything integration (Path A — thin wrappers). 8 new `/devstarter-understand*` commands (understand, dashboard, chat, diff, explain, onboard, domain, knowledge) delegate to the coexisting Understand-Anything plugin via a preflight detect-and-prompt; no vendoring, no build step. Menu items 37–44, install.sh plugin hint, ADR-0001. |
+| v5.7.0 | Obsidian Knowledge Vault — capture know-how / bugs / root causes as sanitized Markdown notes into a shared, git-backed (or network) Obsidian vault, reusable across projects. New `/devstarter-knowledge` command (SKILL+SDLC, menu item 45); shared Vault Emit + Recall spec wired into `/devstarter-bug-postmortem`, `/devstarter-postmortem` (emit) and `/devstarter-debug` (recall grep at Phase 1). `obsidian:` config block, 3 note templates (`templates/obsidian/`), sanitize-on-write via @oss-sanitizer, `docs/obsidian-vault-guide.md`, ADR-0002. Opt-in, off by default. |
 
 ---
 

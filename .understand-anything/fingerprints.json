@@ -1,0 +1,4390 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "3bf8a287cea81591a8f65a50b1eaa37c8e8096e8",
+  "generatedAt": "2026-05-30T16:46:43.295Z",
+  "files": {
+    ".claude/settings.json": {
+      "filePath": ".claude/settings.json",
+      "contentHash": "1f07f0862a232c7320354d0f352a1c7bd850536d6985569f278687d0c51a72c5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    ".env.example": {
+      "filePath": ".env.example",
+      "contentHash": "bbe2e19bcddfad6d66e44ab3d65deac860c75b205adafe435d24005c6c868d52",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    ".project.env": {
+      "filePath": ".project.env",
+      "contentHash": "21744651f6158970bac9a2d0bc0e2edcb5763ea3fe3cf02707d78c505bc32041",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    ".understand-anything/.understandignore": {
+      "filePath": ".understand-anything/.understandignore",
+      "contentHash": "0fd194d202ad671ed196a70a45cf519fa6ff13aca9fb0bfac3da9b57a1e01bd4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": false
+    },
+    ".understand-anything/tmp/ua-scan-files.json": {
+      "filePath": ".understand-anything/tmp/ua-scan-files.json",
+      "contentHash": "b10c1363f8b6486aaf8fe91e4b484f284436b77e0ea02f74d3d8839ff6c709e6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2437,
+      "hasStructuralAnalysis": true
+    },
+    "agents/ba.md": {
+      "filePath": "agents/ba.md",
+      "contentHash": "2e3df60794b0ec8fb44c3fe895c91dbac2c8a163f9e8896320907b887300b5c1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/backend.md": {
+      "filePath": "agents/backend.md",
+      "contentHash": "dbee94cea8eec56298863d3d28edbfa63831ef4e1872f682b5e383b21f0147e7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/custom/README.md": {
+      "filePath": "agents/custom/README.md",
+      "contentHash": "1674c51fb1b70dcbaded0fe46d108f08b6f9f9c8b5a7d18ef1a38efdc5410a86",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "agents/dba.md": {
+      "filePath": "agents/dba.md",
+      "contentHash": "4b53eb6818672099619ad25b08ce9c2eef7c92940cbdfe643976485b9b9aea6d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devops.md": {
+      "filePath": "agents/devops.md",
+      "contentHash": "5f8e472fb3af0784ab66a565cc431ac2e6e98151dd309ab4c7b9518552e30dee",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-a11y-architect.md": {
+      "filePath": "agents/devstarter-a11y-architect.md",
+      "contentHash": "4da5ba3067973d11479ec4b4a28ca200acd746cf381e90dc59b9db28628e1a1b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-agent-auditor.md": {
+      "filePath": "agents/devstarter-agent-auditor.md",
+      "contentHash": "9085a6085cf61b83b11e0c6029d646d7b794e15dbecf2966d00d582446a39182",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 94,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-api.md": {
+      "filePath": "agents/devstarter-api.md",
+      "contentHash": "c214c43056f36a865874a31f620cc748d4b7a3d22e060e66d0555e819bf1558f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 171,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-architect.md": {
+      "filePath": "agents/devstarter-architect.md",
+      "contentHash": "e108fc7eeb2c2dcb69467286abe1fab0a935c40f42be83c3a30b64e0615ff3d8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 146,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-ba.md": {
+      "filePath": "agents/devstarter-ba.md",
+      "contentHash": "ef92a40f7e5d9b4ac701f9dc5881dc163d1d85998138c7aef2a17077cd8d5030",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 379,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-backend.md": {
+      "filePath": "agents/devstarter-backend.md",
+      "contentHash": "9dd9d797ae34577ac12e2f50965665ad8a0be91863cee3fef31ef489bf20af64",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 748,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-build-resolver.md": {
+      "filePath": "agents/devstarter-build-resolver.md",
+      "contentHash": "26aef2d05249814cd78c8f32b37228f6f7ccc151fb4497b6934fe4d4f1e58162",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-chief-of-staff.md": {
+      "filePath": "agents/devstarter-chief-of-staff.md",
+      "contentHash": "6bae17341432125da737666a3f200f0e95732184c2e74778667fdf00df1f29ad",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-code-architect.md": {
+      "filePath": "agents/devstarter-code-architect.md",
+      "contentHash": "11e173146ce05ce1abbd957f6cc1d1f3dbb7cec69bdb86c22e6759447c2a91e8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 64,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-code-explorer.md": {
+      "filePath": "agents/devstarter-code-explorer.md",
+      "contentHash": "4a7df4ccc83bbff084f4d89f51a07ba94181022d66b8a9fb63f9e4462cf6524c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-code-reviewer.md": {
+      "filePath": "agents/devstarter-code-reviewer.md",
+      "contentHash": "6f5c43cc8b3f1b3b6423eb62534e60da2ce6940ba622a71c7b539f3ad9985fae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-code-simplifier.md": {
+      "filePath": "agents/devstarter-code-simplifier.md",
+      "contentHash": "8ad2c7fa68f9bdef0f0cc831e8e4bc500df72c998947a0fc4eb931d27a0ea5f7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-comment-analyzer.md": {
+      "filePath": "agents/devstarter-comment-analyzer.md",
+      "contentHash": "ab38d5339a210d6f9b1998e522f87451845fb9c75d3fbc9621e9a3bf0b9f4bd8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-conversation-analyzer.md": {
+      "filePath": "agents/devstarter-conversation-analyzer.md",
+      "contentHash": "c48505419d8f985bb46a3eb7a4cc9b435b5b3dbb67f3d0df589606660408460c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 56,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-cpp-build-resolver.md": {
+      "filePath": "agents/devstarter-cpp-build-resolver.md",
+      "contentHash": "69ba72600164859ec32235ac4a844f207c131e9d098fcc1eacd3464b5eba1647",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-cpp-reviewer.md": {
+      "filePath": "agents/devstarter-cpp-reviewer.md",
+      "contentHash": "30781b1f4f5de5c41ff645e50ca198d6f2821b7f1b1a1cbba75265ed8d600642",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-csharp-reviewer.md": {
+      "filePath": "agents/devstarter-csharp-reviewer.md",
+      "contentHash": "dbc44cc1eecc9873ffb33a33e4a8f1ad3ef53d045a0d9105ec663553a2f60b91",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-dart-build-resolver.md": {
+      "filePath": "agents/devstarter-dart-build-resolver.md",
+      "contentHash": "13b6ea57235e4aed304f541da7c8673333011bcc3e7feef7a83dd9f22f7d9ce5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-database-reviewer.md": {
+      "filePath": "agents/devstarter-database-reviewer.md",
+      "contentHash": "2efe74d01406653e7b06039faac4fd76653968244872b7b5aa4a6174ce601ec9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-datascience.md": {
+      "filePath": "agents/devstarter-datascience.md",
+      "contentHash": "0d06e3b0cc36d3b85043ea55b9cd0582c73351875d77e977e74ff1dadc14faca",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 121,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-dba.md": {
+      "filePath": "agents/devstarter-dba.md",
+      "contentHash": "a009765ef3a2788f7ccdbd68ef18ffe52378b41629b73ce1499e106199cd28b2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 890,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-devops.md": {
+      "filePath": "agents/devstarter-devops.md",
+      "contentHash": "fda280b4fce196fc417d8f047ec8cdb908d922f5d6b418826e51b41eee9d6172",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 652,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-django-build-resolver.md": {
+      "filePath": "agents/devstarter-django-build-resolver.md",
+      "contentHash": "ee33542c4c77436b2d2de3de267a1cde338f3af07cced1c89890ca5bd5fb4960",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-django-reviewer.md": {
+      "filePath": "agents/devstarter-django-reviewer.md",
+      "contentHash": "c71403df6e3a8f60f96bca46579be8df5c92c1d10cf0770109d18f61f104dd2d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-doc-updater.md": {
+      "filePath": "agents/devstarter-doc-updater.md",
+      "contentHash": "3394bc3a2c78394fcbcd02cd6db68c124246a90922e8c766938262f21cd695e9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-docs-lookup.md": {
+      "filePath": "agents/devstarter-docs-lookup.md",
+      "contentHash": "0cb8415875abe4b31271004043879c6fac6e1de7dc38adbcf1c94223ecb8211b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-docs.md": {
+      "filePath": "agents/devstarter-docs.md",
+      "contentHash": "cf23c1cc69647b3f5acd65e5fa601fb7d5db27f6a677a21f15e5fceaeb0975be",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 444,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-e2e-runner.md": {
+      "filePath": "agents/devstarter-e2e-runner.md",
+      "contentHash": "6f59d5d907b3a75898328ef032af4ab82f0621f82a59209b53e3c627d9fe2ded",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 65,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-fastapi-reviewer.md": {
+      "filePath": "agents/devstarter-fastapi-reviewer.md",
+      "contentHash": "efd9b5dc90975c2b071f6e4f04a9624970d8d0b299ec4513d236b0d0f68df700",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-flutter-build-resolver.md": {
+      "filePath": "agents/devstarter-flutter-build-resolver.md",
+      "contentHash": "82644b4616d0bb75680947f8df76f04ff6e108c7e15c56c7d5d2336e0e9de97a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-flutter-reviewer.md": {
+      "filePath": "agents/devstarter-flutter-reviewer.md",
+      "contentHash": "13cc7d6f7a7c5412354ab7348f0d7004fb83ecb8949f82b40e761c68f3be1d5f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-frontend.md": {
+      "filePath": "agents/devstarter-frontend.md",
+      "contentHash": "1dfd40e94a77592c63256c6c3b0d417000559cf20d23991936a5ebac4ec0ac34",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 625,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-fsharp-reviewer.md": {
+      "filePath": "agents/devstarter-fsharp-reviewer.md",
+      "contentHash": "e85d03a42495458dcfd7346676c5c5f4a732afc2ce735e6ab5b7667691208b27",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-gan-evaluator.md": {
+      "filePath": "agents/devstarter-gan-evaluator.md",
+      "contentHash": "1db0ec8a514af61671e159299dc90742daf2663a2615c34fdd5b0ded3572685b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 60,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-gan-generator.md": {
+      "filePath": "agents/devstarter-gan-generator.md",
+      "contentHash": "f6b08a92730eeb0e683d51ded1c55fc75468e4bc6e9d430fe57ceb1e5ed9060d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-gan-planner.md": {
+      "filePath": "agents/devstarter-gan-planner.md",
+      "contentHash": "37da79180d750678fec3f1776f132b56cc817d54b8cc037a433e40467451a59f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-go-build-resolver.md": {
+      "filePath": "agents/devstarter-go-build-resolver.md",
+      "contentHash": "a36332022a4cee3f1f03c84284bcfdbc5b307b9d5c56adf06fe7eb1f006e5d1c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-go-reviewer.md": {
+      "filePath": "agents/devstarter-go-reviewer.md",
+      "contentHash": "bb873b1dc5f9f2eed91164a18ee1d1dd613a25e2c2ea044bfdfcab9db144ff33",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-harmonyos-app-resolver.md": {
+      "filePath": "agents/devstarter-harmonyos-app-resolver.md",
+      "contentHash": "053b1aebf30dd1943f000db0d15234642850cd39fa004749247fd70efad719fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-harness-optimizer.md": {
+      "filePath": "agents/devstarter-harness-optimizer.md",
+      "contentHash": "c53594d222aa130b5e466f133520674109c6772041833c562c66a83db3e6aeb4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 59,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-healthcare-reviewer.md": {
+      "filePath": "agents/devstarter-healthcare-reviewer.md",
+      "contentHash": "67b1a085021257798566c5565ded9e6290b34eb1c65d5c90e8de265b45ccc54c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-homelab-architect.md": {
+      "filePath": "agents/devstarter-homelab-architect.md",
+      "contentHash": "a59713ee66bcc92ea67f80322d14875d62095222447e2c7b91e1888378aef6af",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-hookify-rules.md": {
+      "filePath": "agents/devstarter-hookify-rules.md",
+      "contentHash": "26abd6d0e874f41f0e15d707e035a7989a16f6bb8791010fee09153fc739717a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-java-build-resolver.md": {
+      "filePath": "agents/devstarter-java-build-resolver.md",
+      "contentHash": "aab13094c0a595df76936530bd76a58db01af058adc4e1019f2b5b8c7de2c078",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-java-reviewer.md": {
+      "filePath": "agents/devstarter-java-reviewer.md",
+      "contentHash": "9a2c742025b8c954f7debc27a1c12d28d3e1614b8252255566ba31d0cc884bb2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-kotlin-build-resolver.md": {
+      "filePath": "agents/devstarter-kotlin-build-resolver.md",
+      "contentHash": "8b5637fa4dbedac8d148755690916082aba1946d0a30068310bd27f5d6269434",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 43,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-kotlin-reviewer.md": {
+      "filePath": "agents/devstarter-kotlin-reviewer.md",
+      "contentHash": "904afade5e018c2cecf98472731a1e6da486ebeeafab50513e38a4483f6f5bea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-laravel-reviewer.md": {
+      "filePath": "agents/devstarter-laravel-reviewer.md",
+      "contentHash": "0853844122ba7e3be719d95a835c0a7e994502c180457d43bb5f2ee85420da68",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 79,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-loop-operator.md": {
+      "filePath": "agents/devstarter-loop-operator.md",
+      "contentHash": "1f42a7e1e3263b9ebcffaa69195186a4bb086b04a693fdc07b633b3db5f76bb9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-mle-reviewer.md": {
+      "filePath": "agents/devstarter-mle-reviewer.md",
+      "contentHash": "c115c885df56b64045823bae93a1ed46050e7f68bac95f0ce6c7de6dcdbcddd3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-mlops.md": {
+      "filePath": "agents/devstarter-mlops.md",
+      "contentHash": "b24efb5208a5ed53fb41e620cfd44a7db825e48db8637bc77b0d974fd40777ef",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 474,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-mobile.md": {
+      "filePath": "agents/devstarter-mobile.md",
+      "contentHash": "fdaffc11414a5934ca36ea9e9a65959ce674885bdf5a93bd6ae11d86a4cc29ea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 406,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-network-architect.md": {
+      "filePath": "agents/devstarter-network-architect.md",
+      "contentHash": "a1bac675c3b786ef91e7166649c74989d5f2b84b14306e80055e53fd5ba52ecf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-network-config-reviewer.md": {
+      "filePath": "agents/devstarter-network-config-reviewer.md",
+      "contentHash": "05b76ac070222c299326dc3cd7bb35a6c9cb16777e4303f27c35adca63a65250",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-network-troubleshooter.md": {
+      "filePath": "agents/devstarter-network-troubleshooter.md",
+      "contentHash": "67424ed05bcb4161ef0296d821876eb841900851cb10655e32adcf78eb1ed84f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 56,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-opensource-forker.md": {
+      "filePath": "agents/devstarter-opensource-forker.md",
+      "contentHash": "a99af7f93cb5d1d12e9eee497cf1972d9082e1cb0be921044d1b8182a123e492",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-opensource-packager.md": {
+      "filePath": "agents/devstarter-opensource-packager.md",
+      "contentHash": "33e31b4afb107043f1b6ee18865d764289259c86071317f87d98a066edf02108",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 61,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-opensource-sanitizer.md": {
+      "filePath": "agents/devstarter-opensource-sanitizer.md",
+      "contentHash": "9db9a4cc870331e5e3baff2b98eac20acffd1e1cafa9a1268691ee9e69c9acf6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-performance.md": {
+      "filePath": "agents/devstarter-performance.md",
+      "contentHash": "fc0438f62db2d0ae09be4681703002200612850472ff0eec906ec1f29dc150ef",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 155,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-planner.md": {
+      "filePath": "agents/devstarter-planner.md",
+      "contentHash": "44a1e5f89f36380e81fe7eaaba6c3d82fa33fa73bee86813b5df7065d0c13d45",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-pm.md": {
+      "filePath": "agents/devstarter-pm.md",
+      "contentHash": "68c04b25ea397b3e7b4872eab9f7fd82d4f36c3791bb48895f98293a407a82ff",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 653,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-pr-analyzer.md": {
+      "filePath": "agents/devstarter-pr-analyzer.md",
+      "contentHash": "45485f5a220d0185cd7d6d67d9292d369384af464f3edff6eb8c5b314e8c00db",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 56,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-pr-test-analyzer.md": {
+      "filePath": "agents/devstarter-pr-test-analyzer.md",
+      "contentHash": "1dbc7e87a01bd28a4fa35e50b276f0f36cb7b5ed8bd97b8b96c5fdf0ae9eb907",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 51,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-python-reviewer.md": {
+      "filePath": "agents/devstarter-python-reviewer.md",
+      "contentHash": "ab8f13ff74f950ddb216b33f0dceba409b52b225113571df4b80154384cf8f84",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-pytorch-build-resolver.md": {
+      "filePath": "agents/devstarter-pytorch-build-resolver.md",
+      "contentHash": "bbfbcb40b926a0038346009471e3b3923ba71c8267d39f06ddfc70bb2e7528e0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-qa.md": {
+      "filePath": "agents/devstarter-qa.md",
+      "contentHash": "eead2c5457377ff304a2a7d117575bf160c6833b0e635245cb812c56e6763a23",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 667,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-refactor.md": {
+      "filePath": "agents/devstarter-refactor.md",
+      "contentHash": "bee5668e5f0bc142d9db2bccd36584cbcc306c302ecc2bc3713e183734c74872",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-rules-distiller.md": {
+      "filePath": "agents/devstarter-rules-distiller.md",
+      "contentHash": "9fb5a284d0dc8a5d49ce02b9a2f887e38c73ea932219c9eca67ce19b7f4751e3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 76,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-rust-build-resolver.md": {
+      "filePath": "agents/devstarter-rust-build-resolver.md",
+      "contentHash": "65779c05b63ca199e2eecc5b35c237893b67499f5bf6272738c567c2d6ada0ea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-rust-reviewer.md": {
+      "filePath": "agents/devstarter-rust-reviewer.md",
+      "contentHash": "2df40bc20943fb9a66e4c80cbb689995706ba43d810698bab853e4a2de5c14ff",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-security-reviewer.md": {
+      "filePath": "agents/devstarter-security-reviewer.md",
+      "contentHash": "47a1d7b93fe431b28267bf35c8210d1a45215da5fe33c841aabc4359df655ebb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-security.md": {
+      "filePath": "agents/devstarter-security.md",
+      "contentHash": "1e36ee5ab5f25f1736a83d13cc8a066f617175e4559da830ead8245172b40dad",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 574,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-seo.md": {
+      "filePath": "agents/devstarter-seo.md",
+      "contentHash": "7eef03f10c4b55db090bb3129dafa0767af5127f264b58afbd3c0065053a4c3a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-silent-failure-hunter.md": {
+      "filePath": "agents/devstarter-silent-failure-hunter.md",
+      "contentHash": "61967db4b6d60e69275de61ff14f6cafd1f4f2d3bf35fd9f2f1ec2b8f6236a48",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-sre.md": {
+      "filePath": "agents/devstarter-sre.md",
+      "contentHash": "00294f737f9a948d23ea95f88d12e7b73efe5eb171e021aa232e0bf04f6227d6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 142,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-swift-build-resolver.md": {
+      "filePath": "agents/devstarter-swift-build-resolver.md",
+      "contentHash": "fd48371426927e5ea46f833fee9725a59f8538957907e8c58559b86eac482c24",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-swift-reviewer.md": {
+      "filePath": "agents/devstarter-swift-reviewer.md",
+      "contentHash": "76f60da708e6ff731ace2d6769bae78162adc30c533014df0aec9aebdd9314dd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-tdd-guide.md": {
+      "filePath": "agents/devstarter-tdd-guide.md",
+      "contentHash": "36e94a600043386a64d51f6ff69d14790976ccf1e241eb0d6ea0c37b6006f0fe",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-techlead.md": {
+      "filePath": "agents/devstarter-techlead.md",
+      "contentHash": "b8cff46eb7d6d57c50829fdbbf6ef79751048079f0f06af3734b10bf62f30268",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 378,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-type-analyzer.md": {
+      "filePath": "agents/devstarter-type-analyzer.md",
+      "contentHash": "f4956ba0a8f0bd6ab9d6a37f75249d39736804098e6375014de473103276a2fc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-typescript-build-resolver.md": {
+      "filePath": "agents/devstarter-typescript-build-resolver.md",
+      "contentHash": "e36c3784215ce783e4a52d94c825308bc3c50e221aca9363781ad7e7a4c461d8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-typescript-reviewer.md": {
+      "filePath": "agents/devstarter-typescript-reviewer.md",
+      "contentHash": "0fdbf0cb2fc59ea395dc913ed7823189f5e87be9dc46725d23cf5a94adf19e9c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "agents/devstarter-uxui.md": {
+      "filePath": "agents/devstarter-uxui.md",
+      "contentHash": "0734c42a65fd6fd4b4d04a1886ea83488b5e7c956609d507dbdb8d21e28d9a29",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1235,
+      "hasStructuralAnalysis": true
+    },
+    "agents/docs.md": {
+      "filePath": "agents/docs.md",
+      "contentHash": "2666ac09e8c2a4b9a41e644d9fef6bf0b8aa3bcb1dd72058c9f3caf8186fa3a2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/frontend.md": {
+      "filePath": "agents/frontend.md",
+      "contentHash": "df334274533976d4e91ba2deaca406cca57aaae3ae01fc4dca081aea545ac310",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/mlops.md": {
+      "filePath": "agents/mlops.md",
+      "contentHash": "5279dcc81dcbeee44a0de802059ce74cc18b39783482a1985a47c47225df7e50",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/mobile.md": {
+      "filePath": "agents/mobile.md",
+      "contentHash": "f7ea550bef2946494ff05418b88e036726d711e85ef7af711a79c68294d3f85c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/pm.md": {
+      "filePath": "agents/pm.md",
+      "contentHash": "15471c7cc6a55fc9b823d2156c55d94f05779a59cd92a05dacc9ef05ef3f87b2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/qa.md": {
+      "filePath": "agents/qa.md",
+      "contentHash": "1b5403654a98492f27b0e718fc22e16cde744f3ac629882fac3a8d0e80ead9f0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/security.md": {
+      "filePath": "agents/security.md",
+      "contentHash": "35cedfb3fa2d7d7d04d7a7c08ee29882db060a208dacd846f2ff57bce56c801b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/shared/devstarter-agent-base.md": {
+      "filePath": "agents/shared/devstarter-agent-base.md",
+      "contentHash": "403faf403f3609c7027bee4d0cbb5a975d32ef448f016fd5036ce070d826f428",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 383,
+      "hasStructuralAnalysis": true
+    },
+    "agents/shared/devstarter-vcs-pm-guide.md": {
+      "filePath": "agents/shared/devstarter-vcs-pm-guide.md",
+      "contentHash": "33defb818a14ec867ecfeb0cdeaf0fa53fbc9eeb0d53383fab5b91c7be262092",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 300,
+      "hasStructuralAnalysis": true
+    },
+    "agents/techlead.md": {
+      "filePath": "agents/techlead.md",
+      "contentHash": "b7c9358ad040c1290239cc65449b3c131437bc8c0b33e47eef495c8846e79033",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "agents/uxui.md": {
+      "filePath": "agents/uxui.md",
+      "contentHash": "842f3eef4abdf6ebf542f5b51988523101166cd4c433fe6d8316bea9430dd1c8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": true
+    },
+    "CHANGELOG.md": {
+      "filePath": "CHANGELOG.md",
+      "contentHash": "53e1d7c87d6220e06e0f0997d311c522e3ea49edc93f795854c23e35a36c40ab",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1779,
+      "hasStructuralAnalysis": true
+    },
+    "CLAUDE.md": {
+      "filePath": "CLAUDE.md",
+      "contentHash": "580f2b21aa53a1ea9bfd7d8d3eb23e21afe7ebd15d269284a323da2ba31fa3b0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 469,
+      "hasStructuralAnalysis": true
+    },
+    "devstarter-config.yml": {
+      "filePath": "devstarter-config.yml",
+      "contentHash": "4ca111f985d66944cd74d6633657545f1ea1cec6f61addf8560eec1c0330cdf6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 87,
+      "hasStructuralAnalysis": true
+    },
+    "devstarter-invoke.sh": {
+      "filePath": "devstarter-invoke.sh",
+      "contentHash": "782ef1fc25066b5ad1540aa57fb81a69fedc03a20db89971b31494307573abfb",
+      "functions": [
+        {
+          "name": "list_workflows",
+          "params": [],
+          "exported": false,
+          "lineCount": 14
+        },
+        {
+          "name": "print_prompt",
+          "params": [],
+          "exported": false,
+          "lineCount": 31
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 90,
+      "hasStructuralAnalysis": true
+    },
+    "devstarter-menu.md": {
+      "filePath": "devstarter-menu.md",
+      "contentHash": "6ab072ea54d4132441a0870b5647a0ae5a8c995bec589503dbcc8d83ae731c43",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 166,
+      "hasStructuralAnalysis": true
+    },
+    "docs/adr/0001-understand-anything-integration.html": {
+      "filePath": "docs/adr/0001-understand-anything-integration.html",
+      "contentHash": "56a143af602978459fc5452a52205c8c215694f7ab3be29a742a3eeb4caee069",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 312,
+      "hasStructuralAnalysis": false
+    },
+    "docs/api-reference.html": {
+      "filePath": "docs/api-reference.html",
+      "contentHash": "49ce3f2f27b552686623f3881c7fc7423253bc7033f6ead02e5891e9af903158",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 382,
+      "hasStructuralAnalysis": false
+    },
+    "docs/brd.html": {
+      "filePath": "docs/brd.html",
+      "contentHash": "4c4157ab7f87a32cb12da6abbfca060aa66294e3efeefde6dfd782faa547361d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 493,
+      "hasStructuralAnalysis": false
+    },
+    "docs/bugfix-log.html": {
+      "filePath": "docs/bugfix-log.html",
+      "contentHash": "ccf77cf97be83791f14c6ea830f91c19adbb5d588f0435f9f0aa350dc468157e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 256,
+      "hasStructuralAnalysis": false
+    },
+    "docs/database-design.html": {
+      "filePath": "docs/database-design.html",
+      "contentHash": "5a4878d3a8ad155ff1fcaa52054b9bd5b901663164151b524a8c02082abbfe94",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 328,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/bilingual-pdf-export/plan.html": {
+      "filePath": "docs/feature/bilingual-pdf-export/plan.html",
+      "contentHash": "87ca4c45b9cc5bcaa7430d7435bb8985c612fec77cb0e07fc7a0eae44dd158d0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 411,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/branch-guard-hook/mgmt-brief.html": {
+      "filePath": "docs/feature/branch-guard-hook/mgmt-brief.html",
+      "contentHash": "fdd9fd711bf2b3db2544d45942e56aad6ce6fb34d3a879b650a24e93eb683621",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 457,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/branch-guard-hook/plan.html": {
+      "filePath": "docs/feature/branch-guard-hook/plan.html",
+      "contentHash": "1e292624752787ec9ae606cef400057520adfb469ba3938111f8269d7c8fbbc1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 500,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/branch-guard-hook/summary.html": {
+      "filePath": "docs/feature/branch-guard-hook/summary.html",
+      "contentHash": "b902723f8165181e25a84a42b7e072c1f19996003aad3517d3af6d316252029f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 518,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/documents-by-flow/kickoff.html": {
+      "filePath": "docs/feature/documents-by-flow/kickoff.html",
+      "contentHash": "5f86e52538a7ee60fb2f3973d0119e7b70692451000bb4287a07cbea01705051",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 431,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/documents-by-flow/mgmt-brief.html": {
+      "filePath": "docs/feature/documents-by-flow/mgmt-brief.html",
+      "contentHash": "85e698c87c7e05e6f9f9a6f048ff4d2584884ed5e7c14835c992c9781436cf65",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 419,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/documents-by-flow/plan.html": {
+      "filePath": "docs/feature/documents-by-flow/plan.html",
+      "contentHash": "6860e0bf2a88b5f26d3cf09e0a8ad378addc072b372845037f7623bd9b75d116",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 395,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/documents-by-flow/summary.html": {
+      "filePath": "docs/feature/documents-by-flow/summary.html",
+      "contentHash": "6ea0dfa8ea9854c49982067b7787503586a56edbb89ca80d6bc18c8d6c7d46fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 411,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/understand-wrappers/kickoff.html": {
+      "filePath": "docs/feature/understand-wrappers/kickoff.html",
+      "contentHash": "8c6923a335f99e0b10253717ed9b7b6ffe5db8dce3d4aba3c95881239ae0479c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 402,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/understand-wrappers/mgmt-brief.html": {
+      "filePath": "docs/feature/understand-wrappers/mgmt-brief.html",
+      "contentHash": "d37fc7d3928775b4f1a4273dc11f05c569ecd541dc6a4207ef2dd38bd0e9056c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 407,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/understand-wrappers/plan.html": {
+      "filePath": "docs/feature/understand-wrappers/plan.html",
+      "contentHash": "02c8239198562f2a4e15c972801482e5d4e37f9a820c544043cf7e2f1bf3402b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 407,
+      "hasStructuralAnalysis": false
+    },
+    "docs/feature/understand-wrappers/summary.html": {
+      "filePath": "docs/feature/understand-wrappers/summary.html",
+      "contentHash": "8071dff96cfd175af1ca1e54a2fc0641e41c06eab0a243510cc611df2167e449",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 431,
+      "hasStructuralAnalysis": false
+    },
+    "docs/git-workflow.md": {
+      "filePath": "docs/git-workflow.md",
+      "contentHash": "4e7fa145c05ad01deda01459e972a21b38e88828f4e90e633499be6c76afdd46",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 276,
+      "hasStructuralAnalysis": true
+    },
+    "docs/index.html": {
+      "filePath": "docs/index.html",
+      "contentHash": "db282c7ccea6a2fef98f8bed0ab48ef165d1c90327bac1ef35a7bbd0089f21e8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 249,
+      "hasStructuralAnalysis": false
+    },
+    "docs/infrastructure-guide.html": {
+      "filePath": "docs/infrastructure-guide.html",
+      "contentHash": "373f4cfc1819eb40f3fba12ef49f15461428a24beb1ae40a71bdaa272ea91835",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 258,
+      "hasStructuralAnalysis": false
+    },
+    "docs/multi-ai-guide.md": {
+      "filePath": "docs/multi-ai-guide.md",
+      "contentHash": "b02f9424f1a86aa785c0e4536a4ce835caad9fc2a40efd3547d73c73c4eed151",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 281,
+      "hasStructuralAnalysis": true
+    },
+    "docs/project-plan.html": {
+      "filePath": "docs/project-plan.html",
+      "contentHash": "76f6c91345ec7eabfb6c75d6e98183812c24791d7e3c3bf9278a80d358482441",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 219,
+      "hasStructuralAnalysis": false
+    },
+    "docs/prototype/components.html": {
+      "filePath": "docs/prototype/components.html",
+      "contentHash": "5f3e6ad7d8082d995338ca32d658753beb51848f2c86ce9a5b4fe011664f0459",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 476,
+      "hasStructuralAnalysis": false
+    },
+    "docs/release-v2.2.0.html": {
+      "filePath": "docs/release-v2.2.0.html",
+      "contentHash": "57de12a9bcf4d15f0741173ecca0ec39a9fe46b0329c07b38ee3f188d178581e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 475,
+      "hasStructuralAnalysis": false
+    },
+    "docs/release-v2.3.0.html": {
+      "filePath": "docs/release-v2.3.0.html",
+      "contentHash": "93dcd538a22db896b0f85dfc00e76e101ecf76ccd9b8b2fba70aba7fe8d8ce4e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 515,
+      "hasStructuralAnalysis": false
+    },
+    "docs/security-design.html": {
+      "filePath": "docs/security-design.html",
+      "contentHash": "a6b11c9050f4955dbb738b8ea2a65e40b7639091c909754eff15c2c3f8a3624d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 267,
+      "hasStructuralAnalysis": false
+    },
+    "docs/test-strategy.html": {
+      "filePath": "docs/test-strategy.html",
+      "contentHash": "1866dfee5890f4a85065a766a5d55b57ce1de4141d20c59570c8d2c0a93677b3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 233,
+      "hasStructuralAnalysis": false
+    },
+    "install.sh": {
+      "filePath": "install.sh",
+      "contentHash": "376988fdc2680f9962492f308340e8bbcf962a9aa0ba8dfd177bc78a1ad71e83",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 311,
+      "hasStructuralAnalysis": true
+    },
+    "memory/change-log-bilingual-pdf-export.md": {
+      "filePath": "memory/change-log-bilingual-pdf-export.md",
+      "contentHash": "9a81cab3db7bb69c8d9b078f1b839c4a968a40515fe64fe37571bb41091ab61d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "memory/change-log-branch-guard-hook.md": {
+      "filePath": "memory/change-log-branch-guard-hook.md",
+      "contentHash": "5d77137a3729812f3d54af52cec9ca8e58da798be40d117770d8fc473f483989",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "memory/change-log-documents-by-flow.md": {
+      "filePath": "memory/change-log-documents-by-flow.md",
+      "contentHash": "116cd64cdb45de5048d769b13d03f38d0d207fd6e56cf263a408d2f2f0bca6ea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    "memory/change-log-understand-wrappers.md": {
+      "filePath": "memory/change-log-understand-wrappers.md",
+      "contentHash": "7887c3632091d5e771169bdf2857f6b3700d52bc4b46318c21833bed2fd1589a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "memory/consult-2026-05-07-delete-commands-folder.md": {
+      "filePath": "memory/consult-2026-05-07-delete-commands-folder.md",
+      "contentHash": "25410d2093e54efb1838fad8df3632c01a5bb4543d6d7671fb2cbb0b2f818328",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 158,
+      "hasStructuralAnalysis": true
+    },
+    "memory/consult-2026-05-07-enterprise-sdlc-gaps.md": {
+      "filePath": "memory/consult-2026-05-07-enterprise-sdlc-gaps.md",
+      "contentHash": "2d62168b245ccc32edb11bdfa75182364daafd366d2060a21baa6bc3f997c5a3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 165,
+      "hasStructuralAnalysis": true
+    },
+    "memory/consult-2026-05-07-update-opus-model-id.md": {
+      "filePath": "memory/consult-2026-05-07-update-opus-model-id.md",
+      "contentHash": "d88762bdd25f27b5ee19adad8445d7e8ffc986ce242c7e9e3c4d4d9e2aa4ff5e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 143,
+      "hasStructuralAnalysis": true
+    },
+    "memory/consult-2026-05-09-top1-rigor-audit.md": {
+      "filePath": "memory/consult-2026-05-09-top1-rigor-audit.md",
+      "contentHash": "8e180c04ca9200451a2f15ceadaa5baa80d840e5ac1fb5485b2b2d67f7b1acd4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 244,
+      "hasStructuralAnalysis": true
+    },
+    "memory/consult-2026-05-15-clean-install-update.md": {
+      "filePath": "memory/consult-2026-05-15-clean-install-update.md",
+      "contentHash": "6d00d28d7f8b0c2f162586ac3f86eddde490c6b8aa37c16539dbbe2116caaf16",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 202,
+      "hasStructuralAnalysis": true
+    },
+    "memory/consult-2026-05-15-improve-new-features.md": {
+      "filePath": "memory/consult-2026-05-15-improve-new-features.md",
+      "contentHash": "042e34955e08e30f0b70adb878e095b621723eff156ebcaa7c0df5b78ac6a897",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 180,
+      "hasStructuralAnalysis": true
+    },
+    "memory/consult-2026-05-18-multi-ai-support.md": {
+      "filePath": "memory/consult-2026-05-18-multi-ai-support.md",
+      "contentHash": "7fdaa6162c271f75eec250f49ac857aacc426de803b97e8b6ec6398c48dc0007",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 183,
+      "hasStructuralAnalysis": true
+    },
+    "memory/consult-2026-05-20-9arm-skills-fork.md": {
+      "filePath": "memory/consult-2026-05-20-9arm-skills-fork.md",
+      "contentHash": "d98ea53d68e5fc3c1fd441bebbd94ccf1084c3c2f136804f8c84a4e9fdd0855d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 145,
+      "hasStructuralAnalysis": true
+    },
+    "memory/progress.json": {
+      "filePath": "memory/progress.json",
+      "contentHash": "295929a0aa6336498c91b654bac7788a9c5d31b077ea1af69692ee7f6efeac36",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "16a27ca97e4689811a7c2d162c70598c1d710e868070912863c45d51d8b49190",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 338,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/angular.md": {
+      "filePath": "rules/devstarter/angular.md",
+      "contentHash": "1640392dbaad91635c23b79bc064cf9691c56379e12dc6310100aad804638811",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 73,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/arkts.md": {
+      "filePath": "rules/devstarter/arkts.md",
+      "contentHash": "ba623b0e11aded8818583e8bd82555b61d8e536529238fce69a2526a047074fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 30,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/agents.md": {
+      "filePath": "rules/devstarter/common/agents.md",
+      "contentHash": "dde28fee827a58f3cb47ce612c12bb4bebff1c7a2f9692b0d762f2dcc01ffa00",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/code-review.md": {
+      "filePath": "rules/devstarter/common/code-review.md",
+      "contentHash": "4c677500bfab6fffd279bf967430ad31996e276e69e041d7096db1d20c166d7d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/coding-style.md": {
+      "filePath": "rules/devstarter/common/coding-style.md",
+      "contentHash": "6dcbbf6caf212d922099b52b8f5f9ff2c2d2449cc3fe89668ec543aa82735d93",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/development-workflow.md": {
+      "filePath": "rules/devstarter/common/development-workflow.md",
+      "contentHash": "62ada75801ecb70080304c7c30d97f74c55f98d08c32df49ca36d70ef845c358",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/git-workflow.md": {
+      "filePath": "rules/devstarter/common/git-workflow.md",
+      "contentHash": "3dbb93da951af0dd45b121491c7763ca7e675cd518f2ce6b5381fb5ead18f3b8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/hooks.md": {
+      "filePath": "rules/devstarter/common/hooks.md",
+      "contentHash": "9deaa10d04d94b30e0e83d1a478225505913044882bc6dc8735e62e772aad8d9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/patterns.md": {
+      "filePath": "rules/devstarter/common/patterns.md",
+      "contentHash": "7323b23130f1505a3d27f99fdf5e16a2a1e960834372cc32a8986059fe865655",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/performance.md": {
+      "filePath": "rules/devstarter/common/performance.md",
+      "contentHash": "a194d5b0c9ce493a4d6411a3e4e715464fb9b030dfb7caf3fd872cbf22f54865",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/security.md": {
+      "filePath": "rules/devstarter/common/security.md",
+      "contentHash": "9647b5d1acc4b4f3f1ea755d03fe56477d7f37b2ad45283c5ac77e3be894c0f7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/common/testing.md": {
+      "filePath": "rules/devstarter/common/testing.md",
+      "contentHash": "5288c027c5d62360de37e93f1aaff72745a475102344c8effd0ef82635e7ec39",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/cpp/coding-style.md": {
+      "filePath": "rules/devstarter/cpp/coding-style.md",
+      "contentHash": "1eb9451c323ce084e1033593c892af17f5c5089e7d6d9f6f65eafafad240771a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/cpp/hooks.md": {
+      "filePath": "rules/devstarter/cpp/hooks.md",
+      "contentHash": "df336c1921d1df26a9d9b720d7d90665245d04c3a08e31f967c613cd31312a03",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/cpp/patterns.md": {
+      "filePath": "rules/devstarter/cpp/patterns.md",
+      "contentHash": "9f7a4c2cd13badd6172846b22aaf43f4f1c170485598081e0b5399e7677f383a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/cpp/security.md": {
+      "filePath": "rules/devstarter/cpp/security.md",
+      "contentHash": "2acca37fa17beafc19ac17e208c3a3bfa7f6830b5096786c92df6e0d5bcdadde",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/cpp/testing.md": {
+      "filePath": "rules/devstarter/cpp/testing.md",
+      "contentHash": "9529113377fae7909234cdf4b84b40af8033a791811f2c73e4de562aa50d36e7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/csharp.md": {
+      "filePath": "rules/devstarter/csharp.md",
+      "contentHash": "e2112b469480b4ba621a89a9ec19cc84c362719eb62380d621cad041e3123f90",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 72,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/dart/coding-style.md": {
+      "filePath": "rules/devstarter/dart/coding-style.md",
+      "contentHash": "8598288b63374cd136e2a61d656e8b6e7bf07eeb50836a61c413d2ad7dd81877",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/dart/hooks.md": {
+      "filePath": "rules/devstarter/dart/hooks.md",
+      "contentHash": "ff21cf26bc60b406cdbd811c9b4fdfa9851be649b7202ee96408dbeea75b06c3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/dart/patterns.md": {
+      "filePath": "rules/devstarter/dart/patterns.md",
+      "contentHash": "b73893f956710348b8f636a4dc05360a00a7999a1a06787f2dc8074fc265df75",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/dart/security.md": {
+      "filePath": "rules/devstarter/dart/security.md",
+      "contentHash": "a75cbb9b3438ad04c43d59247709d8ee0c1c294c97eeed43424da9186a90bd0e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/dart/testing.md": {
+      "filePath": "rules/devstarter/dart/testing.md",
+      "contentHash": "9a729d863e1b20927c4bc9dbae6d642f018866667f31ceaeaea9fe44f2ec4e45",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 46,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/flutter.md": {
+      "filePath": "rules/devstarter/flutter.md",
+      "contentHash": "7caf4dc48225533ead4a633653a1f07029bec612ec2595d0257156a8789eba57",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 81,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/fsharp.md": {
+      "filePath": "rules/devstarter/fsharp.md",
+      "contentHash": "ef68e50933c2074143e838bfb40429306f09a7e77b58898bb3b825b09edfb21f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/go.md": {
+      "filePath": "rules/devstarter/go.md",
+      "contentHash": "3950d7445691923fd42cbb75e94953e862efeff95d11961a6bf8935982b91509",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 135,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/java.md": {
+      "filePath": "rules/devstarter/java.md",
+      "contentHash": "4352c5e86932dff65f157a0bfd805347742a1da360f78a939f543dbe6170382a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/kotlin.md": {
+      "filePath": "rules/devstarter/kotlin.md",
+      "contentHash": "52d34209b820dd580aa13c887e2785e32fdec73bc311eaaa2f3ce45237d43a01",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/node.md": {
+      "filePath": "rules/devstarter/node.md",
+      "contentHash": "ee4127104380e3326d40e8260259dbf38f1d1b91297366abc2d3d00c32971074",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/perl.md": {
+      "filePath": "rules/devstarter/perl.md",
+      "contentHash": "c950ae1a7e090d4b0fcdbac6445426574102cb8732388fac4a4674b9ed61b86f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/php.md": {
+      "filePath": "rules/devstarter/php.md",
+      "contentHash": "942dc3110bb479cdc23e2cad474cb31983df381c8b4d32afcc665c25fc9c888c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/python.md": {
+      "filePath": "rules/devstarter/python.md",
+      "contentHash": "e5d060436770496dbf272145d362ba482bfae5ad42dc1f4356328db7d1bc41ce",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/react.md": {
+      "filePath": "rules/devstarter/react.md",
+      "contentHash": "0657e775f968d8fd14a770e4e0892f7b1824e3889c5d35f9773ca502b521f00b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 68,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/ruby.md": {
+      "filePath": "rules/devstarter/ruby.md",
+      "contentHash": "53578280c55567aa099112a8e436838b5730a3c9050272a786d3b2b56d61fe36",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/rust.md": {
+      "filePath": "rules/devstarter/rust.md",
+      "contentHash": "c2b3e9e6e9dc457382d89761c99c9cca4cc8a3f7a4b3b081a2f454ade5ce63a2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/swift.md": {
+      "filePath": "rules/devstarter/swift.md",
+      "contentHash": "bfb6fb76dc122751e1cf8b9e1d6b0feb229d8546f67c57e4607b509fda22be0a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/typescript.md": {
+      "filePath": "rules/devstarter/typescript.md",
+      "contentHash": "be0b2c24e2c1cdc159ba53fbf313be97c3d61ce39aa60ab4269b502b1527fe18",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 49,
+      "hasStructuralAnalysis": true
+    },
+    "rules/devstarter/web.md": {
+      "filePath": "rules/devstarter/web.md",
+      "contentHash": "921695f4f1d0633baab3535da38a82e6f76b7893b478fd2fb286f1aaa6374a67",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/add-universal-prompts.py": {
+      "filePath": "scripts/add-universal-prompts.py",
+      "contentHash": "16b8fe53bf85d20e2bac8cc06234b79945f6a1e6df13a8d5b7421c7ab48cb633",
+      "functions": [
+        {
+          "name": "get_workflow_name_from_header",
+          "params": [
+            "content"
+          ],
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "build_universal_prompt_block",
+          "params": [
+            "skill_name",
+            "skill_info"
+          ],
+          "exported": true,
+          "lineCount": 37
+        },
+        {
+          "name": "process_skill_file",
+          "params": [
+            "skill_dir",
+            "skill_name"
+          ],
+          "exported": true,
+          "lineCount": 28
+        },
+        {
+          "name": "main",
+          "params": [],
+          "exported": true,
+          "lineCount": 38
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "os",
+          "specifiers": [
+            "os"
+          ]
+        },
+        {
+          "source": "re",
+          "specifiers": [
+            "re"
+          ]
+        }
+      ],
+      "exports": [
+        "get_workflow_name_from_header",
+        "build_universal_prompt_block",
+        "process_skill_file",
+        "main"
+      ],
+      "totalLines": 187,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/config-sync.sh": {
+      "filePath": "scripts/config-sync.sh",
+      "contentHash": "73fe0ac9b78c85cf71336316754de6defa513e3f7a7c39c4c0ce64d557400b41",
+      "functions": [
+        {
+          "name": "get_val",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 118,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/dev-setup.sh": {
+      "filePath": "scripts/dev-setup.sh",
+      "contentHash": "0ebe33b75f4df06a0f8f781967589a0f77343b269a4acc5a5abddbe7f5454c73",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 143,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/devstarter-config-hook.sh": {
+      "filePath": "scripts/devstarter-config-hook.sh",
+      "contentHash": "767828105d9e7c57e5a371d9b839c15f8418d77fbc2eab8bf0ee8520650668dc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/devstarter-resolve-home.sh": {
+      "filePath": "scripts/devstarter-resolve-home.sh",
+      "contentHash": "21b3010dd0c8ea1393b6cdb9d8e0a1b9c7f55b911ee318d62b1f8e00a13dd5ac",
+      "functions": [
+        {
+          "name": "devstarter_resolve_home",
+          "params": [],
+          "exported": false,
+          "lineCount": 24
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 41,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/hooks/post-edit-accumulator.js": {
+      "filePath": "scripts/hooks/post-edit-accumulator.js",
+      "contentHash": "82af9fd9ea6287befd80c7e68da5f64814a4b7c6720a20adeb0a2b0431be9884",
+      "functions": [
+        {
+          "name": "getAccumFile",
+          "params": [],
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "appendPath",
+          "params": [
+            "filePath"
+          ],
+          "exported": false,
+          "lineCount": 5
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/hooks/pre-compact.js": {
+      "filePath": "scripts/hooks/pre-compact.js",
+      "contentHash": "83c120453bf153405e81e388812ba5ffc78c953c5ade6c38fd72da8615839461",
+      "functions": [
+        {
+          "name": "getProjectDir",
+          "params": [],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "ensureDir",
+          "params": [
+            "dir"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "appendFile",
+          "params": [
+            "filePath",
+            "content"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "getTimestamp",
+          "params": [],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/hooks/pre-edit-branch-guard.js": {
+      "filePath": "scripts/hooks/pre-edit-branch-guard.js",
+      "contentHash": "8333187562a2c2885329eca0321f6eb495fdd7d614a2c8309fa87d65e31af11b",
+      "functions": [
+        {
+          "name": "getCurrentBranch",
+          "params": [],
+          "exported": false,
+          "lineCount": 10
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/hooks/session-start.js": {
+      "filePath": "scripts/hooks/session-start.js",
+      "contentHash": "f6d1a0730c2263822c827bac3b9ef630df39c3d0b30a9a60d46a55bad2595564",
+      "functions": [
+        {
+          "name": "readFile",
+          "params": [
+            "filePath"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "getProjectDir",
+          "params": [],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "getClaudeDir",
+          "params": [],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "loadProgress",
+          "params": [
+            "projectDir"
+          ],
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "loadMemoryIndex",
+          "params": [
+            "projectDir"
+          ],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "loadGlobalMemoryIndex",
+          "params": [],
+          "exported": false,
+          "lineCount": 17
+        },
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 35
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 98,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/hooks/stop-check-console-log.js": {
+      "filePath": "scripts/hooks/stop-check-console-log.js",
+      "contentHash": "d3fcd6dca75c37a7a99c8edf6fd02a046aa975f2af5fddc23c0863ca9dbe25b4",
+      "functions": [
+        {
+          "name": "isGitRepo",
+          "params": [],
+          "exported": false,
+          "lineCount": 4
+        },
+        {
+          "name": "getGitModifiedFiles",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "readFile",
+          "params": [
+            "p"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "check",
+          "params": [
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 23
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 98,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/hooks/stop-format-typecheck.js": {
+      "filePath": "scripts/hooks/stop-format-typecheck.js",
+      "contentHash": "9a1cc6c05f8a9e54e5b1229ac413e1be2774991e7ff8dbdbbea915d478c7f64c",
+      "functions": [
+        {
+          "name": "getAccumFile",
+          "params": [],
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "readAccum",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "fileExists",
+          "params": [
+            "p"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "dirExists",
+          "params": [
+            "p"
+          ],
+          "exported": false,
+          "lineCount": 1
+        },
+        {
+          "name": "findProjectRoot",
+          "params": [
+            "filePath"
+          ],
+          "exported": false,
+          "lineCount": 16
+        },
+        {
+          "name": "runSafe",
+          "params": [
+            "bin",
+            "args",
+            "cwd"
+          ],
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "formatJsTs",
+          "params": [
+            "root",
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 29
+        },
+        {
+          "name": "formatPython",
+          "params": [
+            "root",
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "formatGo",
+          "params": [
+            "root",
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "formatRust",
+          "params": [
+            "root",
+            "files"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 25
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 149,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/install-hooks.js": {
+      "filePath": "scripts/install-hooks.js",
+      "contentHash": "aedd82f24713063de6d471faa0381fe5afd1093352c50b6d17e11031f4718e4e",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 54
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/publish.sh": {
+      "filePath": "scripts/publish.sh",
+      "contentHash": "2a36b6d8919578283f018b85b0e07969dbdb0f2699d7ee82be8319e525ed9843",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 263,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/statusline-command.sh": {
+      "filePath": "scripts/statusline-command.sh",
+      "contentHash": "20aef63ebe6cf866d722961d3b7a784402fe71a47c6c3013ce565a64309eae16",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 123,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/statusline.sh": {
+      "filePath": "scripts/statusline.sh",
+      "contentHash": "d91e7ae521c85113c22f504753f161617f7a4929ddf767d8c5fdfa951bda0e0e",
+      "functions": [
+        {
+          "name": "json_get",
+          "params": [],
+          "exported": false,
+          "lineCount": 23
+        },
+        {
+          "name": "make_bar",
+          "params": [],
+          "exported": false,
+          "lineCount": 13
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 113,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/uninstall-hooks.js": {
+      "filePath": "scripts/uninstall-hooks.js",
+      "contentHash": "aab95e04b7de457c938a643de49e247628705a3fa87ad13701e2ae3f00bd08ab",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 70
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 87,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/uninstall.sh": {
+      "filePath": "scripts/uninstall.sh",
+      "contentHash": "75a52565ac698714cec1d92ec94a6f74564528d9659cd053cdd348652df10669",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 204,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-adr.md": {
+      "filePath": "sdlc/devstarter-adr.md",
+      "contentHash": "abe41842c423aed2ef5049c9a9e38914ca41d3ecd7e526bfbaa81b7044912204",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 308,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-ai-providers.md": {
+      "filePath": "sdlc/devstarter-ai-providers.md",
+      "contentHash": "ed119a6601b0d9cd706760d33a3eec1724d5b06af998bcf65b7c9ded2f467775",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 255,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-audit.md": {
+      "filePath": "sdlc/devstarter-audit.md",
+      "contentHash": "b214dcfce1a86746bcc780bcfdf1369a4fcf813473a4ec328b1cd7d3f95dabc7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 394,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-autopr.md": {
+      "filePath": "sdlc/devstarter-autopr.md",
+      "contentHash": "498b6ea0e9b46388e6159fa1e894131c9b498fab3ab8a86aefa5134c1f6ca690",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 200,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-change-add.md": {
+      "filePath": "sdlc/devstarter-change-add.md",
+      "contentHash": "62fc504d141ceba545b4d124bbc108233b6991587381568cf12214563693931d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1029,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-change-bug.md": {
+      "filePath": "sdlc/devstarter-change-bug.md",
+      "contentHash": "a165db31b5e60ea4b0bbd9f08bb45d43f99fd819fd836f41a583d18919c2041b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 600,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-change-remove.md": {
+      "filePath": "sdlc/devstarter-change-remove.md",
+      "contentHash": "ea5ac9415e637317a37fa930afee5acbae59222d91441128abde8d9bbe9bc2bc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 385,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-change-resume.md": {
+      "filePath": "sdlc/devstarter-change-resume.md",
+      "contentHash": "fc7884553330a647260da3e94f9213607fb8c48b4db1c61e9113d1837c1544c2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-change.md": {
+      "filePath": "sdlc/devstarter-change.md",
+      "contentHash": "f37be68ffd8f5df975d7b709f3c8a47b89e0699031e2597d5ac3257a87b35b9c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 219,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-checkpoint.md": {
+      "filePath": "sdlc/devstarter-checkpoint.md",
+      "contentHash": "0d1996aa273074d1cdef982b6060d78c6e5911387ba13cc4f40adad11e6a5695",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 367,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-compliance.md": {
+      "filePath": "sdlc/devstarter-compliance.md",
+      "contentHash": "3f84182bdf178edbefd8eb00d0acd786b437e9d06725073cdc5960499ccb8eae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 529,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-config-sync.md": {
+      "filePath": "sdlc/devstarter-config-sync.md",
+      "contentHash": "fb1314751d7916ab750433bb8a0cc1260213e3eb5e4c81e257d92c8efac4f822",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 174,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-consult.md": {
+      "filePath": "sdlc/devstarter-consult.md",
+      "contentHash": "cedac357206455e0ff04ada228d6f05e1b7576333eca55d24c1af148ee3e6f81",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 205,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-council.md": {
+      "filePath": "sdlc/devstarter-council.md",
+      "contentHash": "66aebe430759d934710f866f52707cb1cbc8630d14417fe6c2ef6bd48adc3b53",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 141,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-debug.md": {
+      "filePath": "sdlc/devstarter-debug.md",
+      "contentHash": "7d582af4c2531048be752df4a8351c5fafbd38d658dc59b6f9c4cc03c16eb30f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 585,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-dependency.md": {
+      "filePath": "sdlc/devstarter-dependency.md",
+      "contentHash": "9775fbbe2062348eb9f669183a859b49e5f8aeec4fd8128cdb9ecb1b683eef08",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 197,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-doctor.md": {
+      "filePath": "sdlc/devstarter-doctor.md",
+      "contentHash": "84ee07ac551a1666faeb7a414ce591e81090c901e409f22f53e0ab3d2df36307",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 102,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-document.md": {
+      "filePath": "sdlc/devstarter-document.md",
+      "contentHash": "14c0b9e5e71088960d1e218aaaaf0e5f462150c83e21d9d30d71024c6bdba543",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 374,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-env.md": {
+      "filePath": "sdlc/devstarter-env.md",
+      "contentHash": "8c631771565a23abc918f19992e9c2cc0f6b837ef5daf29d50451cadd5584155",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 154,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-existing.md": {
+      "filePath": "sdlc/devstarter-existing.md",
+      "contentHash": "ed729bc760e09950244ff2c52e5d3cd7c12e30c505be4ec36bf02551c39d7d5e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 514,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-github.md": {
+      "filePath": "sdlc/devstarter-github.md",
+      "contentHash": "6c0de95ce068d2f87c7a3a0c7a8e3cb096526291d0446cb048bdab1a4de14e0c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1185,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-gitlab.md": {
+      "filePath": "sdlc/devstarter-gitlab.md",
+      "contentHash": "18f3d55b4ce33de1e671cfba9b4928e288f47d7fcb220635586544779d87f632",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 862,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-gitsetup.md": {
+      "filePath": "sdlc/devstarter-gitsetup.md",
+      "contentHash": "e2ce949e32dfad00d6f1825dd82a185adfe89e0800e7665c6ec4f60dacc1b063",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 349,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-handover.md": {
+      "filePath": "sdlc/devstarter-handover.md",
+      "contentHash": "ef437bca6abfd0a010297c2168b707cc50656e24dd2ede11faaf2c3ca2e81fea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 140,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-hotfix.md": {
+      "filePath": "sdlc/devstarter-hotfix.md",
+      "contentHash": "57bcb829cd11071429678cede57f890606338b55d5ad37165040d51de2d1f1a3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 277,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-incident.md": {
+      "filePath": "sdlc/devstarter-incident.md",
+      "contentHash": "053e880d0e73aa812490867eb2197694a21f97731583ca9409b5476f6ad86aa2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 179,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-jira.md": {
+      "filePath": "sdlc/devstarter-jira.md",
+      "contentHash": "be42ad9e46360a7af58f49b7b368d829e51f095277d93a217f4be3eba380899d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 495,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-mcp.md": {
+      "filePath": "sdlc/devstarter-mcp.md",
+      "contentHash": "54adff1af4cf7ee0d39e2c0067be0033e4e9025c76c18c69374314f2d5395c47",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 226,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-migrate.md": {
+      "filePath": "sdlc/devstarter-migrate.md",
+      "contentHash": "fdb61d0ed36b58285abeff97da2514512a4cf13ee1f59bb06ce5872147205174",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 376,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-ml-workflow.md": {
+      "filePath": "sdlc/devstarter-ml-workflow.md",
+      "contentHash": "5e977a44650b9a345e73f6d9bd44eed22651dd80c39dcf094f8dfbecd1282ffc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 241,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-monitor.md": {
+      "filePath": "sdlc/devstarter-monitor.md",
+      "contentHash": "b6d0f9e427ae8772a4b1f3408c9afca4b099a37f984ae510bc0736adb7a85bb4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 160,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-notion.md": {
+      "filePath": "sdlc/devstarter-notion.md",
+      "contentHash": "1513edfc43969fe3507434b0d4a402a3ce1102bfec49dc1d33e4766e73987b81",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 670,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-onboarding.md": {
+      "filePath": "sdlc/devstarter-onboarding.md",
+      "contentHash": "67780025368632d3708cff3472a9d89340d8be3303c6bdbed7967b97700ac347",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 153,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-postmortem.md": {
+      "filePath": "sdlc/devstarter-postmortem.md",
+      "contentHash": "b2adfa2151d9fa4bdb189c6776975ba519dece5c77dea3f3a8a0f6356fd0d121",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 345,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-profile.md": {
+      "filePath": "sdlc/devstarter-profile.md",
+      "contentHash": "6f77ff51439200339ac1f6166e63c7c88e9bfe71105fffbdd478405f3776a992",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 304,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-release-deploy.md": {
+      "filePath": "sdlc/devstarter-release-deploy.md",
+      "contentHash": "ad74caf991363d7dc4585574cea278baf53265192c69e90d59e448ed3af9a29d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 435,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-release-prep.md": {
+      "filePath": "sdlc/devstarter-release-prep.md",
+      "contentHash": "c8033cb13bedb8169152fcb85bc9e8d69c60f8be6a378cf4357dcfa7138873a1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 79,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-release-verify.md": {
+      "filePath": "sdlc/devstarter-release-verify.md",
+      "contentHash": "c78621daf6d2b936332c215e62f588e4bb6d2502a09bda679e666d335f8cd434",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 393,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-release.md": {
+      "filePath": "sdlc/devstarter-release.md",
+      "contentHash": "261f4a4e1f92a709f30a4072fed7e8f625c6b2a0aa2dd35695a92b175ed7217a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-retrospective.md": {
+      "filePath": "sdlc/devstarter-retrospective.md",
+      "contentHash": "7a1ba8755ee923e214e8b250bcf5f266d32e544b4d2caff9eeffcd88dfcc0fdf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 90,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-review.md": {
+      "filePath": "sdlc/devstarter-review.md",
+      "contentHash": "0284e3533129f7227bb9ff2cadbfe6301f7e0f8771d7296d383b487fa14e73c2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 170,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-rollback.md": {
+      "filePath": "sdlc/devstarter-rollback.md",
+      "contentHash": "6d99eeed348b7284e510aac473097d505b6bcbdf9aa300931d8a0f209e0a10c5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 193,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-secrets.md": {
+      "filePath": "sdlc/devstarter-secrets.md",
+      "contentHash": "53d2e8234fc0ad2fe87ad8124c90678a313a1145f97b87861f9c02fa29358d0e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 277,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-sprint.md": {
+      "filePath": "sdlc/devstarter-sprint.md",
+      "contentHash": "39f24e05d0c20c53611d2889215c1d0a53beff4dd47e46e96278210fadd4552c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 177,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-starter-gates.md": {
+      "filePath": "sdlc/devstarter-starter-gates.md",
+      "contentHash": "2ecee3fa15e8d8634f9fb1733ba99cfea5f922981809ea2bb5f309a77ed35de9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 320,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-starter-intake.md": {
+      "filePath": "sdlc/devstarter-starter-intake.md",
+      "contentHash": "db145b282e004c3218867bf4d0520bff797b492a2a3d57e6f22c926e63deef09",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 924,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-starter-template.md": {
+      "filePath": "sdlc/devstarter-starter-template.md",
+      "contentHash": "c771c5466b0e50c0c82ce7fb1017fe3c5b9a20c1cefcf7f86d638bb3ff7b0755",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 657,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-starter.md": {
+      "filePath": "sdlc/devstarter-starter.md",
+      "contentHash": "6a7035c0ced5258ba4be7b0349876b74c92d6d5ed5f3a23343ca1025479081ef",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 147,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-svn.md": {
+      "filePath": "sdlc/devstarter-svn.md",
+      "contentHash": "1e32db24265ac04617c226845253ce8ec03aa998a9b94c24dd27b5bb51c6b2a1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 424,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-understand-chat.md": {
+      "filePath": "sdlc/devstarter-understand-chat.md",
+      "contentHash": "8d76d88b967216e9bea3d709e824915d725cddd71aed72b125ead7c09c527778",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-understand-dashboard.md": {
+      "filePath": "sdlc/devstarter-understand-dashboard.md",
+      "contentHash": "65c1b5ab06880991b1d1646d51fb58363161e8bdc12e06ec542f6060da33d7a8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-understand-diff.md": {
+      "filePath": "sdlc/devstarter-understand-diff.md",
+      "contentHash": "89e1319249b5651db0c07aea52c04bfbdcd4eea9b712f85c59944947659aff3e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-understand-domain.md": {
+      "filePath": "sdlc/devstarter-understand-domain.md",
+      "contentHash": "193903a1fb2299a151c620efd9902f5dc033d9ca192e528c4470367b3d520696",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-understand-explain.md": {
+      "filePath": "sdlc/devstarter-understand-explain.md",
+      "contentHash": "b3c6c749092d1fe5d4b3cb8b39dad5fb0944956142efe2929e792a585425d6b8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-understand-knowledge.md": {
+      "filePath": "sdlc/devstarter-understand-knowledge.md",
+      "contentHash": "5b285c083f1e9acab3bc99908b99f723d734730a50c15bcc0043dee72f80de40",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 59,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-understand-onboard.md": {
+      "filePath": "sdlc/devstarter-understand-onboard.md",
+      "contentHash": "8f68020b1c4cf857ff75163931400ebc6b61f54a25a223e9ffb2647575a9d7b3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 61,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-understand.md": {
+      "filePath": "sdlc/devstarter-understand.md",
+      "contentHash": "b3817fac4fe1981100c83242e3f129d14cd91d73c76a07d1ee5712e5ee0d65b6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 74,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-vcs-sync.md": {
+      "filePath": "sdlc/devstarter-vcs-sync.md",
+      "contentHash": "6a24ed8496c339cf5bfc776fcc0a3edbf8e6c8c4e5a95fc016ebbd99e5c8445e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 235,
+      "hasStructuralAnalysis": true
+    },
+    "sdlc/devstarter-verification-loop.md": {
+      "filePath": "sdlc/devstarter-verification-loop.md",
+      "contentHash": "163bf48c18fdfef5dab11454c27c5d13ebaf9c058c1bfb7f7a729f0b7acd711e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 144,
+      "hasStructuralAnalysis": true
+    },
+    "settings.json": {
+      "filePath": "settings.json",
+      "contentHash": "97b7ba120c28c80de6e46e78c0baa4a9932aaf076669a59ead5f046f0ea54bbf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "setup.sh": {
+      "filePath": "setup.sh",
+      "contentHash": "c4e7d6f4cf268d0fd8a6d5e1877ec70b495b8e24252ee6934fbc7f38909e23fc",
+      "functions": [
+        {
+          "name": "check_cmd",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "check_cmd_optional",
+          "params": [],
+          "exported": false,
+          "lineCount": 7
+        },
+        {
+          "name": "ask",
+          "params": [],
+          "exported": false,
+          "lineCount": 18
+        },
+        {
+          "name": "normalize",
+          "params": [],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "matches",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "getLevel",
+          "params": [],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "makeTable",
+          "params": [],
+          "exported": false,
+          "lineCount": 8
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 518,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-adr/SKILL.md": {
+      "filePath": "skills/devstarter-adr/SKILL.md",
+      "contentHash": "059ef4562a3ecee1b4a3eaee5ed3a95fdc7e0c18f831cab113909c45f301d28c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-agents/SKILL.md": {
+      "filePath": "skills/devstarter-agents/SKILL.md",
+      "contentHash": "b304ffcf0dc800b49fc2ceef1fe1ce1765c00f3705e6dd1facc4af7e79265fa6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 78,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-audit/SKILL.md": {
+      "filePath": "skills/devstarter-audit/SKILL.md",
+      "contentHash": "d253644330827963c10cdb6310573c0ef015f5f8a91c9bc056c77f99973ebdba",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 58,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-ba/SKILL.md": {
+      "filePath": "skills/devstarter-ba/SKILL.md",
+      "contentHash": "bf7ea61acdc13946234924678729a24484ec2ddde5b1e890908e305286bfc4e1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-backend/SKILL.md": {
+      "filePath": "skills/devstarter-backend/SKILL.md",
+      "contentHash": "a4c15e17f2ba1f0d639cf313443a2ee4fc223252813504907db1dab256cff6ab",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-bug-postmortem/SKILL.md": {
+      "filePath": "skills/devstarter-bug-postmortem/SKILL.md",
+      "contentHash": "ba7691223adcbf1eab7642741bbf90af8d15281a5afe8619eefbadc204e2b5a2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 179,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-change/SKILL.md": {
+      "filePath": "skills/devstarter-change/SKILL.md",
+      "contentHash": "2fe9a4c5c6a9a490584aa87cb9abbc9cd8f8eac3d3d6b4c145b6cbe90c4094e6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 114,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-compliance/SKILL.md": {
+      "filePath": "skills/devstarter-compliance/SKILL.md",
+      "contentHash": "71686fb136a3cf40fa9a75935a96a0f4c0f8aa3f46eb5acdcd6f1372f33c652e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-consult/SKILL.md": {
+      "filePath": "skills/devstarter-consult/SKILL.md",
+      "contentHash": "c256cf345d6aef0729671b0c192da66d1c5dacbbfe5eb4d111c07bc3c6c58a56",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-context/SKILL.md": {
+      "filePath": "skills/devstarter-context/SKILL.md",
+      "contentHash": "c1632b4b10bf04dfa97c6bba1e49b75d5e9c12a27c3af4624a483060ab3a8cd0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 127,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-council/SKILL.md": {
+      "filePath": "skills/devstarter-council/SKILL.md",
+      "contentHash": "91d54f109a98ca7ff3b3bd403d1c1eaf495bdbc8372fe589f01630e95776bca1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-dba/SKILL.md": {
+      "filePath": "skills/devstarter-dba/SKILL.md",
+      "contentHash": "129c3f307375c3db9732b36dd466e95dd407f0fe6600ecc88081081be0029951",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-debug-mantra/SKILL.md": {
+      "filePath": "skills/devstarter-debug-mantra/SKILL.md",
+      "contentHash": "dcd20049fded04b97a2e92644254571d33423f9fc69584025b601e015d329923",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 97,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-debug/SKILL.md": {
+      "filePath": "skills/devstarter-debug/SKILL.md",
+      "contentHash": "357b371b76cfaf1138ac1fd035035177d2e8943abe95b1fb31ee106ea9dec80d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 44,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-dependency/SKILL.md": {
+      "filePath": "skills/devstarter-dependency/SKILL.md",
+      "contentHash": "79beb1306099d1939d60f7d3de87886ea001c0651c17d3884dc17b0b125237e5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-devops/SKILL.md": {
+      "filePath": "skills/devstarter-devops/SKILL.md",
+      "contentHash": "66fd04c5bd6e72b751b6dcdf89ed822794515f2ed6e2e3275db10fd1ede489fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-docs/SKILL.md": {
+      "filePath": "skills/devstarter-docs/SKILL.md",
+      "contentHash": "a1ff787afd7ccc287392ea1680bb6ffc09da68303931cb7630d1f0045f583966",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-doctor/SKILL.md": {
+      "filePath": "skills/devstarter-doctor/SKILL.md",
+      "contentHash": "47501ff4acc62bc8f1fbfc8e24127764fb24474255ff69620082f9730d6f063d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-document/SKILL.md": {
+      "filePath": "skills/devstarter-document/SKILL.md",
+      "contentHash": "f1b8bca3d946bbc1befd2ceefdbd6985df57b3268fd9c0a61f1a4767264f3f9e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 59,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-env/SKILL.md": {
+      "filePath": "skills/devstarter-env/SKILL.md",
+      "contentHash": "01e7da427045d315e2b43b5e702eb136ffa4a4340c7cca7e2c805e0a0e1a065e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-existing/SKILL.md": {
+      "filePath": "skills/devstarter-existing/SKILL.md",
+      "contentHash": "8d5b7e8f6e0ae63c8233be6b232ca1ca1fef899b302e4a446257c69a5e11ebd4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-export/SKILL.md": {
+      "filePath": "skills/devstarter-export/SKILL.md",
+      "contentHash": "fd62144482ffd21ee5a65da6f283bb6781b3544a9bfd42a92e4d0176fc0849fa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 193,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-frontend/SKILL.md": {
+      "filePath": "skills/devstarter-frontend/SKILL.md",
+      "contentHash": "68fda2a660f4dc0fda4ffb14b0a5c4a6f5b5e1ba7fd1c88c3551aaf00b85e75b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-gitsetup/SKILL.md": {
+      "filePath": "skills/devstarter-gitsetup/SKILL.md",
+      "contentHash": "ec558b295dd09195ad1ef40e71013c3a73db230d98ce5b22c5af02b22d843057",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-handover/SKILL.md": {
+      "filePath": "skills/devstarter-handover/SKILL.md",
+      "contentHash": "dec40658d905a06eac85c1a468cdc60c6d38150eaa68cb93db6e2c53ca0284e2",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-hotfix/SKILL.md": {
+      "filePath": "skills/devstarter-hotfix/SKILL.md",
+      "contentHash": "0de04e5ccb6b91f0a38629a83a7f8b8c87b27b6a37b8260062c42c9cca8bea44",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-import/SKILL.md": {
+      "filePath": "skills/devstarter-import/SKILL.md",
+      "contentHash": "6ab6c7266d5bd77a1550acc5a0cd485aff1f289a4c3cbe7e3945ad655606cc72",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 185,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-incident/SKILL.md": {
+      "filePath": "skills/devstarter-incident/SKILL.md",
+      "contentHash": "310f15be5e7b29e0ec6cacdd3279a1558e9b48ad79dc647bf3e83e3189d7f387",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-management-talk/SKILL.md": {
+      "filePath": "skills/devstarter-management-talk/SKILL.md",
+      "contentHash": "af6f2b8b314071badf57d5887afac1dbf64ac65327bbac30e65cb8a7b1f7c1b9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 196,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-mcp/SKILL.md": {
+      "filePath": "skills/devstarter-mcp/SKILL.md",
+      "contentHash": "1db6688ca2554d3b5a30278c52ddff56c724726ca07cf9db54757fec364676bc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-menu/SKILL.md": {
+      "filePath": "skills/devstarter-menu/SKILL.md",
+      "contentHash": "0777318454da58f4d3431901b5f861c6ebf9477e694a39cfb4bbb5e65544cb91",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-migrate/SKILL.md": {
+      "filePath": "skills/devstarter-migrate/SKILL.md",
+      "contentHash": "12135db723c3a46ea3bc9f9c81f16374df4e8c96f8284ae116d8e51ac2986934",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-mlops/SKILL.md": {
+      "filePath": "skills/devstarter-mlops/SKILL.md",
+      "contentHash": "5144dd3e1f0cbee7566d7ec87760ede599053b3f0160c89692006e47760526d3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-mobile/SKILL.md": {
+      "filePath": "skills/devstarter-mobile/SKILL.md",
+      "contentHash": "7ee9faf1c84a2d09d80e0596b8ec8355e055ae7ec6f6c366a80c2dc8eceec0ef",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-monitor/SKILL.md": {
+      "filePath": "skills/devstarter-monitor/SKILL.md",
+      "contentHash": "3a8dde120722ca1c600c10f58379100523d457d4466e95ef36fbfa4da036e8fd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-new/SKILL.md": {
+      "filePath": "skills/devstarter-new/SKILL.md",
+      "contentHash": "b1e69292f2bcd313c6950e08670f31848bd00f75d05bdad76f787a0f56ca0a50",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 69,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-onboard/SKILL.md": {
+      "filePath": "skills/devstarter-onboard/SKILL.md",
+      "contentHash": "776ae762b90ddfa08920dc7d0ad4a6e93303d2205141cca45b0324f452738bf5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-pm/SKILL.md": {
+      "filePath": "skills/devstarter-pm/SKILL.md",
+      "contentHash": "0634b02204a79d7dba02431b8d6431ab1b0af9fba9335f4bd534c54484baf345",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-postmortem/SKILL.md": {
+      "filePath": "skills/devstarter-postmortem/SKILL.md",
+      "contentHash": "d522a85a398e359b823480b241e548d085286be97c03c7420a67eabe1c9beb58",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 53,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-profile/SKILL.md": {
+      "filePath": "skills/devstarter-profile/SKILL.md",
+      "contentHash": "7e886f5d6064f25887c0bd8f2b58a2bd85f05243a6b462c9ca32ce2c6f133424",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 54,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-qa/SKILL.md": {
+      "filePath": "skills/devstarter-qa/SKILL.md",
+      "contentHash": "2d12c631eeb3ce580918cd42be89abb8d072f6473f8ba01f5d92cfd5832fc68c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-registry/SKILL.md": {
+      "filePath": "skills/devstarter-registry/SKILL.md",
+      "contentHash": "d75eec23b7862cc6fc7dfe1abdb4c2445b220e52f4b577e52ef03c85c076662a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 62,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-release/SKILL.md": {
+      "filePath": "skills/devstarter-release/SKILL.md",
+      "contentHash": "a1887cf2f8014f3ef1aaa60cb49e086e22754e5c2b96341e9409d546cabfba07",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-retro/SKILL.md": {
+      "filePath": "skills/devstarter-retro/SKILL.md",
+      "contentHash": "f4128a39cdfaef888247dbaa6907dca8b940f82401bcc0bd3eb21cbdc791891a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-review/SKILL.md": {
+      "filePath": "skills/devstarter-review/SKILL.md",
+      "contentHash": "a11cc82d293802904d40b3ebff04abdab6ee57dce4eb32ab19f7ea9a604feb7e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-rollback/SKILL.md": {
+      "filePath": "skills/devstarter-rollback/SKILL.md",
+      "contentHash": "c2575420cc63e21b07bc6fc0b2d6b3b71158f3a215cbe579474e87224aea1622",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-scrutinize/SKILL.md": {
+      "filePath": "skills/devstarter-scrutinize/SKILL.md",
+      "contentHash": "926229d091056b9660638026d21d01e80707014651138fd8684c35d08559aa03",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 87,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-secrets/SKILL.md": {
+      "filePath": "skills/devstarter-secrets/SKILL.md",
+      "contentHash": "60b3101d80a13bf8b49ed3303a506bf3cd604f857c92ce38c9655f875e2b9dba",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-security/SKILL.md": {
+      "filePath": "skills/devstarter-security/SKILL.md",
+      "contentHash": "c1cb2dc1a79dae99d20786d60dd768284191badd00c5e06a8e7fc5441cad4d4c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-sprint/SKILL.md": {
+      "filePath": "skills/devstarter-sprint/SKILL.md",
+      "contentHash": "33ce7fdb017f79837c4b556102946b9523195ebf507a9a91003c6c10a7d1cf7d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-techlead/SKILL.md": {
+      "filePath": "skills/devstarter-techlead/SKILL.md",
+      "contentHash": "d4a6d5cc05219c2b67b1e76770978fd1fc131078592b26e3c74e1092e03e83c0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-understand-chat/SKILL.md": {
+      "filePath": "skills/devstarter-understand-chat/SKILL.md",
+      "contentHash": "db000726ff67207187896bab3c89ef1c22dbc8b8b605df4f2d282b43a7ea4a0c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-understand-dashboard/SKILL.md": {
+      "filePath": "skills/devstarter-understand-dashboard/SKILL.md",
+      "contentHash": "b5407ae5f4315323302bdc22c26c9f17458306fee59f6d0f0f08f90ba1ace625",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-understand-diff/SKILL.md": {
+      "filePath": "skills/devstarter-understand-diff/SKILL.md",
+      "contentHash": "fb712605806ba57aeb7e7b222d357571f81d01a328bc22e4a83356f1e8a9e84a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-understand-domain/SKILL.md": {
+      "filePath": "skills/devstarter-understand-domain/SKILL.md",
+      "contentHash": "3d30d65501723eff500ea11dc52e3066f745c43a5c3ed19e97a1ab09f32ace6c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-understand-explain/SKILL.md": {
+      "filePath": "skills/devstarter-understand-explain/SKILL.md",
+      "contentHash": "ac2e130a3ef7849fd6f7aab633e4886f5b6e9159a5b10f64509a818b0df2420d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-understand-knowledge/SKILL.md": {
+      "filePath": "skills/devstarter-understand-knowledge/SKILL.md",
+      "contentHash": "f6ebd9634770c13ecba93a5fe2922ea9f5bda1770b5ed084788defa843805d0b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 35,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-understand-onboard/SKILL.md": {
+      "filePath": "skills/devstarter-understand-onboard/SKILL.md",
+      "contentHash": "e88d99a3c1ed7206f2fc568fbcd1ef084bbb736b3d447f79c1910b170915dbaa",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 37,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-understand/SKILL.md": {
+      "filePath": "skills/devstarter-understand/SKILL.md",
+      "contentHash": "1853e528a713aba093179a08888548d8839433464fb48ace838f9ae1d21cf3b1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 38,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-update/SKILL.md": {
+      "filePath": "skills/devstarter-update/SKILL.md",
+      "contentHash": "3fa78268ae051353c6290379c57f558ece53f96c16a277a9c903175f38145441",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-uxui/SKILL.md": {
+      "filePath": "skills/devstarter-uxui/SKILL.md",
+      "contentHash": "45176cf7b871c123d465eef66c70289d30d84220089fcf0f241e3ca2f980235b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 26,
+      "hasStructuralAnalysis": true
+    },
+    "skills/devstarter-verification-loop/SKILL.md": {
+      "filePath": "skills/devstarter-verification-loop/SKILL.md",
+      "contentHash": "3d62e6fadaac740ea6095cf2346d7afd5438c8f2c597385c3ef4bd0191ddaf77",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 45,
+      "hasStructuralAnalysis": true
+    },
+    "skills/update/SKILL.md": {
+      "filePath": "skills/update/SKILL.md",
+      "contentHash": "1461c911252e27902d2a75f357b9c9a23fdf6a4469213047792195bbe9611b67",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 25,
+      "hasStructuralAnalysis": true
+    },
+    "templates/agent-disambiguation.md": {
+      "filePath": "templates/agent-disambiguation.md",
+      "contentHash": "0210a35539bb0218b5823cb9ffd3355a2de0bb2d59f2e979292f470e1566d79f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 141,
+      "hasStructuralAnalysis": true
+    },
+    "templates/CLAUDE.md.template": {
+      "filePath": "templates/CLAUDE.md.template",
+      "contentHash": "1e0d43f6a70f3d7c332155d03237e6e0748e48b3433fa273c807f7f9299ef1eb",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 306,
+      "hasStructuralAnalysis": false
+    },
+    "templates/contexts/dev.md": {
+      "filePath": "templates/contexts/dev.md",
+      "contentHash": "82292b7d245da5790a2254bdc1b7e15eda196bfb740f8881ebba9d2e8b17221b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 27,
+      "hasStructuralAnalysis": true
+    },
+    "templates/contexts/README.md": {
+      "filePath": "templates/contexts/README.md",
+      "contentHash": "9d1bf6aa4c79afb1510390722c042eba61f13c1ec37bdf643a1ad08d65f61494",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 24,
+      "hasStructuralAnalysis": true
+    },
+    "templates/contexts/research.md": {
+      "filePath": "templates/contexts/research.md",
+      "contentHash": "83e97128d015bc5c4c099244fc262c6e94fe0ffea7e36f02c5da92e89f1a92e5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 32,
+      "hasStructuralAnalysis": true
+    },
+    "templates/contexts/review.md": {
+      "filePath": "templates/contexts/review.md",
+      "contentHash": "c07203da4de1af1a396fd6b5248d3abbe894c8ccce98a951f2502507aa2d664a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "templates/devstarter-config.template.yml": {
+      "filePath": "templates/devstarter-config.template.yml",
+      "contentHash": "8113ecb90eee1e1b29183214789d21224f743c271e30e9225b75ab5ebb317f8c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 152,
+      "hasStructuralAnalysis": true
+    },
+    "templates/docs/devstarter-change-kickoff-template.html": {
+      "filePath": "templates/docs/devstarter-change-kickoff-template.html",
+      "contentHash": "1f4f4124a115a8e4a814e8aa82ba572b5bcdb9ddd58d867c9681f7d4f33b9775",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 428,
+      "hasStructuralAnalysis": false
+    },
+    "templates/docs/devstarter-change-mgmt-template.html": {
+      "filePath": "templates/docs/devstarter-change-mgmt-template.html",
+      "contentHash": "7440900c3874600a9403bb5e259d99f114364ef8b316561fc31c6e6cd7ea5b6e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 418,
+      "hasStructuralAnalysis": false
+    },
+    "templates/docs/devstarter-change-plan-template.html": {
+      "filePath": "templates/docs/devstarter-change-plan-template.html",
+      "contentHash": "4f8120c1f3b51001afb2e18a91f83dffef604948262dac7a73cb1ebc2db1083e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 393,
+      "hasStructuralAnalysis": false
+    },
+    "templates/docs/devstarter-change-summary-template.html": {
+      "filePath": "templates/docs/devstarter-change-summary-template.html",
+      "contentHash": "9ced855cefd2154b19acc2ea9958e5e506411296974fb1742043987314b525d4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 410,
+      "hasStructuralAnalysis": false
+    },
+    "templates/docs/devstarter-incident-brief-template.html": {
+      "filePath": "templates/docs/devstarter-incident-brief-template.html",
+      "contentHash": "0f3a74375a2730deff877cd9fa0cea3d1f4277bbda1f8c06c6cec94a72576f04",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 373,
+      "hasStructuralAnalysis": false
+    },
+    "templates/docs/document-template.html": {
+      "filePath": "templates/docs/document-template.html",
+      "contentHash": "c654a28af212962fa6aac509b3173dc0e0871ea452bd99c8e3c22a66c1e4e210",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 835,
+      "hasStructuralAnalysis": false
+    },
+    "templates/docs/index.html": {
+      "filePath": "templates/docs/index.html",
+      "contentHash": "5fa14bd523f1a399ce90c57b29d0aa84a43ed75c4022f66d75cdd239d32dd8df",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 743,
+      "hasStructuralAnalysis": false
+    },
+    "templates/github/claude-pr-review-setup.md": {
+      "filePath": "templates/github/claude-pr-review-setup.md",
+      "contentHash": "cc5b39e52c53ececd7a90f6112bd26de57820dc7802753235e122fac0f26278f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 191,
+      "hasStructuralAnalysis": true
+    },
+    "templates/github/claude-pr-review.yml": {
+      "filePath": "templates/github/claude-pr-review.yml",
+      "contentHash": "3cd231866ac455d54dd10353e4771042683de0b554ace19c18924f70c46cb063",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 139,
+      "hasStructuralAnalysis": true
+    },
+    "templates/github/fitness-functions-setup.md": {
+      "filePath": "templates/github/fitness-functions-setup.md",
+      "contentHash": "2a7efdf8db2ad29c466380f4774ccfc0fd96c1e7514748538539f89afebe8b62",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 220,
+      "hasStructuralAnalysis": true
+    },
+    "templates/github/fitness-functions.yml": {
+      "filePath": "templates/github/fitness-functions.yml",
+      "contentHash": "084336393aef45609ccba8b538f1d569d80bfedba20f867787243b9b41501242",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 276,
+      "hasStructuralAnalysis": true
+    },
+    "templates/hooks/hooks.json": {
+      "filePath": "templates/hooks/hooks.json",
+      "contentHash": "366329d85c387c9fe7b84b2cb6583b404e025afa33fb437227dc9bfa96f7ebd3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 66,
+      "hasStructuralAnalysis": true
+    },
+    "templates/hooks/README.md": {
+      "filePath": "templates/hooks/README.md",
+      "contentHash": "073a634b17737a3264a249b112bc992640aa43a1ab5b2ce078ad33d3d4898627",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 89,
+      "hasStructuralAnalysis": true
+    },
+    "templates/intake/devstarter-intake-add-feature.md": {
+      "filePath": "templates/intake/devstarter-intake-add-feature.md",
+      "contentHash": "85100999291bd1229e55ce73272f8b0983a6785f4dbdd707931d5f1070241a4f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 182,
+      "hasStructuralAnalysis": true
+    },
+    "templates/intake/devstarter-intake-consult.md": {
+      "filePath": "templates/intake/devstarter-intake-consult.md",
+      "contentHash": "aa673cf294d356c9f7d2719d31faf355f473ad94e6cfcdb3ed3688702a61b8b9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 134,
+      "hasStructuralAnalysis": true
+    },
+    "templates/intake/devstarter-intake-fix-bug.md": {
+      "filePath": "templates/intake/devstarter-intake-fix-bug.md",
+      "contentHash": "7e5a19bcbdd27f3e51cc420dd9bb4884da4f6d5cf8a3e4e2c4c661e74f368b15",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 171,
+      "hasStructuralAnalysis": true
+    },
+    "templates/intake/devstarter-intake-modify-feature.md": {
+      "filePath": "templates/intake/devstarter-intake-modify-feature.md",
+      "contentHash": "b2ace0f7af644489da7a60f221dbe854970d357a0eeb2dc8ebbf6578ac78b3d5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 181,
+      "hasStructuralAnalysis": true
+    },
+    "templates/intake/devstarter-intake-new-project.md": {
+      "filePath": "templates/intake/devstarter-intake-new-project.md",
+      "contentHash": "3b133531e6a2ff831bbea12f801f8c9475c35f2c3acd6fba01725233a25bcf84",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 182,
+      "hasStructuralAnalysis": true
+    },
+    "templates/litellm/litellm-config.yaml": {
+      "filePath": "templates/litellm/litellm-config.yaml",
+      "contentHash": "740adb48c4570fe110f7fa69b49c5a24dc25fef4e0ac562e4ef3951b4fa0ae10",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 102,
+      "hasStructuralAnalysis": true
+    },
+    "templates/litellm/provider-setup.md": {
+      "filePath": "templates/litellm/provider-setup.md",
+      "contentHash": "a161cd7340cffacbaf0568de321a1e4af821c0f42fa7a4c8a4be0e27450df1fe",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 233,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/brave-search.json": {
+      "filePath": "templates/mcp/brave-search.json",
+      "contentHash": "2ad18530a0fe88ef7e22e0e06f9846c67eeda21b68957b9407c0869d8f7ad43b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/browser-use.json": {
+      "filePath": "templates/mcp/browser-use.json",
+      "contentHash": "4f39f7de17389965fd89548cbf8e9a050e00f50c93852c20e545f2ca999b7921",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/browserbase.json": {
+      "filePath": "templates/mcp/browserbase.json",
+      "contentHash": "3327195d0798b94da5591c04e62512a8f0e19ad89e9ea7598e9b6588ea3e094c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/clickhouse.json": {
+      "filePath": "templates/mcp/clickhouse.json",
+      "contentHash": "eef9033c05283e10106dfac2a52561f4a28300b4f30e21bc381e78a7e6c16e89",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/cloudflare.json": {
+      "filePath": "templates/mcp/cloudflare.json",
+      "contentHash": "288bef7e1dc9ee18cc8f65983fb9393d8707b20de3c3fd21325628fa0ede7863",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 21,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/confluence.json": {
+      "filePath": "templates/mcp/confluence.json",
+      "contentHash": "784ebb832cc2670ae663dc936ea8bde76b7aefd646b47e6cb393fe134667fa99",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/context7.json": {
+      "filePath": "templates/mcp/context7.json",
+      "contentHash": "bb359ff8482c804d2777688a74e9c9c9cbc6a57abf9cadca81b8f962dc950519",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/devfleet.json": {
+      "filePath": "templates/mcp/devfleet.json",
+      "contentHash": "6bd460fc95cb2511adba084a24817a154c0bb0a0982b243464d588f8ac589b5e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/evalview.json": {
+      "filePath": "templates/mcp/evalview.json",
+      "contentHash": "caee153c4e80f11c5e9fbe7dc05181774938ddcc5886ec79a86bd496d40c181b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/exa-search.json": {
+      "filePath": "templates/mcp/exa-search.json",
+      "contentHash": "fb70335850a199aae6d0ac48ab49dc0f111404e8b393bb89f49411066f80ef7d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/fal-ai.json": {
+      "filePath": "templates/mcp/fal-ai.json",
+      "contentHash": "6c4e01512a3d75014cd017b00fa901e30a540134b3be28c5b12575d62353eacc",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/filesystem.json": {
+      "filePath": "templates/mcp/filesystem.json",
+      "contentHash": "f2af17958b02ae83da339e0a246c24f498c9bfdc90ed18aaeeea2349ce85a3ae",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/firecrawl.json": {
+      "filePath": "templates/mcp/firecrawl.json",
+      "contentHash": "26cbf3d09a25afb350b97fa3b6aa21dac70fb31e60e0fa21b75c75321ed926a9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/github.json": {
+      "filePath": "templates/mcp/github.json",
+      "contentHash": "f2b6123be7ef78eab9466a5058fd7675cebf493442fd94302577fa0d6b440b79",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/jira.json": {
+      "filePath": "templates/mcp/jira.json",
+      "contentHash": "aa1da951cfad1383539669365e708a6787100998695d908da3b1cf4730a0aaea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/laraplugins.json": {
+      "filePath": "templates/mcp/laraplugins.json",
+      "contentHash": "77c6fbcd1a58fc684b8f9f8f30149f0ec091dc85f2f59c316327095eb298b130",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/longhand.json": {
+      "filePath": "templates/mcp/longhand.json",
+      "contentHash": "16ab660452d7e0a005907da88ed307f716248df4962dd41670c787b06af379b3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/magic-ui.json": {
+      "filePath": "templates/mcp/magic-ui.json",
+      "contentHash": "689d78f6fb10c64ffb0a25980acd682c5199b4962f27b716ba2399eb5b75af7a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/mcp-setup.md": {
+      "filePath": "templates/mcp/mcp-setup.md",
+      "contentHash": "8e543fee8035f034d37c4256c3d072e44afc02af12923f28ad82eebf92dd8770",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 571,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/memory.json": {
+      "filePath": "templates/mcp/memory.json",
+      "contentHash": "320414c3dac00d5300dce9216c33902207caa5465152495ce1fc23cbb915fd00",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/mssql.json": {
+      "filePath": "templates/mcp/mssql.json",
+      "contentHash": "7a21d1c7ae187b0400bb45736080d0ad35faf0d635e63f6adb1cd61219b9cce1",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/omega-memory.json": {
+      "filePath": "templates/mcp/omega-memory.json",
+      "contentHash": "15a53ac138b2260f82bfbafb8cb5be84b87681d1dc3bf8241dc58a1eec1de6d0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/playwright.json": {
+      "filePath": "templates/mcp/playwright.json",
+      "contentHash": "0a883e8f7796426a9edc9f357e3d5649593441273fbd57480f32d7de7831a130",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/postgres.json": {
+      "filePath": "templates/mcp/postgres.json",
+      "contentHash": "7aca43afbc036ef33295e65f67b1c3fcc2340b2d9d367c85ae4e3302901e6240",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/railway.json": {
+      "filePath": "templates/mcp/railway.json",
+      "contentHash": "4ae2eb4d61c2108282f1112c5349324576555c0513c0e7391da221e86970b64f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/sequential-thinking.json": {
+      "filePath": "templates/mcp/sequential-thinking.json",
+      "contentHash": "69a40a20c473fc3d3358e9de9c8e3a45c0835cc0b28b3d45622a6fe986ad017c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/sqlite.json": {
+      "filePath": "templates/mcp/sqlite.json",
+      "contentHash": "daf5dc1b76264b42c650224de55ac57e157eb1a0eac92b8ae65c8a897a13811b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/supabase.json": {
+      "filePath": "templates/mcp/supabase.json",
+      "contentHash": "54283863c40540124cb57cfeb2e21240cd287cee292abd46607f2a74ef032562",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/token-optimizer.json": {
+      "filePath": "templates/mcp/token-optimizer.json",
+      "contentHash": "771331de4961a7647a70bded0a1fc931028d958a66f81cbd9fa4b41a1115b4a9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/mcp/vercel.json": {
+      "filePath": "templates/mcp/vercel.json",
+      "contentHash": "9ac937975fe5f5f330648a5e6ffb6faea37bb8601e81af325189774880803b3f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "templates/project.env.template": {
+      "filePath": "templates/project.env.template",
+      "contentHash": "f9ad7c666c41c1a4f832d5e307861f5ff8805f3869a9b6089c73698d01dd9467",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 164,
+      "hasStructuralAnalysis": false
+    },
+    "templates/PROJECT.md.template": {
+      "filePath": "templates/PROJECT.md.template",
+      "contentHash": "153a1fdb2fc96f9a1e088b5ca374385b0d63d5d7c3eec594dd5d069030b8f056",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 77,
+      "hasStructuralAnalysis": false
+    },
+    "templates/secrets/aws-secrets-setup.md": {
+      "filePath": "templates/secrets/aws-secrets-setup.md",
+      "contentHash": "2994053de730683e5f54e32c4c53c8492ae6b36b768fac995b19367f1e183aa7",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 258,
+      "hasStructuralAnalysis": true
+    },
+    "templates/secrets/azure-keyvault-setup.md": {
+      "filePath": "templates/secrets/azure-keyvault-setup.md",
+      "contentHash": "8601805e64f3c427147a31d11a9bf4a7cf8022f75203c65e8896d3e0e2938c89",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 241,
+      "hasStructuralAnalysis": true
+    },
+    "templates/secrets/gcp-secretmanager.md": {
+      "filePath": "templates/secrets/gcp-secretmanager.md",
+      "contentHash": "bda4c398cb0456f17d9201b64254cb22c1d37f16baffb59a333dbc7cfce6cdb0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 244,
+      "hasStructuralAnalysis": true
+    },
+    "templates/secrets/vault-config.hcl": {
+      "filePath": "templates/secrets/vault-config.hcl",
+      "contentHash": "32cbb45da10c78d5ac1ee5d4d0fe002fc48858d8b04ed3abe58106f2a3a5bf8d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 77,
+      "hasStructuralAnalysis": false
+    },
+    "templates/secrets/vault-setup.md": {
+      "filePath": "templates/secrets/vault-setup.md",
+      "contentHash": "d6aebc767c8be32c24b91d0ee4b546d1390a363ab14c8cebb9c665eab5f5f83c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 238,
+      "hasStructuralAnalysis": true
+    },
+    "templates/stacks/ml-standard.md": {
+      "filePath": "templates/stacks/ml-standard.md",
+      "contentHash": "05ddfd96066275f78f23b78add24c725ae4a1923d8aa3a8cfb98814bc263f2b3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 233,
+      "hasStructuralAnalysis": true
+    },
+    "templates/stacks/ml-starter.md": {
+      "filePath": "templates/stacks/ml-starter.md",
+      "contentHash": "791182c86df00469f4c57480f361ff1432b509fe5e1cd9002e6482bbaac640e0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 184,
+      "hasStructuralAnalysis": true
+    },
+    "templates/team-packs.md": {
+      "filePath": "templates/team-packs.md",
+      "contentHash": "dbc86d73f51f6e9a453fa46ca679e659e0d87d0ce9a52d342266f14b9a455cea",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 152,
+      "hasStructuralAnalysis": true
+    },
+    "uninstall.sh": {
+      "filePath": "uninstall.sh",
+      "contentHash": "acd9ea4cf7b77eecc78ae7d0ec9725d76186644177cbff2d091c8f5f3108bb3f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 215,
+      "hasStructuralAnalysis": true
+    },
+    "update.sh": {
+      "filePath": "update.sh",
+      "contentHash": "7c22805577b00e595fd4333ed31f8bb72d15f4eb9a3e970d1a73e9fd74f20601",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 165,
+      "hasStructuralAnalysis": true
+    },
+    "USER.md": {
+      "filePath": "USER.md",
+      "contentHash": "fb475c9fa5f5c29c8d0c248f2a734efb44c732e9a299de177e293d15ebe0f758",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 90,
+      "hasStructuralAnalysis": true
+    },
+    "VERSION": {
+      "filePath": "VERSION",
+      "contentHash": "cbca5f43a48e55552673fb4038693009a1ff7eed7ad7aed47054a00cd9a8dfbd",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    }
+  }
+}

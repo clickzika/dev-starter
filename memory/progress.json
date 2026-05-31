@@ -1,32 +1,31 @@
 {
   "workflow": "devstarter-change",
-  "change_id": "CR-2026-05-30-001",
-  "change_type": "Add Feature",
-  "feature": "Understand-Anything Wrapper Commands",
-  "version": "v5.6.0",
-  "status": "waiting_test",
+  "change_id": "CR-2026-05-31-001",
+  "feature": "obsidian-knowledge-vault",
+  "status": "merged_to_develop_untested",
   "branch": "develop",
-  "slug": "understand-wrappers",
-  "started_at": "2026-05-30",
-  "merged_at": "2026-05-30",
-  "pushed": true,
-  "last_done": "Merged 8 devstarter-understand* wrappers to develop, pushed to origin; full doc family (kickoff, plan, summary, mgmt-brief) + ADR-0001 generated",
-  "next": "Live two-path delegation test: install understand-anything plugin, restart Claude Code, run /devstarter-understand (present -> pass-through) and one command absent (-> install prompt). After pass, flip summary/mgmt-brief 'Pending live test' rows to verified.",
-  "features": [
-    "8 thin /devstarter-understand* commands (understand, dashboard, chat, diff, explain, onboard, domain, knowledge)",
-    "Path A thin wrappers delegate to coexisting understand-anything plugin via Skill tool (understand-anything:understand*)",
-    "Preflight detect-and-prompt per command; no vendoring, no build step",
-    "ADR-0001 (Accepted) + bilingual kickoff/plan/summary/mgmt-brief docs",
-    "devstarter-menu items 37-44, install.sh plugin hint, CLAUDE.md v5.6.0"
+  "feature_branch": "feature/obsidian-knowledge-vault (merged --no-ff, not deleted)",
+  "started_at": "2026-05-31",
+  "commits": ["fae8224 feat(knowledge): add Obsidian Knowledge Vault", "905d466 fix(knowledge): inline redaction step"],
+  "intake": "memory/consult-2026-05-31-obsidian-knowledge-vault.md",
+  "adr": "docs/adr/0002-obsidian-knowledge-vault.html",
+  "scope": "capture from /devstarter-knowledge + bug-postmortem + postmortem; recall in /devstarter-debug; git-default transport; inline sanitize-on-write",
+  "done": [
+    "obsidian: config block (template + project yml)",
+    "3 note templates (templates/obsidian/)",
+    "new /devstarter-knowledge SKILL + sdlc (shared Vault Emit/Recall spec)",
+    "emit wired into bug-postmortem + postmortem",
+    "recall wired into debug Phase 1",
+    "docs/obsidian-vault-guide.md + ADR-0002",
+    "menu item 45 + docs/index.html registration",
+    "CLAUDE.md v5.7.0 Recently Shipped row",
+    "security fix: inline deny-list redaction (advisor blocker resolved)"
   ],
   "open_items": [
-    "Live delegation end-to-end test not yet run (acceptance criteria unmet until verified)"
+    "NOT exercised end-to-end (enabled:false, no vault configured). Verify: set obsidian.enabled+vault_path, run /devstarter-knowledge then /devstarter-bug-postmortem, confirm sanitized note lands + /devstarter-debug recall hits it.",
+    "No PR / merge yet. Runbook A-PHASE 4/5 (GitHub issues, fitness/TechLead review) compressed — solo framework feature.",
+    "VERSION/CHANGELOG bump (v5.7.0) deferred to /devstarter-release.",
+    "Optional: extend config-sync to project obsidian keys into .project.env (feature reads from devstarter-config.yml directly, so not required)."
   ],
-  "previous_release": {
-    "workflow": "devstarter-release",
-    "version": "v5.5.0",
-    "status": "completed",
-    "tag": "v5.5.0",
-    "completed_at": "2026-05-24"
-  }
+  "previous": { "workflow": "devstarter-release", "version": "v5.6.0", "tag": "v5.6.0", "completed_at": "2026-05-30" }
 }
