@@ -24,6 +24,32 @@
 
 ---
 
+## ⚡ Session Start — Vault Recall: Project Snapshot (v5.8.0+)
+
+Before collecting new member info, check the knowledge vault for a project orientation note.
+
+Read `obsidian.enabled` from `devstarter-config.yml`.
+If `obsidian.enabled: false` or `obsidian:` block absent → silently skip; proceed to Phase 1.
+If `obsidian.enabled: true` and `vault_path` is set:
+  Run Vault Recall Procedure from `sdlc/devstarter-knowledge.md` with:
+    - keywords: project.name, "project-snapshot"
+    - grep target: `<vault_path>/<subdir>/`
+    - filter frontmatter: `type: project-snapshot` AND `project: <project.name>`
+    - sort by filename date descending → read the most recent match
+  If a match is found, show:
+  ```
+  🏛️ Project snapshot (vault):
+     Title:   <title>
+     Version: <version>   Date: <date>
+     Stack:   <stack>
+     Arch:    <architecture_pattern>
+     Repo:    <repo_url>
+  → Use this as orientation context during onboarding.
+  ```
+  If no match: show one line — "No project snapshot in vault yet — run /devstarter-knowledge to add one." — then continue.
+
+---
+
 ## PHASE 1 — Collect New Member Info
 
 Ask ONE AT A TIME:

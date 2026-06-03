@@ -381,6 +381,113 @@ flowchart LR
     </tbody>
   </table>
 
+  <h3>REQ-OBS — Obsidian Knowledge Vault (CR-2026-06-03-001)</h3>
+  <table>
+    <thead><tr><th>Req ID</th><th>Requirement</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr><td>REQ-OBS-001</td><td>System SHALL provide a <code>project-snapshot</code> vault note type capturing tech stack, architecture decisions, constraints, and repo URL</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-OBS-002</td><td><code>/devstarter-new</code> SHALL offer optional vault emit of a project-snapshot note at Phase 5 post-scaffold (when <code>obsidian.enabled: true</code>)</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-OBS-003</td><td><code>/devstarter-release</code> SHALL offer optional versioned project-snapshot emit at Phase 9.5 (unique filename per release)</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-OBS-004</td><td><code>/devstarter-onboard</code> SHALL grep the vault for the latest project-snapshot and surface it as orientation context at session start</td><td><span class="badge badge-blue">Should</span></td></tr>
+      <tr><td>REQ-OBS-005</td><td>All vault emit points SHALL be opt-in per run (gated via AskUserQuestion) and MUST silently skip when <code>obsidian.enabled: false</code></td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-OBS-006</td><td><code>/devstarter-change</code> (add-feature) SHALL grep the vault for technique notes matching the feature topic before A-PHASE 2 (Impact Analysis) and surface top matches as "Prior patterns" (when <code>obsidian.enabled: true</code>)</td><td><span class="badge badge-blue">Should</span></td></tr>
+      <tr><td>REQ-OBS-007</td><td><code>/devstarter-review</code> SHALL offer optional vault emit of recurring MAJOR/BLOCKER findings as type: technique, topic: code-quality after Phase 4 completes</td><td><span class="badge badge-blue">Should</span></td></tr>
+      <tr><td>REQ-OBS-008</td><td><code>/devstarter-audit</code> SHALL offer optional vault emit of critical/high findings as type: rca, root_cause_category: audit-gap after Phase 5 (Fix Execution)</td><td><span class="badge badge-blue">Should</span></td></tr>
+      <tr><td>REQ-OBS-009</td><td><code>/devstarter-retro</code> SHALL offer optional vault emit of process lessons as type: technique, topic: process after Phase 4 (Action Items)</td><td><span class="badge badge-blue">Should</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>User Stories — Obsidian SDLC Wiring (CR-2026-06-03-002)</h3>
+  <table>
+    <thead><tr><th>US ID</th><th>User Story</th><th>Acceptance Criteria (Given / When / Then)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>US-OBS-04</td>
+        <td>As a developer starting a new feature, I want vault technique notes surfaced before the design phase — so I apply known patterns instead of reinventing solutions.</td>
+        <td>
+          Given <code>obsidian.enabled: true</code> and vault has technique notes<br>
+          When <code>/devstarter-change</code> (add-feature) reaches A-PHASE 2<br>
+          Then top matching vault notes shown as "Prior patterns (vault):" block.<br><br>
+          Given no matching notes<br>
+          When same trigger<br>
+          Then "No matching vault notes found." one-liner; A-PHASE 2 proceeds normally.
+        </td>
+      </tr>
+      <tr>
+        <td>US-OBS-05</td>
+        <td>As a code reviewer, I want to capture recurring findings to the vault — so patterns reach other projects without manual effort.</td>
+        <td>
+          Given <code>obsidian.enabled: true</code> and review found ≥1 MAJOR/BLOCKER<br>
+          When Phase 4 post-review actions complete<br>
+          Then "Save recurring findings as vault notes?" gate offered; if yes, emits type: technique notes.<br><br>
+          Given review was clean (0 blockers, 0 majors)<br>
+          When same trigger<br>
+          Then vault prompt silently skipped.
+        </td>
+      </tr>
+      <tr>
+        <td>US-OBS-06</td>
+        <td>As an auditor, I want critical findings captured as rca notes — so audit patterns are searchable across projects.</td>
+        <td>
+          Given <code>obsidian.enabled: true</code> and audit has critical/high findings<br>
+          When Phase 5 (Fix Execution) complete<br>
+          Then "Save critical/high audit findings to vault?" gate offered; if yes, emits type: rca notes.
+        </td>
+      </tr>
+      <tr>
+        <td>US-OBS-07</td>
+        <td>As a retrospective facilitator, I want process lessons captured — so teams learn from each other's sprints.</td>
+        <td>
+          Given <code>obsidian.enabled: true</code><br>
+          When Phase 4 (action items created) complete<br>
+          Then "Save retro lessons to vault?" gate offered; if yes, emits type: technique, topic: process notes.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>User Stories — Obsidian Project Snapshot (CR-2026-06-03-001)</h3>
+  <table>
+    <thead><tr><th>US ID</th><th>User Story</th><th>Acceptance Criteria (Given / When / Then)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>US-OBS-01</td>
+        <td>As a developer creating a new project, I want DevStarter to offer to save a project-snapshot note to the vault after scaffold — so my project context is captured from day one.</td>
+        <td>
+          Given <code>obsidian.enabled: true</code><br>
+          When <code>/devstarter-new</code> Phase 5 completes<br>
+          Then Claude asks "Save a project-snapshot note?" and, if yes, emits a sanitized note with type: project-snapshot, stack, key-decisions, constraints, repo-url.
+          <br><br>
+          Given <code>obsidian.enabled: false</code><br>
+          When <code>/devstarter-new</code> Phase 5 completes<br>
+          Then no vault prompt appears and workflow behaves exactly as before.
+        </td>
+      </tr>
+      <tr>
+        <td>US-OBS-02</td>
+        <td>As a developer joining an existing project, I want <code>/devstarter-onboard</code> to surface the project-snapshot from the vault — so I can orient myself without reading CLAUDE.md manually.</td>
+        <td>
+          Given a project-snapshot note exists in the vault for this project<br>
+          When <code>/devstarter-onboard</code> runs<br>
+          Then the snapshot (title, version, stack) is shown before onboarding steps begin.
+          <br><br>
+          Given no project-snapshot note exists<br>
+          When <code>/devstarter-onboard</code> runs<br>
+          Then a one-line "No project snapshot in vault" message is shown and onboarding continues.
+        </td>
+      </tr>
+      <tr>
+        <td>US-OBS-03</td>
+        <td>As a developer releasing a new version, I want DevStarter to offer to update the project-snapshot in the vault — so the vault reflects the project's current state after each milestone.</td>
+        <td>
+          Given <code>obsidian.enabled: true</code><br>
+          When <code>/devstarter-release</code> Phase 9.5 runs<br>
+          Then a new versioned snapshot note is offered; if yes, emitted with the release version in filename and frontmatter; previous snapshot(s) remain intact.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
   <div class="section-header" id="section-7">
     <span class="section-number s7">7</span>
     <h2 class="section-title">Non-Functional Requirements</h2>
@@ -469,6 +576,31 @@ flowchart LR
       <tr><td>Slash command</td><td>A Claude Code command file in <code>commands/</code> that users invoke with <code>/devstarter-X</code>; it routes to the matching SDLC runbook</td></tr>
       <tr><td>SDLC</td><td>Software Development Lifecycle — the end-to-end process from requirements to deployment</td></tr>
       <tr><td>devstarter- prefix</td><td>The mandatory namespace prefix applied to all agents, commands, and SDLC files in this project to distinguish them from other Claude Code extensions</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Revision History -->
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title">Revision History</h2>
+  </div>
+  <table>
+    <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>CR-2026-06-03-002</td>
+        <td>2026-06-03</td>
+        <td>ADD</td>
+        <td>Added REQ-OBS-006–009 + US-OBS-04–07 for SDLC wiring (v5.9.0)</td>
+        <td>Natthaphat Wajanavisit</td>
+      </tr>
+      <tr>
+        <td>CR-2026-06-03-001</td>
+        <td>2026-06-03</td>
+        <td>ADD</td>
+        <td>Added REQ-OBS requirements + 3 user stories for project-snapshot note type (v5.8.0)</td>
+        <td>Natthaphat Wajanavisit</td>
+      </tr>
     </tbody>
   </table>
 
