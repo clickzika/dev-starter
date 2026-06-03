@@ -1,25 +1,32 @@
 {
   "workflow": "devstarter-change-add",
-  "feature": "obsidian-project-snapshot",
-  "cr_id": "CR-2026-06-03-001",
-  "version_target": "v5.8.0",
+  "feature": "obsidian-sdlc-wiring",
+  "cr_id": "CR-2026-06-03-002",
+  "version_target": "v5.9.0",
   "status": "completed",
   "branch": "develop",
   "started_at": "2026-06-03",
   "completed_at": "2026-06-03",
   "gates_passed": ["intake", "impact-analysis", "A1-DOC", "A2", "A3", "A4", "A-TEST"],
-  "pr_merged": 82,
-  "issues_closed": [76, 77, 78, 79, 80, 81],
+  "pr_merged": 88,
+  "issues_closed": [83, 84, 85, 86, 87],
   "docs": {
-    "kickoff": "docs/feature/obsidian-project-snapshot/kickoff.html",
-    "plan": "docs/feature/obsidian-project-snapshot/plan.html",
-    "summary": "docs/feature/obsidian-project-snapshot/summary.html",
-    "mgmt_brief": "docs/feature/obsidian-project-snapshot/mgmt-brief.html"
+    "kickoff": "docs/feature/obsidian-sdlc-wiring/kickoff.html",
+    "plan": "docs/feature/obsidian-sdlc-wiring/plan.html",
+    "summary": "docs/feature/obsidian-sdlc-wiring/summary.html",
+    "mgmt_brief": "docs/feature/obsidian-sdlc-wiring/mgmt-brief.html"
+  },
+  "obsidian_integration_status": {
+    "v5.7.0": "vault foundation + bug-postmortem/postmortem emit + debug recall",
+    "v5.8.0": "project-snapshot template + new/release emit + onboard recall",
+    "v5.9.0": "change-add recall + review/audit/retro emit + vault guide SDLC coverage map",
+    "all_7_emission_points_shipped": true,
+    "t0_live_vault_validation_pending": true
   },
   "open_items": [
-    "T0 — validate v5.7.0 vault pipeline end-to-end against live vault (deferred from v5.7.0)",
+    "T0 — validate v5.7.0 vault pipeline end-to-end against live vault (critical — deferred from v5.7.0)",
     "BRD REQ-OBS-002 says 'Phase 5' — should say 'Gate 0' (fix at next BRD review)",
-    "v5.9.0 scope: recall in /devstarter-change design stage + emit from review/audit/retro"
+    "Consider /devstarter-release for v5.9.0 to ship both Obsidian features to users"
   ],
-  "previous_release": { "version": "v5.7.0", "tag": "v5.7.0", "completed_at": "2026-05-31" }
+  "previous_cr": { "cr_id": "CR-2026-06-03-001", "feature": "obsidian-project-snapshot", "version": "v5.8.0" }
 }
