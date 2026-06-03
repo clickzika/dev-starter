@@ -2,8 +2,8 @@
 
 DevStarter can capture engineering knowledge — techniques, bugs, and root causes — as Markdown notes in a shared [Obsidian](https://obsidian.md) vault, reusable across every project. Decision record: [`adr/0002-obsidian-knowledge-vault.html`](adr/0002-obsidian-knowledge-vault.html).
 
-**Capture points:** `/devstarter-knowledge` (ad-hoc), `/devstarter-bug-postmortem` (fixed-bug RCA), `/devstarter-postmortem` (incident RCA).
-**Recall:** `/devstarter-debug` greps the vault at session start and surfaces prior matching root causes — across projects.
+**Capture points:** `/devstarter-knowledge` (ad-hoc), `/devstarter-bug-postmortem` (fixed-bug RCA), `/devstarter-postmortem` (incident RCA), `/devstarter-review` (code-quality findings), `/devstarter-audit` (audit-gap findings), `/devstarter-retro` (process lessons).
+**Recall:** `/devstarter-debug` greps the vault at session start and surfaces prior matching root causes — across projects. `/devstarter-change` (add-feature) surfaces technique notes before impact analysis.
 
 ---
 
@@ -151,7 +151,46 @@ DevStarter never overwrites a snapshot. Each emit creates a new unique file (Rul
 
 ---
 
-## 6. Quick start
+## 6. SDLC Vault Coverage Map (v5.9.0+)
+
+Every DevStarter workflow that integrates with the vault — where it fires, what it captures, and what note type it produces.
+
+| Command | Trigger | Direction | Note type | Topic / Category |
+|---------|---------|-----------|-----------|-----------------|
+| `/devstarter-new` | Gate 0 post-scaffold | Emit | project-snapshot | — |
+| `/devstarter-release` | Phase 9.5 launch brief | Emit | project-snapshot | version key |
+| `/devstarter-onboard` | Session start | Recall | project-snapshot | project match |
+| `/devstarter-change` (add-feature) | Before A-PHASE 2 | Recall | technique | feature topic |
+| `/devstarter-review` | After Phase 4 (if findings) | Emit | technique | code-quality |
+| `/devstarter-audit` | After Phase 5 (critical/high) | Emit | rca | audit-gap |
+| `/devstarter-retro` | After Phase 4 | Emit | technique | process |
+| `/devstarter-debug` | Session start | Recall | bug / rca | symptom keywords |
+| `/devstarter-bug-postmortem` | RCA complete | Emit | bug | root_cause_category |
+| `/devstarter-postmortem` | RCA complete | Emit | rca | root_cause_category |
+| `/devstarter-knowledge` | Ad-hoc | Emit | technique / bug / rca | any |
+
+All emit points are **opt-in** (AskUserQuestion per run) and **silently skip** when `obsidian.enabled: false`.
+
+### Dataview — technique notes by topic
+
+```dataview
+table topic, date, project
+from "knowledge"
+where type = "technique"
+sort topic asc, date desc
+```
+
+### Dataview — full SDLC audit trail
+
+```dataview
+table type, topic, project, date
+from "knowledge"
+sort date desc
+```
+
+---
+
+## 7. Quick start
 
 ```
 1. Create + clone a git vault repo, install Obsidian Git.
