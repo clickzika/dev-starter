@@ -81,7 +81,77 @@ Cross-project queries (Obsidian search or the [Dataview](https://github.com/blac
 
 ---
 
-## 5. Quick start
+## 5. Project Snapshot Notes (v5.8.0+)
+
+A **project-snapshot** note captures a project's full context at a point in time — tech stack, architecture decisions, constraints, repo URL, and team notes. It is the vault's "welcome to this project" entry: new team members can find it immediately, and multiple snapshots across releases form a browsable project evolution timeline.
+
+### When they are emitted
+
+| Trigger | When | Version field |
+|---------|------|---------------|
+| `/devstarter-new` Gate 0 completion | After scaffold: repo + config created | `"initial"` |
+| `/devstarter-release` Phase 9.5 | After each major/minor release launch brief | current tag (e.g. `v5.8.0`) |
+
+Both are **optional** (gated with AskUserQuestion) and silently skip when `obsidian.enabled: false`.
+
+### Frontmatter fields
+
+```yaml
+type: project-snapshot
+title: "My App — Initial Project Snapshot"
+project: my-app
+date: 2026-06-03
+author: Natthaphat Wajanavisit
+version: "initial"          # or "v5.8.0", "v2.1.0" etc.
+stack: ["typescript", "react", "postgres"]
+architecture_pattern: "monolith"
+key_decisions: ["chose React over Vue for ecosystem", "postgres over MySQL for JSON support"]
+constraints: ["team size: solo", "must deploy on-prem"]
+repo_url: "https://github.com/org/repo"
+tags: [project-snapshot, my-app]
+```
+
+### Recall: /devstarter-onboard
+
+`/devstarter-onboard` automatically greps the vault for `type: project-snapshot` at session start and surfaces the most recent match as orientation context before onboarding steps begin. New team members see the project at a glance without reading CLAUDE.md manually.
+
+### Dataview queries
+
+Install the [Dataview](https://github.com/blacksmithgu/obsidian-dataview) plugin to run these queries:
+
+**All project overviews:**
+```dataview
+table version, stack, architecture_pattern, date
+from "knowledge"
+where type = "project-snapshot"
+sort date desc
+```
+
+**Project evolution timeline (one project):**
+```dataview
+table version, date, key_decisions
+from "knowledge"
+where type = "project-snapshot" and project = "my-app"
+sort date asc
+```
+
+**All projects using a specific tech:**
+```dataview
+list
+from "knowledge"
+where type = "project-snapshot" and contains(stack, "typescript")
+```
+
+### Stacking design
+
+DevStarter never overwrites a snapshot. Each emit creates a new unique file (Rule 3). This means:
+- Old snapshots remain intact as historical record
+- Querying by `date asc` shows how the project evolved
+- A snapshot going stale does NOT corrupt data — the most recent is always the highest-version file
+
+---
+
+## 6. Quick start
 
 ```
 1. Create + clone a git vault repo, install Obsidian Git.
