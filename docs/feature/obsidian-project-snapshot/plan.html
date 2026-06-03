@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Feature Plan — Obsidian Project Snapshot Note Type — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
+    --bg-card:#f8f9fb; --bg-hover:#e8ebf0; --accent:#e94560; --accent-light:#d63851;
+    --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4;
+    --border-light:#e2e7ed; --status-draft:#f59e0b; --status-approved:#10b981;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
+    --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316; --section-7:#06b6d4;
+    --header-h:64px; --sidebar-w:280px;
+    --code-bg:#f1f5f9; --code-inline-bg:rgba(233,69,96,0.08); --code-inline-color:#d63851;
+    --table-even-bg:rgba(0,0,0,0.02); --table-hover-bg:rgba(233,69,96,0.04);
+    --shadow:0 1px 3px rgba(0,0,0,0.06); --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-header:#1a1a2e; --bg-sidebar:#16213e; --bg-content:#1e1e3a;
+    --bg-card:#252547; --bg-hover:#0f3460; --accent:#e94560; --accent-light:#ff6b81;
+    --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f;
+    --border-light:#2d4a6f; --code-bg:#0d0d1a; --code-inline-bg:rgba(233,69,96,0.1);
+    --code-inline-color:#ff6b81; --table-even-bg:rgba(255,255,255,0.02);
+    --table-hover-bg:rgba(233,69,96,0.05); --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.6; height:100vh; overflow:hidden; transition:background 0.3s,color 0.3s; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--bg-header); border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; letter-spacing:-0.3px; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); font-weight:500; }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; background:rgba(245,158,11,0.15); color:var(--status-draft); border:1px solid rgba(245,158,11,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; }
+  .doc-sidebar::-webkit-scrollbar { width:4px; }
+  .doc-sidebar::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s; border-left:3px solid transparent; }
+  .toc-link:hover { background:var(--bg-hover); color:var(--text); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent-light); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; flex-shrink:0; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
+  .toc-number.s7{background:var(--section-7);}
+  .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; }
+  .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
+  .doc-info-row span:first-child { color:var(--text-muted); }
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:40px 48px 80px; background:var(--bg-content); }
+  .doc-content::-webkit-scrollbar { width:6px; }
+  .doc-content::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:6px; }
+  .section-header { display:flex; align-items:center; gap:14px; margin:48px 0 20px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
+  .section-number.s7{background:var(--section-7);}
+  .section-title { font-size:22px; font-weight:700; letter-spacing:-0.3px; }
+  h3 { font-size:16px; font-weight:600; color:var(--text); margin:28px 0 12px; border-left:3px solid var(--accent); padding-left:12px; }
+  h4 { font-size:14px; font-weight:600; color:var(--text-dim); margin:20px 0 8px; }
+  p { color:var(--text-dim); margin-bottom:16px; font-size:14px; line-height:1.7; }
+  table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:13px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  thead th { background:var(--bg-sidebar); color:var(--text); font-weight:600; text-align:left; padding:12px 16px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--accent); }
+  tbody tr { border-bottom:1px solid var(--border); transition:background 0.1s; }
+  tbody tr:nth-child(even) { background:var(--table-even-bg); }
+  tbody tr:hover { background:var(--table-hover-bg); }
+  td { padding:10px 16px; color:var(--text-dim); vertical-align:top; }
+  pre { background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:16px 20px; overflow-x:auto; margin:12px 0 20px; font-size:13px; line-height:1.5; }
+  code { font-family:'JetBrains Mono','Fira Code','Consolas',monospace; font-size:13px; }
+  :not(pre) > code { background:var(--code-inline-bg); color:var(--code-inline-color); padding:2px 6px; border-radius:4px; font-size:12px; }
+  ul,ol { margin:8px 0 16px 24px; color:var(--text-dim); font-size:14px; }
+  li { margin-bottom:6px; line-height:1.6; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin:16px 0 24px; }
+  .card-title { font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text); }
+  .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
+  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
+  .critical { border-left:4px solid var(--section-5); background:rgba(239,68,68,0.05); }
+  .badge { display:inline-flex; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; }
+  .badge-green { background:rgba(16,185,129,0.15); color:#10b981; }
+  .badge-yellow { background:rgba(245,158,11,0.15); color:#f59e0b; }
+  .badge-orange { background:rgba(249,115,22,0.15); color:#f97316; }
+  .badge-red { background:rgba(239,68,68,0.15); color:#ef4444; }
+  .badge-blue { background:rgba(59,130,246,0.15); color:#3b82f6; }
+  .badge-gray { background:rgba(132,147,168,0.15); color:#8493a8; }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); }
+  .lang-btn:hover { background:var(--bg-hover); color:var(--text); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3 { font-family:'Sarabun',system-ui,sans-serif; }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:28px 20px 80px;} }
+  @media print { .doc-header{position:static;} .doc-sidebar{display:none;} .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;} body{background:#fff;overflow:auto;} .theme-toggle,.lang-btn,.pdf-btn{display:none;} }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Add Feature Plan — Obsidian Project Snapshot Note Type</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>CR-2026-06-03-001 · 2026-06-03</div>
+      <div>Author: Natthaphat Wajanavisit</div>
+    </div>
+    <span class="doc-status-badge">&#9203; PENDING APPROVAL</span>
+    <button class="pdf-btn" onclick="window.print()">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()"><span id="langLabel">EN</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#s1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Change Summary</span><span class="lang-th">สรุปการเปลี่ยนแปลง</span></a></li>
+    <li><a href="#s2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Problem &amp; Requirement</span><span class="lang-th">ปัญหา &amp; ความต้องการ</span></a></li>
+    <li><a href="#s3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Solution Approach</span><span class="lang-th">แนวทางแก้ปัญหา</span></a></li>
+    <li><a href="#s4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Impact Assessment</span><span class="lang-th">การประเมินผลกระทบ</span></a></li>
+    <li><a href="#s5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Implementation Plan</span><span class="lang-th">แผนการดำเนินงาน</span></a></li>
+    <li><a href="#s6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Testing Strategy</span><span class="lang-th">กลยุทธ์การทดสอบ</span></a></li>
+    <li><a href="#s7" class="toc-link"><span class="toc-number s7">7</span> <span class="lang-en">Risks &amp; Rollback</span><span class="lang-th">ความเสี่ยง &amp; การย้อนกลับ</span></a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>CR ID</span> <span>CR-2026-06-03-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Add Feature</span></div>
+    <div class="doc-info-row"><span>Branch</span> <span>feature/obsidian-project-snapshot</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>High</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>M</span></div>
+    <div class="doc-info-row"><span>Impact</span> <span class="badge badge-green">Low</span></div>
+  </div>
+</nav>
+
+<main class="doc-content">
+
+  <!-- Section 1: Change Summary -->
+  <div class="section-header" id="s1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Change Summary</span><span class="lang-th">สรุปการเปลี่ยนแปลง</span></h2>
+  </div>
+
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>CR ID</td><td>CR-2026-06-03-001</td></tr>
+      <tr><td><span class="lang-en">Feature</span><span class="lang-th">ฟีเจอร์</span></td><td>Obsidian Project Snapshot Note Type (v5.8.0)</td></tr>
+      <tr><td><span class="lang-en">Type</span><span class="lang-th">ประเภท</span></td><td>Add Feature</td></tr>
+      <tr><td><span class="lang-en">Branch</span><span class="lang-th">branch</span></td><td><code>feature/obsidian-project-snapshot</code></td></tr>
+      <tr><td><span class="lang-en">Date</span><span class="lang-th">วันที่</span></td><td>2026-06-03</td></tr>
+      <tr><td><span class="lang-en">Author</span><span class="lang-th">ผู้เขียน</span></td><td>Natthaphat Wajanavisit</td></tr>
+      <tr><td><span class="lang-en">Priority</span><span class="lang-th">ลำดับความสำคัญ</span></td><td>High</td></tr>
+      <tr><td><span class="lang-en">Effort</span><span class="lang-th">ความพยายาม</span></td><td>M — 1 template + 3 SDLC edits + docs; est. 2–6 hours</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 2: Problem & Requirement -->
+  <div class="section-header" id="s2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">Problem &amp; Business Requirement</span><span class="lang-th">ปัญหา &amp; ความต้องการ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Root gap</span><span class="lang-th">ช่องว่างหลัก</span></h3>
+  <p>
+    <span class="lang-en">DevStarter v5.7.0 ships a vault that captures bugs and root causes, but has no project-level note type. Team members joining a project have no vault entry point — they must read CLAUDE.md manually or ask the team. The vault's onboarding value is zero until this is fixed.</span><span class="lang-th">DevStarter v5.7.0 มี vault สำหรับบันทึก bug และต้นตอของปัญหา แต่ไม่มีประเภทโน้ตระดับโปรเจกต์ สมาชิกทีมใหม่ไม่มีจุดเริ่มต้นใน vault ต้องอ่าน CLAUDE.md เอง ทำให้คุณค่าของ vault ต่อการ onboarding เป็นศูนย์จนกว่าจะแก้ปัญหานี้</span>
+  </p>
+
+  <h3><span class="lang-en">User story</span><span class="lang-th">User story</span></h3>
+  <div class="card note">
+    <p><span class="lang-en">As a developer joining a new project, I want to open the knowledge vault and immediately find a project-snapshot note showing the tech stack, key decisions, and constraints — so that I can orient myself without interrupting the team.</span><span class="lang-th">ในฐานะนักพัฒนาที่เข้าร่วมโปรเจกต์ใหม่ ฉันต้องการเปิด knowledge vault แล้วพบโน้ต project-snapshot ที่แสดง tech stack การตัดสินใจหลัก และข้อจำกัดทันที เพื่อให้ฉันปรับตัวได้เองโดยไม่ต้องรบกวนทีม</span></p>
+  </div>
+
+  <h3><span class="lang-en">Acceptance criteria</span><span class="lang-th">เกณฑ์การยอมรับ</span></h3>
+  <ul>
+    <li><span class="lang-en">Given <code>obsidian.enabled: true</code>, When <code>/devstarter-new</code> Phase 5 completes, Then optional project-snapshot note emitted (sanitized, with type/stack/key-decisions/repo-url).</span><span class="lang-th">เมื่อ <code>obsidian.enabled: true</code> เมื่อ <code>/devstarter-new</code> Phase 5 เสร็จ จะ emit โน้ต project-snapshot (ผ่าน sanitize พร้อม type/stack/key-decisions/repo-url)</span></li>
+    <li><span class="lang-en">Given a project-snapshot in vault, When <code>/devstarter-onboard</code> runs, Then vault is grepped and note surfaced as orientation entry.</span><span class="lang-th">เมื่อมี project-snapshot ใน vault เมื่อ <code>/devstarter-onboard</code> ทำงาน จะ grep vault และแสดงโน้ตเป็นข้อมูลปฐมนิเทศ</span></li>
+    <li><span class="lang-en">Given <code>obsidian.enabled: true</code>, When <code>/devstarter-release</code> Phase 9.5 runs, Then versioned snapshot emitted (unique filename, version key added).</span><span class="lang-th">เมื่อ <code>obsidian.enabled: true</code> เมื่อ <code>/devstarter-release</code> Phase 9.5 ทำงาน จะ emit snapshot เวอร์ชัน (ชื่อไฟล์ไม่ซ้ำ)</span></li>
+    <li><span class="lang-en">When <code>obsidian.enabled: false</code>, all three workflows behave exactly as before (emit silently skipped).</span><span class="lang-th">เมื่อ <code>obsidian.enabled: false</code> ทั้งสาม workflow ทำงานเหมือนเดิม (ข้าม emit โดยอัตโนมัติ)</span></li>
+  </ul>
+
+  <!-- Section 3: Solution Approach -->
+  <div class="section-header" id="s3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">Solution Approach</span><span class="lang-th">แนวทางแก้ปัญหา</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Chosen approach</span><span class="lang-th">แนวทางที่เลือก</span></h3>
+  <p>
+    <span class="lang-en">Add a new <code>type: project-snapshot</code> note template that is emitted at natural project lifecycle milestones. The template extends the existing Vault Emit Procedure (E1–E5) and Frontmatter Schema already defined in <code>sdlc/devstarter-knowledge.md</code>. Three runbooks get minimal additive changes — a gated optional emit block each. No existing behavior changes.</span><span class="lang-th">เพิ่ม template โน้ต <code>type: project-snapshot</code> ใหม่ที่ emit ตาม lifecycle ของโปรเจกต์ที่เหมาะสม template นี้ใช้ Vault Emit Procedure (E1–E5) และ Frontmatter Schema ที่มีอยู่แล้วใน <code>sdlc/devstarter-knowledge.md</code> runbook สามไฟล์ได้รับการเปลี่ยนแปลงเพิ่มเติมน้อยที่สุด คือ optional emit block ที่ผ่าน gate แต่ละอัน โดยไม่มีการเปลี่ยนแปลงพฤติกรรมเดิม</span>
+  </p>
+
+  <h3><span class="lang-en">Alternatives considered</span><span class="lang-th">ทางเลือกที่พิจารณา</span></h3>
+  <table>
+    <thead><tr><th><span class="lang-en">Option</span><span class="lang-th">ตัวเลือก</span></th><th>Pros</th><th>Cons</th><th>Effort</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong><span class="lang-en">Chosen: Template + selective wiring</span><span class="lang-th">ที่เลือก: Template + wiring เฉพาะจุด</span></strong></td>
+        <td><span class="lang-en">Minimal surface area; additive-only; gated (opt-in per run)</span><span class="lang-th">พื้นที่น้อยที่สุด; เพิ่มเติมเท่านั้น; ผ่าน gate</span></td>
+        <td><span class="lang-en">Only 3 workflows covered (v5.8.0 scope)</span><span class="lang-th">ครอบคลุมแค่ 3 workflow (ขอบเขต v5.8.0)</span></td>
+        <td><span class="badge badge-yellow">M</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Full SDLC wiring (all 6 workflows)</span><span class="lang-th">Wiring ครบ SDLC (6 workflow)</span></td>
+        <td><span class="lang-en">Most comprehensive</span><span class="lang-th">ครอบคลุมที่สุด</span></td>
+        <td><span class="lang-en">v5.7.0 not validated yet; compounding untested behavior</span><span class="lang-th">v5.7.0 ยังไม่ผ่านการตรวจสอบ; ซ้อน behavior ที่ยังไม่ทดสอบ</span></td>
+        <td><span class="badge badge-orange">L</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Section 4: Impact Assessment -->
+  <div class="section-header" id="s4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">Impact Assessment</span><span class="lang-th">การประเมินผลกระทบ</span></h2>
+  </div>
+
+  <table>
+    <thead><tr><th>Area</th><th>Impact</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Database</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">n/a — framework project, no DB</span><span class="lang-th">ไม่มี — โปรเจกต์ framework ไม่มี DB</span></td></tr>
+      <tr><td>API</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">n/a — no API</span><span class="lang-th">ไม่มี — ไม่มี API</span></td></tr>
+      <tr><td>UI</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">n/a — no frontend; docs portal updated</span><span class="lang-th">ไม่มี — ไม่มี frontend; อัปเดต docs portal</span></td></tr>
+      <tr><td>Security</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">New emit point follows existing E4 sanitize step (Rule 2)</span><span class="lang-th">จุด emit ใหม่ใช้ขั้นตอน sanitize E4 เดิม (Rule 2)</span></td></tr>
+      <tr><td>SDLC runbooks</td><td><span class="badge badge-yellow">Minor</span></td><td><span class="lang-en">3 files: devstarter-new, devstarter-release, devstarter-onboard — additive blocks only</span><span class="lang-th">3 ไฟล์: devstarter-new, devstarter-release, devstarter-onboard — เพิ่มเติมเท่านั้น</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Files changed</span><span class="lang-th">ไฟล์ที่เปลี่ยนแปลง</span></h3>
+  <table>
+    <thead><tr><th>File</th><th>Action</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>templates/obsidian/project-snapshot-note.md</code></td><td><span class="badge badge-blue">CREATE</span></td><td><span class="lang-en">New note template; extends existing frontmatter schema</span><span class="lang-th">template โน้ตใหม่; ขยาย frontmatter schema เดิม</span></td></tr>
+      <tr><td><code>sdlc/devstarter-new.md</code></td><td><span class="badge badge-yellow">MODIFY</span></td><td><span class="lang-en">Add optional vault emit block after Phase 5 post-scaffold gate</span><span class="lang-th">เพิ่ม optional vault emit block หลัง Phase 5</span></td></tr>
+      <tr><td><code>sdlc/devstarter-release.md</code></td><td><span class="badge badge-yellow">MODIFY</span></td><td><span class="lang-en">Add versioned snapshot emit at Phase 9.5 (alongside existing summary.html generation)</span><span class="lang-th">เพิ่ม snapshot emit เวอร์ชันที่ Phase 9.5</span></td></tr>
+      <tr><td><code>sdlc/devstarter-onboard.md</code></td><td><span class="badge badge-yellow">MODIFY</span></td><td><span class="lang-en">Add project-snapshot recall grep at session start</span><span class="lang-th">เพิ่ม project-snapshot recall grep ตอนเริ่ม session</span></td></tr>
+      <tr><td><code>docs/obsidian-vault-guide.md</code></td><td><span class="badge badge-yellow">MODIFY</span></td><td><span class="lang-en">Add project-snapshot section; new Dataview queries (by type, by version)</span><span class="lang-th">เพิ่มหัวข้อ project-snapshot; Dataview query ใหม่</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 5: Implementation Plan -->
+  <div class="section-header" id="s5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title"><span class="lang-en">Implementation Plan</span><span class="lang-th">แผนการดำเนินงาน</span></h2>
+  </div>
+
+  <div class="card warning">
+    <div class="card-title">&#9888; <span class="lang-en">Pre-condition (Task 0)</span><span class="lang-th">เงื่อนไขเบื้องต้น (Task 0)</span></div>
+    <p><span class="lang-en">Validate the existing v5.7.0 vault emit pipeline end-to-end against a live vault before Tasks 1–5. Run <code>/devstarter-knowledge "test note"</code> and verify the note appears in the vault. If the pipeline is broken, fix it in this feature branch. See <code>docs/obsidian-vault-guide.md</code> Section 5 (Quick start).</span><span class="lang-th">ตรวจสอบ pipeline ของ v5.7.0 บน vault จริงก่อน Task 1–5 รัน <code>/devstarter-knowledge "test note"</code> และยืนยันว่าโน้ตปรากฏใน vault ถ้า pipeline มีปัญหา ให้แก้ไขใน feature branch นี้ ดู <code>docs/obsidian-vault-guide.md</code> หัวข้อ 5</span></p>
+  </div>
+
+  <ol>
+    <li>
+      <strong><span class="lang-en">Task 1 — Create project-snapshot-note.md template</span><span class="lang-th">Task 1 — สร้าง template project-snapshot-note.md</span></strong>
+      <ul>
+        <li><span class="lang-en">Create <code>templates/obsidian/project-snapshot-note.md</code></span><span class="lang-th">สร้าง <code>templates/obsidian/project-snapshot-note.md</code></span></li>
+        <li><span class="lang-en">Frontmatter: type: project-snapshot, title, project, date, author, version, stack (array), architecture-pattern, key-decisions (array), constraints (array), repo-url, tags</span><span class="lang-th">Frontmatter: type: project-snapshot, title, project, date, author, version, stack (array), architecture-pattern, key-decisions (array), constraints (array), repo-url, tags</span></li>
+        <li><span class="lang-en">Body sections: Project Overview, Tech Stack, Architecture Decisions, Constraints, Repository, Team Notes</span><span class="lang-th">หัวข้อใน body: ภาพรวมโปรเจกต์, Tech Stack, การตัดสินใจสถาปัตยกรรม, ข้อจำกัด, Repository, หมายเหตุทีม</span></li>
+        <li><span class="lang-en">Placeholders: {{TITLE}}, {{PROJECT}}, {{DATE}}, {{AUTHOR}}, {{VERSION}}, {{STACK}}, {{ARCH_PATTERN}}, {{KEY_DECISIONS}}, {{CONSTRAINTS}}, {{REPO_URL}}</span><span class="lang-th">Placeholder: {{TITLE}}, {{PROJECT}}, {{DATE}}, {{AUTHOR}}, {{VERSION}}, {{STACK}}, {{ARCH_PATTERN}}, {{KEY_DECISIONS}}, {{CONSTRAINTS}}, {{REPO_URL}}</span></li>
+      </ul>
+    </li>
+    <li>
+      <strong><span class="lang-en">Task 2 — Wire /devstarter-new Phase 5 emit</span><span class="lang-th">Task 2 — Wire /devstarter-new Phase 5 emit</span></strong>
+      <ul>
+        <li><span class="lang-en">In <code>sdlc/devstarter-new.md</code>, after the existing Phase 5 scaffold completion: add a new optional step that checks <code>obsidian.enabled</code>. If ON: use AskUserQuestion "Save a project-snapshot note to the vault?" Run Vault Emit Procedure (E1–E5) with the project-snapshot template.</span><span class="lang-th">ใน <code>sdlc/devstarter-new.md</code> หลัง Phase 5 เสร็จ: เพิ่มขั้นตอนเสริมที่ตรวจสอบ <code>obsidian.enabled</code> ถ้าเปิด: ใช้ AskUserQuestion "บันทึก project-snapshot?" แล้วรัน Vault Emit Procedure (E1–E5) ด้วย template project-snapshot</span></li>
+        <li><span class="lang-en">Fill: stack from config.language + framework, version from VERSION file, repo-url from vcs.repo, author from USER.md, key-decisions from Gate 1 planning context</span><span class="lang-th">กรอก: stack จาก config.language + framework, version จาก VERSION, repo-url จาก vcs.repo, author จาก USER.md, key-decisions จาก context การวางแผน Gate 1</span></li>
+        <li><span class="lang-en">If <code>obsidian.enabled: false</code>: silently skip. No user-facing message.</span><span class="lang-th">ถ้า <code>obsidian.enabled: false</code>: ข้ามโดยไม่แสดงข้อความ</span></li>
+      </ul>
+    </li>
+    <li>
+      <strong><span class="lang-en">Task 3 — Wire /devstarter-release Phase 9.5 emit</span><span class="lang-th">Task 3 — Wire /devstarter-release Phase 9.5 emit</span></strong>
+      <ul>
+        <li><span class="lang-en">In <code>sdlc/devstarter-release.md</code>, Phase 9.5 already generates summary.html and mgmt-brief.html. Add an additional optional vault emit step: check <code>obsidian.enabled</code>. If ON: ask "Update project-snapshot in vault?" Emit a new project-snapshot note with current version number in filename and frontmatter (Rule 3 — unique file, never overwrite).</span><span class="lang-th">ใน <code>sdlc/devstarter-release.md</code> Phase 9.5 มี summary.html และ mgmt-brief.html อยู่แล้ว เพิ่มขั้นตอน emit vault เสริม: ตรวจสอบ <code>obsidian.enabled</code> ถ้าเปิด: ถาม "อัปเดต project-snapshot ใน vault?" Emit โน้ต project-snapshot ใหม่พร้อมเวอร์ชันปัจจุบันในชื่อไฟล์และ frontmatter</span></li>
+        <li><span class="lang-en">Version field set to the release tag (e.g. <code>v5.8.0</code>). Stack/decisions may differ from earlier snapshots — this is a new record, not an update.</span><span class="lang-th">version ตั้งเป็น release tag (เช่น <code>v5.8.0</code>) Stack/decisions อาจต่างจาก snapshot ก่อนหน้า — นี่คือ record ใหม่ ไม่ใช่การอัปเดต</span></li>
+      </ul>
+    </li>
+    <li>
+      <strong><span class="lang-en">Task 4 — Wire /devstarter-onboard recall</span><span class="lang-th">Task 4 — Wire /devstarter-onboard recall</span></strong>
+      <ul>
+        <li><span class="lang-en">In <code>sdlc/devstarter-onboard.md</code>, at session start (before the onboarding steps): check <code>obsidian.enabled</code>. If ON: grep vault subdir for <code>type: project-snapshot</code> AND <code>project: &lt;project-name&gt;</code>. Read the most recent match (sort by filename date). Surface as:</span><span class="lang-th">ใน <code>sdlc/devstarter-onboard.md</code> ตอนเริ่ม session (ก่อนขั้นตอน onboarding): ตรวจสอบ <code>obsidian.enabled</code> ถ้าเปิด: grep vault subdir หา <code>type: project-snapshot</code> และ <code>project: &lt;project-name&gt;</code> อ่านผลล่าสุด (เรียงตามวันที่ในชื่อไฟล์) แสดงเป็น:</span></li>
+        <li><code>🏛️ Project snapshot (vault): &lt;title&gt; (&lt;version&gt;, &lt;date&gt;) — stack: &lt;stack&gt;</code></li>
+        <li><span class="lang-en">If nothing found: one-line "No project snapshot in vault — run /devstarter-knowledge to add one." then continue.</span><span class="lang-th">ถ้าไม่พบ: แสดงหนึ่งบรรทัด "ไม่มี project snapshot ใน vault — รัน /devstarter-knowledge เพื่อเพิ่ม" แล้วดำเนินต่อ</span></li>
+      </ul>
+    </li>
+    <li>
+      <strong><span class="lang-en">Task 5 — Update obsidian-vault-guide.md</span><span class="lang-th">Task 5 — อัปเดต obsidian-vault-guide.md</span></strong>
+      <ul>
+        <li><span class="lang-en">Add new section "Project Snapshot Notes" after Section 4 (recall). Describe the new type, when it's emitted, and how to query it.</span><span class="lang-th">เพิ่มหัวข้อใหม่ "Project Snapshot Notes" หลังหัวข้อ 4 (recall) อธิบายประเภทใหม่ เวลาที่ emit และวิธี query</span></li>
+        <li>
+          <span class="lang-en">Add Dataview queries:</span><span class="lang-th">เพิ่ม Dataview query:</span>
+          <pre>```dataview
+table version, stack, date from "knowledge"
+where type = "project-snapshot"
+sort date desc
+```</pre>
+        </li>
+        <li><span class="lang-en">Note that older snapshots are retained (newer = higher version) — a project's evolution is browsable as a timeline.</span><span class="lang-th">บันทึกว่า snapshot เก่าจะถูกเก็บไว้ (เวอร์ชันใหม่กว่า = วันที่ล่าสุด) ประวัติของโปรเจกต์สามารถเรียกดูเป็นไทม์ไลน์</span></li>
+      </ul>
+    </li>
+  </ol>
+
+  <!-- Section 6: Testing Strategy -->
+  <div class="section-header" id="s6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title"><span class="lang-en">Testing Strategy</span><span class="lang-th">กลยุทธ์การทดสอบ</span></h2>
+  </div>
+
+  <p><span class="lang-en">DevStarter is a Markdown framework — "testing" means running the commands against a live vault and verifying outputs manually.</span><span class="lang-th">DevStarter เป็น framework Markdown — "การทดสอบ" หมายถึงการรันคำสั่งกับ vault จริงและตรวจสอบผลลัพธ์ด้วยตนเอง</span></p>
+
+  <table>
+    <thead><tr><th>Scenario</th><th>Steps</th><th>Expected</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="lang-en">T1: new-app emit</span><span class="lang-th">T1: new-app emit</span></td>
+        <td><span class="lang-en">Run /devstarter-new with obsidian.enabled:true, answer "yes" at snapshot prompt</span><span class="lang-th">รัน /devstarter-new โดย obsidian.enabled:true ตอบ "ใช่" ที่ snapshot prompt</span></td>
+        <td><span class="lang-en">Note file created in vault/knowledge/, frontmatter has type:project-snapshot, no secrets</span><span class="lang-th">ไฟล์โน้ตถูกสร้างใน vault/knowledge/ frontmatter มี type:project-snapshot ไม่มี secret</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">T2: onboard recall</span><span class="lang-th">T2: onboard recall</span></td>
+        <td><span class="lang-en">Run /devstarter-onboard with vault note present</span><span class="lang-th">รัน /devstarter-onboard โดยมีโน้ตใน vault</span></td>
+        <td><span class="lang-en">🏛️ Project snapshot block shown at top of session</span><span class="lang-th">แสดงบล็อก 🏛️ Project snapshot ตอนต้น session</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">T3: disabled skip</span><span class="lang-th">T3: disabled skip</span></td>
+        <td><span class="lang-en">Set obsidian.enabled:false, run /devstarter-new and /devstarter-onboard</span><span class="lang-th">ตั้ง obsidian.enabled:false รัน /devstarter-new และ /devstarter-onboard</span></td>
+        <td><span class="lang-en">No vault prompt, no error — workflows unchanged</span><span class="lang-th">ไม่มี vault prompt ไม่มี error — workflow ทำงานเหมือนเดิม</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">T4: release snapshot</span><span class="lang-th">T4: release snapshot</span></td>
+        <td><span class="lang-en">Run /devstarter-release Phase 9.5 with obsidian.enabled:true</span><span class="lang-th">รัน /devstarter-release Phase 9.5 โดย obsidian.enabled:true</span></td>
+        <td><span class="lang-en">New snapshot note with version field = release tag; unique filename; old snapshot intact</span><span class="lang-th">โน้ต snapshot ใหม่พร้อม version = release tag; ชื่อไฟล์ไม่ซ้ำ; snapshot เก่ายังอยู่</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Regression guard</span><span class="lang-th">การตรวจสอบ regression</span></h3>
+  <ul>
+    <li><span class="lang-en">Existing /devstarter-knowledge, /devstarter-debug recall, /devstarter-bug-postmortem and /devstarter-postmortem emit all still work unchanged.</span><span class="lang-th">workflow เดิมทั้งหมดยังทำงานได้ปกติ</span></li>
+    <li><span class="lang-en">No new secrets or PII pass through any emit point (E4 sanitize must cover the new template).</span><span class="lang-th">ไม่มี secret หรือ PII ผ่านจุด emit ใหม่ (E4 sanitize ต้องครอบคลุม template ใหม่)</span></li>
+  </ul>
+
+  <!-- Section 7: Risks & Rollback -->
+  <div class="section-header" id="s7">
+    <span class="section-number s7">7</span>
+    <h2 class="section-title"><span class="lang-en">Risks &amp; Rollback</span><span class="lang-th">ความเสี่ยง &amp; การย้อนกลับ</span></h2>
+  </div>
+
+  <table>
+    <thead><tr><th>Risk</th><th>Probability</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="lang-en">v5.7.0 pipeline broken — emit or recall fails on live vault</span><span class="lang-th">pipeline v5.7.0 มีปัญหา — emit หรือ recall ล้มเหลวบน vault จริง</span></td>
+        <td><span class="badge badge-yellow">Medium</span></td>
+        <td><span class="lang-en">Task 0 pre-condition: validate pipeline before any new emit is added. Fix in this branch if broken.</span><span class="lang-th">Task 0: ตรวจสอบ pipeline ก่อนเพิ่ม emit ใหม่ แก้ไขใน branch นี้ถ้ามีปัญหา</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Snapshot note grows stale (devs skip release emit)</span><span class="lang-th">โน้ต snapshot ล้าสมัย (นักพัฒนาข้าม release emit)</span></td>
+        <td><span class="badge badge-blue">Low</span></td>
+        <td><span class="lang-en">Stacking design (new file per release, never overwrite) means old snapshots remain valid; stale is a human discipline issue, not data corruption.</span><span class="lang-th">ออกแบบให้ stack (ไฟล์ใหม่ต่อ release ไม่เขียนทับ) ทำให้ snapshot เก่ายังคงใช้ได้ ความล้าสมัยเป็นปัญหาวินัยของทีม ไม่ใช่ข้อมูลเสียหาย</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Rollback plan</span><span class="lang-th">แผนการย้อนกลับ</span></h3>
+  <p>
+    <span class="lang-en">Revert <code>feature/obsidian-project-snapshot</code> branch. No migrations or data changes. The vault notes already written are standalone files and do not affect DevStarter functionality if left in place. Remove template file and undo the 3 SDLC additions.</span><span class="lang-th">ย้อนกลับ branch <code>feature/obsidian-project-snapshot</code> ไม่มีการ migration หรือเปลี่ยนแปลงข้อมูล โน้ตที่เขียนไปแล้วใน vault เป็นไฟล์แยกและไม่กระทบการทำงานของ DevStarter ลบ template และยกเลิกการเพิ่ม SDLC 3 ไฟล์</span>
+  </p>
+
+  <!-- Revision History -->
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>Reference</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>CR-2026-06-03-001</td>
+        <td>2026-06-03</td>
+        <td>ADD</td>
+        <td><span class="lang-en">Initial plan document created</span><span class="lang-th">สร้างเอกสารแผนครั้งแรก</span></td>
+        <td>Natthaphat Wajanavisit</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function toggleLang() {
+    var html = document.documentElement; var isThai = html.getAttribute('data-lang') === 'th'; var label = document.getElementById('langLabel');
+    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
+    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
+  }
+  (function() { var l=localStorage.getItem('docportal-lang'); if (l==='th') { document.documentElement.setAttribute('data-lang','th'); var lb=document.getElementById('langLabel'); if(lb) lb.textContent='TH'; } })();
+  function toggleTheme() {
+    var html = document.documentElement; var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function() { var saved = localStorage.getItem('docportal-theme'); if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; } })();
+  const sections = document.querySelectorAll('.section-header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const content = document.querySelector('.doc-content');
+  content.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (content.scrollTop >= s.offsetTop - content.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+  });
+  tocLinks.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(l.getAttribute('href'));
+      if (t) content.scrollTo({ top: t.offsetTop - content.offsetTop - 20, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
