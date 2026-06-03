@@ -3,18 +3,23 @@
   "feature": "obsidian-project-snapshot",
   "cr_id": "CR-2026-06-03-001",
   "version_target": "v5.8.0",
-  "status": "in_progress",
-  "branch": "feature/obsidian-project-snapshot",
+  "status": "completed",
+  "branch": "develop",
   "started_at": "2026-06-03",
-  "phase": "A-PHASE 5 — Development (autopilot)",
-  "autopilot_mode": true,
-  "autopilot_total_tasks": 6,
-  "autopilot_tasks_done": 0,
-  "gates_passed": ["intake", "impact-analysis", "A1-DOC", "A2", "A3"],
-  "gates_pending": ["A4", "A-TEST"],
-  "last_done": "Gate A3 approved. 6 GitHub issues + UI tasks created. Autopilot ON.",
-  "next": "Develop Tasks 0-5, then Gate A4.",
-  "github_issues": { "task0": 76, "task1": 77, "task2": 78, "task3": 79, "task4": 80, "task5": 81 },
-  "ui_tasks": { "task0": "1", "task1": "2", "task2": "3", "task3": "4", "task4": "5", "task5": "6" },
+  "completed_at": "2026-06-03",
+  "gates_passed": ["intake", "impact-analysis", "A1-DOC", "A2", "A3", "A4", "A-TEST"],
+  "pr_merged": 82,
+  "issues_closed": [76, 77, 78, 79, 80, 81],
+  "docs": {
+    "kickoff": "docs/feature/obsidian-project-snapshot/kickoff.html",
+    "plan": "docs/feature/obsidian-project-snapshot/plan.html",
+    "summary": "docs/feature/obsidian-project-snapshot/summary.html",
+    "mgmt_brief": "docs/feature/obsidian-project-snapshot/mgmt-brief.html"
+  },
+  "open_items": [
+    "T0 — validate v5.7.0 vault pipeline end-to-end against live vault (deferred from v5.7.0)",
+    "BRD REQ-OBS-002 says 'Phase 5' — should say 'Gate 0' (fix at next BRD review)",
+    "v5.9.0 scope: recall in /devstarter-change design stage + emit from review/audit/retro"
+  ],
   "previous_release": { "version": "v5.7.0", "tag": "v5.7.0", "completed_at": "2026-05-31" }
 }

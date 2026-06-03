@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Management Brief — Obsidian Project Snapshot Note Type — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --accent:#e94560; --bg-page:#f5f7fa; --bg-content:#ffffff; --bg-sidebar:#f0f2f5;
+    --bg-card:#f8f9fb; --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8;
+    --border:#d8dde4; --border-light:#e2e7ed; --status-approved:#10b981;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#10b981; --section-4:#f59e0b;
+    --header-h:64px; --sidebar-w:260px; --shadow:0 1px 3px rgba(0,0,0,0.06);
+    --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-content:#1e1e3a; --bg-sidebar:#16213e; --bg-card:#252547;
+    --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f;
+    --border-light:#2d4a6f; --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.7; height:100vh; overflow:hidden; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:#fff; border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; background:rgba(16,185,129,0.15); color:var(--status-approved); border:1px solid rgba(16,185,129,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; }
+  .doc-sidebar::-webkit-scrollbar { width:4px; }
+  .doc-sidebar::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s; border-left:3px solid transparent; }
+  .toc-link:hover { background:rgba(0,0,0,0.04); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; flex-shrink:0; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:48px 56px 100px; background:var(--bg-content); }
+  .section-header { display:flex; align-items:center; gap:14px; margin:48px 0 20px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-title { font-size:22px; font-weight:700; }
+  h3 { font-size:17px; font-weight:600; margin:28px 0 12px; border-left:3px solid var(--accent); padding-left:12px; }
+  p { color:var(--text-dim); margin-bottom:16px; font-size:15px; line-height:1.8; }
+  ul { margin:8px 0 16px 24px; color:var(--text-dim); font-size:15px; }
+  li { margin-bottom:8px; line-height:1.8; }
+  .exec-hero { background:linear-gradient(135deg,rgba(233,69,96,0.07) 0%,rgba(59,130,246,0.05) 100%); border:1px solid rgba(233,69,96,0.2); border-radius:16px; padding:32px 40px; margin:0 0 40px; }
+  .exec-hero-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); margin-bottom:12px; }
+  .exec-hero-text { font-size:18px; line-height:1.7; color:var(--text); }
+  .before-after { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0 28px; }
+  .ba-card { border-radius:12px; padding:24px; }
+  .ba-card.after { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); }
+  .ba-card.before { background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); }
+  .ba-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+  .ba-card.after .ba-label { color:#10b981; }
+  .ba-card.before .ba-label { color:#ef4444; }
+  .ba-card ul { margin:0 0 0 16px; } .ba-card li { font-size:14px; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px; margin:16px 0 24px; }
+  .card-title { font-size:15px; font-weight:600; margin-bottom:8px; }
+  .improvement-tile { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:10px; padding:20px 24px; margin:12px 0; }
+  .improvement-title { font-size:15px; font-weight:600; margin-bottom:6px; color:#10b981; }
+  .badge-green { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); display:inline-flex; padding:4px 12px; border-radius:16px; font-size:12px; font-weight:600; }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] h3 { font-family:'Sarabun',system-ui,sans-serif; }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:28px 20px 80px;} .before-after{grid-template-columns:1fr;} }
+  @media print { .doc-header{position:static;} .doc-sidebar{display:none;} .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;} body{background:#fff;overflow:auto;} .theme-toggle,.lang-btn,.pdf-btn{display:none;} }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname"><span class="lang-en">Management Brief</span><span class="lang-th">สรุปสำหรับผู้บริหาร</span> — Obsidian Project Snapshot Note Type</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>CR-2026-06-03-001 · 2026-06-03</div>
+      <div><span class="lang-en">Prepared by:</span><span class="lang-th">จัดทำโดย:</span> Natthaphat Wajanavisit</div>
+    </div>
+    <span class="doc-status-badge">&#10003; DELIVERED</span>
+    <button class="pdf-btn" onclick="window.print()">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()"><span id="langLabel">EN</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#s1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Executive Summary</span><span class="lang-th">สรุปผู้บริหาร</span></a></li>
+    <li><a href="#s2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Before &amp; After</span><span class="lang-th">ก่อนและหลัง</span></a></li>
+    <li><a href="#s3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></a></li>
+    <li><a href="#s4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Residual Risk &amp; Next Steps</span><span class="lang-th">ความเสี่ยงคงเหลือ &amp; ขั้นตอนต่อไป</span></a></li>
+  </ul>
+</nav>
+
+<main class="doc-content">
+
+  <!-- Section 1: Executive Summary -->
+  <div class="section-header" id="s1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Executive Summary</span><span class="lang-th">สรุปสำหรับผู้บริหาร</span></h2>
+  </div>
+
+  <div class="exec-hero">
+    <div class="exec-hero-label">&#128202; <span class="lang-en">What was delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></div>
+    <p class="exec-hero-text">
+      <span class="lang-en">We have added a "project snapshot" capability to DevStarter's shared knowledge vault. When a new project is started or a release is shipped, DevStarter can now automatically offer to save a project overview note to the team's shared Obsidian vault — capturing the tech stack, key decisions, and constraints. New team members joining a project can immediately find this note and orient themselves without having to ask the team or read technical configuration files.</span><span class="lang-th">เราได้เพิ่มความสามารถ "project snapshot" ใน knowledge vault ที่ใช้ร่วมกันของ DevStarter เมื่อเริ่มโปรเจกต์ใหม่หรือปล่อยเวอร์ชันใหม่ DevStarter สามารถเสนอให้บันทึกโน้ตภาพรวมโปรเจกต์ไปยัง vault Obsidian ของทีม บันทึก tech stack การตัดสินใจหลัก และข้อจำกัด สมาชิกทีมใหม่ที่เข้าร่วมโปรเจกต์สามารถค้นหาโน้ตนี้ได้ทันทีและปรับตัวได้โดยไม่ต้องถามทีมหรืออ่านไฟล์ config ทางเทคนิค</span>
+    </p>
+  </div>
+
+  <span class="badge-green">&#10003; <span class="lang-en">Delivered on schedule</span><span class="lang-th">ส่งมอบตามกำหนด</span></span>
+
+  <!-- Section 2: Before & After -->
+  <div class="section-header" id="s2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">Before &amp; After</span><span class="lang-th">ก่อนและหลัง</span></h2>
+  </div>
+
+  <div class="before-after">
+    <div class="ba-card before">
+      <div class="ba-label">&#10008; <span class="lang-en">Before (v5.7.0)</span><span class="lang-th">ก่อนหน้า (v5.7.0)</span></div>
+      <ul>
+        <li><span class="lang-en">Vault captured only bug fixes and root causes</span><span class="lang-th">Vault บันทึกเฉพาะ bug fix และต้นตอปัญหา</span></li>
+        <li><span class="lang-en">No "welcome to this project" entry in the vault</span><span class="lang-th">ไม่มีโน้ต "ยินดีต้อนรับสู่โปรเจกต์" ใน vault</span></li>
+        <li><span class="lang-en">New team members had to read CLAUDE.md manually</span><span class="lang-th">สมาชิกใหม่ต้องอ่าน CLAUDE.md เอง</span></li>
+        <li><span class="lang-en">5 major workflows had zero vault coverage</span><span class="lang-th">workflow หลัก 5 รายการไม่มี vault coverage</span></li>
+      </ul>
+    </div>
+    <div class="ba-card after">
+      <div class="ba-label">&#10003; <span class="lang-en">After (v5.8.0)</span><span class="lang-th">หลังจากนี้ (v5.8.0)</span></div>
+      <ul>
+        <li><span class="lang-en">New project = optional snapshot note emitted to vault</span><span class="lang-th">โปรเจกต์ใหม่ = โน้ต snapshot เสริมถูก emit ไปยัง vault</span></li>
+        <li><span class="lang-en">Each release = optional versioned snapshot added</span><span class="lang-th">แต่ละ release = snapshot เวอร์ชันใหม่เพิ่มเข้า vault</span></li>
+        <li><span class="lang-en">Onboarding = vault grepped; snapshot shown as first context</span><span class="lang-th">Onboarding = grep vault; snapshot แสดงเป็น context แรก</span></li>
+        <li><span class="lang-en">Team members orient themselves from the vault, not the code</span><span class="lang-th">สมาชิกทีมปรับตัวจาก vault ไม่ใช่โค้ด</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Section 3: What Was Delivered -->
+  <div class="section-header" id="s3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></h2>
+  </div>
+
+  <div class="improvement-tile">
+    <div class="improvement-title">&#129354; <span class="lang-en">Project Snapshot Template</span><span class="lang-th">Template Project Snapshot</span></div>
+    <p><span class="lang-en">A new Markdown template that stores a project's tech stack, architecture decisions, constraints, and repository link in a structured, searchable format — compatible with Obsidian's Dataview plugin for cross-project querying.</span><span class="lang-th">Template Markdown ใหม่ที่เก็บ tech stack ของโปรเจกต์ การตัดสินใจสถาปัตยกรรม ข้อจำกัด และ repository link ในรูปแบบที่มีโครงสร้างและค้นหาได้ รองรับ Dataview plugin ของ Obsidian</span></p>
+  </div>
+
+  <div class="improvement-tile">
+    <div class="improvement-title">&#128640; <span class="lang-en">Automatic Project Capture at Creation</span><span class="lang-th">บันทึกโปรเจกต์อัตโนมัติตอนสร้าง</span></div>
+    <p><span class="lang-en">When creating a new project with DevStarter, the system now asks if you'd like to save an initial project snapshot to the vault. One click captures the context before any code is written.</span><span class="lang-th">เมื่อสร้างโปรเจกต์ใหม่ด้วย DevStarter ระบบจะถามว่าต้องการบันทึก project snapshot เริ่มต้นใน vault หรือไม่ คลิกเดียวบันทึก context ก่อนเขียนโค้ดใด ๆ</span></p>
+  </div>
+
+  <div class="improvement-tile">
+    <div class="improvement-title">&#127881; <span class="lang-en">Release Milestone Tracking</span><span class="lang-th">ติดตาม Release Milestone</span></div>
+    <p><span class="lang-en">At each release, DevStarter now offers to emit a versioned snapshot. Over time, the vault accumulates a timeline showing how the project evolved — which technologies were added, what decisions changed, how the team grew.</span><span class="lang-th">ในแต่ละ release DevStarter จะเสนอให้ emit snapshot เวอร์ชันใหม่ เมื่อเวลาผ่านไป vault จะสะสม timeline แสดงให้เห็นว่าโปรเจกต์วิวัฒนาการอย่างไร</span></p>
+  </div>
+
+  <div class="improvement-tile">
+    <div class="improvement-title">&#128100; <span class="lang-en">Faster Team Onboarding</span><span class="lang-th">Onboarding ทีมเร็วขึ้น</span></div>
+    <p><span class="lang-en">The onboarding command now automatically retrieves the latest project snapshot from the vault and shows it at the start of the session. New team members see the project context — stack, key decisions, constraints, repo — before any setup steps begin.</span><span class="lang-th">คำสั่ง onboarding ตอนนี้ดึง project snapshot ล่าสุดจาก vault โดยอัตโนมัติและแสดงตอนต้น session สมาชิกทีมใหม่เห็น context โปรเจกต์ก่อนเริ่มขั้นตอน setup ใด ๆ</span></p>
+  </div>
+
+  <!-- Section 4: Residual Risk & Next Steps -->
+  <div class="section-header" id="s4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">Residual Risk &amp; Next Steps</span><span class="lang-th">ความเสี่ยงคงเหลือ &amp; ขั้นตอนต่อไป</span></h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">&#128994; <span class="lang-en">Residual Risk: Low</span><span class="lang-th">ความเสี่ยงคงเหลือ: ต่ำ</span></div>
+    <p><span class="lang-en">All changes are additive — no existing behaviour was removed or changed. All vault emit points are optional (users can always skip). The feature automatically does nothing when the vault is not configured. The only pending item is a live vault end-to-end test (T0) that was deferred from v5.7.0 — this is tracked and has no production impact until teams enable Obsidian.</span><span class="lang-th">การเปลี่ยนแปลงทั้งหมดเป็นการเพิ่มเติม ไม่มีพฤติกรรมเดิมถูกลบหรือเปลี่ยนแปลง จุด emit vault ทั้งหมดเป็นเสริม (ผู้ใช้สามารถข้ามได้เสมอ) ฟีเจอร์ไม่ทำอะไรโดยอัตโนมัติเมื่อยังไม่ได้ตั้งค่า vault รายการที่ค้างอยู่เพียงอย่างเดียวคือการทดสอบ vault แบบ end-to-end (T0) ที่เลื่อนมาจาก v5.7.0</span></p>
+  </div>
+
+  <h3><span class="lang-en">Next steps</span><span class="lang-th">ขั้นตอนต่อไป</span></h3>
+  <ul>
+    <li><span class="lang-en"><strong>T0 validation:</strong> Test the vault pipeline end-to-end against the live Obsidian vault at <code>C:\Users\click\Projects\Obsidian</code> — run <code>/devstarter-knowledge "test"</code> and verify note creation</span><span class="lang-th"><strong>T0 validation:</strong> ทดสอบ vault pipeline กับ vault Obsidian จริงที่ <code>C:\Users\click\Projects\Obsidian</code></span></li>
+    <li><span class="lang-en"><strong>v5.9.0 scope:</strong> Add vault recall in <code>/devstarter-change</code> design stage, and optional emit from <code>/devstarter-review</code>, <code>/devstarter-audit</code>, and <code>/devstarter-retro</code></span><span class="lang-th"><strong>ขอบเขต v5.9.0:</strong> เพิ่ม vault recall ใน <code>/devstarter-change</code> ขั้นตอนออกแบบ และ optional emit จาก review, audit, retro</span></li>
+    <li><span class="lang-en"><strong>BRD cleanup:</strong> Update REQ-OBS-002 to say "Gate 0" instead of "Phase 5" at next BRD review cycle</span><span class="lang-th"><strong>อัปเดต BRD:</strong> แก้ REQ-OBS-002 ให้เป็น "Gate 0" แทน "Phase 5" ใน BRD review ครั้งถัดไป</span></li>
+  </ul>
+
+  <div class="card" style="border:1px solid rgba(59,130,246,0.3);background:rgba(59,130,246,0.04);">
+    <div class="card-title" style="color:#3b82f6;">&#128203; <span class="lang-en">Related documents</span><span class="lang-th">เอกสารที่เกี่ยวข้อง</span></div>
+    <ul style="margin:8px 0 0 20px;">
+      <li><a href="plan.html" style="color:var(--accent)"><span class="lang-en">plan.html — Technical implementation plan</span><span class="lang-th">plan.html — แผนการดำเนินงานเชิงเทคนิค</span></a></li>
+      <li><a href="summary.html" style="color:var(--accent)"><span class="lang-en">summary.html — Technical delivery summary</span><span class="lang-th">summary.html — สรุปการส่งมอบเชิงเทคนิค</span></a></li>
+      <li><a href="../../obsidian-vault-guide.md" style="color:var(--accent)"><span class="lang-en">obsidian-vault-guide.md — How to use the vault</span><span class="lang-th">obsidian-vault-guide.md — วิธีใช้ vault</span></a></li>
+    </ul>
+  </div>
+
+</main>
+
+<script>
+  function toggleLang() {
+    var html = document.documentElement; var isThai = html.getAttribute('data-lang') === 'th'; var label = document.getElementById('langLabel');
+    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
+    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
+  }
+  (function() { var l=localStorage.getItem('docportal-lang'); if (l==='th') { document.documentElement.setAttribute('data-lang','th'); var lb=document.getElementById('langLabel'); if(lb) lb.textContent='TH'; } })();
+  function toggleTheme() {
+    var html = document.documentElement; var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function() { var saved = localStorage.getItem('docportal-theme'); if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; } })();
+  const sections = document.querySelectorAll('.section-header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const content = document.querySelector('.doc-content');
+  content.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (content.scrollTop >= s.offsetTop - content.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+  });
+  tocLinks.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(l.getAttribute('href'));
+      if (t) content.scrollTo({ top: t.offsetTop - content.offsetTop - 20, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
