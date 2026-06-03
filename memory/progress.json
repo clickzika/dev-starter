@@ -1,31 +1,32 @@
 {
-  "workflow": "devstarter-change",
-  "change_id": "CR-2026-05-31-001",
-  "feature": "obsidian-knowledge-vault",
-  "status": "merged_to_develop_untested",
+  "workflow": "devstarter-change-add",
+  "feature": "obsidian-sdlc-wiring",
+  "cr_id": "CR-2026-06-03-002",
+  "version_target": "v5.9.0",
+  "status": "completed",
   "branch": "develop",
-  "feature_branch": "feature/obsidian-knowledge-vault (merged --no-ff, not deleted)",
-  "started_at": "2026-05-31",
-  "commits": ["fae8224 feat(knowledge): add Obsidian Knowledge Vault", "905d466 fix(knowledge): inline redaction step"],
-  "intake": "memory/consult-2026-05-31-obsidian-knowledge-vault.md",
-  "adr": "docs/adr/0002-obsidian-knowledge-vault.html",
-  "scope": "capture from /devstarter-knowledge + bug-postmortem + postmortem; recall in /devstarter-debug; git-default transport; inline sanitize-on-write",
-  "done": [
-    "obsidian: config block (template + project yml)",
-    "3 note templates (templates/obsidian/)",
-    "new /devstarter-knowledge SKILL + sdlc (shared Vault Emit/Recall spec)",
-    "emit wired into bug-postmortem + postmortem",
-    "recall wired into debug Phase 1",
-    "docs/obsidian-vault-guide.md + ADR-0002",
-    "menu item 45 + docs/index.html registration",
-    "CLAUDE.md v5.7.0 Recently Shipped row",
-    "security fix: inline deny-list redaction (advisor blocker resolved)"
-  ],
+  "started_at": "2026-06-03",
+  "completed_at": "2026-06-03",
+  "gates_passed": ["intake", "impact-analysis", "A1-DOC", "A2", "A3", "A4", "A-TEST"],
+  "pr_merged": 88,
+  "issues_closed": [83, 84, 85, 86, 87],
+  "docs": {
+    "kickoff": "docs/feature/obsidian-sdlc-wiring/kickoff.html",
+    "plan": "docs/feature/obsidian-sdlc-wiring/plan.html",
+    "summary": "docs/feature/obsidian-sdlc-wiring/summary.html",
+    "mgmt_brief": "docs/feature/obsidian-sdlc-wiring/mgmt-brief.html"
+  },
+  "obsidian_integration_status": {
+    "v5.7.0": "vault foundation + bug-postmortem/postmortem emit + debug recall",
+    "v5.8.0": "project-snapshot template + new/release emit + onboard recall",
+    "v5.9.0": "change-add recall + review/audit/retro emit + vault guide SDLC coverage map",
+    "all_7_emission_points_shipped": true,
+    "t0_live_vault_validation_pending": true
+  },
   "open_items": [
-    "NOT exercised end-to-end (enabled:false, no vault configured). Verify: set obsidian.enabled+vault_path, run /devstarter-knowledge then /devstarter-bug-postmortem, confirm sanitized note lands + /devstarter-debug recall hits it.",
-    "No PR / merge yet. Runbook A-PHASE 4/5 (GitHub issues, fitness/TechLead review) compressed — solo framework feature.",
-    "VERSION/CHANGELOG bump (v5.7.0) deferred to /devstarter-release.",
-    "Optional: extend config-sync to project obsidian keys into .project.env (feature reads from devstarter-config.yml directly, so not required)."
+    "T0 — validate v5.7.0 vault pipeline end-to-end against live vault (critical — deferred from v5.7.0)",
+    "BRD REQ-OBS-002 says 'Phase 5' — should say 'Gate 0' (fix at next BRD review)",
+    "Consider /devstarter-release for v5.9.0 to ship both Obsidian features to users"
   ],
-  "previous": { "workflow": "devstarter-release", "version": "v5.6.0", "tag": "v5.6.0", "completed_at": "2026-05-30" }
+  "previous_cr": { "cr_id": "CR-2026-06-03-001", "feature": "obsidian-project-snapshot", "version": "v5.8.0" }
 }

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kickoff — Obsidian SDLC Wiring — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
+    --bg-card:#f8f9fb; --bg-hover:#e8ebf0; --accent:#e94560; --accent-light:#d63851;
+    --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4;
+    --border-light:#e2e7ed; --status-draft:#f59e0b; --status-approved:#10b981;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
+    --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316;
+    --header-h:64px; --sidebar-w:260px;
+    --table-even-bg:rgba(0,0,0,0.02); --shadow:0 1px 3px rgba(0,0,0,0.06);
+    --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-header:#1a1a2e; --bg-sidebar:#16213e; --bg-content:#1e1e3a;
+    --bg-card:#252547; --bg-hover:#0f3460; --text:#eeeeee; --text-dim:#94a3b8;
+    --text-muted:#64748b; --border:#1e3a5f; --border-light:#2d4a6f;
+    --table-even-bg:rgba(255,255,255,0.02); --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.7; height:100vh; overflow:hidden; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--bg-header); border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; background:rgba(245,158,11,0.15); color:var(--status-draft); border:1px solid rgba(245,158,11,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s; }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s; border-left:3px solid transparent; }
+  .toc-link:hover { background:var(--bg-hover); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent-light); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
+  .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; }
+  .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
+  .doc-info-row span:first-child { color:var(--text-muted); }
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:48px 56px 100px; background:var(--bg-content); }
+  .section-header { display:flex; align-items:center; gap:14px; margin:56px 0 24px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
+  .section-title { font-size:24px; font-weight:700; }
+  h3 { font-size:17px; font-weight:600; margin:32px 0 14px; border-left:3px solid var(--accent); padding-left:12px; }
+  p { color:var(--text-dim); margin-bottom:18px; font-size:15px; line-height:1.8; }
+  ul { margin:8px 0 20px 28px; color:var(--text-dim); font-size:15px; }
+  li { margin-bottom:8px; line-height:1.8; }
+  table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:14px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  thead th { background:var(--bg-sidebar); color:var(--text); font-weight:600; text-align:left; padding:12px 16px; font-size:12px; text-transform:uppercase; border-bottom:2px solid var(--accent); }
+  tbody tr { border-bottom:1px solid var(--border); }
+  tbody tr:nth-child(even) { background:var(--table-even-bg); }
+  td { padding:12px 16px; color:var(--text-dim); vertical-align:top; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px 28px; margin:16px 0 24px; }
+  .card-title { font-size:15px; font-weight:600; margin-bottom:10px; }
+  .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
+  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
+  .before-after { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0; }
+  .ba-card { border-radius:12px; padding:24px; }
+  .ba-card.after { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); }
+  .ba-card.before { background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); }
+  .ba-label { font-size:12px; font-weight:700; text-transform:uppercase; margin-bottom:12px; }
+  .ba-card.after .ba-label { color:#10b981; }
+  .ba-card.before .ba-label { color:#ef4444; }
+  .ba-card ul { margin:0 0 0 20px; } .ba-card li { font-size:14px; }
+  .status-pill { display:inline-flex; padding:8px 18px; border-radius:24px; font-size:13px; font-weight:600; margin:4px; }
+  .pill-green { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); }
+  .pill-blue { background:rgba(59,130,246,0.12); color:#3b82f6; border:1px solid rgba(59,130,246,0.3); }
+  .signoff-box { border:2px dashed var(--accent); border-radius:14px; padding:28px 32px; margin:20px 0; background:rgba(233,69,96,0.03); }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3 { font-family:'Sarabun',system-ui,sans-serif; }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:28px 20px 80px;} .before-after{grid-template-columns:1fr;} }
+  @media print { .doc-header{position:static;} .doc-sidebar{display:none;} .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;} body{background:#fff;overflow:auto;} .theme-toggle,.lang-btn,.pdf-btn{display:none;} }
+</style>
+</head>
+<body>
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Kickoff — Obsidian SDLC Wiring (v5.9.0)</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta"><div>CR-2026-06-03-002 · 2026-06-03</div><div>Prepared by: Natthaphat Wajanavisit</div></div>
+    <span class="doc-status-badge">&#9203; PENDING SIGN-OFF</span>
+    <button class="pdf-btn" onclick="window.print()">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()"><span id="langLabel">EN</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()"><span class="theme-toggle-icon" id="themeIcon">&#9788;</span><div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div></div>
+  </div>
+</header>
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#s1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Overview</span><span class="lang-th">ภาพรวม</span></a></li>
+    <li><a href="#s2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">What We Will Build</span><span class="lang-th">สิ่งที่จะสร้าง</span></a></li>
+    <li><a href="#s3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Scope &amp; Acceptance</span><span class="lang-th">ขอบเขต &amp; การยอมรับ</span></a></li>
+    <li><a href="#s4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Management Summary</span><span class="lang-th">สรุปผู้บริหาร</span></a></li>
+    <li><a href="#s5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Effort, Timeline &amp; Risk</span><span class="lang-th">ความพยายาม ระยะเวลา ความเสี่ยง</span></a></li>
+    <li><a href="#s6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Sign-off</span><span class="lang-th">การลงนาม</span></a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Reference</span><span>CR-2026-06-03-002</span></div>
+    <div class="doc-info-row"><span>Type</span><span>Add Feature</span></div>
+    <div class="doc-info-row"><span>Priority</span><span>High</span></div>
+    <div class="doc-info-row"><span>Effort</span><span>M</span></div>
+    <div class="doc-info-row"><span>Risk</span><span>Low</span></div>
+    <div class="doc-info-row"><span>Target</span><span>v5.9.0</span></div>
+  </div>
+</nav>
+<main class="doc-content">
+
+  <div class="section-header" id="s1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Overview</span><span class="lang-th">ภาพรวม</span></h2>
+  </div>
+  <div class="card note">
+    <div class="card-title">&#128221; <span class="lang-en">What you are being asked to approve</span><span class="lang-th">สิ่งที่ต้องการอนุมัติ</span></div>
+    <p><span class="lang-en">We are extending DevStarter's Obsidian vault integration (v5.8.0 added project snapshots) to cover three more SDLC workflows. The vault will now automatically surface prior patterns when starting a new feature, and offer to capture recurring code-quality findings, audit issues, and retrospective lessons as searchable vault notes. This completes the "knowledge loop" — the vault grows from every workflow, not just from bug postmortems.</span><span class="lang-th">เราขยาย Obsidian vault integration ของ DevStarter (v5.8.0 เพิ่ม project snapshot) ให้ครอบคลุม workflow SDLC เพิ่มอีก 3 รายการ vault จะแสดง pattern ก่อนหน้าโดยอัตโนมัติเมื่อเริ่ม feature ใหม่ และเสนอให้บันทึก code-quality findings, audit issues, และ retro lessons เป็นโน้ตที่ค้นหาได้</span></p>
+  </div>
+  <div style="margin:16px 0 28px;">
+    <span class="status-pill pill-blue">Add Feature</span>
+    <span class="status-pill pill-blue">Priority: High</span>
+    <span class="status-pill pill-green">Risk: Low</span>
+  </div>
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Reference</td><td>CR-2026-06-03-002</td></tr>
+      <tr><td>Project</td><td>DevStarter</td></tr>
+      <tr><td>Title</td><td>Obsidian SDLC Wiring — Recall + Emit (v5.9.0)</td></tr>
+      <tr><td>Type</td><td>Add Feature</td></tr>
+      <tr><td>Date</td><td>2026-06-03</td></tr>
+      <tr><td>Prepared by</td><td>Natthaphat Wajanavisit</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="s2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">What We Will Build</span><span class="lang-th">สิ่งที่จะสร้าง</span></h2>
+  </div>
+  <p><span class="lang-en">Four SDLC runbooks receive minimal additive changes — one recall block and three optional emit blocks. No templates, no new note types (reusing existing technique/rca types from v5.7.0).</span><span class="lang-th">runbook SDLC สี่ไฟล์ได้รับการเปลี่ยนแปลงเพิ่มเติมน้อยที่สุด หนึ่ง recall block และ optional emit สาม block ไม่มี template ใหม่ ไม่มี note type ใหม่ (ใช้ซ้ำ type technique/rca จาก v5.7.0)</span></p>
+  <ul>
+    <li><span class="lang-en"><strong>/devstarter-change (add-feature)</strong> — before A-PHASE 2 (Impact Analysis): grep vault for technique notes matching the feature topic. Surfaces prior patterns before design begins.</span><span class="lang-th"><strong>/devstarter-change (add-feature)</strong> — ก่อน A-PHASE 2: grep vault หา technique notes ที่ตรงกับหัวข้อ feature แสดง pattern ก่อนหน้าก่อนเริ่มออกแบบ</span></li>
+    <li><span class="lang-en"><strong>/devstarter-review</strong> — after Phase 4 (post-review actions): optional vault emit of recurring findings as type: technique, topic: code-quality.</span><span class="lang-th"><strong>/devstarter-review</strong> — หลัง Phase 4: optional vault emit ของ findings ที่เกิดซ้ำ type: technique, topic: code-quality</span></li>
+    <li><span class="lang-en"><strong>/devstarter-audit</strong> — end of Phase 5 (fix execution): optional vault emit of critical/high findings as type: rca, root_cause_category: audit-gap.</span><span class="lang-th"><strong>/devstarter-audit</strong> — ท้าย Phase 5: optional vault emit ของ findings ระดับ critical/high type: rca, root_cause_category: audit-gap</span></li>
+    <li><span class="lang-en"><strong>/devstarter-retro</strong> — after Phase 4 (action items created): optional vault emit of process lessons as type: technique, topic: process.</span><span class="lang-th"><strong>/devstarter-retro</strong> — หลัง Phase 4: optional vault emit ของ process lessons type: technique, topic: process</span></li>
+  </ul>
+  <div class="card">
+    <div class="card-title"><span class="lang-en">User Story</span><span class="lang-th">User Story</span></div>
+    <p><span class="lang-en">As a developer starting a new feature, I want DevStarter to surface prior vault notes matching my feature topic — so I don't repeat solved problems. As a reviewer, I want to capture recurring findings to the vault — so patterns are shared across projects without manual effort.</span><span class="lang-th">ในฐานะนักพัฒนาที่เริ่ม feature ใหม่ ฉันต้องการให้ DevStarter แสดง vault notes ก่อนหน้าที่ตรงกับหัวข้อ feature เพื่อไม่ต้องแก้ปัญหาซ้ำ ในฐานะ reviewer ฉันต้องการบันทึก recurring findings ลงใน vault เพื่อแชร์ pattern ข้ามโปรเจกต์โดยอัตโนมัติ</span></p>
+  </div>
+
+  <div class="section-header" id="s3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">Scope &amp; Acceptance Criteria</span><span class="lang-th">ขอบเขต &amp; เกณฑ์การยอมรับ</span></h2>
+  </div>
+  <div class="before-after">
+    <div class="ba-card after">
+      <div class="ba-label">&#10003; <span class="lang-en">In Scope</span><span class="lang-th">อยู่ในขอบเขต</span></div>
+      <ul>
+        <li><span class="lang-en">Vault recall in /devstarter-change-add.md before A-PHASE 2</span><span class="lang-th">Vault recall ใน /devstarter-change-add.md ก่อน A-PHASE 2</span></li>
+        <li><span class="lang-en">Optional vault emit in /devstarter-review.md after Phase 4</span><span class="lang-th">Optional vault emit ใน /devstarter-review.md หลัง Phase 4</span></li>
+        <li><span class="lang-en">Optional vault emit in /devstarter-audit.md end of Phase 5</span><span class="lang-th">Optional vault emit ใน /devstarter-audit.md ท้าย Phase 5</span></li>
+        <li><span class="lang-en">Optional vault emit in /devstarter-retrospective.md after Phase 4</span><span class="lang-th">Optional vault emit ใน /devstarter-retrospective.md หลัง Phase 4</span></li>
+        <li><span class="lang-en">Update docs/obsidian-vault-guide.md Section 6 (SDLC coverage map)</span><span class="lang-th">อัปเดต docs/obsidian-vault-guide.md Section 6</span></li>
+      </ul>
+    </div>
+    <div class="ba-card before">
+      <div class="ba-label">&#10006; <span class="lang-en">Out of Scope</span><span class="lang-th">อยู่นอกขอบเขต</span></div>
+      <ul>
+        <li><span class="lang-en">No new note templates (reuse existing type: technique and type: rca)</span><span class="lang-th">ไม่มี note template ใหม่ (ใช้ซ้ำ type: technique และ type: rca)</span></li>
+        <li><span class="lang-en">No changes to /devstarter-hotfix, /devstarter-sprint, /devstarter-new</span><span class="lang-th">ไม่เปลี่ยน /devstarter-hotfix, /devstarter-sprint, /devstarter-new</span></li>
+        <li><span class="lang-en">No new frontmatter schema keys</span><span class="lang-th">ไม่มี frontmatter schema key ใหม่</span></li>
+      </ul>
+    </div>
+  </div>
+  <h3><span class="lang-en">Acceptance Criteria</span><span class="lang-th">เกณฑ์การยอมรับ</span></h3>
+  <ul>
+    <li><span class="lang-en">Given obsidian.enabled:true, When /devstarter-change (add-feature) reaches A-PHASE 2, Then vault is grepped for technique notes matching the feature topic and top matches surfaced.</span><span class="lang-th">เมื่อ obsidian.enabled:true เมื่อ /devstarter-change (add-feature) ถึง A-PHASE 2 จะ grep vault หา technique notes ที่ตรงกับหัวข้อ feature</span></li>
+    <li><span class="lang-en">Given /devstarter-review completes Phase 4, When obsidian.enabled:true, Then optional "Save recurring findings to vault?" gate offered; if yes, emits type: technique notes.</span><span class="lang-th">เมื่อ /devstarter-review เสร็จ Phase 4 เมื่อ obsidian.enabled:true จะเสนอ gate "บันทึก findings ลงใน vault?"</span></li>
+    <li><span class="lang-en">Given /devstarter-audit Phase 5 complete, When obsidian.enabled:true, Then optional emit of critical/high findings as type: rca notes.</span><span class="lang-th">เมื่อ /devstarter-audit Phase 5 เสร็จ เมื่อ obsidian.enabled:true จะเสนอ emit findings ระดับ critical/high</span></li>
+    <li><span class="lang-en">Given /devstarter-retro Phase 4 complete, When obsidian.enabled:true, Then optional emit of process lessons as type: technique, topic: process.</span><span class="lang-th">เมื่อ /devstarter-retro Phase 4 เสร็จ เมื่อ obsidian.enabled:true จะเสนอ emit process lessons</span></li>
+    <li><span class="lang-en">When obsidian.enabled:false, all four workflows behave exactly as before (silently skip).</span><span class="lang-th">เมื่อ obsidian.enabled:false ทุก workflow ทำงานเหมือนเดิม</span></li>
+  </ul>
+
+  <div class="section-header" id="s4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">Management Summary</span><span class="lang-th">สรุปสำหรับผู้บริหาร</span></h2>
+  </div>
+  <h3><span class="lang-en">Why now</span><span class="lang-th">ทำไมต้องทำตอนนี้</span></h3>
+  <p><span class="lang-en">v5.8.0 gave the vault a "welcome to this project" note. v5.9.0 completes the knowledge loop: patterns from code reviews, audit findings, and retrospective lessons now flow into the vault automatically, making the shared knowledge base grow from every workflow instead of requiring manual capture.</span><span class="lang-th">v5.8.0 เพิ่มโน้ต "ยินดีต้อนรับสู่โปรเจกต์" ใน vault v5.9.0 ทำ knowledge loop สมบูรณ์: pattern จาก code review, audit findings, และ retro lessons ไหลเข้า vault โดยอัตโนมัติ</span></p>
+  <h3><span class="lang-en">Who benefits</span><span class="lang-th">ใครได้ประโยชน์</span></h3>
+  <p><span class="lang-en">All developers using DevStarter — especially teams where the same code-quality issues recur across projects. Prior fix patterns surface before new features are designed, preventing repeat mistakes.</span><span class="lang-th">นักพัฒนาทุกคนที่ใช้ DevStarter โดยเฉพาะทีมที่มีปัญหา code-quality ซ้ำข้ามโปรเจกต์</span></p>
+  <h3><span class="lang-en">Cost of not doing this</span><span class="lang-th">ผลกระทบหากไม่ดำเนินการ</span></h3>
+  <p><span class="lang-en">Teams continue to repeat known mistakes. The vault remains a postmortem archive rather than a living knowledge base. The value of the Obsidian investment from v5.7.0 is not fully realized.</span><span class="lang-th">ทีมยังทำผิดซ้ำ vault ยังคงเป็นเพียง postmortem archive ไม่ใช่ knowledge base ที่มีชีวิต</span></p>
+
+  <div class="section-header" id="s5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title"><span class="lang-en">Effort, Timeline &amp; Risk</span><span class="lang-th">ความพยายาม ระยะเวลา ความเสี่ยง</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>Aspect</th><th>Estimate</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Effort</span><span class="lang-th">ความพยายาม</span></td><td>M</td><td><span class="lang-en">4 SDLC file edits + docs update; est. 2–5 hours</span><span class="lang-th">แก้ไข SDLC 4 ไฟล์ + อัปเดต docs; ประมาณ 2–5 ชั่วโมง</span></td></tr>
+      <tr><td><span class="lang-en">Timeline</span><span class="lang-th">ระยะเวลา</span></td><td><span class="lang-en">1 day</span><span class="lang-th">1 วัน</span></td><td><span class="lang-en">Immediate — all patterns established from v5.8.0</span><span class="lang-th">ทันที — pattern ทั้งหมดสร้างแล้วจาก v5.8.0</span></td></tr>
+      <tr><td><span class="lang-en">Priority</span><span class="lang-th">ลำดับความสำคัญ</span></td><td>High</td><td><span class="lang-en">Completes the vault integration arc started in v5.7.0</span><span class="lang-th">ทำ vault integration arc ที่เริ่มใน v5.7.0 ให้สมบูรณ์</span></td></tr>
+    </tbody>
+  </table>
+  <div class="card warning">
+    <div class="card-title"><span class="lang-en">Low Risk</span><span class="lang-th">ความเสี่ยงต่ำ</span></div>
+    <p><span class="lang-en">4 additive SDLC runbook edits. No new templates, no behavior removed, all gates opt-in, silent skip when vault off. Only dependency: T0 vault pipeline validation (deferred from v5.7.0) — same pre-condition as v5.8.0.</span><span class="lang-th">แก้ไข SDLC runbook เพิ่มเติม 4 ไฟล์ ไม่มี template ใหม่ ไม่มี behavior ที่ถูกลบ ทุก gate เป็น opt-in ข้ามเมื่อ vault ปิด</span></p>
+  </div>
+
+  <div class="section-header" id="s6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title"><span class="lang-en">Sign-off</span><span class="lang-th">การลงนามอนุมัติ</span></h2>
+  </div>
+  <div class="signoff-box">
+    <div class="card-title">&#9997; <span class="lang-en">Approving authorises branch creation and development to begin against this scope.</span><span class="lang-th">การอนุมัติอนุญาตให้สร้าง branch และเริ่มพัฒนาตามขอบเขตนี้</span></div>
+    <table>
+      <thead><tr><th><span class="lang-en">Role</span><span class="lang-th">บทบาท</span></th><th><span class="lang-en">Name</span><span class="lang-th">ชื่อ</span></th><th><span class="lang-en">Decision</span><span class="lang-th">การตัดสิน</span></th><th><span class="lang-en">Date</span><span class="lang-th">วันที่</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="lang-en">Requester</span><span class="lang-th">ผู้ร้องขอ</span></td><td>Natthaphat Wajanavisit</td><td>&#9744; <span class="lang-en">Approve</span><span class="lang-th">อนุมัติ</span> / &#9744; <span class="lang-en">Revise</span><span class="lang-th">แก้ไข</span></td><td>&mdash;</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>Reference</th><th>Date</th><th>Description</th><th>Author</th></tr></thead>
+    <tbody>
+      <tr><td>CR-2026-06-03-002</td><td>2026-06-03</td><td><span class="lang-en">Kickoff document generated</span><span class="lang-th">สร้างเอกสาร kickoff</span></td><td>Natthaphat Wajanavisit</td></tr>
+    </tbody>
+  </table>
+</main>
+<script>
+  function toggleLang() { var h=document.documentElement,t=h.getAttribute('data-lang')==='th',l=document.getElementById('langLabel'); if(t){h.removeAttribute('data-lang');localStorage.setItem('docportal-lang','en');if(l)l.textContent='EN';}else{h.setAttribute('data-lang','th');localStorage.setItem('docportal-lang','th');if(l)l.textContent='TH';} }
+  (function(){var l=localStorage.getItem('docportal-lang');if(l==='th'){document.documentElement.setAttribute('data-lang','th');var lb=document.getElementById('langLabel');if(lb)lb.textContent='TH';}})();
+  function toggleTheme(){var h=document.documentElement,d=h.getAttribute('data-theme')==='dark';if(d){h.removeAttribute('data-theme');localStorage.setItem('docportal-theme','light');document.getElementById('themeIcon').innerHTML='&#9788;';}else{h.setAttribute('data-theme','dark');localStorage.setItem('docportal-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';}}
+  (function(){var s=localStorage.getItem('docportal-theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';}})();
+  const secs=document.querySelectorAll('.section-header[id]'),links=document.querySelectorAll('.toc-link'),cont=document.querySelector('.doc-content');
+  cont.addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(cont.scrollTop>=s.offsetTop-cont.offsetTop-100)c=s.id;});links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+c)l.classList.add('active');});});
+  links.forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)cont.scrollTo({top:t.offsetTop-cont.offsetTop-20,behavior:'smooth'});});});
+</script>
+</body>
+</html>

@@ -114,6 +114,28 @@ Ask these questions ONE AT A TIME:
 
 ---
 
+## ⚡ Vault Recall — Prior Patterns (v5.9.0+)
+
+Before starting impact analysis, check the knowledge vault for prior patterns relevant to this feature.
+
+Read `obsidian.enabled` from `devstarter-config.yml`.
+If `obsidian.enabled: false` or `obsidian:` block absent → silently skip; proceed to A-PHASE 2.
+If `obsidian.enabled: true` and `vault_path` is set:
+  Run Vault Recall Procedure from `sdlc/devstarter-knowledge.md`:
+    - Derive 2–4 keywords from A-Q1 (feature name) + A-Q3 (description) + A-Q2 (topic/domain)
+    - Grep vault: `grep -ril "<keyword>" "<vault_path>/<subdir>"`
+    - Filter by: `type: technique` (prefer exact topic match; also accept type: bug or type: rca if relevant)
+    - Read top 1–3 matches; surface as:
+      ```
+      🔁 Prior patterns (vault):
+        • <title> (<project>, <date>) — topic: <topic>
+          → <one-line summary of the technique / when to apply>
+      ```
+  If no matches: show one line — "No matching vault notes found for this feature topic." — then proceed.
+  Either way: proceed immediately to A-PHASE 2 below.
+
+---
+
 ## A-PHASE 2 — Impact Analysis
 
 Before touching any file, run impact analysis:

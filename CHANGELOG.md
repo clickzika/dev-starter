@@ -1,5 +1,44 @@
 # Changelog
 
+## v5.9.0 — Obsidian SDLC Wiring — Recall + Emit (2026-06-03)
+
+Closes the knowledge loop: all seven Obsidian vault integration points now wired. Three workflows gain optional emit; one gains recall before design begins.
+
+### New
+- **Vault recall in `/devstarter-change` (add-feature)** — before A-PHASE 2 (Impact Analysis), the vault is grepped for technique notes matching the feature topic. Prior patterns surface before design begins, preventing teams from solving known problems twice.
+- **Optional vault emit in `/devstarter-review`** — after Phase 4, if the review found ≥1 MAJOR or BLOCKER finding, Claude offers to save recurring findings as `type: technique, topic: code-quality` notes. Clean reviews (0 blockers, 0 majors) silently skip the prompt.
+- **Optional vault emit in `/devstarter-audit`** — after Phase 5 (fix execution), if the audit found ≥1 critical/high finding, Claude offers to save them as `type: rca, root_cause_category: audit-gap` notes. Medium/low/info findings silently skip.
+- **Optional vault emit in `/devstarter-retro`** — after Phase 4 (action items created), Claude offers to capture process lessons as `type: technique, topic: process` notes (Q2 + Q3 answers + top action items, one note per distinct lesson).
+- **`docs/obsidian-vault-guide.md` Section 6** — SDLC Vault Coverage Map: full table of all 11 commands (direction, trigger, note type) + two Dataview queries (`technique by topic`, `full SDLC audit trail`).
+
+### Changed
+- **Vault guide intro** — updated capture/recall point summary to include v5.9.0 workflows.
+
+### Known limitation
+- **T0 live-vault validation deferred** — the full emit+recall pipeline (v5.7.0 foundation) has not been exercised against a live vault. All new emit points build on the same unvalidated path. Feature is additive and opt-in; validate with `/devstarter-knowledge "test"` before relying on cross-project recall.
+
+---
+
+## v5.8.0 — Obsidian Project Snapshot Note Type (2026-06-03)
+
+Adds a project-level note type to the vault — the "welcome to this project" entry that was missing from v5.7.0. New team members can orient themselves from the vault without reading CLAUDE.md.
+
+### New
+- **`templates/obsidian/project-snapshot-note.md`** — new vault note template; `type: project-snapshot`; frontmatter captures `version`, `stack` (array), `architecture_pattern`, `key_decisions` (array), `constraints` (array), `repo_url` alongside the standard recall schema.
+- **Optional vault emit in `/devstarter-new`** — Gate 0 post-scaffold: after GitHub repo + devstarter-config.yml are created, Claude offers to emit an initial project-snapshot note. Fills: stack from config, version: "initial", repo_url from vcs.repo.
+- **Optional vault emit in `/devstarter-release`** — Phase 9.5, alongside the existing launch brief: Claude offers to emit a versioned project-snapshot note (unique filename with release tag). Snapshots stack (never overwrite) to form a project evolution timeline.
+- **Vault recall in `/devstarter-onboard`** — session start: greps vault for `type: project-snapshot` matching the current project; surfaces title / version / stack / arch / repo as an orientation block before onboarding steps begin.
+- **`docs/obsidian-vault-guide.md` Section 5** — Project Snapshot Notes: type description, emit triggers, full frontmatter schema, Dataview queries (all project overviews, project evolution timeline, by-stack), stacking design note.
+
+### Changed
+- **`devstarter-config.yml`** — `obsidian.enabled` set to `true` in this project's own config; `vault_path` pointed at the live vault.
+- **`CLAUDE.md`** — Knowledge Vault section added to Session Start documentation.
+
+### Known limitation
+- **T0 live-vault validation deferred** — same as v5.7.0: the snapshot emit and recall have not been exercised against a live vault at release time. Additive and opt-in; validate with `/devstarter-knowledge "test"` first.
+
+---
+
 ## v5.7.0 — Obsidian Knowledge Vault (2026-05-31)
 
 Capture engineering knowledge — techniques, bugs, and root causes — as sanitized Markdown notes in a shared Obsidian vault, reusable across every project. A technique or root cause found on one project surfaces on the next: `/devstarter-debug` greps the vault at session start. Opt-in, off by default.

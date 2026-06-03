@@ -34,6 +34,38 @@ GATE 0 — Project Setup                ← runs automatically before Gate 1
     ✅ Notion views: Board, By Epic, Sprint, All Tasks
     ✅ devstarter-config.yml — project config created
     ✅ .project.env — synced from config
+
+  ## ⚡ Vault Emit — Initial Project Snapshot (optional, v5.8.0+)
+  Read `obsidian.enabled` from devstarter-config.yml.
+  If `obsidian.enabled: false` or `obsidian:` block absent → silently skip; proceed to Gate 1.
+  If `obsidian.enabled: true`:
+    Use `AskUserQuestion` with:
+    - question: "Save an initial project-snapshot note to the vault?"
+    - options: ["Yes — capture project context now", "Skip — I'll add it later"]
+    If "Yes": run **Vault Emit Procedure** (E1–E5) from `sdlc/devstarter-knowledge.md`
+      Template: `~/.claude/templates/obsidian/project-snapshot-note.md`
+      Fill placeholders:
+        {{TITLE}}            = "[project.name] — Initial Project Snapshot"
+        {{PROJECT}}          = project.name from devstarter-config.yml
+        {{VERSION}}          = "initial"
+        {{DATE}}             = today
+        {{AUTHOR}}           = Name from install-root `~/.claude/USER.md` (fallback: IT Dept)
+        {{STACK}}            = project.language from config (+ framework if stated in intake)
+        {{ARCH_PATTERN}}     = derived from intake Q3.1 (full-stack / client-only / api-only / mobile)
+        {{KEY_DECISIONS}}    = ["tech stack: " + stack, "vcs: " + vcs.type, "pm: " + pm.type]
+        {{CONSTRAINTS}}      = ["team size: " + team.size, "skill level: " + team.skill_level]
+        {{REPO_URL}}         = vcs.repo URL
+        {{PROJECT_OVERVIEW}} = project.description from config
+        {{STACK_DETAIL}}     = one paragraph from intake answers
+        {{KEY_DECISIONS_DETAIL}} = brief summary of main stack choices
+        {{CONSTRAINTS_DETAIL}}   = team size + skill + any stated constraints
+        {{TEAM_NOTES}}       = team.size + " team, " + team.skill_level + " level"
+        {{BRANCH_STRATEGY}}  = vcs.branch_strategy
+        {{CI_TYPE}}          = ci.type
+    Show E5 confirmation: 🧠 Vault note written: <path> type: project-snapshot project: <name>
+    If `transport: git` — remind (do not auto-run): commit + push the vault repo to share it.
+    If "Skip": continue.
+
   No approval needed — proceed to Gate 1 automatically
 
 GATE 1 — Discovery                    ← HARD STOP: user must approve before Gate 2
