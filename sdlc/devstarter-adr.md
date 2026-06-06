@@ -2,7 +2,7 @@
 
 > **TL;DR** — Capture an Architecture Decision Record outside of a feature change · **Lifecycle** Design · **Gates** 1
 
-## Model: Opus (`claude-opus-4-7`)
+## Model: Opus (`claude-opus-4-8`)
 > Trade-off analysis + long-term thinking required — run `/model opus`.
 
 **Config:** Read `devstarter-config.yml` for project settings.

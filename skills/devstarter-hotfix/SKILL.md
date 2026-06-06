@@ -4,7 +4,7 @@ Emergency forward-fix on production: branch from main → fix → merge main →
 
 ## ⚠️ Model Gate — Run Before Anything Else
 
-This workflow requires **Opus** (`claude-opus-4-7`).
+This workflow requires **Opus** (`claude-opus-4-8`).
 
 Use `AskUserQuestion` immediately:
 - question: "Are you on Opus? If not, run `/model opus` first then re-run `/devstarter-hotfix`."

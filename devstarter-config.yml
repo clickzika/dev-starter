@@ -59,7 +59,7 @@ model_management:
   # Model IDs — update here when Anthropic releases new versions
   haiku:  claude-haiku-4-5-20251001    # Fast + cheap — mechanical tasks
   sonnet: claude-sonnet-4-6            # Balanced   — standard dev workflows
-  opus:   claude-opus-4-7              # Most capable — complex reasoning
+  opus:   claude-opus-4-8              # Most capable — complex reasoning
 
   # Switch model in Claude Code: /model haiku | /model sonnet | /model opus
   # Each SDLC runbook also declares its recommended tier in a ## Model: header.

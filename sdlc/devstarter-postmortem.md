@@ -2,7 +2,7 @@
 
 > **TL;DR** — Blameless post-mortem after SEV-1/2 incident with action items · **Lifecycle** Operate · **Gates** 1
 
-## Model: Opus (`claude-opus-4-7`)
+## Model: Opus (`claude-opus-4-8`)
 > Deep narrative + causal reasoning required — run `/model opus` before this workflow.
 
 **Config:** Read `devstarter-config.yml` for all project settings.
