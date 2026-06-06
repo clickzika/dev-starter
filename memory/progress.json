@@ -1,22 +1,27 @@
 {
-  "workflow": "devstarter-release",
+  "workflow": "devstarter-existing",
   "version": "v5.9.0",
-  "status": "awaiting_publish",
-  "branch": "develop",
-  "started_at": "2026-06-03",
-  "release_change": "CR-2026-06-03-001 + CR-2026-06-03-002",
-  "features": [
-    "v5.8.0: project-snapshot note type (templates/obsidian/project-snapshot-note.md + new/release emit + onboard recall)",
-    "v5.9.0: SDLC wiring — change recall + review/audit/retro emit + vault guide Section 6"
-  ],
-  "publish_commands": [
-    "bash scripts/publish.sh 5.8.0 \"Obsidian project-snapshot note type\"",
-    "bash scripts/publish.sh 5.9.0 \"Obsidian SDLC wiring — recall + emit\""
-  ],
-  "branches_deleted": ["release/v5.8.0", "release/v5.9.0"],
-  "open_items": [
-    "T0 — validate v5.7.0 vault pipeline end-to-end against live vault",
-    "BRD REQ-OBS-002 says 'Phase 5' — should say 'Gate 0' (fix at next BRD review)"
-  ],
+  "status": "waiting_approval",
+  "branch": "feature/full-setup-docs-github",
+  "started_at": "2026-06-06",
+  "intent": "Full setup — docs review + GitHub + GitHub Issues (no Notion)",
+  "autopilot_mode": true,
+  "autopilot_total_tasks": 4,
+  "autopilot_tasks_done": 3,
+  "results": {
+    "track_a_docs": "CANCELLED — docs/ already exists & complete; replaced with staleness review (reported)",
+    "doc_drift": [
+      "brd.html header meta frozen at 'Version 1.0 · 2026-04-05' (body is v5.9.0)",
+      "brd.html Author '@devstarter-ba' violates Rule 8 (should be Natthaphat Wajanavisit)",
+      "brd.html REQ-OBS-002 says '/devstarter-new ... Phase 5'; should be 'Gate 0'",
+      "api-reference/database-design/security-design/test-strategy/infrastructure-guide frozen at 2026-04-05 (~v4.3)",
+      "project-plan.html very stale (v1.0.0-1.1.0 / 2026-03)"
+    ],
+    "track_b_labels": "DONE — 19 canonical labels created (gate/role/status/priority)",
+    "track_b_milestones": "N/A at setup — created per-epic via PROC-GH-11 during sprint/change",
+    "track_b_branch_protection": "BLOCKED — private repo on free plan (HTTP 403, requires GitHub Pro/public). PROC-GH-18 not applied."
+  },
+  "gate": "Final — Delivery Review (awaiting approval)",
+  "next_action": "Await decision on BRD drift fixes; optionally refresh stale technical docs",
   "previous_release": { "version": "v5.7.0", "tag": "v5.7.0", "completed_at": "2026-05-31" }
 }

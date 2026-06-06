@@ -79,7 +79,7 @@
     </div>
   </div>
   <div class="doc-header-right">
-    <div class="doc-header-meta"><div>Version 1.0 · 2026-04-05</div><div>Author: @devstarter-backend</div></div>
+    <div class="doc-header-meta"><div>Version 5.9.0 · 2026-06-06</div><div>Author: Natthaphat Wajanavisit</div></div>
     <span class="doc-status-badge approved">● Approved</span>
     <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
       <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
@@ -100,9 +100,9 @@
     <li class="toc-item"><a href="#section-8" class="toc-link"><span class="toc-number s8">8</span> Inline Args</a></li>
   </ul>
   <div class="doc-info-card">
-    <div class="doc-info-row"><span>Commands</span><span>24 total</span></div>
-    <div class="doc-info-row"><span>Version</span><span>1.0</span></div>
-    <div class="doc-info-row"><span>Date</span><span>2026-04-05</span></div>
+    <div class="doc-info-row"><span>Commands</span><span>63 total</span></div>
+    <div class="doc-info-row"><span>Version</span><span>5.9.0</span></div>
+    <div class="doc-info-row"><span>Date</span><span>2026-06-06</span></div>
     <div class="doc-info-row"><span>Agent</span><span>@devstarter-backend</span></div>
   </div>
 </nav>
@@ -112,11 +112,16 @@
     <span class="section-number s1">1</span>
     <h2 class="section-title">Overview</h2>
   </div>
-  <p>DevStarter exposes 24 slash commands as its "API". Each command is a plain-text Markdown file in <code>commands/</code> that Claude Code loads when the user types <code>/devstarter-X</code>. The command file routes to the matching SDLC runbook in <code>sdlc/</code> which contains the full workflow logic.</p>
+  <p>DevStarter exposes 63 slash commands as its "API". Since v3.0.0 each command is a <code>SKILL.md</code> file in its own directory under <code>skills/</code>, which Claude Code loads when the user types <code>/devstarter-X</code>. The skill routes to the matching SDLC runbook in <code>sdlc/</code> which contains the full workflow logic.</p>
 
   <div class="card note">
     <div class="card-title">Architecture</div>
-    <p>commands/devstarter-X.md &nbsp;→&nbsp; sdlc/devstarter-X.md &nbsp;→&nbsp; agents/devstarter-Y.md</p>
+    <p>skills/devstarter-X/SKILL.md &nbsp;→&nbsp; sdlc/devstarter-X.md &nbsp;→&nbsp; agents/devstarter-Y.md</p>
+  </div>
+
+  <div class="card warning">
+    <div class="card-title">Catalog scope</div>
+    <p style="margin:0">The command summary below documents the core command set. The toolkit now ships <strong>63 commands</strong> total; the full, always-current catalog is in <code>devstarter-menu.md</code> (run <code>/devstarter-menu</code>). Categories added since the original catalog include understand-* wrappers, knowledge/vault, council, verification-loop, debug, and the MCP setup command.</p>
   </div>
 
   <h3>Command Summary</h3>

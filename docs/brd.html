@@ -134,8 +134,8 @@
   </div>
   <div class="doc-header-right">
     <div class="doc-header-meta">
-      <div>Version 1.0 · 2026-04-05</div>
-      <div>Author: @devstarter-ba</div>
+      <div>Version 5.9.0 · 2026-06-06</div>
+      <div>Author: Natthaphat Wajanavisit</div>
     </div>
     <span class="doc-status-badge approved">● Approved</span>
     <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
@@ -160,10 +160,10 @@
     <li class="toc-item"><a href="#section-10" class="toc-link"><span class="toc-number s10">10</span> Glossary</a></li>
   </ul>
   <div class="doc-info-card">
-    <div class="doc-info-row"><span>Version</span><span>1.0</span></div>
+    <div class="doc-info-row"><span>Version</span><span>5.9.0</span></div>
     <div class="doc-info-row"><span>Status</span><span>Approved</span></div>
-    <div class="doc-info-row"><span>Date</span><span>2026-04-05</span></div>
-    <div class="doc-info-row"><span>Author</span><span>@devstarter-ba</span></div>
+    <div class="doc-info-row"><span>Date</span><span>2026-06-06</span></div>
+    <div class="doc-info-row"><span>Author</span><span>Natthaphat Wajanavisit</span></div>
   </div>
 </nav>
 
@@ -386,7 +386,7 @@ flowchart LR
     <thead><tr><th>Req ID</th><th>Requirement</th><th>Priority</th></tr></thead>
     <tbody>
       <tr><td>REQ-OBS-001</td><td>System SHALL provide a <code>project-snapshot</code> vault note type capturing tech stack, architecture decisions, constraints, and repo URL</td><td><span class="badge badge-green">Must</span></td></tr>
-      <tr><td>REQ-OBS-002</td><td><code>/devstarter-new</code> SHALL offer optional vault emit of a project-snapshot note at Phase 5 post-scaffold (when <code>obsidian.enabled: true</code>)</td><td><span class="badge badge-green">Must</span></td></tr>
+      <tr><td>REQ-OBS-002</td><td><code>/devstarter-new</code> SHALL offer optional vault emit of a project-snapshot note at Gate 0 post-scaffold (when <code>obsidian.enabled: true</code>)</td><td><span class="badge badge-green">Must</span></td></tr>
       <tr><td>REQ-OBS-003</td><td><code>/devstarter-release</code> SHALL offer optional versioned project-snapshot emit at Phase 9.5 (unique filename per release)</td><td><span class="badge badge-green">Must</span></td></tr>
       <tr><td>REQ-OBS-004</td><td><code>/devstarter-onboard</code> SHALL grep the vault for the latest project-snapshot and surface it as orientation context at session start</td><td><span class="badge badge-blue">Should</span></td></tr>
       <tr><td>REQ-OBS-005</td><td>All vault emit points SHALL be opt-in per run (gated via AskUserQuestion) and MUST silently skip when <code>obsidian.enabled: false</code></td><td><span class="badge badge-green">Must</span></td></tr>
@@ -455,11 +455,11 @@ flowchart LR
         <td>As a developer creating a new project, I want DevStarter to offer to save a project-snapshot note to the vault after scaffold — so my project context is captured from day one.</td>
         <td>
           Given <code>obsidian.enabled: true</code><br>
-          When <code>/devstarter-new</code> Phase 5 completes<br>
+          When <code>/devstarter-new</code> Gate 0 completes<br>
           Then Claude asks "Save a project-snapshot note?" and, if yes, emits a sanitized note with type: project-snapshot, stack, key-decisions, constraints, repo-url.
           <br><br>
           Given <code>obsidian.enabled: false</code><br>
-          When <code>/devstarter-new</code> Phase 5 completes<br>
+          When <code>/devstarter-new</code> Gate 0 completes<br>
           Then no vault prompt appears and workflow behaves exactly as before.
         </td>
       </tr>
