@@ -40,12 +40,17 @@
     ],
     "defaultMode": "acceptEdits"
   },
-  "statusLine": {
-    "type": "command",
-    "command": "bash /c/Users/click/.claude/statusline.sh"
-  },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true
   },
-  "skipDangerousModePermissionPrompt": true
+  "advisorModel": "opus",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark-ansi",
+  "verbose": true,
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": false,
+  "statusLine": {
+    "type": "command",
+    "command": "node \"C:\\Users\\natthaphatw\\.claude\\statusline.js\""
+  }
 }
