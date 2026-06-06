@@ -1,27 +1,24 @@
 {
   "workflow": "devstarter-existing",
   "version": "v5.9.0",
-  "status": "waiting_approval",
+  "status": "completed",
   "branch": "feature/full-setup-docs-github",
   "started_at": "2026-06-06",
-  "intent": "Full setup — docs review + GitHub + GitHub Issues (no Notion)",
-  "autopilot_mode": true,
-  "autopilot_total_tasks": 4,
-  "autopilot_tasks_done": 3,
+  "completed_at": "2026-06-06",
+  "intent": "Full setup — docs review/refresh + GitHub Issues PM (no Notion)",
   "results": {
-    "track_a_docs": "CANCELLED — docs/ already exists & complete; replaced with staleness review (reported)",
-    "doc_drift": [
-      "brd.html header meta frozen at 'Version 1.0 · 2026-04-05' (body is v5.9.0)",
-      "brd.html Author '@devstarter-ba' violates Rule 8 (should be Natthaphat Wajanavisit)",
-      "brd.html REQ-OBS-002 says '/devstarter-new ... Phase 5'; should be 'Gate 0'",
-      "api-reference/database-design/security-design/test-strategy/infrastructure-guide frozen at 2026-04-05 (~v4.3)",
-      "project-plan.html very stale (v1.0.0-1.1.0 / 2026-03)"
-    ],
-    "track_b_labels": "DONE — 19 canonical labels created (gate/role/status/priority)",
-    "track_b_milestones": "N/A at setup — created per-epic via PROC-GH-11 during sprint/change",
-    "track_b_branch_protection": "BLOCKED — private repo on free plan (HTTP 403, requires GitHub Pro/public). PROC-GH-18 not applied."
+    "github_labels": "DONE — 19 canonical labels created (gate/role/status/priority)",
+    "branch_protection": "BLOCKED — private repo on free plan (403). PROC-GH-18 not applied.",
+    "milestones": "N/A at setup — created per-epic via PROC-GH-11",
+    "docs": "EXISTED already; staleness review done; BRD drift fixed + 6 stale docs refreshed to v5.9.0",
+    "commit": "fa17f88 — docs: refresh stale docs to v5.9.0 + fix BRD drift",
+    "docs_changed": ["brd.html","api-reference.html","database-design.html","security-design.html","test-strategy.html","infrastructure-guide.html","project-plan.html"]
   },
-  "gate": "Final — Delivery Review (awaiting approval)",
-  "next_action": "Await decision on BRD drift fixes; optionally refresh stale technical docs",
+  "open_items": [
+    "Branch protection on main/uat needs GitHub Pro or public repo (free plan blocks it)",
+    "release-v2.2.0.html / release-v2.3.0.html still show Author @devstarter-* (left as historical artifacts)",
+    "Deep per-command re-catalog of api-reference body deferred (count + note updated)",
+    "Decide: push feature/full-setup-docs-github + open PR to develop"
+  ],
   "previous_release": { "version": "v5.7.0", "tag": "v5.7.0", "completed_at": "2026-05-31" }
 }
