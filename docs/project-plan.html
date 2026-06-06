@@ -74,7 +74,7 @@
     </div>
   </div>
   <div class="doc-header-right">
-    <div class="doc-header-meta"><div>Version 1.0 · 2026-04-05</div><div>Author: @devstarter-pm</div></div>
+    <div class="doc-header-meta"><div>Version 5.9.0 · 2026-06-06</div><div>Author: Natthaphat Wajanavisit</div></div>
     <span class="doc-status-badge approved">● Approved</span>
     <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
       <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
@@ -93,10 +93,10 @@
     <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> Definition of Done</a></li>
   </ul>
   <div class="doc-info-card">
-    <div class="doc-info-row"><span>Version</span><span>1.4.1</span></div>
+    <div class="doc-info-row"><span>Version</span><span>5.9.0</span></div>
     <div class="doc-info-row"><span>Status</span><span>Active</span></div>
     <div class="doc-info-row"><span>Owner</span><span>clickzika</span></div>
-    <div class="doc-info-row"><span>Date</span><span>2026-04-05</span></div>
+    <div class="doc-info-row"><span>Date</span><span>2026-06-06</span></div>
   </div>
 </nav>
 <main class="doc-content">
@@ -109,14 +109,14 @@
     <thead><tr><th>Field</th><th>Value</th></tr></thead>
     <tbody>
       <tr><td>Project Name</td><td>DevStarter</td></tr>
-      <tr><td>Current Version</td><td>1.4.1</td></tr>
+      <tr><td>Current Version</td><td>5.9.0</td></tr>
       <tr><td>Start Date</td><td>2026-03-22</td></tr>
       <tr><td>Status</td><td><span class="badge badge-green">Active</span></td></tr>
       <tr><td>Owner</td><td>clickzika</td></tr>
       <tr><td>Dev Repo</td><td>github.com/clickzika/dev-starter-dev</td></tr>
       <tr><td>Public Repo</td><td>github.com/clickzika/dev-starter</td></tr>
-      <tr><td>PM Board</td><td>Notion — Database 339d9f1f</td></tr>
-      <tr><td>Branching</td><td>GitFlow (main / develop / feature/*)</td></tr>
+      <tr><td>PM Board</td><td>GitHub Issues — clickzika/dev-starter-dev</td></tr>
+      <tr><td>Branching</td><td>GitFlow (main / uat / develop / feature/*)</td></tr>
       <tr><td>Release Cadence</td><td>As-needed — minor versions for new features, patch for fixes</td></tr>
     </tbody>
   </table>
@@ -135,21 +135,56 @@
     <div class="milestone"><span class="milestone-version">v1.3.0</span><div><div class="milestone-title">Quick-Picker + Inline Args</div><p style="font-size:12px;color:var(--text-muted);margin:0">Friction reduction across 4 intake commands, GitLab/SVN runbooks added</p></div><span class="milestone-date">2026-04-05</span></div>
     <div class="milestone"><span class="milestone-version">v1.4.0</span><div><div class="milestone-title">Release Strategy I — Git Auto-Detection</div><p style="font-size:12px;color:var(--text-muted);margin:0">Dual-remote + single-repo auto-detect at runtime for toolkit/library projects</p></div><span class="milestone-date">2026-04-05</span></div>
     <div class="milestone"><span class="milestone-version">v1.4.1</span><div><div class="milestone-title">/devstarter-document — 24th Command</div><p style="font-size:12px;color:var(--text-muted);margin:0">Standalone doc generator for any of 10 doc types, with inline args</p></div><span class="milestone-date">2026-04-05</span></div>
+    <div class="milestone"><span class="milestone-version">v1.5.0</span><div><div class="milestone-title">Token Optimization + Autopilot</div><p style="font-size:12px;color:var(--text-muted);margin:0">devstarter-config.yml, proactive rate-limit pause, autopilot mode</p></div><span class="milestone-date">2026-04-08</span></div>
+    <div class="milestone"><span class="milestone-version">v1.6.0</span><div><div class="milestone-title">Mandatory Config + Config Guard</div><p style="font-size:12px;color:var(--text-muted);margin:0">Config required per project; auto-sync hook (v1.6.1)</p></div><span class="milestone-date">2026-04-08</span></div>
+    <div class="milestone"><span class="milestone-version">v1.7.0</span><div><div class="milestone-title">Autopilot Extended</div><p style="font-size:12px;color:var(--text-muted);margin:0">Autopilot for /devstarter-existing + /devstarter-change add flows</p></div><span class="milestone-date">2026-04-08</span></div>
+    <div class="milestone"><span class="milestone-version">v1.8.0</span><div><div class="milestone-title">Model Tier Mapping</div><p style="font-size:12px;color:var(--text-muted);margin:0">## Model: headers in 29 runbooks; short agent aliases (v1.8.1)</p></div><span class="milestone-date">2026-04-10</span></div>
+    <div class="milestone"><span class="milestone-version">v1.9.0</span><div><div class="milestone-title">Platform Features</div><p style="font-size:12px;color:var(--text-muted);margin:0">Worktrees, PushNotification on autopilot, Plan mode, WebSearch</p></div><span class="milestone-date">2026-04-20</span></div>
+    <div class="milestone"><span class="milestone-version">v2.0.0</span><div><div class="milestone-title">Native Tasks + Gates + Review/Doctor</div><p style="font-size:12px;color:var(--text-muted);margin:0">TaskCreate/Update, AskUserQuestion gates, /devstarter-review + doctor, agents/custom/</p></div><span class="milestone-date">2026-04-20</span></div>
+    <div class="milestone"><span class="milestone-version">v2.1.0</span><div><div class="milestone-title">Multi-VCS + Multi-PM Selection</div><p style="font-size:12px;color:var(--text-muted);margin:0">Q0-VCS/Q0-PM intake, conditional Gate 0</p></div><span class="milestone-date">2026-04-22</span></div>
+    <div class="milestone"><span class="milestone-version">v2.2.0</span><div><div class="milestone-title">Requirement Intake Templates</div><p style="font-size:12px;color:var(--text-muted);margin:0">4 structured intake templates wired into Gate 0</p></div><span class="milestone-date">2026-04-23</span></div>
+    <div class="milestone"><span class="milestone-version">v2.3.0</span><div><div class="milestone-title">UAT Branch + Branch Protection</div><p style="font-size:12px;color:var(--text-muted);margin:0">develop default branch, standard protection on main + uat (v2.3.1 publish fix)</p></div><span class="milestone-date">2026-04-23</span></div>
+    <div class="milestone"><span class="milestone-version">v2.4.0</span><div><div class="milestone-title">Multi-Remote Release Config</div><p style="font-size:12px;color:var(--text-muted);margin:0">release_remote + release_repo + upstream_remote</p></div><span class="milestone-date">2026-04-23</span></div>
+    <div class="milestone"><span class="milestone-version">v2.5.0</span><div><div class="milestone-title">/devstarter-gitsetup</div><p style="font-size:12px;color:var(--text-muted);margin:0">Standalone git + gitflow setup (25th command); Branch Guard Rule 9</p></div><span class="milestone-date">2026-04-24</span></div>
+    <div class="milestone"><span class="milestone-version">v2.6.0</span><div><div class="milestone-title">Branch Guard Universal</div><p style="font-size:12px;color:var(--text-muted);margin:0">Rule 9 added to agent-base + all build/change runbooks</p></div><span class="milestone-date">2026-05-06</span></div>
+    <div class="milestone"><span class="milestone-version">v3.0.0</span><div><div class="milestone-title">SKILL.md Migration (breaking)</div><p style="font-size:12px;color:var(--text-muted);margin:0">All commands migrated to skills/devstarter-*/SKILL.md (v3.0.1 publish/migrate fixes)</p></div><span class="milestone-date">2026-05-07</span></div>
+    <div class="milestone"><span class="milestone-version">v3.1.0</span><div><div class="milestone-title">AskUserQuestion at All Gates</div><p style="font-size:12px;color:var(--text-muted);margin:0">Arrow-key picker UX across all SDLC runbooks</p></div><span class="milestone-date">2026-05-07</span></div>
+    <div class="milestone"><span class="milestone-version">v3.2.0</span><div><div class="milestone-title">Consult → Change Handoff</div><p style="font-size:12px;color:var(--text-muted);margin:0">Consult saves intake file; /devstarter-change skips intake when given it</p></div><span class="milestone-date">2026-05-07</span></div>
+    <div class="milestone"><span class="milestone-version">v3.3.0</span><div><div class="milestone-title">Opus Model Gate</div><p style="font-size:12px;color:var(--text-muted);margin:0">Opus gate in 6 SKILL.md files; commands/ cleanup</p></div><span class="milestone-date">2026-05-07</span></div>
+    <div class="milestone"><span class="milestone-version">v3.4.0</span><div><div class="milestone-title">/devstarter-debug</div><p style="font-size:12px;color:var(--text-muted);margin:0">Hypothesis-driven 5-phase root-cause investigation workflow</p></div><span class="milestone-date">2026-05-09</span></div>
+    <div class="milestone"><span class="milestone-version">v3.5.0</span><div><div class="milestone-title">Cut the Clutter</div><p style="font-size:12px;color:var(--text-muted);margin:0">Streamline runbooks and reduce token overhead</p></div><span class="milestone-date">2026-05-09</span></div>
+    <div class="milestone"><span class="milestone-version">v3.6.0</span><div><div class="milestone-title">Real Quality Gates</div><p style="font-size:12px;color:var(--text-muted);margin:0">fitness-functions.yml CI quality gates (PROC-GH-17)</p></div><span class="milestone-date">2026-05-09</span></div>
+    <div class="milestone"><span class="milestone-version">v3.7.0</span><div><div class="milestone-title">Top-1% Completeness</div><p style="font-size:12px;color:var(--text-muted);margin:0">Rigor audit close-out (v3.7.x release announcement fixes)</p></div><span class="milestone-date">2026-05-09</span></div>
+    <div class="milestone"><span class="milestone-version">v3.8.0</span><div><div class="milestone-title">Post-Merge Branch Cleanup</div><p style="font-size:12px;color:var(--text-muted);margin:0">gitsetup Phase 4.5 — delete_branch_on_merge + fetch.prune</p></div><span class="milestone-date">2026-05-13</span></div>
+    <div class="milestone"><span class="milestone-version">v3.9.x</span><div><div class="milestone-title">Clean Install/Update — Bash Only</div><p style="font-size:12px;color:var(--text-muted);margin:0">Compaction refactor; npm/EXE distribution added then reverted; /devstarter-update restored (v3.9.1–v3.9.6)</p></div><span class="milestone-date">2026-05-15</span></div>
+    <div class="milestone"><span class="milestone-version">v4.0.0</span><div><div class="milestone-title">ECC Integration Phase 1</div><p style="font-size:12px;color:var(--text-muted);margin:0">Language rules (TS/Py/Go/Java) + MCP configs + /devstarter-mcp (v4.0.1 C#/React/Flutter/Angular)</p></div><span class="milestone-date">2026-05-17</span></div>
+    <div class="milestone"><span class="milestone-version">v4.1.0</span><div><div class="milestone-title">Profile Install + Extended Agents</div><p style="font-size:12px;color:var(--text-muted);margin:0">--profile minimal/standard/full + 5 extended agents</p></div><span class="milestone-date">2026-05-17</span></div>
+    <div class="milestone"><span class="milestone-version">v4.2.0</span><div><div class="milestone-title">ECC Full Absorption</div><p style="font-size:12px;color:var(--text-muted);margin:0">29 MCP configs, 17 language rules, 40 extended agents</p></div><span class="milestone-date">2026-05-17</span></div>
+    <div class="milestone"><span class="milestone-version">v4.3.0</span><div><div class="milestone-title">ECC Gap Fill</div><p style="font-size:12px;color:var(--text-muted);margin:0">22 agents, 15 rule files (golang/dart/cpp), MCP fixes (v4.3.1 context templates)</p></div><span class="milestone-date">2026-05-17</span></div>
+    <div class="milestone"><span class="milestone-version">v4.4.0</span><div><div class="milestone-title">Hybrid Hooks System</div><p style="font-size:12px;color:var(--text-muted);margin:0">5 Node.js hooks + --hooks install flag</p></div><span class="milestone-date">2026-05-17</span></div>
+    <div class="milestone"><span class="milestone-version">v4.5.0</span><div><div class="milestone-title">ECC Skills Port</div><p style="font-size:12px;color:var(--text-muted);margin:0">4 agents + /devstarter-verification-loop + /devstarter-council</p></div><span class="milestone-date">2026-05-17</span></div>
+    <div class="milestone"><span class="milestone-version">v4.6.0</span><div><div class="milestone-title">Consolidation</div><p style="font-size:12px;color:var(--text-muted);margin:0">Go rules merge, team packs, disambiguation guide (v4.6.1 uninstall, v4.6.2 README)</p></div><span class="milestone-date">2026-05-17</span></div>
+    <div class="milestone"><span class="milestone-version">v4.7.0</span><div><div class="milestone-title">Multi-AI Support Phase 1</div><p style="font-size:12px;color:var(--text-muted);margin:0">Universal Prompt blocks in all 51 SKILL.md, multi-ai-guide.md</p></div><span class="milestone-date">2026-05-18</span></div>
+    <div class="milestone"><span class="milestone-version">v5.0.0</span><div><div class="milestone-title">Multi-AI Support Phase 2</div><p style="font-size:12px;color:var(--text-muted);margin:0">provider-detect install (~/.{provider}/), universal runner (v5.0.1 update.sh fix)</p></div><span class="milestone-date">2026-05-18</span></div>
+    <div class="milestone"><span class="milestone-version">v5.1.0</span><div><div class="milestone-title">9arm-Skills Engineering Practices</div><p style="font-size:12px;color:var(--text-muted);margin:0">Port engineering-practice skills</p></div><span class="milestone-date">2026-05-20</span></div>
+    <div class="milestone"><span class="milestone-version">v5.2.0</span><div><div class="milestone-title">Branch Guard Hook + Bilingual PDF</div><p style="font-size:12px;color:var(--text-muted);margin:0">Branch Guard enforced via hook; bilingual PDF export</p></div><span class="milestone-date">2026-05-23</span></div>
+    <div class="milestone"><span class="milestone-version">v5.4.0</span><div><div class="milestone-title">Document Family Across All Flows</div><p style="font-size:12px;color:var(--text-muted);margin:0">kickoff/plan/summary/mgmt-brief docs; Author from USER.md (Rule 8)</p></div><span class="milestone-date">2026-05-24</span></div>
+    <div class="milestone"><span class="milestone-version">v5.5.0</span><div><div class="milestone-title">Bilingual Document Chrome</div><p style="font-size:12px;color:var(--text-muted);margin:0">Bilingual section titles/TOC; human-style Thai</p></div><span class="milestone-date">2026-05-24</span></div>
+    <div class="milestone"><span class="milestone-version">v5.6.0</span><div><div class="milestone-title">Understand-Anything Integration</div><p style="font-size:12px;color:var(--text-muted);margin:0">8 /devstarter-understand* wrapper commands</p></div><span class="milestone-date">2026-05-30</span></div>
+    <div class="milestone"><span class="milestone-version">v5.7.0</span><div><div class="milestone-title">Obsidian Knowledge Vault</div><p style="font-size:12px;color:var(--text-muted);margin:0">/devstarter-knowledge; sanitized notes; emit/recall wiring</p></div><span class="milestone-date">2026-05-31</span></div>
+    <div class="milestone"><span class="milestone-version">v5.8.0</span><div><div class="milestone-title">Obsidian Project Snapshot Note Type</div><p style="font-size:12px;color:var(--text-muted);margin:0">project-snapshot template; /devstarter-new Gate 0 + release emit; onboard recall</p></div><span class="milestone-date">2026-06-03</span></div>
+    <div class="milestone"><span class="milestone-version">v5.9.0</span><div><div class="milestone-title">Obsidian SDLC Wiring — Recall + Emit</div><p style="font-size:12px;color:var(--text-muted);margin:0">change recall + review/audit/retro emit; all 7 emission points wired</p></div><span class="milestone-date">2026-06-03</span></div>
   </div>
 
   <div class="section-header" id="section-3">
     <span class="section-number s3">3</span>
     <h2 class="section-title">Roadmap</h2>
   </div>
-  <table>
-    <thead><tr><th>Version</th><th>Theme</th><th>Key Features</th><th>Status</th></tr></thead>
-    <tbody>
-      <tr><td>v1.5.0</td><td>Automated Validation</td><td>validate-commands.sh, validate-prefixes.sh, pre-commit hooks, GitHub Actions CI on dev repo</td><td><span class="badge badge-yellow">Planned</span></td></tr>
-      <tr><td>v1.6.0</td><td>Contribution & Community</td><td>CONTRIBUTING.md, contribution guide, issue templates, PR templates</td><td><span class="badge badge-yellow">Planned</span></td></tr>
-      <tr><td>v1.7.0</td><td>Bitbucket Support</td><td>devstarter-bitbucket.md runbook (primary VCS), VCS routing update</td><td><span class="badge badge-gray">Backlog</span></td></tr>
-      <tr><td>v2.0.0</td><td>Multi-Agent Parallelism</td><td>True parallel agent execution using Claude Code subagents, parallel gate tracks</td><td><span class="badge badge-gray">Backlog</span></td></tr>
-    </tbody>
-  </table>
+  <div class="card note">
+    <div class="card-title">Original roadmap superseded</div>
+    <p style="margin:0">The v1.5.0–v2.0.0 roadmap in earlier revisions of this plan was superseded — those version numbers shipped with different scope than originally planned (see <a href="#section-2">Release History</a>). The toolkit is now at <strong>v5.9.0</strong>.</p>
+    <p style="margin:8px 0 0">Forward roadmap is tracked in <strong>GitHub Issues + milestones</strong> on <code>clickzika/dev-starter-dev</code> (PM moved from Notion to GitHub Issues). Original planned themes that did land in some form: automated validation/CI (v3.6.0 fitness functions), broader VCS support (v1.2.0 GitLab/SVN), and multi-agent workflows (v4.5.0 verification-loop/council).</p>
+  </div>
 
   <div class="section-header" id="section-4">
     <span class="section-number s4">4</span>
