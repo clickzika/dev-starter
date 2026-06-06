@@ -45,7 +45,7 @@ secrets:
 # Obsidian vault, reusable across projects. See docs/obsidian-vault-guide.md + ADR-0002.
 obsidian:
   enabled: true            # true to capture notes into the vault
-  vault_path: 'C:\Users\click\Projects\Obsidian'           # absolute path to vault root (git clone dir, or e.g. P:\obsidiandev)
+  vault_path: 'D:\Projects\Obsidian'           # absolute path to vault root (git clone dir, or e.g. P:\obsidiandev)
   transport: git           # git (recommended) | network (raw share)
   sanitize: true           # scrub secrets/PII inline (deny-list) before write — REQUIRED for transport=network
   subdir: knowledge        # folder inside the vault for DevStarter-emitted notes
