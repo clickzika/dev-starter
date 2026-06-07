@@ -60,6 +60,29 @@ Agent verifies each item before allowing release:
 [ ] No breaking schema changes without migration
 ```
 
+### Known Limitations Review (mandatory)
+
+Scan the CHANGELOG entry for this release:
+```bash
+grep -i "known limitation\|not exercised\|not validated\|unvalidated\|deferred\|not tested\|not run" CHANGELOG.md | head -20
+```
+
+For **each** match found, classify it before proceeding:
+
+| # | Limitation description | Resolution |
+|---|----------------------|------------|
+| 1 | [paste text] | ✅ Validated live / ⚠️ Accepted risk (reason) |
+
+**Rules:**
+- `✅ Validated live` — you ran the feature end-to-end and it worked. Remove or update the disclaimer in CHANGELOG.
+- `⚠️ Accepted risk` — you cannot validate now; write one sentence explaining why the risk is acceptable and who owns follow-up. Update CHANGELOG to say "accepted risk" not "not exercised."
+- **Gate 1 is blocked** if any limitation is left unclassified.
+
+```
+[ ] All known limitations in this release classified (validated or accepted risk)
+[ ] CHANGELOG updated — no "not exercised" / "not validated" language remaining
+```
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⛔ GATE 1 — DEV APPROVAL

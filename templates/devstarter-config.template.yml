@@ -133,7 +133,7 @@ stack:
 model_management:
   haiku:  claude-haiku-4-5-20251001
   sonnet: claude-sonnet-4-6
-  opus:   claude-opus-4-7
+  opus:   claude-opus-4-8
   command_tiers:
     opus:
       - devstarter-audit
