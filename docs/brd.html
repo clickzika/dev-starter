@@ -488,6 +488,39 @@ flowchart LR
     </tbody>
   </table>
 
+  <h3>User Stories — Obsidian Vault Design + Ingest Skill (CR-2026-06-07-001)</h3>
+  <table>
+    <thead><tr><th>US ID</th><th>User Story</th><th>Acceptance Criteria (Given / When / Then)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>US-OBS-08</td>
+        <td>As a knowledge worker, I want a hierarchical vault folder structure with MOC index pages — so I can navigate notes by type without scrolling a flat list.</td>
+        <td>
+          Given <code>obsidian.folder_structure: hierarchical</code> in devstarter-config.yml<br>
+          When vault scaffold runs<br>
+          Then <code>bugs/</code>, <code>techniques/</code>, <code>rcas/</code>, <code>snapshots/</code>, and <code>_index/</code> folders exist with HOME.md and 4 MOC files using Dataview queries.
+          <br><br>
+          Given <code>folder_structure: flat</code> (default)<br>
+          When any existing emit procedure runs<br>
+          Then behaviour is unchanged — backward compatible.
+        </td>
+      </tr>
+      <tr>
+        <td>US-OBS-09</td>
+        <td>As a knowledge worker, I want to run <code>/devstarter-vault-ingest &lt;file&gt;</code> on any existing Markdown file — so it is automatically classified, linked to related notes, and emitted to the vault.</td>
+        <td>
+          Given an existing <code>.md</code> file on disk<br>
+          When <code>/devstarter-vault-ingest &lt;file&gt;</code> runs<br>
+          Then Phase 1 reads and classifies the file; Phase 2 greps vault for related notes and proposes 1–5 <code>[[wikilinks]]</code>; Phase 3 sanitizes and writes to <code>vault/&lt;type&gt;s/&lt;slug&gt;.md</code>; Phase 4 shows emitted path + linked notes.
+          <br><br>
+          Given a classification cannot be auto-detected<br>
+          When Phase 1 completes<br>
+          Then AskUserQuestion picker is shown to the user before proceeding.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
   <div class="section-header" id="section-7">
     <span class="section-number s7">7</span>
     <h2 class="section-title">Non-Functional Requirements</h2>
@@ -587,6 +620,13 @@ flowchart LR
   <table>
     <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
     <tbody>
+      <tr>
+        <td>CR-2026-06-07-001</td>
+        <td>2026-06-07</td>
+        <td>ADD</td>
+        <td>Added US-OBS-08–09 for vault hierarchy + /devstarter-vault-ingest skill (v6.0.0)</td>
+        <td>Natthaphat Wajanavisit</td>
+      </tr>
       <tr>
         <td>CR-2026-06-03-002</td>
         <td>2026-06-03</td>

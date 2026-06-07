@@ -39,3 +39,4 @@ source: "{{SOURCE_REF}}"    # incident doc / postmortem path
 - Related: {{RELATED_WIKILINKS}}
 
 <!-- Sanitized on write (@oss-sanitizer): no secrets, internal URLs, credentials, or customer data. -->
+<!-- Hierarchical vault path (folder_structure: hierarchical): <subdir>/rcas/<filename>.md -->

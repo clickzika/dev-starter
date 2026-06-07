@@ -1,5 +1,23 @@
 # Changelog
 
+## v6.0.0 — Obsidian Vault Design + Ingest Skill (2026-06-07)
+
+Adds hierarchical vault folder structure with MOC index pages and a new `/devstarter-vault-ingest` skill that analyzes existing Markdown files, auto-classifies them, discovers related notes, and emits with auto-generated wikilinks.
+
+### New
+- **`/devstarter-vault-ingest <file>`** — 4-phase ingest skill: Phase 1 reads and classifies any `.md` file (bug-note / technique / rca / project-snapshot), Phase 2 greps vault for related notes and proposes `[[wikilinks]]`, Phase 3 sanitizes (E4) and writes, Phase 4 confirms emitted path and linked notes. Registered as menu item 46.
+- **`/devstarter-vault-ingest --scaffold`** — creates hierarchical folder structure (`bugs/`, `techniques/`, `rcas/`, `snapshots/`, `_index/`) + HOME.md + 4 MOC files using Dataview queries. Safe to run on existing vaults.
+- **`skills/devstarter-vault-ingest/SKILL.md`** — new skill entry point (thin wrapper → SDLC runbook).
+- **`sdlc/devstarter-vault-ingest.md`** — full runbook: scaffold mode (S1–S5) + ingest mode (I1–I11) with classification logic, wikilink convention, and E1/E4 integration.
+
+### Changed
+- **`devstarter-config.yml`** — added `obsidian.folder_structure: flat` field. Default `flat` preserves existing behavior; `hierarchical` enables type-based folder routing.
+- **`sdlc/devstarter-knowledge.md` E1** — updated to resolve destination folder by `folder_structure` setting. `flat` behavior unchanged.
+- **`templates/obsidian/*.md`** — added folder path comment to all 4 templates showing hierarchical destination path.
+- **`docs/obsidian-vault-guide.md`** — added Section 7 (hierarchical vault structure + wikilink convention + scaffold command + MOC Dataview examples) and Section 7b (`/devstarter-vault-ingest` 4-phase flow + classification logic).
+- **`docs/brd.html`** — added US-OBS-08 (hierarchical vault) and US-OBS-09 (vault-ingest skill) + revision history row.
+- **`devstarter-menu.md`** — added item 46 (`/devstarter-vault-ingest`).
+
 ## v5.9.0 — Obsidian SDLC Wiring — Recall + Emit (2026-06-03)
 
 Closes the knowledge loop: all seven Obsidian vault integration points now wired. Three workflows gain optional emit; one gains recall before design begins.

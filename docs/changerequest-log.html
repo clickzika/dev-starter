@@ -43,6 +43,41 @@
   <h2>Change Request Log</h2>
   <p style="color:var(--text-dim);font-size:14px;margin-bottom:24px;">All change requests — newest first.</p>
 
+  <!-- CR-2026-06-07-001 -->
+  <table>
+    <thead><tr><th colspan="2">CR-2026-06-07-001 — Obsidian Vault Design + Ingest Skill</th></tr></thead>
+    <tbody>
+      <tr><td style="width:180px;font-weight:600;">ID</td><td>CR-2026-06-07-001</td></tr>
+      <tr><td>Date</td><td>2026-06-07</td></tr>
+      <tr><td>Type</td><td>ADD FEATURE</td></tr>
+      <tr><td>Priority</td><td><span class="badge badge-blue">Medium</span></td></tr>
+      <tr><td>Effort</td><td>M (4–8h)</td></tr>
+      <tr><td>Requester</td><td>Natthaphat Wajanavisit</td></tr>
+      <tr><td>Context</td><td>Active development</td></tr>
+      <tr><td>Feature Name</td><td>Obsidian Vault Design + Ingest Skill (v6.0.0)</td></tr>
+      <tr><td>Problem</td><td>Vault is flat — no folder hierarchy, no MOC pages, no navigation structure. No skill to analyze existing MD files and emit them. No wikilink auto-generation.</td></tr>
+      <tr><td>Target Users</td><td>All DevStarter users who maintain an Obsidian knowledge vault.</td></tr>
+      <tr><td>Impact</td><td>
+        Database: no change<br>
+        API: no change<br>
+        UI: no change<br>
+        Existing emit paths: no change (folder_structure: flat is default, backward compatible)<br>
+        New: devstarter-config.yml obsidian block + /devstarter-vault-ingest skill
+      </td></tr>
+      <tr><td>Documents Updated</td><td>
+        docs/brd.html — US-OBS-08–09<br>
+        docs/obsidian-vault-guide.md — Section 7 (hierarchy + MOC + wikilinks + /devstarter-vault-ingest)<br>
+        docs/feature/obsidian-vault-design-analyzer/kickoff.html — created<br>
+        docs/feature/obsidian-vault-design-analyzer/plan.html — created<br>
+        docs/index.html — kickoff + plan registered
+      </td></tr>
+      <tr><td>Status</td><td><span class="badge badge-yellow">In Progress</span></td></tr>
+      <tr><td>Branch</td><td><code>feature/obsidian-vault-design-analyzer</code></td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
   <!-- CR-2026-06-03-001 -->
   <table>
     <thead><tr><th colspan="2">CR-2026-06-03-001 — Obsidian Project Snapshot Note Type</th></tr></thead>
