@@ -1,31 +1,37 @@
 {
-  "workflow": "devstarter-pm-sprint",
-  "version": "v5.9.0",
+  "workflow": "devstarter-change",
+  "version": "v6.0.0",
   "status": "completed",
   "branch": "develop",
-  "started_at": "2026-06-06",
+  "started_at": "2026-06-07",
   "completed_at": "2026-06-07",
-  "intent": "PM improvement sprint — model ID sweep, release gate, api-reference re-catalog, vault validation",
+  "intent": "CR-2026-06-07-001 — Obsidian Vault Design + Ingest Skill",
   "results": {
-    "vault_path_fix": "DONE — devstarter-config.yml obsidian vault_path updated to D:\\Projects\\Obsidian",
-    "memory_note": "DONE — memory/change-log-documents-by-flow.md committed",
-    "model_id_sweep": "DONE — claude-opus-4-7 → claude-opus-4-8 across 24 files",
-    "release_gate": "DONE — Known Limitations Review block added to sdlc/devstarter-release-prep.md Phase 2 (blocks Gate 1)",
-    "api_reference": "DONE — full re-catalog: 24 → 63 commands across 10 sections + inline args appendix",
-    "obsidian_validation": "DONE — live vault confirmed; existing technique note verified; git safe.directory fixed for Windows multi-user",
-    "understand_validation": "DONE — accepted risk documented in CHANGELOG; preflight guards correctly; delegation unverifiable without plugin install",
-    "known_limitations": "CLOSED — all 4 CHANGELOG known-limitation blocks replaced with validated/accepted-risk status",
-    "push": "DONE — 6 commits pushed to origin/develop (9bb176d..1e64683)"
+    "cr_id": "CR-2026-06-07-001",
+    "feature": "obsidian-vault-design-analyzer",
+    "branch": "feature/obsidian-vault-design-analyzer (merged to develop)",
+    "config": "DONE — folder_structure: flat added to devstarter-config.yml obsidian block",
+    "e1_update": "DONE — E1 hierarchical folder resolution by type in sdlc/devstarter-knowledge.md",
+    "templates": "DONE — folder path comment added to all 4 obsidian templates",
+    "skill": "DONE — skills/devstarter-vault-ingest/SKILL.md created (item 46)",
+    "sdlc": "DONE — sdlc/devstarter-vault-ingest.md created (scaffold S1-S5 + ingest I1-I11)",
+    "menu": "DONE — devstarter-menu.md item 46 + routing table row added",
+    "docs": "DONE — BRD US-OBS-08-09, vault guide Section 7+7b, changerequest-log, CLAUDE.md, CHANGELOG, VERSION=6.0.0",
+    "pre_dev_docs": "DONE — kickoff.html + plan.html (bilingual, CR-2026-06-07-001)",
+    "post_dev_docs": "DONE — summary.html + mgmt-brief.html (bilingual, all 8 AC passed)",
+    "commits": "2 commits on feature branch + merge commit to develop",
+    "checklist_26_item": "PASSED"
   },
   "open_items": [
-    "C2 — understand-anything delegation: validate after running '/plugin install understand-anything' + restart",
-    "Branch protection on main/uat needs GitHub Pro or public repo (free plan blocks it)",
-    "release-v2.2.0.html / release-v2.3.0.html still show Author @devstarter-* (historical artifacts — accepted)"
+    "T0 (v5.7.0 carryover) — live vault end-to-end validation: run /devstarter-knowledge 'test' against D:\\Projects\\Obsidian",
+    "Enable hierarchical mode: add folder_structure: hierarchical to devstarter-config.yml, run /devstarter-vault-ingest --scaffold",
+    "C2 — understand-anything delegation: validate after '/plugin install understand-anything' + restart",
+    "Branch protection on main/uat needs GitHub Pro or public repo"
   ],
   "previous_session": {
-    "workflow": "devstarter-existing",
+    "workflow": "devstarter-pm-sprint",
     "version": "v5.9.0",
-    "completed_at": "2026-06-06",
-    "intent": "Full setup — docs review/refresh + GitHub Issues PM (no Notion)"
+    "completed_at": "2026-06-07",
+    "intent": "PM improvement sprint — model ID sweep, release gate, api-reference re-catalog, vault validation"
   }
 }
