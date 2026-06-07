@@ -30,7 +30,7 @@ advisor: [@devstarter-techlead]
 **What the user described:**
 ```
 SDLC runbooks still reference ## Model: Opus (`claude-opus-4-6`)
-but the latest model is claude-opus-4-7. Need to update all references.
+but the latest model is claude-opus-4-8. Need to update all references.
 ```
 
 **Change type detected:**
@@ -72,7 +72,7 @@ No automation exists to keep them in sync with Claude model releases.
 
 **Recommended option:**
 ```
-Option A — Bulk replace claude-opus-4-6 → claude-opus-4-7 in all 7 files,
+Option A — Bulk replace claude-opus-4-6 → claude-opus-4-8 in all 7 files,
 commit directly on develop as a chore.
 ```
 
@@ -99,8 +99,8 @@ Treat as a chore commit — no PR overhead needed.
 Given 7 files reference claude-opus-4-6
 When bulk replace applied
 Then grep for claude-opus-4-6 returns only CHANGELOG.md historical entries
-And devstarter-config.yml opus field = claude-opus-4-7
-And all 6 SDLC ## Model: headers show claude-opus-4-7
+And devstarter-config.yml opus field = claude-opus-4-8
+And all 6 SDLC ## Model: headers show claude-opus-4-8
 ```
 
 **Regression guard:**
@@ -124,7 +124,7 @@ Date:        2026-05-07
 
 Problem:
   6 SDLC runbooks + devstarter-config.yml reference outdated
-  claude-opus-4-6; latest is claude-opus-4-7.
+  claude-opus-4-6; latest is claude-opus-4-8.
 
 Recommended:
   Option A — bulk replace in 7 files, chore commit to develop
@@ -132,7 +132,7 @@ Recommended:
 
 Acceptance criteria:
   grep for claude-opus-4-6 returns only CHANGELOG.md historical refs.
-  All 6 ## Model: headers + config show claude-opus-4-7.
+  All 6 ## Model: headers + config show claude-opus-4-8.
 
 Saved to: memory/consult-2026-05-07-update-opus-model-id.md
 
