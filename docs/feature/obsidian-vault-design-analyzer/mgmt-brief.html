@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Management Brief — Obsidian Vault Design + Ingest Skill — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --accent:#e94560; --bg-page:#f5f7fa; --bg-content:#ffffff; --bg-sidebar:#f0f2f5; --bg-card:#f8f9fb; --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4; --border-light:#e2e7ed; --status-approved:#10b981; --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#10b981; --section-4:#f59e0b; --header-h:64px; --sidebar-w:260px; --shadow:0 1px 3px rgba(0,0,0,0.06); --toggle-bg:#e2e6eb; --toggle-knob:#ffffff; }
+  [data-theme="dark"] { --bg-page:#0f0f23; --bg-content:#1e1e3a; --bg-sidebar:#16213e; --bg-card:#252547; --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f; --border-light:#2d4a6f; --shadow:0 1px 3px rgba(0,0,0,0.3); --toggle-bg:#1e3a5f; --toggle-knob:#e94560; }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.7; height:100vh; overflow:hidden; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:#fff; border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; background:rgba(16,185,129,0.15); color:var(--status-approved); border:1px solid rgba(16,185,129,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s; }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s; border-left:3px solid transparent; }
+  .toc-link:hover { background:rgba(0,0,0,0.04); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);} .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:48px 56px 100px; background:var(--bg-content); }
+  .section-header { display:flex; align-items:center; gap:14px; margin:48px 0 20px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);} .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-title { font-size:22px; font-weight:700; }
+  h3 { font-size:17px; font-weight:600; margin:28px 0 12px; border-left:3px solid var(--accent); padding-left:12px; }
+  p { color:var(--text-dim); margin-bottom:16px; font-size:15px; line-height:1.8; }
+  ul { margin:8px 0 16px 24px; color:var(--text-dim); font-size:15px; }
+  li { margin-bottom:8px; line-height:1.8; }
+  .exec-hero { background:linear-gradient(135deg,rgba(233,69,96,0.07) 0%,rgba(59,130,246,0.05) 100%); border:1px solid rgba(233,69,96,0.2); border-radius:16px; padding:32px 40px; margin:0 0 40px; }
+  .exec-hero-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); margin-bottom:12px; }
+  .exec-hero-text { font-size:18px; line-height:1.7; color:var(--text); }
+  .before-after { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin:20px 0 28px; }
+  .ba-card { border-radius:12px; padding:24px; }
+  .ba-card.after { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); }
+  .ba-card.before { background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); }
+  .ba-label { font-size:12px; font-weight:700; text-transform:uppercase; margin-bottom:12px; }
+  .ba-card.after .ba-label { color:#10b981; }
+  .ba-card.before .ba-label { color:#ef4444; }
+  .ba-card ul { margin:0 0 0 16px; } .ba-card li { font-size:14px; }
+  .improvement-tile { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); border-radius:10px; padding:20px 24px; margin:12px 0; }
+  .improvement-title { font-size:15px; font-weight:600; margin-bottom:6px; color:#10b981; }
+  .badge-green { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3); display:inline-flex; padding:4px 12px; border-radius:16px; font-size:12px; font-weight:600; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin:16px 0; }
+  .card-title { font-size:14px; font-weight:600; margin-bottom:8px; }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] h3 { font-family:'Sarabun',system-ui,sans-serif; }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:28px 20px 80px;} .before-after{grid-template-columns:1fr;} }
+  @media print { .doc-header{position:static;} .doc-sidebar{display:none;} .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;} body{background:#fff;overflow:auto;} .theme-toggle,.lang-btn,.pdf-btn{display:none;} }
+</style>
+</head>
+<body>
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname"><span class="lang-en">Management Brief</span><span class="lang-th">สรุปสำหรับผู้บริหาร</span> — Obsidian Vault Design + Ingest Skill (v6.0.0)</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta"><div>CR-2026-06-07-001 · 2026-06-07</div><div>Natthaphat Wajanavisit</div></div>
+    <span class="doc-status-badge">&#10003; DELIVERED</span>
+    <button class="pdf-btn" onclick="window.print()">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()"><span id="langLabel">EN</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()"><span class="theme-toggle-icon" id="themeIcon">&#9788;</span><div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div></div>
+  </div>
+</header>
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#s1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Executive Summary</span><span class="lang-th">สรุปผู้บริหาร</span></a></li>
+    <li><a href="#s2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Before &amp; After</span><span class="lang-th">ก่อนและหลัง</span></a></li>
+    <li><a href="#s3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></a></li>
+    <li><a href="#s4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Next Steps</span><span class="lang-th">ขั้นตอนต่อไป</span></a></li>
+  </ul>
+</nav>
+<main class="doc-content">
+
+  <div class="section-header" id="s1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Executive Summary</span><span class="lang-th">สรุปสำหรับผู้บริหาร</span></h2>
+  </div>
+  <div class="exec-hero">
+    <div class="exec-hero-label">&#128202; <span class="lang-en">What was delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></div>
+    <p class="exec-hero-text"><span class="lang-en">We upgraded the DevStarter knowledge vault from a flat list to a navigable, structured system. Notes now live in type-based folders (bugs, techniques, RCAs, snapshots) with auto-generated MOC index pages. We also shipped a new command — <code>/devstarter-vault-ingest</code> — that takes any existing Markdown file, automatically classifies it, finds related notes in the vault, and stores it with smart cross-links. No manual filing or formatting required.</span><span class="lang-th">เราอัปเกรด knowledge vault ของ DevStarter จาก flat list เป็นระบบที่ นำทางได้และมีโครงสร้าง โน้ตอยู่ใน folder ตาม type (bugs, techniques, RCAs, snapshots) พร้อม MOC index pages ที่สร้างอัตโนมัติ เราส่งมอบคำสั่งใหม่ <code>/devstarter-vault-ingest</code> ที่รับไฟล์ Markdown ที่มีอยู่ จัดประเภทอัตโนมัติ ค้นหาโน้ตที่เกี่ยวข้อง และจัดเก็บพร้อม cross-links อัจฉริยะ ไม่ต้องจัดไฟล์หรือฟอร์แมตเอง</span></p>
+  </div>
+  <span class="badge-green">&#10003; <span class="lang-en">Delivered on schedule — 1 session · Effort: M (4–8h) · Risk: Low</span><span class="lang-th">ส่งมอบตามกำหนด — 1 session · ความพยายาม: M · ความเสี่ยง: ต่ำ</span></span>
+
+  <div class="section-header" id="s2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">Before &amp; After</span><span class="lang-th">ก่อนและหลัง</span></h2>
+  </div>
+  <div class="before-after">
+    <div class="ba-card before">
+      <div class="ba-label">&#10008; <span class="lang-en">Before (v5.9.0)</span><span class="lang-th">ก่อนหน้า (v5.9.0)</span></div>
+      <ul>
+        <li><span class="lang-en">Vault is one flat folder — impossible to browse by category</span><span class="lang-th">Vault เป็น folder เดียว flat — ไม่สามารถเรียกดูตาม category ได้</span></li>
+        <li><span class="lang-en">No MOC pages — users must remember filenames to find notes</span><span class="lang-th">ไม่มี MOC pages — ผู้ใช้ต้องจำชื่อไฟล์เพื่อค้นหาโน้ต</span></li>
+        <li><span class="lang-en">No way to add existing notes — only capture via DevStarter commands</span><span class="lang-th">ไม่มีวิธีเพิ่มโน้ตที่มีอยู่ — capture ได้เฉพาะผ่านคำสั่ง DevStarter เท่านั้น</span></li>
+        <li><span class="lang-en">Wikilinks must be written by hand</span><span class="lang-th">Wikilinks ต้องเขียนด้วยมือ</span></li>
+      </ul>
+    </div>
+    <div class="ba-card after">
+      <div class="ba-label">&#10003; <span class="lang-en">After (v6.0.0)</span><span class="lang-th">หลังจากนี้ (v6.0.0)</span></div>
+      <ul>
+        <li><span class="lang-en">Structured folders: bugs/ techniques/ rcas/ snapshots/ + _index/</span><span class="lang-th">Folder มีโครงสร้าง: bugs/ techniques/ rcas/ snapshots/ + _index/</span></li>
+        <li><span class="lang-en">MOC pages with live Dataview tables — navigate without searching</span><span class="lang-th">MOC pages พร้อม Dataview tables แบบ live — navigate โดยไม่ต้องค้นหา</span></li>
+        <li><span class="lang-en">/devstarter-vault-ingest ingests any .md file in 4 steps</span><span class="lang-th">/devstarter-vault-ingest นำเข้าไฟล์ .md ใดก็ได้ใน 4 ขั้นตอน</span></li>
+        <li><span class="lang-en">Wikilinks auto-generated from vault grep — cross-project discovery</span><span class="lang-th">Wikilinks สร้างอัตโนมัติจาก vault grep — ค้นพบข้ามโครงการ</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-header" id="s3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></h2>
+  </div>
+  <div class="improvement-tile">
+    <div class="improvement-title">&#128193; <span class="lang-en">Structured Vault Hierarchy</span><span class="lang-th">โครงสร้าง Vault แบบ Hierarchical</span></div>
+    <p><span class="lang-en">One-time scaffold command creates <code>bugs/</code>, <code>techniques/</code>, <code>rcas/</code>, <code>snapshots/</code>, and <code>_index/</code> folders with a HOME.md startup page and 4 MOC files (one per note type) using Dataview queries. No existing notes are touched. Set as Obsidian startup note for instant orientation.</span><span class="lang-th">คำสั่ง scaffold ครั้งเดียวสร้าง folder ทั้งหมดพร้อม HOME.md และ 4 MOC files ที่ใช้ Dataview queries โน้ตที่มีอยู่ไม่ถูกแตะต้อง ตั้งเป็น Obsidian startup note เพื่อ orientation ทันที</span></p>
+  </div>
+  <div class="improvement-tile">
+    <div class="improvement-title">&#128228; <span class="lang-en">Vault Ingest Skill — Any Markdown In, Smart Note Out</span><span class="lang-th">สกิล Vault Ingest — ไฟล์ Markdown เข้า โน้ตอัจฉริยะออก</span></div>
+    <p><span class="lang-en">Point <code>/devstarter-vault-ingest</code> at any Markdown file. It reads the file, infers whether it's a bug fix, technique, RCA, or project overview, proposes a frontmatter you approve, searches the vault for related notes, and generates wikilinks automatically — all before a single byte is written. Sanitized on write (no secrets reach the vault).</span><span class="lang-th">ชี้ <code>/devstarter-vault-ingest</code> ที่ไฟล์ Markdown ใดก็ได้ มันอ่านไฟล์ อนุมานว่าเป็น bug fix, technique, RCA หรือ project overview เสนอ frontmatter ที่คุณอนุมัติ ค้นหา vault หาโน้ตที่เกี่ยวข้อง และสร้าง wikilinks อัตโนมัติ ทั้งหมดก่อนเขียนแม้แต่ byte เดียว</span></p>
+  </div>
+  <div class="improvement-tile">
+    <div class="improvement-title">&#128279; <span class="lang-en">Auto-generated Wikilinks — Cross-project Knowledge Discovery</span><span class="lang-th">Wikilinks อัตโนมัติ — ค้นพบ Knowledge ข้ามโครงการ</span></div>
+    <p><span class="lang-en">When ingesting a note, the skill greps the vault by tags, language, and root cause category — then proposes up to 5 related notes as <code>[[folder/slug]]</code> wikilinks. A bug fixed on project A automatically surfaces when project B encounters the same pattern.</span><span class="lang-th">เมื่อนำเข้าโน้ต สกิล grep vault ตาม tags, language และ root cause category แล้วเสนอโน้ตที่เกี่ยวข้องสูงสุด 5 รายการเป็น <code>[[folder/slug]]</code> wikilinks</span></p>
+  </div>
+
+  <div class="section-header" id="s4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">Next Steps</span><span class="lang-th">ขั้นตอนต่อไป</span></h2>
+  </div>
+  <ul>
+    <li><span class="lang-en"><strong>Enable hierarchical mode:</strong> Add <code>folder_structure: hierarchical</code> to <code>devstarter-config.yml</code> obsidian block, then run <code>/devstarter-vault-ingest --scaffold</code> to create the folder structure.</span><span class="lang-th"><strong>เปิด hierarchical mode:</strong> เพิ่ม <code>folder_structure: hierarchical</code> ใน <code>devstarter-config.yml</code> จากนั้นรัน <code>/devstarter-vault-ingest --scaffold</code></span></li>
+    <li><span class="lang-en"><strong>Live vault validation (T0, deferred):</strong> Run <code>/devstarter-knowledge "test"</code> against the live vault at <code>C:\Users\click\Projects\Obsidian</code> to verify end-to-end pipeline. Deferred since v5.7.0.</span><span class="lang-th"><strong>Live vault validation (T0, ยังค้าง):</strong> รัน <code>/devstarter-knowledge "test"</code> กับ vault จริง ยังค้างจาก v5.7.0</span></li>
+    <li><span class="lang-en"><strong>Ingest existing notes:</strong> Point <code>/devstarter-vault-ingest</code> at any past meeting notes, personal notes, or external Markdown files to bring them into the structured vault with wikilinks.</span><span class="lang-th"><strong>นำเข้าโน้ตที่มีอยู่:</strong> ชี้ <code>/devstarter-vault-ingest</code> ที่ meeting notes เก่า หรือไฟล์ Markdown อื่นๆ เพื่อนำเข้า vault พร้อม wikilinks</span></li>
+  </ul>
+  <div class="card" style="border:1px solid rgba(59,130,246,0.3);background:rgba(59,130,246,0.04);">
+    <div class="card-title" style="color:#3b82f6;">&#128203; <span class="lang-en">Related documents</span><span class="lang-th">เอกสารที่เกี่ยวข้อง</span></div>
+    <ul style="margin:8px 0 0 20px;">
+      <li><a href="kickoff.html" style="color:var(--accent)"><span class="lang-en">kickoff.html — Pre-development sign-off</span><span class="lang-th">kickoff.html — เอกสาร sign-off ก่อนพัฒนา</span></a></li>
+      <li><a href="plan.html" style="color:var(--accent)"><span class="lang-en">plan.html — Technical plan</span><span class="lang-th">plan.html — แผนเทคนิค</span></a></li>
+      <li><a href="summary.html" style="color:var(--accent)"><span class="lang-en">summary.html — Technical summary</span><span class="lang-th">summary.html — สรุปเชิงเทคนิค</span></a></li>
+    </ul>
+  </div>
+</main>
+<script>
+  function toggleLang(){var h=document.documentElement,t=h.getAttribute('data-lang')==='th',l=document.getElementById('langLabel');if(t){h.removeAttribute('data-lang');localStorage.setItem('docportal-lang','en');if(l)l.textContent='EN';}else{h.setAttribute('data-lang','th');localStorage.setItem('docportal-lang','th');if(l)l.textContent='TH';}}
+  (function(){var l=localStorage.getItem('docportal-lang');if(l==='th'){document.documentElement.setAttribute('data-lang','th');var lb=document.getElementById('langLabel');if(lb)lb.textContent='TH';}})();
+  function toggleTheme(){var h=document.documentElement,d=h.getAttribute('data-theme')==='dark';if(d){h.removeAttribute('data-theme');localStorage.setItem('docportal-theme','light');document.getElementById('themeIcon').innerHTML='&#9788;';}else{h.setAttribute('data-theme','dark');localStorage.setItem('docportal-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';}}
+  (function(){var s=localStorage.getItem('docportal-theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';}})();
+  const secs=document.querySelectorAll('.section-header[id]'),links=document.querySelectorAll('.toc-link'),cont=document.querySelector('.doc-content');
+  cont.addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(cont.scrollTop>=s.offsetTop-cont.offsetTop-100)c=s.id;});links.forEach(l=>{l.classList.remove('active');if(l.getAttribute('href')==='#'+c)l.classList.add('active');});});
+  links.forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t)cont.scrollTo({top:t.offsetTop-cont.offsetTop-20,behavior:'smooth'});});});
+</script>
+</body>
+</html>

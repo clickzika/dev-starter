@@ -49,6 +49,7 @@ obsidian:
   transport: git           # git (recommended) | network (raw share)
   sanitize: true           # scrub secrets/PII inline (deny-list) before write — REQUIRED for transport=network
   subdir: knowledge        # folder inside the vault for DevStarter-emitted notes
+  folder_structure: flat   # flat (default) | hierarchical (bugs/ techniques/ rcas/ snapshots/ _index/)
 
 ai:
   provider: claude         # claude | litellm | openai | gemini | local

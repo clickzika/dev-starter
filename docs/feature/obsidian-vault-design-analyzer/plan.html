@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Feature Plan — Obsidian Vault Design + /devstarter-vault-ingest — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
+    --bg-card:#f8f9fb; --bg-hover:#e8ebf0; --accent:#e94560; --accent-light:#d63851;
+    --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4;
+    --border-light:#e2e7ed; --status-draft:#f59e0b; --status-review:#3b82f6;
+    --status-approved:#10b981; --status-pending:#8b5cf6;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
+    --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316; --section-7:#06b6d4;
+    --header-h:64px; --sidebar-w:280px;
+    --code-bg:#f1f5f9; --code-inline-bg:rgba(233,69,96,0.08);
+    --code-inline-color:#d63851; --table-even-bg:rgba(0,0,0,0.02);
+    --table-hover-bg:rgba(233,69,96,0.04); --shadow:0 1px 3px rgba(0,0,0,0.06);
+    --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-header:#1a1a2e; --bg-sidebar:#16213e; --bg-content:#1e1e3a;
+    --bg-card:#252547; --bg-hover:#0f3460; --accent:#e94560; --accent-light:#ff6b81;
+    --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f;
+    --border-light:#2d4a6f; --code-bg:#0d0d1a; --code-inline-bg:rgba(233,69,96,0.1);
+    --code-inline-color:#ff6b81; --table-even-bg:rgba(255,255,255,0.02);
+    --table-hover-bg:rgba(233,69,96,0.05); --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.6; height:100vh; overflow:hidden; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--bg-header); border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); font-weight:500; }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; background:rgba(245,158,11,0.15); color:var(--status-draft); border:1px solid rgba(245,158,11,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s; border-left:3px solid transparent; }
+  .toc-link:hover { background:var(--bg-hover); color:var(--text); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent-light); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; flex-shrink:0; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
+  .toc-number.s7{background:var(--section-7);}
+  .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; }
+  .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
+  .doc-info-row span:first-child { color:var(--text-muted); }
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:48px 56px 100px; background:var(--bg-content); }
+  .section-header { display:flex; align-items:center; gap:14px; margin:56px 0 24px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
+  .section-number.s7{background:var(--section-7);}
+  .section-title { font-size:24px; font-weight:700; letter-spacing:-0.3px; }
+  h3 { font-size:17px; font-weight:600; color:var(--text); margin:32px 0 14px; border-left:3px solid var(--accent); padding-left:12px; }
+  p { color:var(--text-dim); margin-bottom:18px; font-size:15px; line-height:1.8; }
+  ul, ol { margin:8px 0 20px 28px; color:var(--text-dim); font-size:15px; }
+  li { margin-bottom:8px; line-height:1.8; }
+  code { background:var(--code-inline-bg); color:var(--code-inline-color); padding:2px 7px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:13px; }
+  pre { background:var(--code-bg); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin:16px 0 24px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:1.6; color:var(--text-dim); }
+  table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:14px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  thead th { background:var(--bg-sidebar); color:var(--text); font-weight:600; text-align:left; padding:12px 16px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--accent); }
+  tbody tr { border-bottom:1px solid var(--border); }
+  tbody tr:nth-child(even) { background:var(--table-even-bg); }
+  tbody tr:hover { background:var(--table-hover-bg); }
+  td { padding:12px 16px; color:var(--text-dim); vertical-align:top; line-height:1.6; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:24px 28px; margin:16px 0 24px; }
+  .card-title { font-size:15px; font-weight:600; margin-bottom:10px; color:var(--text); }
+  .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
+  .success { border-left:4px solid var(--section-4); background:rgba(16,185,129,0.05); }
+  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
+  .badge { display:inline-flex; align-items:center; padding:3px 10px; border-radius:12px; font-size:12px; font-weight:600; }
+  .badge-green { background:rgba(16,185,129,0.12); color:#10b981; }
+  .badge-yellow { background:rgba(245,158,11,0.12); color:#f59e0b; }
+  .badge-orange { background:rgba(249,115,22,0.12); color:#f97316; }
+  .badge-red { background:rgba(239,68,68,0.12); color:#ef4444; }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3 { font-family:'Sarabun',system-ui,sans-serif; }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:28px 20px 80px;} }
+  @media print { .doc-header{position:static;} .doc-sidebar{display:none;} .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;} body{background:#fff;overflow:auto;} .theme-toggle,.lang-btn,.pdf-btn{display:none;} }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Add Feature Plan — Obsidian Vault Design + /devstarter-vault-ingest</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>CR-2026-06-07-001 · 2026-06-07</div>
+      <div>Prepared by: Natthaphat Wajanavisit</div>
+    </div>
+    <span class="doc-status-badge">&#9203; PENDING APPROVAL</span>
+    <button class="pdf-btn" onclick="window.print()">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()"><span id="langLabel">EN</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#s1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Overview</span><span class="lang-th">ภาพรวม</span></a></li>
+    <li><a href="#s2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Requirements</span><span class="lang-th">ความต้องการ</span></a></li>
+    <li><a href="#s3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Solution Design</span><span class="lang-th">การออกแบบ</span></a></li>
+    <li><a href="#s4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Impact</span><span class="lang-th">ผลกระทบ</span></a></li>
+    <li><a href="#s5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Implementation Plan</span><span class="lang-th">แผนการดำเนินงาน</span></a></li>
+    <li><a href="#s6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยง &amp; Rollback</span></a></li>
+    <li><a href="#s7" class="toc-link"><span class="toc-number s7">7</span> <span class="lang-en">Testing</span><span class="lang-th">การทดสอบ</span></a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>CR ID</span> <span>CR-2026-06-07-001</span></div>
+    <div class="doc-info-row"><span>Branch</span> <span>feature/obsidian-vault-design-analyzer</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>Medium</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>M (4–8h)</span></div>
+    <div class="doc-info-row"><span>DB impact</span> <span class="badge badge-green">None</span></div>
+    <div class="doc-info-row"><span>API impact</span> <span class="badge badge-green">None</span></div>
+    <div class="doc-info-row"><span>UI impact</span> <span class="badge badge-green">None</span></div>
+    <div class="doc-info-row"><span>Security</span> <span class="badge badge-green">None</span></div>
+  </div>
+</nav>
+
+<main class="doc-content">
+
+  <!-- S1: Overview -->
+  <div class="section-header" id="s1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Overview</span><span class="lang-th">ภาพรวม</span></h2>
+  </div>
+
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>CR ID</td><td>CR-2026-06-07-001</td></tr>
+      <tr><td>Type</td><td>Add Feature</td></tr>
+      <tr><td>Feature</td><td>Obsidian Vault Design + /devstarter-vault-ingest Skill</td></tr>
+      <tr><td>Slug</td><td>obsidian-vault-design-analyzer</td></tr>
+      <tr><td>Branch</td><td>feature/obsidian-vault-design-analyzer</td></tr>
+      <tr><td>Date</td><td>2026-06-07</td></tr>
+      <tr><td>Author</td><td>Natthaphat Wajanavisit</td></tr>
+      <tr><td>Priority</td><td>Medium</td></tr>
+      <tr><td>Effort</td><td>M — 4–8 hours (all additive Markdown/YAML)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- S2: Requirements -->
+  <div class="section-header" id="s2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">Requirements</span><span class="lang-th">ความต้องการ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Problem / Gap</span><span class="lang-th">ปัญหา / ช่องว่าง</span></h3>
+  <p>
+    <span class="lang-en">DevStarter v5.9.0 ships a knowledge vault with 4 note templates, an emit procedure (E1–E5), and SDLC integration across 7 workflows. Three gaps remain: (1) the vault is flat — no folders, no MOC index pages, no navigation beyond text search; (2) there is no skill to analyse an existing <code>.md</code> file and emit it — only manual one-at-a-time capture via <code>/devstarter-knowledge</code>; (3) wikilinks must be hand-written — no auto-discovery of related notes.</span>
+    <span class="lang-th">DevStarter v5.9.0 มี knowledge vault พร้อม template 4 แบบ ขั้นตอน emit (E1–E5) และ integration กับ SDLC workflow 7 รายการ ยังมีช่องว่าง 3 ด้าน: (1) vault เป็นแบบ flat ไม่มีโฟลเดอร์ ไม่มีหน้า MOC index ไม่มีระบบนำทางนอกจากการค้นหาข้อความ (2) ไม่มีคำสั่งสำหรับวิเคราะห์ไฟล์ <code>.md</code> ที่มีอยู่และ emit มัน มีแค่การจับภาพด้วยตนเองครั้งละหนึ่งรายการผ่าน <code>/devstarter-knowledge</code> (3) wikilink ต้องเขียนด้วยมือ ไม่มีการค้นหาโน้ตที่เกี่ยวข้องโดยอัตโนมัติ</span>
+  </p>
+
+  <h3><span class="lang-en">User Story</span><span class="lang-th">User Story</span></h3>
+  <p>
+    <span class="lang-en">As a DevStarter user, I want to drop any existing <code>.md</code> file into <code>/devstarter-vault-ingest</code> so that it is automatically classified, linked to related notes, and stored in the vault in the correct folder — without writing frontmatter manually.</span>
+    <span class="lang-th">ในฐานะผู้ใช้ DevStarter ฉันต้องการนำไฟล์ <code>.md</code> ใดก็ได้เข้าสู่ <code>/devstarter-vault-ingest</code> เพื่อให้มันจัดประเภท เชื่อมโยงกับโน้ตที่เกี่ยวข้อง และบันทึกลงใน vault ในโฟลเดอร์ที่ถูกต้องโดยอัตโนมัติ</span>
+  </p>
+
+  <h3><span class="lang-en">Acceptance Criteria</span><span class="lang-th">เกณฑ์การยอมรับ</span></h3>
+  <ul>
+    <li><span class="lang-en">Given <code>folder_structure: hierarchical</code> in config + E1 emit, When note emitted, Then lands in correct type folder</span><span class="lang-th">เมื่อตั้งค่า hierarchical และ E1 ทำงาน โน้ตไปอยู่ในโฟลเดอร์ที่ถูกต้อง</span></li>
+    <li><span class="lang-en">Given vault scaffold, When complete, Then <code>_index/HOME.md</code> + 4 MOC files exist with Dataview blocks</span><span class="lang-th">เมื่อ scaffold เสร็จ HOME.md + 4 MOC มีอยู่พร้อม Dataview blocks</span></li>
+    <li><span class="lang-en">Given <code>/devstarter-vault-ingest notes/finding.md</code>, When run, Then frontmatter proposed at confirmation gate before emit</span><span class="lang-th">เมื่อรัน vault-ingest frontmatter ถูกเสนอที่ gate ก่อน emit</span></li>
+    <li><span class="lang-en">Given existing vault notes, When ingest runs, Then related notes surfaced + wikilinks proposed</span><span class="lang-th">เมื่อมีโน้ตใน vault อยู่ ingest จะแสดงโน้ตที่เกี่ยวข้องและเสนอ wikilink</span></li>
+    <li><span class="lang-en">Given file with secrets, When ingest runs, Then E4 deny-list blocks the secret before write</span><span class="lang-th">เมื่อไฟล์มีข้อมูลลับ E4 deny-list บล็อกก่อนเขียน</span></li>
+    <li><span class="lang-en">All 4 existing Obsidian templates have <code>## Links</code> section</span><span class="lang-th">template ทั้ง 4 มีส่วน Links</span></li>
+    <li><span class="lang-en"><code>/devstarter-vault-ingest</code> registered as item 46 in <code>devstarter-menu.md</code></span><span class="lang-th">ลงทะเบียนเป็นรายการ 46 ใน menu</span></li>
+    <li><span class="lang-en">Wikilink format <code>[[folder/slug]]</code> documented in <code>docs/obsidian-vault-guide.md</code></span><span class="lang-th">รูปแบบ wikilink ถูกบันทึกใน obsidian-vault-guide.md</span></li>
+  </ul>
+
+  <!-- S3: Solution Design -->
+  <div class="section-header" id="s3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">Solution Design</span><span class="lang-th">การออกแบบ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Part A — Vault Structure</span><span class="lang-th">ส่วน A — โครงสร้าง Vault</span></h3>
+  <pre>vault/
+├── bugs/           ← type:bug notes
+├── techniques/     ← type:technique notes
+├── rcas/           ← type:rca notes
+├── snapshots/      ← type:project-snapshot notes
+└── _index/
+    ├── HOME.md     ← Obsidian startup note, links to all MOCs
+    ├── MOC-bugs.md
+    ├── MOC-techniques.md
+    ├── MOC-rcas.md
+    └── MOC-projects.md</pre>
+
+  <p>
+    <span class="lang-en">Each MOC page uses a Dataview query block to auto-list notes in its folder. The emit procedure E1 gains a new branch: if <code>folder_structure: hierarchical</code>, it resolves the destination path as <code>&lt;vault_path&gt;/&lt;subdir&gt;/&lt;type&gt;s/&lt;slug&gt;.md</code> rather than <code>&lt;vault_path&gt;/&lt;subdir&gt;/&lt;slug&gt;.md</code>. Flat mode (current default) is unchanged. A new <code>folder_structure: flat</code> value preserves existing behaviour explicitly.</span>
+    <span class="lang-th">แต่ละหน้า MOC ใช้ Dataview query block เพื่อแสดงโน้ตในโฟลเดอร์ของมันโดยอัตโนมัติ ขั้นตอน E1 ได้รับ branch ใหม่: ถ้าตั้งค่า <code>folder_structure: hierarchical</code> จะกำหนดเส้นทางปลายทางเป็น <code>&lt;vault_path&gt;/&lt;subdir&gt;/&lt;type&gt;s/&lt;slug&gt;.md</code> แทนที่จะเป็น <code>&lt;vault_path&gt;/&lt;subdir&gt;/&lt;slug&gt;.md</code> โหมด flat (ค่าเริ่มต้นปัจจุบัน) ไม่เปลี่ยนแปลง</span>
+  </p>
+
+  <h3><span class="lang-en">Part B — /devstarter-vault-ingest Skill (4-phase flow)</span><span class="lang-th">ส่วน B — คำสั่ง /devstarter-vault-ingest (4 phases)</span></h3>
+  <table>
+    <thead><tr><th>Phase</th><th><span class="lang-en">Action</span><span class="lang-th">การกระทำ</span></th><th><span class="lang-en">Output</span><span class="lang-th">ผลลัพธ์</span></th></tr></thead>
+    <tbody>
+      <tr><td>1 — Analyze</td><td><span class="lang-en">Read MD file → infer type (bug/rca/technique/snapshot) from content shape → extract title, language, framework, tags</span><span class="lang-th">อ่านไฟล์ MD → อนุมานประเภทจากรูปแบบเนื้อหา → ดึง title, language, framework, tags</span></td><td><span class="lang-en">Proposed frontmatter shown at <code>AskUserQuestion</code> gate</span><span class="lang-th">frontmatter ที่เสนอแสดงที่ gate</span></td></tr>
+      <tr><td>2 — Discover</td><td><span class="lang-en">Grep vault by tags + language + root_cause_category → surface 1–5 matching notes</span><span class="lang-th">Grep vault ตาม tags + language + category → แสดงโน้ตที่ตรงกัน 1–5 รายการ</span></td><td><span class="lang-en">Proposed <code>[[wikilinks]]</code> in <code>## Links</code> section</span><span class="lang-th">wikilink ที่เสนอในส่วน Links</span></td></tr>
+      <tr><td>3 — Emit</td><td><span class="lang-en">Sanitize via E4 deny-list → write to <code>vault/&lt;type&gt;s/&lt;slug&gt;.md</code></span><span class="lang-th">Sanitize ผ่าน E4 deny-list → เขียนไปยัง vault</span></td><td><span class="lang-en">Note file created in vault</span><span class="lang-th">สร้างไฟล์โน้ตใน vault</span></td></tr>
+      <tr><td>4 — Confirm</td><td><span class="lang-en">Show emitted path + linked notes</span><span class="lang-th">แสดงเส้นทางที่บันทึกและโน้ตที่เชื่อมโยง</span></td><td><span class="lang-en">User confirmation message</span><span class="lang-th">ข้อความยืนยันผู้ใช้</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Wikilink Convention</span><span class="lang-th">Convention ของ Wikilink</span></h3>
+  <ul>
+    <li><span class="lang-en">Format: <code>[[&lt;folder&gt;/&lt;slug&gt;]]</code> — no spaces, kebab-case slug (e.g. <code>[[bugs/auth-token-expiry]]</code>)</span><span class="lang-th">รูปแบบ: <code>[[&lt;folder&gt;/&lt;slug&gt;]]</code> ไม่มีเว้นวรรค ใช้ kebab-case</span></li>
+    <li><span class="lang-en">Cross-type links allowed: a bug note can link to a technique that fixed it</span><span class="lang-th">ลิงก์ข้ามประเภทได้: โน้ต bug สามารถลิงก์ไปยัง technique ที่แก้ไขมัน</span></li>
+    <li><span class="lang-en">Every template has a <code>## Links</code> section (empty by default, filled by ingest)</span><span class="lang-th">ทุก template มีส่วน <code>## Links</code> (ว่างเปล่าโดยค่าเริ่มต้น เติมโดย ingest)</span></li>
+  </ul>
+
+  <h3><span class="lang-en">Alternatives Considered</span><span class="lang-th">ทางเลือกที่พิจารณา</span></h3>
+  <table>
+    <thead><tr><th><span class="lang-en">Option</span><span class="lang-th">ตัวเลือก</span></th><th><span class="lang-en">Verdict</span><span class="lang-th">ผลตัดสิน</span></th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Flat vault (keep as-is)</span><span class="lang-th">Vault แบบ flat (คงเดิม)</span></td><td><span class="lang-en">Rejected — degrades past 20 notes</span><span class="lang-th">ปฏิเสธ — เสื่อมหลังจาก 20 โน้ต</span></td></tr>
+      <tr><td><span class="lang-en">Project-namespaced folders</span><span class="lang-th">โฟลเดอร์แบ่งตามโปรเจกต์</span></td><td><span class="lang-en">Rejected — breaks cross-project recall (the core value)</span><span class="lang-th">ปฏิเสธ — ทำลายการค้นคืนข้ามโปรเจกต์</span></td></tr>
+      <tr><td><span class="lang-en">Manual classify + guided emit</span><span class="lang-th">จัดประเภทด้วยตนเอง</span></td><td><span class="lang-en">Rejected — doesn't fulfil "analyze" requirement</span><span class="lang-th">ปฏิเสธ — ไม่ตอบสนองความต้องการ "วิเคราะห์"</span></td></tr>
+      <tr><td><span class="lang-en">Batch ingest (multiple files)</span><span class="lang-th">นำเข้าหลายไฟล์พร้อมกัน</span></td><td><span class="lang-en">Deferred — Phase 2 via <code>--all &lt;dir&gt;</code> flag</span><span class="lang-th">เลื่อน — Phase 2 ผ่าน flag <code>--all</code></span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- S4: Impact -->
+  <div class="section-header" id="s4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">Impact</span><span class="lang-th">ผลกระทบ</span></h2>
+  </div>
+
+  <table>
+    <thead><tr><th><span class="lang-en">Domain</span><span class="lang-th">โดเมน</span></th><th><span class="lang-en">Impact</span><span class="lang-th">ผลกระทบ</span></th><th><span class="lang-en">Notes</span><span class="lang-th">หมายเหตุ</span></th></tr></thead>
+    <tbody>
+      <tr><td>Database</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">DevStarter has no database</span><span class="lang-th">DevStarter ไม่มีฐานข้อมูล</span></td></tr>
+      <tr><td>API</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">DevStarter has no API</span><span class="lang-th">DevStarter ไม่มี API</span></td></tr>
+      <tr><td>UI / Frontend</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">DevStarter has no frontend</span><span class="lang-th">DevStarter ไม่มี frontend</span></td></tr>
+      <tr><td>Security</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">E4 sanitize (existing) reused; no new data surfaces</span><span class="lang-th">ใช้ E4 sanitize ที่มีอยู่ ไม่มีข้อมูลใหม่ที่เปิดเผย</span></td></tr>
+      <tr><td><span class="lang-en">Existing emit paths</span><span class="lang-th">เส้นทาง emit ที่มีอยู่</span></td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">E1–E5 unchanged; <code>folder_structure: flat</code> (default) preserves current behaviour</span><span class="lang-th">E1–E5 ไม่เปลี่ยนแปลง <code>flat</code> (ค่าเริ่มต้น) คงพฤติกรรมปัจจุบัน</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Files to Create / Modify</span><span class="lang-th">ไฟล์ที่ต้องสร้าง / แก้ไข</span></h3>
+  <table>
+    <thead><tr><th><span class="lang-en">File</span><span class="lang-th">ไฟล์</span></th><th>Op</th><th><span class="lang-en">Change</span><span class="lang-th">การเปลี่ยนแปลง</span></th></tr></thead>
+    <tbody>
+      <tr><td><code>devstarter-config.yml</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Add <code>folder_structure: flat</code> to obsidian block (flat = default, explicit opt-in for hierarchical)</span><span class="lang-th">เพิ่ม <code>folder_structure: flat</code> ใน obsidian block</span></td></tr>
+      <tr><td><code>sdlc/devstarter-knowledge.md</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Update E1: add folder resolution branch for hierarchical mode</span><span class="lang-th">อัปเดต E1: เพิ่ม branch สำหรับ hierarchical mode</span></td></tr>
+      <tr><td><code>templates/obsidian/bug-note.md</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Add <code>## Links</code> section + folder path comment</span><span class="lang-th">เพิ่มส่วน Links + comment เส้นทางโฟลเดอร์</span></td></tr>
+      <tr><td><code>templates/obsidian/rca-note.md</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Add <code>## Links</code> section + folder path comment</span><span class="lang-th">เพิ่มส่วน Links + comment เส้นทางโฟลเดอร์</span></td></tr>
+      <tr><td><code>templates/obsidian/technique-note.md</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Add <code>## Links</code> section + folder path comment</span><span class="lang-th">เพิ่มส่วน Links + comment เส้นทางโฟลเดอร์</span></td></tr>
+      <tr><td><code>templates/obsidian/project-snapshot-note.md</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Add <code>## Links</code> section + folder path comment</span><span class="lang-th">เพิ่มส่วน Links + comment เส้นทางโฟลเดอร์</span></td></tr>
+      <tr><td><code>docs/obsidian-vault-guide.md</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Add Section 7: vault hierarchy, MOC spec, wikilink convention, scaffold instructions</span><span class="lang-th">เพิ่มหัวข้อ 7: hierarchy, MOC spec, wikilink convention, คำแนะนำ scaffold</span></td></tr>
+      <tr><td><code>skills/devstarter-vault-ingest/SKILL.md</code></td><td><span class="badge badge-green">Create</span></td><td><span class="lang-en">New skill entry point</span><span class="lang-th">จุดเข้าสู่ skill ใหม่</span></td></tr>
+      <tr><td><code>sdlc/devstarter-vault-ingest.md</code></td><td><span class="badge badge-green">Create</span></td><td><span class="lang-en">4-phase ingest runbook (analyze → discover → emit → confirm)</span><span class="lang-th">runbook 4 phases (analyze → discover → emit → confirm)</span></td></tr>
+      <tr><td><code>devstarter-menu.md</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Add item 46: /devstarter-vault-ingest under KNOWLEDGE VAULT section</span><span class="lang-th">เพิ่มรายการ 46 ใน Knowledge Vault section</span></td></tr>
+      <tr><td><code>CLAUDE.md</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Add feature to Recently Shipped table (v6.0.0)</span><span class="lang-th">เพิ่มฟีเจอร์ในตาราง Recently Shipped (v6.0.0)</span></td></tr>
+      <tr><td><code>docs/brd.html</code></td><td><span class="badge badge-yellow">Modify</span></td><td><span class="lang-en">Add 2 user stories + GWT acceptance criteria + Revision History row</span><span class="lang-th">เพิ่ม 2 user stories + เกณฑ์ GWT + Revision History</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- S5: Implementation Plan -->
+  <div class="section-header" id="s5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title"><span class="lang-en">Implementation Plan</span><span class="lang-th">แผนการดำเนินงาน</span></h2>
+  </div>
+
+  <div class="card note">
+    <div class="card-title"><span class="lang-en">Single Track — all tasks sequential (Docs/Framework, no backend/frontend split)</span><span class="lang-th">Track เดียว — งานทั้งหมดลำดับต่อเนื่อง (Docs/Framework)</span></div>
+  </div>
+
+  <ol>
+    <li><span class="lang-en"><strong>Task 1</strong> — Update <code>devstarter-config.yml</code>: add <code>folder_structure: flat</code> to obsidian block. Also update the config template at <code>templates/CLAUDE.md.template</code>.</span><span class="lang-th"><strong>งาน 1</strong> — อัปเดต <code>devstarter-config.yml</code>: เพิ่ม <code>folder_structure: flat</code> ใน obsidian block</span></li>
+    <li><span class="lang-en"><strong>Task 2</strong> — Update <code>sdlc/devstarter-knowledge.md</code> E1 step: add folder resolution logic for hierarchical mode with <code>vault/&lt;subdir&gt;/&lt;type&gt;s/&lt;slug&gt;.md</code> path.</span><span class="lang-th"><strong>งาน 2</strong> — อัปเดต E1 ใน devstarter-knowledge.md: เพิ่ม logic กำหนดโฟลเดอร์สำหรับ hierarchical mode</span></li>
+    <li><span class="lang-en"><strong>Task 3</strong> — Update 4 Obsidian templates: add <code>## Links</code> section and folder destination comment to each.</span><span class="lang-th"><strong>งาน 3</strong> — อัปเดต 4 template Obsidian: เพิ่มส่วน <code>## Links</code> และ comment เส้นทางโฟลเดอร์</span></li>
+    <li><span class="lang-en"><strong>Task 4</strong> — Update <code>docs/obsidian-vault-guide.md</code>: add Section 7 covering vault hierarchy structure, MOC page templates, wikilink convention, scaffold instructions (including the 5 MOC file contents).</span><span class="lang-th"><strong>งาน 4</strong> — อัปเดต obsidian-vault-guide.md: เพิ่มหัวข้อ 7 ครอบคลุม hierarchy, MOC templates, wikilink convention, คำแนะนำ scaffold</span></li>
+    <li><span class="lang-en"><strong>Task 5</strong> — Create <code>skills/devstarter-vault-ingest/SKILL.md</code>: thin entry point with description, inline args, universal prompt, and model note (Sonnet).</span><span class="lang-th"><strong>งาน 5</strong> — สร้าง SKILL.md ใหม่สำหรับ vault-ingest</span></li>
+    <li><span class="lang-en"><strong>Task 6</strong> — Create <code>sdlc/devstarter-vault-ingest.md</code>: full 4-phase runbook (analyze → discover → emit → confirm). Reuse E4 sanitize from devstarter-knowledge.md. Include classification heuristics for Phase 1.</span><span class="lang-th"><strong>งาน 6</strong> — สร้าง runbook 4 phases ใหม่</span></li>
+    <li><span class="lang-en"><strong>Task 7</strong> — Update <code>devstarter-menu.md</code>: add item 46 under KNOWLEDGE VAULT section. Update <code>CLAUDE.md</code> Recently Shipped table (v6.0.0 entry). Update <code>docs/brd.html</code> with user stories. Create GitHub issue.</span><span class="lang-th"><strong>งาน 7</strong> — อัปเดต menu, CLAUDE.md, brd.html และสร้าง GitHub issue</span></li>
+  </ol>
+
+  <!-- S6: Risk & Rollback -->
+  <div class="section-header" id="s6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title"><span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยง &amp; Rollback</span></h2>
+  </div>
+
+  <table>
+    <thead><tr><th><span class="lang-en">Risk</span><span class="lang-th">ความเสี่ยง</span></th><th><span class="lang-en">Likelihood</span><span class="lang-th">โอกาส</span></th><th><span class="lang-en">Mitigation</span><span class="lang-th">การบรรเทา</span></th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">E1 folder logic breaks existing flat emit</span><span class="lang-th">Logic E1 ทำลาย flat emit ที่มีอยู่</span></td><td><span class="badge badge-green">Low</span></td><td><span class="lang-en">Default remains flat; hierarchical is opt-in via config field</span><span class="lang-th">ค่าเริ่มต้นยังคงเป็น flat; hierarchical เป็น opt-in</span></td></tr>
+      <tr><td><span class="lang-en">Ingest misclassifies a note type</span><span class="lang-th">Ingest จัดประเภทโน้ตผิด</span></td><td><span class="badge badge-yellow">Medium</span></td><td><span class="lang-en">Phase 1 always shows proposed frontmatter at AskUserQuestion gate — user confirms before any write</span><span class="lang-th">Phase 1 แสดง frontmatter ที่เสนอที่ gate — ผู้ใช้ยืนยันก่อนเขียน</span></td></tr>
+      <tr><td><span class="lang-en">Secret leaks through ingest</span><span class="lang-th">ข้อมูลลับรั่วผ่าน ingest</span></td><td><span class="badge badge-green">Low</span></td><td><span class="lang-en">E4 sanitize deny-list runs in Phase 3 before write — same as existing /devstarter-knowledge emit</span><span class="lang-th">E4 sanitize deny-list ทำงานใน Phase 3 ก่อนเขียน</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Rollback Plan</span><span class="lang-th">แผน Rollback</span></h3>
+  <p>
+    <span class="lang-en">Revert branch: <code>git revert feature/obsidian-vault-design-analyzer</code>. No data migrations, no vault notes modified. Existing vault notes and the <code>/devstarter-knowledge</code> command are unaffected. Rollback restores all 4 templates, config, and runbooks to their prior state in one operation.</span>
+    <span class="lang-th">Revert branch: <code>git revert feature/obsidian-vault-design-analyzer</code> ไม่มีการ migrate ข้อมูล ไม่มีการแก้ไขโน้ตใน vault โน้ตที่มีอยู่และคำสั่ง <code>/devstarter-knowledge</code> ไม่ได้รับผลกระทบ</span>
+  </p>
+
+  <!-- S7: Testing -->
+  <div class="section-header" id="s7">
+    <span class="section-number s7">7</span>
+    <h2 class="section-title"><span class="lang-en">Testing</span><span class="lang-th">การทดสอบ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Verification Steps</span><span class="lang-th">ขั้นตอนการตรวจสอบ</span></h3>
+  <ol>
+    <li><span class="lang-en">Set <code>folder_structure: hierarchical</code> in <code>devstarter-config.yml</code>. Run <code>/devstarter-knowledge</code> to emit a bug note. Verify it lands in <code>&lt;vault_path&gt;/knowledge/bugs/&lt;slug&gt;.md</code>.</span><span class="lang-th">ตั้งค่า hierarchical และรัน /devstarter-knowledge เพื่อ emit bug note ตรวจสอบว่าอยู่ในโฟลเดอร์ bugs/</span></li>
+    <li><span class="lang-en">Run <code>/devstarter-vault-ingest &lt;any-existing-md&gt;</code>. Verify Phase 1 proposes frontmatter at a gate before writing anything.</span><span class="lang-th">รัน /devstarter-vault-ingest บนไฟล์ MD ที่มีอยู่ ตรวจสอบว่า Phase 1 เสนอ frontmatter ที่ gate ก่อนเขียน</span></li>
+    <li><span class="lang-en">With multiple notes in vault, run ingest on a bug note. Verify Phase 2 surfaces related notes and proposes wikilinks in the <code>## Links</code> section.</span><span class="lang-th">เมื่อมีโน้ตหลายรายการใน vault รัน ingest บน bug note ตรวจสอบว่า Phase 2 แสดงโน้ตที่เกี่ยวข้องและ wikilink</span></li>
+    <li><span class="lang-en">Open <code>_index/HOME.md</code> in Obsidian. Verify the 4 MOC links resolve and Dataview queries return existing notes.</span><span class="lang-th">เปิด HOME.md ใน Obsidian ตรวจสอบว่า 4 MOC ลิงก์ทำงานและ Dataview queries คืนโน้ตที่มีอยู่</span></li>
+    <li><span class="lang-en">Revert config to <code>folder_structure: flat</code>. Run <code>/devstarter-knowledge</code> again. Verify note still emits to flat path (no regression).</span><span class="lang-th">Revert กลับเป็น flat และรัน /devstarter-knowledge อีกครั้ง ตรวจสอบว่าโน้ต emit ไปยัง flat path (ไม่มี regression)</span></li>
+  </ol>
+
+  <!-- Revision History -->
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>Reference</th><th>Date</th><th><span class="lang-en">Description</span><span class="lang-th">รายละเอียด</span></th><th>Author</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>CR-2026-06-07-001</td>
+        <td>2026-06-07</td>
+        <td><span class="lang-en">Initial plan document — Obsidian vault hierarchy + /devstarter-vault-ingest skill</span><span class="lang-th">เอกสารแผนเริ่มต้น — vault hierarchy + vault-ingest skill</span></td>
+        <td>Natthaphat Wajanavisit</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function toggleLang() {
+    var html = document.documentElement; var isThai = html.getAttribute('data-lang') === 'th'; var label = document.getElementById('langLabel');
+    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
+    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
+  }
+  (function() { var l=localStorage.getItem('docportal-lang'); if (l==='th') { document.documentElement.setAttribute('data-lang','th'); var lb=document.getElementById('langLabel'); if(lb) lb.textContent='TH'; } })();
+  function toggleTheme() {
+    var html = document.documentElement; var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function() { var saved = localStorage.getItem('docportal-theme'); if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; } })();
+  const sections = document.querySelectorAll('.section-header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const content = document.querySelector('.doc-content');
+  content.addEventListener('scroll', () => {
+    let current = ''; sections.forEach(s => { if (content.scrollTop >= s.offsetTop - content.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+  });
+  tocLinks.forEach(l => { l.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(l.getAttribute('href')); if (t) content.scrollTo({ top: t.offsetTop - content.offsetTop - 20, behavior: 'smooth' }); }); });
+</script>
+</body>
+</html>
