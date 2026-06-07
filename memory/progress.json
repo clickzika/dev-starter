@@ -1,24 +1,31 @@
 {
-  "workflow": "devstarter-existing",
+  "workflow": "devstarter-pm-sprint",
   "version": "v5.9.0",
   "status": "completed",
-  "branch": "feature/full-setup-docs-github",
+  "branch": "develop",
   "started_at": "2026-06-06",
-  "completed_at": "2026-06-06",
-  "intent": "Full setup — docs review/refresh + GitHub Issues PM (no Notion)",
+  "completed_at": "2026-06-07",
+  "intent": "PM improvement sprint — model ID sweep, release gate, api-reference re-catalog, vault validation",
   "results": {
-    "github_labels": "DONE — 19 canonical labels created (gate/role/status/priority)",
-    "branch_protection": "BLOCKED — private repo on free plan (403). PROC-GH-18 not applied.",
-    "milestones": "N/A at setup — created per-epic via PROC-GH-11",
-    "docs": "EXISTED already; staleness review done; BRD drift fixed + 6 stale docs refreshed to v5.9.0",
-    "commit": "fa17f88 — docs: refresh stale docs to v5.9.0 + fix BRD drift",
-    "docs_changed": ["brd.html","api-reference.html","database-design.html","security-design.html","test-strategy.html","infrastructure-guide.html","project-plan.html"]
+    "vault_path_fix": "DONE — devstarter-config.yml obsidian vault_path updated to D:\\Projects\\Obsidian",
+    "memory_note": "DONE — memory/change-log-documents-by-flow.md committed",
+    "model_id_sweep": "DONE — claude-opus-4-7 → claude-opus-4-8 across 24 files",
+    "release_gate": "DONE — Known Limitations Review block added to sdlc/devstarter-release-prep.md Phase 2 (blocks Gate 1)",
+    "api_reference": "DONE — full re-catalog: 24 → 63 commands across 10 sections + inline args appendix",
+    "obsidian_validation": "DONE — live vault confirmed; existing technique note verified; git safe.directory fixed for Windows multi-user",
+    "understand_validation": "DONE — accepted risk documented in CHANGELOG; preflight guards correctly; delegation unverifiable without plugin install",
+    "known_limitations": "CLOSED — all 4 CHANGELOG known-limitation blocks replaced with validated/accepted-risk status",
+    "push": "DONE — 6 commits pushed to origin/develop (9bb176d..1e64683)"
   },
   "open_items": [
+    "C2 — understand-anything delegation: validate after running '/plugin install understand-anything' + restart",
     "Branch protection on main/uat needs GitHub Pro or public repo (free plan blocks it)",
-    "release-v2.2.0.html / release-v2.3.0.html still show Author @devstarter-* (left as historical artifacts)",
-    "Deep per-command re-catalog of api-reference body deferred (count + note updated)",
-    "Decide: push feature/full-setup-docs-github + open PR to develop"
+    "release-v2.2.0.html / release-v2.3.0.html still show Author @devstarter-* (historical artifacts — accepted)"
   ],
-  "previous_release": { "version": "v5.7.0", "tag": "v5.7.0", "completed_at": "2026-05-31" }
+  "previous_session": {
+    "workflow": "devstarter-existing",
+    "version": "v5.9.0",
+    "completed_at": "2026-06-06",
+    "intent": "Full setup — docs review/refresh + GitHub Issues PM (no Notion)"
+  }
 }
