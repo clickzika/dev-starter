@@ -2,7 +2,7 @@
 
 > **TL;DR** — Interactive 3-reviewer code review (TechLead / QA / Security) · **Lifecycle** Build · **Gates** 0
 
-## Model: Opus (`claude-opus-4-7`)
+## Model: Opus (`claude-opus-4-8`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
 **Config:** Read `devstarter-config.yml` for all project settings (`vcs.type`, `pm.type`, `ci.type`, `ai.provider`, etc.).

@@ -80,6 +80,8 @@ Show this menu and ask ONE question:
 ── KNOWLEDGE VAULT (Obsidian) ─────────────────
   45. 🧠 Knowledge — `/devstarter-knowledge` (capture technique / know-how / RCA into a shared, cross-project Obsidian vault)
        (opt-in: set the `obsidian:` block in devstarter-config.yml — see docs/obsidian-vault-guide.md)
+  46. 📥 Vault Ingest — `/devstarter-vault-ingest <file>` (analyze existing MD file → auto-classify → discover related notes → emit with wikilinks)
+       Use `--scaffold` to create hierarchical folder structure + MOC pages without ingesting a file.
 
 ── DIRECT-INVOKE SKILLS (no SDLC gates) ───────
   33. 🧠 Debug Mantra — `/devstarter-debug-mantra` (4-step debugging discipline)
@@ -168,3 +170,4 @@ Route to correct file:
 | 43 | `~/.claude/sdlc/devstarter-understand-domain.md` (delegates to `/understand-domain`) |
 | 44 | `~/.claude/sdlc/devstarter-understand-knowledge.md` (delegates to `/understand-knowledge`) |
 | 45 | `~/.claude/sdlc/devstarter-knowledge.md` (capture into Obsidian knowledge vault) |
+| 46 | `~/.claude/sdlc/devstarter-vault-ingest.md` (analyze existing MD → classify → link → emit to vault) |

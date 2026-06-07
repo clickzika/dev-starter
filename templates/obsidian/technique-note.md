@@ -40,3 +40,4 @@ source: "{{SOURCE_REF}}"
 - Related: {{RELATED_WIKILINKS}}
 
 <!-- Sanitized on write (@oss-sanitizer): no secrets, internal URLs, credentials, or customer data. -->
+<!-- Hierarchical vault path (folder_structure: hierarchical): <subdir>/techniques/<filename>.md -->
