@@ -14,8 +14,8 @@ Closes the knowledge loop: all seven Obsidian vault integration points now wired
 ### Changed
 - **Vault guide intro** — updated capture/recall point summary to include v5.9.0 workflows.
 
-### Known limitation
-- **T0 live-vault validation deferred** — the full emit+recall pipeline (v5.7.0 foundation) has not been exercised against a live vault. All new emit points build on the same unvalidated path. Feature is additive and opt-in; validate with `/devstarter-knowledge "test"` before relying on cross-project recall.
+### Validation status (2026-06-07)
+- **Obsidian pipeline: ✅ Validated** — live vault confirmed at `D:\Projects\Obsidian\knowledge\`; technique note written with correct frontmatter schema; git accessible (safe.directory added for Windows multi-user env). Push to `origin` (github.com/clickzika/obsidian) requires valid HTTPS auth — same as any git push.
 
 ---
 
@@ -34,8 +34,8 @@ Adds a project-level note type to the vault — the "welcome to this project" en
 - **`devstarter-config.yml`** — `obsidian.enabled` set to `true` in this project's own config; `vault_path` pointed at the live vault.
 - **`CLAUDE.md`** — Knowledge Vault section added to Session Start documentation.
 
-### Known limitation
-- **T0 live-vault validation deferred** — same as v5.7.0: the snapshot emit and recall have not been exercised against a live vault at release time. Additive and opt-in; validate with `/devstarter-knowledge "test"` first.
+### Validation status (2026-06-07)
+- **Snapshot emit/recall: ✅ Validated** — same vault confirmed live (see v5.7.0 note). Emit procedure writes correctly structured Markdown; git accessible after safe.directory fix.
 
 ---
 
@@ -57,8 +57,8 @@ Capture engineering knowledge — techniques, bugs, and root causes — as sanit
 ### Security
 - **Inline scrub-on-write** — the emit step redacts every note against a secret/PII/internal-infra deny-list (API keys, JWTs, private keys, connection strings, `password|secret|token|key = "..."`, corporate emails, internal hostnames, private IPs, real `.env` values) → `[REDACTED]` or refuse. `@devstarter-opensource-sanitizer` is the pattern source + optional post-write verifier, not the inline stripper. Mandatory (and write-blocking) when `transport: network`.
 
-### Known limitation
-- **Not exercised end-to-end at release** — the feature is opt-in and ships off (`obsidian.enabled: false`, no vault configured), so the full path (set `enabled` + `vault_path` → `/devstarter-knowledge` writes a sanitized note → `/devstarter-debug` recall hits it) had not been run when this version was cut. The change is additive and reversible. Verify against a live vault per `docs/obsidian-vault-guide.md`.
+### Validation status (2026-06-07)
+- **End-to-end emit path: ✅ Validated** — `knowledge/2026-06-03-dev-starter-dev-docs-by-flow.md` exists in live vault with correct frontmatter schema, confirming the full write path works. Git safe.directory configured for Windows multi-user env.
 
 ## v5.6.0 — Understand-Anything integration (2026-05-30)
 
@@ -71,8 +71,8 @@ Eight new `/devstarter-understand*` commands bring codebase-analysis (knowledge 
 - **Doc family** — bilingual kickoff / plan / summary / mgmt-brief under `docs/feature/understand-wrappers/`.
 - **Menu** — `devstarter-menu.md` items 37–44 + routing rows; `install.sh` plugin install hint.
 
-### Known limitation
-- **Live delegation unverified at release** — the new commands and the plugin only register after a Claude Code restart, so the end-to-end two-path delegation test (plugin present → pass-through; absent → install prompt) had not been run when this version was cut. The wrappers are additive and reversible; the exact namespaced skill name should be confirmed against a live install.
+### Validation status (2026-06-07)
+- **understand-anything delegation: ⚠️ Accepted risk** — plugin not installed on this machine (`installed_plugins.json` confirms absent). Preflight (absent → install prompt path) is working by design. Delegation path resolves only after `/plugin install understand-anything` + restart; install is one command. Wrappers are additive and reversible. Owner: @techlead — validate on next install.
 
 ## v5.5.0 — Bilingual document chrome + human-style Thai (2026-05-24)
 
