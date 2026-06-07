@@ -41,3 +41,4 @@ tags: [project-snapshot, "{{PROJECT}}"]
 - Project: [[{{PROJECT}}]]
 
 <!-- Sanitized on write (@oss-sanitizer): no secrets, internal URLs, credentials, or customer data. -->
+<!-- Hierarchical vault path (folder_structure: hierarchical): <subdir>/snapshots/<filename>.md -->

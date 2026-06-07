@@ -2,7 +2,7 @@
 
 > **TL;DR** — Proactive performance investigation: baseline → bottleneck → roadmap · **Lifecycle** Operate · **Gates** 1
 
-## Model: Opus (`claude-opus-4-7`)
+## Model: Opus (`claude-opus-4-8`)
 > Performance reasoning + tradeoff analysis required — run `/model opus`.
 
 **Config:** Read `devstarter-config.yml` for project settings.

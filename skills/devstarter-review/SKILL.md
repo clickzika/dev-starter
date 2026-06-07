@@ -4,7 +4,7 @@ Run a structured 3-reviewer pass (TechLead / QA / Security) on a PR / branch / c
 
 ## ⚠️ Model Gate — Run Before Anything Else
 
-This workflow requires **Opus** (`claude-opus-4-7`).
+This workflow requires **Opus** (`claude-opus-4-8`).
 
 Use `AskUserQuestion` immediately:
 - question: "Are you on Opus? If not, run `/model opus` first then re-run `/devstarter-review`."

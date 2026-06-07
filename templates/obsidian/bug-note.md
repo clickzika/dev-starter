@@ -38,3 +38,4 @@ source: "{{SOURCE_REF}}"    # PR / commit / ticket / doc path
 - Related: {{RELATED_WIKILINKS}}
 
 <!-- Sanitized on write (@oss-sanitizer): no secrets, internal URLs, credentials, or customer data. -->
+<!-- Hierarchical vault path (folder_structure: hierarchical): <subdir>/bugs/<filename>.md -->

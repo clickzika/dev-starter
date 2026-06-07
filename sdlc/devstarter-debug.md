@@ -2,7 +2,7 @@
 
 > **TL;DR** — Senior-dev hypothesis-driven investigation with 5 Whys root-cause gate · **Lifecycle** Build · **Gates** 1
 
-## Model: Opus (`claude-opus-4-7`)
+## Model: Opus (`claude-opus-4-8`)
 > Deep reasoning required — run `/model opus` before this workflow.
 
 Use when you have a bug and do NOT yet know where in the code it lives. Ends with a precise root cause + surgical fix plan.

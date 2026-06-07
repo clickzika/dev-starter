@@ -31,9 +31,18 @@ Recall only works if every note carries the schema below. A note without it is a
 ## VAULT EMIT PROCEDURE (shared — referenced by other skills)
 
 ### Step E1 — Resolve target path
-1. Read `obsidian.vault_path`, `obsidian.subdir`, `obsidian.transport` from `devstarter-config.yml`.
+1. Read `obsidian.vault_path`, `obsidian.subdir`, `obsidian.transport`, `obsidian.folder_structure` from `devstarter-config.yml`.
 2. If `vault_path` is empty → emit is not configured; tell the user to set it (see `docs/obsidian-vault-guide.md`) and skip.
-3. Target dir = `<vault_path>/<subdir>/`. Create it if missing.
+3. Resolve target dir by `folder_structure`:
+   - `flat` (default): Target dir = `<vault_path>/<subdir>/`
+   - `hierarchical`: Target dir = `<vault_path>/<subdir>/<type-folder>/` where type-folder is:
+     | `type` frontmatter | Folder |
+     |---|---|
+     | `bug-note` | `bugs/` |
+     | `technique` | `techniques/` |
+     | `rca` | `rcas/` |
+     | `project-snapshot` | `snapshots/` |
+   Create the folder if missing.
 4. Filename = `<YYYY-MM-DD>-<project-slug>-<note-slug>.md` (lowercase, hyphenated, unique — append `-2`, `-3` on collision). This satisfies Rule 3.
 
 ### Step E2 — Pick template

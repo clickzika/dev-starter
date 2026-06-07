@@ -190,7 +190,134 @@ sort date desc
 
 ---
 
-## 7. Quick start
+## 7. Hierarchical vault structure (folder_structure: hierarchical)
+
+### Overview
+
+By default the vault uses a **flat** layout (all notes in the `knowledge/` subdir).
+Enable hierarchical mode to organize notes by type in separate folders with auto-generated MOC index pages.
+
+```yaml
+# devstarter-config.yml
+obsidian:
+  folder_structure: hierarchical   # flat (default) | hierarchical
+```
+
+### Folder layout
+
+```
+<vault_path>/<subdir>/
+├── bugs/            ← type: bug-note
+├── techniques/      ← type: technique
+├── rcas/            ← type: rca
+├── snapshots/       ← type: project-snapshot
+└── _index/
+    ├── HOME.md          ← Obsidian startup note (set as vault home)
+    ├── MOC-bugs.md
+    ├── MOC-techniques.md
+    ├── MOC-rcas.md
+    └── MOC-projects.md
+```
+
+### Scaffold command
+
+Run `/devstarter-vault-ingest --scaffold` to create the folder structure.
+This creates all 5 folders plus HOME.md and 4 MOC files. Existing notes are not touched.
+
+### MOC pages (Dataview)
+
+Each MOC file uses a Dataview query to auto-list notes in its folder:
+
+```markdown
+---
+type: moc
+title: "MOC — Bugs"
+---
+
+# Map of Content — Bug Notes
+
+\`\`\`dataview
+table title, project, date, tags
+from "knowledge/bugs"
+sort date desc
+\`\`\`
+```
+
+HOME.md links all 4 MOCs and shows a combined recent-notes query.
+
+### Wikilink convention
+
+All wikilinks MUST use the `[[<folder>/<slug>]]` format with kebab-case slugs:
+
+| Note type | Folder | Example wikilink |
+|---|---|---|
+| bug-note | bugs/ | `[[bugs/auth-token-expiry]]` |
+| technique | techniques/ | `[[techniques/postgres-advisory-lock]]` |
+| rca | rcas/ | `[[rcas/cache-invalidation-race]]` |
+| project-snapshot | snapshots/ | `[[snapshots/devstarter-v5-9-0]]` |
+
+Slug rules: lowercase, hyphens only, no spaces, no underscores.
+
+### Emit path resolution (E1 — hierarchical mode)
+
+When `folder_structure: hierarchical`, procedure E1 resolves the destination folder by note type:
+
+| type field | Destination |
+|---|---|
+| `bug-note` | `<subdir>/bugs/` |
+| `technique` | `<subdir>/techniques/` |
+| `rca` | `<subdir>/rcas/` |
+| `project-snapshot` | `<subdir>/snapshots/` |
+
+When `folder_structure: flat` (default), E1 writes to `<subdir>/` as before — no change.
+
+### Dataview — all notes by folder
+
+```dataview
+table type, title, project, date
+from "knowledge/bugs" OR "knowledge/techniques" OR "knowledge/rcas" OR "knowledge/snapshots"
+sort date desc
+```
+
+---
+
+## 7b. /devstarter-vault-ingest — analyze and emit any MD file
+
+### What it does
+
+`/devstarter-vault-ingest <file>` reads any existing `.md` file, classifies it, proposes frontmatter, discovers related vault notes, and emits with auto-generated wikilinks — all confirmed at a gate before writing.
+
+### 4-phase flow
+
+| Phase | Action |
+|---|---|
+| 1 — Analyze | Read file; infer type/title/language/framework/tags; show proposed frontmatter via AskUserQuestion |
+| 2 — Discover | Grep vault by tags + language + root_cause_category; surface 1–5 matches; propose `[[wikilinks]]` |
+| 3 — Emit | Sanitize (E4 deny-list); write to `<subdir>/<type>s/<slug>.md`; update `_index/MOC-<type>.md` if hierarchical |
+| 4 — Confirm | Show emitted path + list of linked notes |
+
+### Usage
+
+```
+/devstarter-vault-ingest path/to/note.md
+/devstarter-vault-ingest --scaffold        ← create folder structure only (no file input)
+```
+
+### Classification logic
+
+The skill infers `type` from file content signals:
+
+| Signal | Inferred type |
+|---|---|
+| Contains error/stack trace/symptom | `bug-note` |
+| Contains root_cause / postmortem / 5-whys | `rca` |
+| Contains how-to / pattern / technique / tip | `technique` |
+| Contains project / stack / overview / architecture | `project-snapshot` |
+| Ambiguous | AskUserQuestion picker shown |
+
+---
+
+## 8. Quick start
 
 ```
 1. Create + clone a git vault repo, install Obsidian Git.

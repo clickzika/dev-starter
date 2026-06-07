@@ -2,7 +2,7 @@
 
 > **TL;DR** — Four-voice deliberation for ambiguous decisions under uncertainty · **Lifecycle** Decision · **Gates** 1
 
-## Model: Opus (`claude-opus-4-7`)
+## Model: Opus (`claude-opus-4-8`)
 
 ---
 
