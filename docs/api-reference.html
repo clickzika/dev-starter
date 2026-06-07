@@ -6,7 +6,7 @@
 <title>Command API Reference — DevStarter</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;}
-  :root{--bg-page:#f5f7fa;--bg-header:#ffffff;--bg-sidebar:#f0f2f5;--bg-content:#ffffff;--bg-card:#f8f9fb;--bg-hover:#e8ebf0;--accent:#e94560;--accent-light:#d63851;--text:#1a1a2e;--text-dim:#5a6578;--text-muted:#8493a8;--border:#d8dde4;--border-light:#e2e7ed;--status-approved:#10b981;--section-1:#3b82f6;--section-2:#8b5cf6;--section-3:#f59e0b;--section-4:#10b981;--section-5:#ef4444;--section-6:#f97316;--section-7:#06b6d4;--section-8:#ec4899;--header-h:64px;--sidebar-w:280px;--code-bg:#f1f5f9;--code-inline-bg:rgba(233,69,96,0.08);--code-inline-color:#d63851;--table-even-bg:rgba(0,0,0,0.02);--table-hover-bg:rgba(233,69,96,0.04);--shadow:0 1px 3px rgba(0,0,0,0.06);--toggle-bg:#e2e6eb;--toggle-knob:#ffffff;--mermaid-bg:rgba(0,0,0,0.02);}
+  :root{--bg-page:#f5f7fa;--bg-header:#ffffff;--bg-sidebar:#f0f2f5;--bg-content:#ffffff;--bg-card:#f8f9fb;--bg-hover:#e8ebf0;--accent:#e94560;--accent-light:#d63851;--text:#1a1a2e;--text-dim:#5a6578;--text-muted:#8493a8;--border:#d8dde4;--border-light:#e2e7ed;--status-approved:#10b981;--section-1:#3b82f6;--section-2:#8b5cf6;--section-3:#f59e0b;--section-4:#10b981;--section-5:#ef4444;--section-6:#f97316;--section-7:#06b6d4;--section-8:#ec4899;--section-9:#84cc16;--section-10:#f43f5e;--header-h:64px;--sidebar-w:280px;--code-bg:#f1f5f9;--code-inline-bg:rgba(233,69,96,0.08);--code-inline-color:#d63851;--table-even-bg:rgba(0,0,0,0.02);--table-hover-bg:rgba(233,69,96,0.04);--shadow:0 1px 3px rgba(0,0,0,0.06);--toggle-bg:#e2e6eb;--toggle-knob:#ffffff;--mermaid-bg:rgba(0,0,0,0.02);}
   [data-theme="dark"]{--bg-page:#0f0f23;--bg-header:#1a1a2e;--bg-sidebar:#16213e;--bg-content:#1e1e3a;--bg-card:#252547;--bg-hover:#0f3460;--accent:#e94560;--accent-light:#ff6b81;--text:#eeeeee;--text-dim:#94a3b8;--text-muted:#64748b;--border:#1e3a5f;--border-light:#2d4a6f;--code-bg:#0d0d1a;--code-inline-bg:rgba(233,69,96,0.1);--code-inline-color:#ff6b81;--table-even-bg:rgba(255,255,255,0.02);--table-hover-bg:rgba(233,69,96,0.05);--shadow:0 1px 3px rgba(0,0,0,0.3);--toggle-bg:#1e3a5f;--toggle-knob:#e94560;--mermaid-bg:rgba(255,255,255,0.03);}
   body{font-family:'Inter',system-ui,sans-serif;background:var(--bg-page);color:var(--text);line-height:1.6;height:100vh;overflow:hidden;transition:background 0.3s,color 0.3s;}
   .doc-header{position:fixed;top:0;left:0;right:0;height:var(--header-h);background:var(--bg-header);border-bottom:1px solid var(--border);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:100;}
@@ -32,7 +32,7 @@
   .toc-link:hover{background:var(--bg-hover);color:var(--text);border-left-color:var(--accent);}
   .toc-link.active{background:rgba(233,69,96,0.1);color:var(--accent-light);border-left-color:var(--accent);}
   .toc-number{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:700;flex-shrink:0;color:#fff;}
-  .toc-number.s1{background:var(--section-1);}.toc-number.s2{background:var(--section-2);}.toc-number.s3{background:var(--section-3);}.toc-number.s4{background:var(--section-4);}.toc-number.s5{background:var(--section-5);}.toc-number.s6{background:var(--section-6);}.toc-number.s7{background:var(--section-7);}.toc-number.s8{background:var(--section-8);}
+  .toc-number.s1{background:var(--section-1);}.toc-number.s2{background:var(--section-2);}.toc-number.s3{background:var(--section-3);}.toc-number.s4{background:var(--section-4);}.toc-number.s5{background:var(--section-5);}.toc-number.s6{background:var(--section-6);}.toc-number.s7{background:var(--section-7);}.toc-number.s8{background:var(--section-8);}.toc-number.s9{background:var(--section-9);}.toc-number.s10{background:var(--section-10);}
   .doc-info-card{margin:16px 12px 0;padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;font-size:12px;}
   .doc-info-row{display:flex;justify-content:space-between;padding:4px 0;color:var(--text-dim);}
   .doc-info-row span:first-child{color:var(--text-muted);}
@@ -41,7 +41,7 @@
   .section-header{display:flex;align-items:center;gap:14px;margin:48px 0 20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
   .section-header:first-child{margin-top:0;}
   .section-number{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
-  .section-number.s1{background:var(--section-1);}.section-number.s2{background:var(--section-2);}.section-number.s3{background:var(--section-3);}.section-number.s4{background:var(--section-4);}.section-number.s5{background:var(--section-5);}.section-number.s6{background:var(--section-6);}.section-number.s7{background:var(--section-7);}.section-number.s8{background:var(--section-8);}
+  .section-number.s1{background:var(--section-1);}.section-number.s2{background:var(--section-2);}.section-number.s3{background:var(--section-3);}.section-number.s4{background:var(--section-4);}.section-number.s5{background:var(--section-5);}.section-number.s6{background:var(--section-6);}.section-number.s7{background:var(--section-7);}.section-number.s8{background:var(--section-8);}.section-number.s9{background:var(--section-9);}.section-number.s10{background:var(--section-10);}
   .section-title{font-size:22px;font-weight:700;letter-spacing:-0.3px;}
   h3{font-size:16px;font-weight:600;color:var(--text);margin:28px 0 12px;border-left:3px solid var(--accent);padding-left:12px;}
   h4{font-size:14px;font-weight:600;color:var(--text-dim);margin:20px 0 8px;}
@@ -61,7 +61,7 @@
   .card-title{font-size:14px;font-weight:600;margin-bottom:8px;color:var(--text);}
   .note{border-left:4px solid var(--section-1);background:rgba(59,130,246,0.05);}
   .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;}
-  .badge-green{background:rgba(16,185,129,0.15);color:#10b981;}.badge-blue{background:rgba(59,130,246,0.15);color:#3b82f6;}.badge-yellow{background:rgba(245,158,11,0.15);color:#f59e0b;}.badge-purple{background:rgba(139,92,246,0.15);color:#8b5cf6;}.badge-gray{background:rgba(100,116,139,0.15);color:#94a3b8;}.badge-red{background:rgba(239,68,68,0.15);color:#ef4444;}
+  .badge-green{background:rgba(16,185,129,0.15);color:#10b981;}.badge-blue{background:rgba(59,130,246,0.15);color:#3b82f6;}.badge-yellow{background:rgba(245,158,11,0.15);color:#f59e0b;}.badge-purple{background:rgba(139,92,246,0.15);color:#8b5cf6;}.badge-gray{background:rgba(100,116,139,0.15);color:#94a3b8;}.badge-red{background:rgba(239,68,68,0.15);color:#ef4444;}.badge-orange{background:rgba(249,115,22,0.15);color:#f97316;}.badge-cyan{background:rgba(6,182,212,0.15);color:#06b6d4;}.badge-pink{background:rgba(236,72,153,0.15);color:#ec4899;}.badge-lime{background:rgba(132,204,22,0.15);color:#84cc16;}
   .cmd-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0 20px;}
   .cmd-name{font-size:16px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-bottom:8px;}
   .cmd-desc{font-size:13px;color:var(--text-dim);margin-bottom:12px;}
@@ -79,7 +79,7 @@
     </div>
   </div>
   <div class="doc-header-right">
-    <div class="doc-header-meta"><div>Version 5.9.0 · 2026-06-06</div><div>Author: Natthaphat Wajanavisit</div></div>
+    <div class="doc-header-meta"><div>Version 5.9.0 · 2026-06-07</div><div>Author: Natthaphat Wajanavisit</div></div>
     <span class="doc-status-badge approved">● Approved</span>
     <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
       <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
@@ -95,66 +95,106 @@
     <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> Daily Work</a></li>
     <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> Production</a></li>
     <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> Team</a></li>
-    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> Setup & Infra</a></li>
-    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> AI / ML</a></li>
-    <li class="toc-item"><a href="#section-8" class="toc-link"><span class="toc-number s8">8</span> Inline Args</a></li>
+    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> Debug, Analysis &amp; Knowledge</a></li>
+    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> Understand Wrappers</a></li>
+    <li class="toc-item"><a href="#section-8" class="toc-link"><span class="toc-number s8">8</span> Governance &amp; Process</a></li>
+    <li class="toc-item"><a href="#section-9" class="toc-link"><span class="toc-number s9">9</span> Setup, Infra &amp; Utility</a></li>
+    <li class="toc-item"><a href="#section-10" class="toc-link"><span class="toc-number s10">10</span> Agent Direct-Invoke</a></li>
+    <li class="toc-item"><a href="#section-inline" class="toc-link"><span class="toc-number s1">~</span> Inline Args</a></li>
   </ul>
   <div class="doc-info-card">
     <div class="doc-info-row"><span>Commands</span><span>63 total</span></div>
+    <div class="doc-info-row"><span>Sections</span><span>10 + appendix</span></div>
     <div class="doc-info-row"><span>Version</span><span>5.9.0</span></div>
-    <div class="doc-info-row"><span>Date</span><span>2026-06-06</span></div>
-    <div class="doc-info-row"><span>Agent</span><span>@devstarter-backend</span></div>
+    <div class="doc-info-row"><span>Date</span><span>2026-06-07</span></div>
+    <div class="doc-info-row"><span>Agent</span><span>@devstarter-pm</span></div>
   </div>
 </nav>
 <main class="doc-content">
 
+  <!-- ── SECTION 1: Overview ── -->
   <div class="section-header" id="section-1">
     <span class="section-number s1">1</span>
     <h2 class="section-title">Overview</h2>
   </div>
-  <p>DevStarter exposes 63 slash commands as its "API". Since v3.0.0 each command is a <code>SKILL.md</code> file in its own directory under <code>skills/</code>, which Claude Code loads when the user types <code>/devstarter-X</code>. The skill routes to the matching SDLC runbook in <code>sdlc/</code> which contains the full workflow logic.</p>
+  <p>DevStarter exposes 63 slash commands as its public API. Since v3.0.0 each command is a <code>SKILL.md</code> file under <code>skills/devstarter-X/</code> which Claude Code loads when the user types <code>/devstarter-X</code>. The skill file routes to the matching SDLC runbook in <code>sdlc/</code>, which holds the full workflow logic.</p>
 
   <div class="card note">
     <div class="card-title">Architecture</div>
-    <p>skills/devstarter-X/SKILL.md &nbsp;→&nbsp; sdlc/devstarter-X.md &nbsp;→&nbsp; agents/devstarter-Y.md</p>
+    <p style="margin:0"><code>skills/devstarter-X/SKILL.md</code> &nbsp;→&nbsp; <code>sdlc/devstarter-X.md</code> &nbsp;→&nbsp; <code>agents/devstarter-Y.md</code></p>
   </div>
 
-  <div class="card warning">
-    <div class="card-title">Catalog scope</div>
-    <p style="margin:0">The command summary below documents the core command set. The toolkit now ships <strong>63 commands</strong> total; the full, always-current catalog is in <code>devstarter-menu.md</code> (run <code>/devstarter-menu</code>). Categories added since the original catalog include understand-* wrappers, knowledge/vault, council, verification-loop, debug, and the MCP setup command.</p>
-  </div>
-
-  <h3>Command Summary</h3>
+  <h3>Full Command Summary</h3>
   <table>
-    <thead><tr><th>#</th><th>Command</th><th>Category</th><th>Runbook</th><th>Inline Args</th></tr></thead>
+    <thead><tr><th>#</th><th>Command</th><th>Section</th><th>Runbook</th><th>Inline Args</th></tr></thead>
     <tbody>
       <tr><td>1</td><td><code>/devstarter-menu</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-menu.md</td><td>No</td></tr>
       <tr><td>2</td><td><code>/devstarter-new</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-starter.md</td><td>Yes — description</td></tr>
       <tr><td>3</td><td><code>/devstarter-existing</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-existing.md</td><td>Yes — intent</td></tr>
       <tr><td>4</td><td><code>/devstarter-migrate</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-migrate.md</td><td>No</td></tr>
       <tr><td>5</td><td><code>/devstarter-audit</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-audit.md</td><td>Yes — audit type</td></tr>
-      <tr><td>6</td><td><code>/devstarter-change</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-change.md</td><td>Yes — add/fix/remove + description</td></tr>
-      <tr><td>7</td><td><code>/devstarter-document</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-document.md</td><td>Yes — doc type</td></tr>
-      <tr><td>8</td><td><code>/devstarter-sprint</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-sprint.md</td><td>No</td></tr>
-      <tr><td>9</td><td><code>/devstarter-dependency</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-dependency.md</td><td>No</td></tr>
-      <tr><td>10</td><td><code>/devstarter-context</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-context.md</td><td>No</td></tr>
-      <tr><td>11</td><td><code>/devstarter-consult</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-consult.md</td><td>Yes — topic</td></tr>
-      <tr><td>12</td><td><code>/devstarter-release</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-release.md</td><td>No</td></tr>
-      <tr><td>13</td><td><code>/devstarter-hotfix</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-hotfix.md</td><td>No</td></tr>
-      <tr><td>14</td><td><code>/devstarter-rollback</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-rollback.md</td><td>No</td></tr>
-      <tr><td>15</td><td><code>/devstarter-incident</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-incident.md</td><td>No</td></tr>
-      <tr><td>16</td><td><code>/devstarter-onboard</code></td><td><span class="badge badge-purple">Team</span></td><td>devstarter-onboarding.md</td><td>No</td></tr>
-      <tr><td>17</td><td><code>/devstarter-handover</code></td><td><span class="badge badge-purple">Team</span></td><td>devstarter-handover.md</td><td>No</td></tr>
-      <tr><td>18</td><td><code>/devstarter-retro</code></td><td><span class="badge badge-purple">Team</span></td><td>devstarter-retrospective.md</td><td>No</td></tr>
-      <tr><td>19</td><td><code>/devstarter-env</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-env.md</td><td>No</td></tr>
-      <tr><td>20</td><td><code>/devstarter-secrets</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-secrets.md</td><td>No</td></tr>
-      <tr><td>21</td><td><code>/devstarter-monitor</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-monitor.md</td><td>No</td></tr>
-      <tr><td>22</td><td><code>/devstarter-export</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-export.md</td><td>No</td></tr>
-      <tr><td>23</td><td><code>/devstarter-import</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-import.md</td><td>No</td></tr>
-      <tr><td>24</td><td><code>/devstarter-update</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-update.md</td><td>No</td></tr>
+      <tr><td>6</td><td><code>/devstarter-gitsetup</code></td><td><span class="badge badge-blue">Setup</span></td><td>devstarter-gitsetup.md</td><td>Yes — cleanup</td></tr>
+      <tr><td>7</td><td><code>/devstarter-change</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-change.md</td><td>Yes — add/fix/remove + desc</td></tr>
+      <tr><td>8</td><td><code>/devstarter-document</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-document.md</td><td>Yes — doc type</td></tr>
+      <tr><td>9</td><td><code>/devstarter-sprint</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-sprint.md</td><td>No</td></tr>
+      <tr><td>10</td><td><code>/devstarter-dependency</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-dependency.md</td><td>No</td></tr>
+      <tr><td>11</td><td><code>/devstarter-context</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-context.md</td><td>No</td></tr>
+      <tr><td>12</td><td><code>/devstarter-consult</code></td><td><span class="badge badge-green">Daily</span></td><td>devstarter-consult.md</td><td>Yes — topic</td></tr>
+      <tr><td>13</td><td><code>/devstarter-release</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-release.md</td><td>No</td></tr>
+      <tr><td>14</td><td><code>/devstarter-hotfix</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-hotfix.md</td><td>No</td></tr>
+      <tr><td>15</td><td><code>/devstarter-rollback</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-rollback.md</td><td>No</td></tr>
+      <tr><td>16</td><td><code>/devstarter-incident</code></td><td><span class="badge badge-red">Production</span></td><td>devstarter-incident.md</td><td>No</td></tr>
+      <tr><td>17</td><td><code>/devstarter-onboard</code></td><td><span class="badge badge-purple">Team</span></td><td>devstarter-onboarding.md</td><td>No</td></tr>
+      <tr><td>18</td><td><code>/devstarter-handover</code></td><td><span class="badge badge-purple">Team</span></td><td>devstarter-handover.md</td><td>No</td></tr>
+      <tr><td>19</td><td><code>/devstarter-retro</code></td><td><span class="badge badge-purple">Team</span></td><td>devstarter-retrospective.md</td><td>No</td></tr>
+      <tr><td>20</td><td><code>/devstarter-review</code></td><td><span class="badge badge-orange">Analysis</span></td><td>devstarter-review.md</td><td>No</td></tr>
+      <tr><td>21</td><td><code>/devstarter-debug</code></td><td><span class="badge badge-orange">Analysis</span></td><td>devstarter-debug.md</td><td>Yes — problem desc / file</td></tr>
+      <tr><td>22</td><td><code>/devstarter-debug-mantra</code></td><td><span class="badge badge-orange">Analysis</span></td><td>devstarter-debug-mantra.md</td><td>No</td></tr>
+      <tr><td>23</td><td><code>/devstarter-scrutinize</code></td><td><span class="badge badge-orange">Analysis</span></td><td>devstarter-scrutinize.md</td><td>No</td></tr>
+      <tr><td>24</td><td><code>/devstarter-doctor</code></td><td><span class="badge badge-orange">Analysis</span></td><td>devstarter-doctor.md</td><td>No</td></tr>
+      <tr><td>25</td><td><code>/devstarter-knowledge</code></td><td><span class="badge badge-orange">Analysis</span></td><td>devstarter-knowledge.md</td><td>Yes — topic</td></tr>
+      <tr><td>26</td><td><code>/devstarter-postmortem</code></td><td><span class="badge badge-orange">Analysis</span></td><td>devstarter-postmortem.md</td><td>No</td></tr>
+      <tr><td>27</td><td><code>/devstarter-bug-postmortem</code></td><td><span class="badge badge-orange">Analysis</span></td><td>devstarter-bug-postmortem.md</td><td>No</td></tr>
+      <tr><td>28</td><td><code>/devstarter-understand</code></td><td><span class="badge badge-cyan">Understand</span></td><td>devstarter-understand.md</td><td>Yes — topic</td></tr>
+      <tr><td>29</td><td><code>/devstarter-understand-dashboard</code></td><td><span class="badge badge-cyan">Understand</span></td><td>devstarter-understand-dashboard.md</td><td>No</td></tr>
+      <tr><td>30</td><td><code>/devstarter-understand-chat</code></td><td><span class="badge badge-cyan">Understand</span></td><td>devstarter-understand-chat.md</td><td>Yes — question</td></tr>
+      <tr><td>31</td><td><code>/devstarter-understand-diff</code></td><td><span class="badge badge-cyan">Understand</span></td><td>devstarter-understand-diff.md</td><td>Yes — branch/PR</td></tr>
+      <tr><td>32</td><td><code>/devstarter-understand-explain</code></td><td><span class="badge badge-cyan">Understand</span></td><td>devstarter-understand-explain.md</td><td>Yes — target</td></tr>
+      <tr><td>33</td><td><code>/devstarter-understand-onboard</code></td><td><span class="badge badge-cyan">Understand</span></td><td>devstarter-understand-onboard.md</td><td>No</td></tr>
+      <tr><td>34</td><td><code>/devstarter-understand-domain</code></td><td><span class="badge badge-cyan">Understand</span></td><td>devstarter-understand-domain.md</td><td>No</td></tr>
+      <tr><td>35</td><td><code>/devstarter-understand-knowledge</code></td><td><span class="badge badge-cyan">Understand</span></td><td>devstarter-understand-knowledge.md</td><td>No</td></tr>
+      <tr><td>36</td><td><code>/devstarter-council</code></td><td><span class="badge badge-pink">Governance</span></td><td>devstarter-council.md</td><td>No</td></tr>
+      <tr><td>37</td><td><code>/devstarter-verification-loop</code></td><td><span class="badge badge-pink">Governance</span></td><td>devstarter-verification-loop.md</td><td>Yes — continuous</td></tr>
+      <tr><td>38</td><td><code>/devstarter-adr</code></td><td><span class="badge badge-pink">Governance</span></td><td>devstarter-adr.md</td><td>Yes — decision title</td></tr>
+      <tr><td>39</td><td><code>/devstarter-compliance</code></td><td><span class="badge badge-pink">Governance</span></td><td>devstarter-compliance.md</td><td>Yes — framework</td></tr>
+      <tr><td>40</td><td><code>/devstarter-profile</code></td><td><span class="badge badge-pink">Governance</span></td><td>devstarter-profile.md</td><td>No</td></tr>
+      <tr><td>41</td><td><code>/devstarter-management-talk</code></td><td><span class="badge badge-pink">Governance</span></td><td>devstarter-management-talk.md</td><td>No</td></tr>
+      <tr><td>42</td><td><code>/devstarter-env</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-env.md</td><td>No</td></tr>
+      <tr><td>43</td><td><code>/devstarter-secrets</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-secrets.md</td><td>No</td></tr>
+      <tr><td>44</td><td><code>/devstarter-monitor</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-monitor.md</td><td>No</td></tr>
+      <tr><td>45</td><td><code>/devstarter-mcp</code></td><td><span class="badge badge-yellow">Infra</span></td><td>devstarter-mcp.md</td><td>Yes — server name</td></tr>
+      <tr><td>46</td><td><code>/devstarter-export</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-export.md</td><td>No</td></tr>
+      <tr><td>47</td><td><code>/devstarter-import</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-import.md</td><td>No</td></tr>
+      <tr><td>48</td><td><code>/devstarter-update</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-update.md</td><td>No</td></tr>
+      <tr><td>49</td><td><code>/devstarter-registry</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-registry.md</td><td>No</td></tr>
+      <tr><td>50</td><td><code>/devstarter-agents</code></td><td><span class="badge badge-gray">Utility</span></td><td>devstarter-agents.md</td><td>No</td></tr>
+      <tr><td>51</td><td><code>/devstarter-ba</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-ba.md</td><td>No</td></tr>
+      <tr><td>52</td><td><code>/devstarter-backend</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-backend.md</td><td>No</td></tr>
+      <tr><td>53</td><td><code>/devstarter-dba</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-dba.md</td><td>No</td></tr>
+      <tr><td>54</td><td><code>/devstarter-devops</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-devops.md</td><td>No</td></tr>
+      <tr><td>55</td><td><code>/devstarter-docs</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-docs.md</td><td>No</td></tr>
+      <tr><td>56</td><td><code>/devstarter-frontend</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-frontend.md</td><td>No</td></tr>
+      <tr><td>57</td><td><code>/devstarter-mlops</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-mlops.md</td><td>No</td></tr>
+      <tr><td>58</td><td><code>/devstarter-mobile</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-mobile.md</td><td>No</td></tr>
+      <tr><td>59</td><td><code>/devstarter-pm</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-pm.md</td><td>No</td></tr>
+      <tr><td>60</td><td><code>/devstarter-qa</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-qa.md</td><td>No</td></tr>
+      <tr><td>61</td><td><code>/devstarter-security</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-security.md</td><td>No</td></tr>
+      <tr><td>62</td><td><code>/devstarter-techlead</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-techlead.md</td><td>No</td></tr>
+      <tr><td>63</td><td><code>/devstarter-uxui</code></td><td><span class="badge badge-lime">Agent</span></td><td>agents/devstarter-uxui.md</td><td>No</td></tr>
     </tbody>
   </table>
 
+  <!-- ── SECTION 2: Project Setup ── -->
   <div class="section-header" id="section-2">
     <span class="section-number s2">2</span>
     <h2 class="section-title">Project Setup Commands</h2>
@@ -162,7 +202,7 @@
 
   <div class="cmd-card">
     <div class="cmd-name">/devstarter-new [description?]</div>
-    <div class="cmd-desc">Start a new project from scratch. Runs a 5-gate lifecycle: Discovery → Architecture → Task Setup → Development → Quality & Delivery.</div>
+    <div class="cmd-desc">Start a new project from scratch. Runs a 5-gate lifecycle: Discovery → Architecture → Task Setup → Development → Quality &amp; Delivery. Generates CLAUDE.md, docs, GitHub issues, and Notion workspace.</div>
     <div class="cmd-meta">
       <span class="badge badge-green">Inline args: yes</span>
       <span class="badge badge-blue">Gates: 5</span>
@@ -173,7 +213,7 @@
       <tbody>
         <tr><td>Quick Start</td><td>Pick "1" from picker</td><td>8 questions</td></tr>
         <tr><td>Custom</td><td>Pick "2" from picker</td><td>Up to 31 questions</td></tr>
-        <tr><td>Describe</td><td>Pick "3" or inline arg</td><td>1 — just describe the project</td></tr>
+        <tr><td>Describe</td><td>Pick "3" or inline arg</td><td>1 — describe the project</td></tr>
       </tbody>
     </table>
     <p><strong>Example:</strong> <code>/devstarter-new React SaaS dashboard with Stripe billing</code></p>
@@ -181,7 +221,7 @@
 
   <div class="cmd-card">
     <div class="cmd-name">/devstarter-existing [intent?]</div>
-    <div class="cmd-desc">Onboard an existing codebase. Performs a codebase discovery scan, generates CLAUDE.md, and optionally creates missing documents.</div>
+    <div class="cmd-desc">Onboard an existing codebase. Scans the project, generates CLAUDE.md, and optionally creates missing documents or routes to other workflows.</div>
     <div class="cmd-meta">
       <span class="badge badge-green">Inline args: yes</span>
       <span class="badge badge-blue">Gates: 1+</span>
@@ -194,22 +234,49 @@
         <tr><td>2 — Add / fix</td><td>Scan + route to /devstarter-change</td></tr>
         <tr><td>3 — Refactor</td><td>Scan + plan refactor tasks</td></tr>
         <tr><td>4 — Security</td><td>Scan + run security audit</td></tr>
-        <tr><td>5 — Full setup</td><td>Scan + generate all docs + GitHub + Notion</td></tr>
+        <tr><td>5 — Full setup</td><td>Scan + generate all docs + GitHub labels + Notion board</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="cmd-card">
     <div class="cmd-name">/devstarter-audit [type?]</div>
-    <div class="cmd-desc">Audit and review the project across 7 audit types. Produces an audit report and optionally a fix plan.</div>
+    <div class="cmd-desc">Audit the project across 7 dimensions. Produces an HTML audit report and optionally a prioritised fix plan.</div>
     <div class="cmd-meta">
       <span class="badge badge-green">Inline args: yes</span>
       <span class="badge badge-yellow">Output: docs/audit-report.html</span>
+      <span class="badge badge-red">Model: Opus</span>
     </div>
-    <p><strong>Types:</strong> security, performance, code-quality, dependencies, test-coverage, architecture, full</p>
-    <p><strong>Example:</strong> <code>/devstarter-audit security fix</code> → runs security audit and generates a fix plan</p>
+    <p><strong>Types:</strong> <code>security</code> · <code>performance</code> · <code>code-quality</code> · <code>dependencies</code> · <code>test-coverage</code> · <code>architecture</code> · <code>full</code></p>
+    <p><strong>Example:</strong> <code>/devstarter-audit security fix</code> → runs security audit and generates a fix plan.</p>
   </div>
 
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-gitsetup [cleanup?]</div>
+    <div class="cmd-desc">Bootstrap git and Gitflow for a project. Creates branches (main/uat/develop), GitHub labels, milestones, PR templates, and optionally applies branch protection rules.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-green">Inline args: yes</span>
+      <span class="badge badge-blue">Phases: 5</span>
+    </div>
+    <table>
+      <thead><tr><th>Inline Arg</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td>(none)</td><td>Full setup from Phase 1</td></tr>
+        <tr><td><code>cleanup</code></td><td>Skip to Phase 4.5 — post-merge branch cleanup only</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-migrate</div>
+    <div class="cmd-desc">Stack migration workflow. Analyses the current stack, proposes a target stack, creates a migration plan with rollback checkpoints, and executes phase by phase with gates.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-red">Model: Opus</span>
+      <span class="badge badge-purple">Checkpoint: yes</span>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: Daily Work ── -->
   <div class="section-header" id="section-3">
     <span class="section-number s3">3</span>
     <h2 class="section-title">Daily Work Commands</h2>
@@ -217,7 +284,7 @@
 
   <div class="cmd-card">
     <div class="cmd-name">/devstarter-change [add|fix|remove description?]</div>
-    <div class="cmd-desc">Add a feature, fix a bug, or remove a feature. Routes to a dedicated sub-workflow based on operation type.</div>
+    <div class="cmd-desc">Add a feature, fix a bug, or remove a feature. Routes to a dedicated sub-workflow per operation. Generates kickoff + plan docs before coding, summary + mgmt-brief after testing.</div>
     <div class="cmd-meta">
       <span class="badge badge-green">Inline args: yes</span>
       <span class="badge badge-blue">Sub-workflows: 3</span>
@@ -226,9 +293,9 @@
     <table>
       <thead><tr><th>Operation</th><th>Runbook</th><th>Produces</th></tr></thead>
       <tbody>
-        <tr><td>add</td><td>devstarter-change-add.md</td><td>Feature branch + PR + CR log entry</td></tr>
-        <tr><td>fix</td><td>devstarter-change-bug.md</td><td>Fix branch + PR + bugfix log entry</td></tr>
-        <tr><td>remove</td><td>devstarter-change-remove.md</td><td>Removal branch + PR + CR log entry</td></tr>
+        <tr><td>add</td><td>devstarter-change-add.md</td><td>Feature branch + PR + kickoff/plan/summary/mgmt-brief</td></tr>
+        <tr><td>fix</td><td>devstarter-change-bug.md</td><td>Fix branch + PR + kickoff/plan/summary/mgmt-brief</td></tr>
+        <tr><td>remove</td><td>devstarter-change-remove.md</td><td>Removal branch + PR + kickoff/plan/summary/mgmt-brief</td></tr>
       </tbody>
     </table>
     <p><strong>Examples:</strong><br>
@@ -262,6 +329,26 @@
     </table>
   </div>
 
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-consult [topic?]</div>
+    <div class="cmd-desc">Technical consultation and solution advice. Analyses the problem, proposes 2–3 options with trade-offs, and optionally saves a consult file that <code>/devstarter-change</code> can load to skip re-intake.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-green">Inline args: yes</span>
+      <span class="badge badge-red">Model: Opus</span>
+    </div>
+    <p><strong>Example:</strong> <code>/devstarter-consult caching strategy for high-traffic API</code></p>
+  </div>
+
+  <table>
+    <thead><tr><th>Command</th><th>Purpose</th><th>Key Output</th></tr></thead>
+    <tbody>
+      <tr><td><code>/devstarter-sprint</code></td><td>Plan a sprint — epics, tasks, estimates, Notion/Jira tasks</td><td>Sprint plan + PM tool tasks</td></tr>
+      <tr><td><code>/devstarter-dependency</code></td><td>Audit and update project dependencies; check for vulnerabilities</td><td>Dependency report + PR</td></tr>
+      <tr><td><code>/devstarter-context</code></td><td>Refresh CLAUDE.md project context without re-running full onboarding</td><td>Updated CLAUDE.md</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── SECTION 4: Production ── -->
   <div class="section-header" id="section-4">
     <span class="section-number s4">4</span>
     <h2 class="section-title">Production Commands</h2>
@@ -269,10 +356,11 @@
 
   <div class="cmd-card">
     <div class="cmd-name">/devstarter-release</div>
-    <div class="cmd-desc">Full release + deploy pipeline. Auto-detects release model (dual-remote vs single-repo) and deploy strategy.</div>
+    <div class="cmd-desc">Full release + deploy pipeline. Auto-detects dual-remote vs single-repo release model and presents 9 deploy strategy options. Generates release notes and optional launch brief docs.</div>
     <div class="cmd-meta">
       <span class="badge badge-red">Production</span>
-      <span class="badge badge-blue">Strategies: 8</span>
+      <span class="badge badge-blue">Strategies: 9</span>
+      <span class="badge badge-blue">Gates: 4</span>
     </div>
     <table>
       <thead><tr><th>Strategy</th><th>Deploy Target</th></tr></thead>
@@ -292,23 +380,31 @@
 
   <div class="cmd-card">
     <div class="cmd-name">/devstarter-hotfix</div>
-    <div class="cmd-desc">Critical production bug fix. Creates a hotfix branch from main, fixes, and fast-tracks to production without going through develop.</div>
-    <div class="cmd-meta"><span class="badge badge-red">Production</span><span class="badge badge-purple">Checkpoint: yes</span></div>
-    <p>Flow: <code>main</code> → <code>hotfix/[issue]</code> → fix → PR → merge to <code>main</code> + <code>develop</code> → tag patch version</p>
+    <div class="cmd-desc">Critical production bug fix. Branches from <code>main</code>, fixes, fast-tracks to production without going through <code>develop</code>. Generates an incident brief (P0/P1) and back-merges to develop after deploy.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-red">Production</span>
+      <span class="badge badge-red">Model: Opus</span>
+      <span class="badge badge-purple">Checkpoint: yes</span>
+    </div>
+    <p>Flow: <code>main</code> → <code>hotfix/[issue]</code> → fix → PR → merge to <code>main</code> + <code>develop</code> → tag patch version.</p>
   </div>
 
   <div class="cmd-card">
     <div class="cmd-name">/devstarter-rollback</div>
-    <div class="cmd-desc">Rollback production to a previous version. Supports git revert, image tag rollback, and database rollback.</div>
+    <div class="cmd-desc">Roll production back to a previous version. Supports git revert, Docker image tag rollback, and optional database rollback steps.</div>
     <div class="cmd-meta"><span class="badge badge-red">Production</span></div>
   </div>
 
   <div class="cmd-card">
     <div class="cmd-name">/devstarter-incident</div>
-    <div class="cmd-desc">Structured incident response. Covers detection, triage, mitigation, resolution, and post-mortem.</div>
-    <div class="cmd-meta"><span class="badge badge-red">Production</span></div>
+    <div class="cmd-desc">Structured incident response. Covers detection, triage, mitigation, resolution, and post-mortem. Produces an incident report and coordinates with on-call stakeholders.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-red">Production</span>
+      <span class="badge badge-red">Model: Opus</span>
+    </div>
   </div>
 
+  <!-- ── SECTION 5: Team ── -->
   <div class="section-header" id="section-5">
     <span class="section-number s5">5</span>
     <h2 class="section-title">Team Commands</h2>
@@ -316,53 +412,206 @@
   <table>
     <thead><tr><th>Command</th><th>Purpose</th><th>Key Output</th></tr></thead>
     <tbody>
-      <tr><td><code>/devstarter-onboard</code></td><td>Onboard a new team member to the project</td><td>Personalised onboarding guide</td></tr>
-      <tr><td><code>/devstarter-handover</code></td><td>Hand a project over to a new owner</td><td>Handover document + knowledge transfer</td></tr>
-      <tr><td><code>/devstarter-retro</code></td><td>Facilitate a sprint retrospective</td><td>Retro report with action items</td></tr>
-      <tr><td><code>/devstarter-sprint</code></td><td>Plan a sprint — epics, features, tasks, estimates</td><td>Sprint plan in Notion/Jira</td></tr>
+      <tr><td><code>/devstarter-onboard</code></td><td>Onboard a new team member to the project. Greps vault for project snapshot context first.</td><td>Personalised onboarding guide</td></tr>
+      <tr><td><code>/devstarter-handover</code></td><td>Hand the project over to a new owner with full context transfer</td><td>Handover document + knowledge transfer checklist</td></tr>
+      <tr><td><code>/devstarter-retro</code></td><td>Facilitate a sprint retrospective. Optionally emits process lessons to Obsidian vault.</td><td>Retro report with action items</td></tr>
     </tbody>
   </table>
 
+  <!-- ── SECTION 6: Debug, Analysis & Knowledge ── -->
   <div class="section-header" id="section-6">
     <span class="section-number s6">6</span>
-    <h2 class="section-title">Setup & Infra Commands</h2>
+    <h2 class="section-title">Debug, Analysis &amp; Knowledge</h2>
   </div>
-  <table>
-    <thead><tr><th>Command</th><th>Purpose</th><th>Runbook</th></tr></thead>
-    <tbody>
-      <tr><td><code>/devstarter-env</code></td><td>Setup local development environment</td><td>devstarter-env.md</td></tr>
-      <tr><td><code>/devstarter-secrets</code></td><td>Secrets management — env-file, Vault, AWS, Azure, GCP</td><td>devstarter-secrets.md</td></tr>
-      <tr><td><code>/devstarter-monitor</code></td><td>Setup monitoring, alerting, dashboards</td><td>devstarter-monitor.md</td></tr>
-      <tr><td><code>/devstarter-dependency</code></td><td>Update and audit project dependencies</td><td>devstarter-dependency.md</td></tr>
-      <tr><td><code>/devstarter-export</code></td><td>Export DevStarter config for backup or transfer</td><td>devstarter-export.md</td></tr>
-      <tr><td><code>/devstarter-import</code></td><td>Import DevStarter from a backup</td><td>devstarter-import.md</td></tr>
-      <tr><td><code>/devstarter-update</code></td><td>Update DevStarter to the latest version</td><td>devstarter-update.md</td></tr>
-      <tr><td><code>/devstarter-context</code></td><td>Refresh CLAUDE.md without re-running full onboarding</td><td>devstarter-context.md</td></tr>
-    </tbody>
-  </table>
 
-  <div class="section-header" id="section-7">
-    <span class="section-number s7">7</span>
-    <h2 class="section-title">AI / ML Commands</h2>
-  </div>
   <div class="cmd-card">
-    <div class="cmd-name">/devstarter-new [ML stack]</div>
-    <div class="cmd-desc">When a new project is AI/ML, /devstarter-new routes to the ML workflow runbook and presents ML-specific stack templates.</div>
-    <div class="cmd-meta"><span class="badge badge-purple">ML</span></div>
+    <div class="cmd-name">/devstarter-debug [problem?]</div>
+    <div class="cmd-desc">Hypothesis-driven root cause investigation. 5-phase analysis: vault recall → symptom map → hypothesis tree → surgical fix plan → handoff to <code>/devstarter-change</code>. Greps Obsidian vault for prior matching root causes before forming hypotheses.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-green">Inline args: yes</span>
+      <span class="badge badge-red">Model: Opus required</span>
+      <span class="badge badge-blue">Phases: 5</span>
+    </div>
     <table>
-      <thead><tr><th>Template</th><th>Stack</th><th>Use Case</th></tr></thead>
+      <thead><tr><th>Inline Arg</th><th>Behaviour</th></tr></thead>
       <tbody>
-        <tr><td>ml-starter</td><td>scikit-learn + MLflow local + FastAPI</td><td>Experiments, prototyping</td></tr>
-        <tr><td>ml-standard</td><td>PyTorch + BentoML + Evidently + CI/CD auto-training</td><td>Production ML systems</td></tr>
+        <tr><td>(none)</td><td>Start with intake questions</td></tr>
+        <tr><td><code>/devstarter-debug login fails after deploy</code></td><td>Use text as problem description — skips Q1</td></tr>
+        <tr><td><code>/devstarter-debug memory/bug-report.md</code></td><td>Read file as problem context</td></tr>
       </tbody>
     </table>
   </div>
 
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-review</div>
+    <div class="cmd-desc">Code review for the current diff, branch, or PR number. Flags bugs, security issues, performance problems, and style issues. Optionally emits recurring MAJOR/BLOCKER findings to Obsidian vault.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-red">Model: Opus</span>
+      <span class="badge badge-yellow">Output: review findings list</span>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>Command</th><th>Purpose</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>/devstarter-scrutinize</code></td><td>Deep code scrutiny — hidden bugs, edge cases, silent failures, subtle logic errors</td><td>More thorough than /devstarter-review; slower</td></tr>
+      <tr><td><code>/devstarter-debug-mantra</code></td><td>Print the structured debug mindset mantra for systematic problem-solving</td><td>Instant — no runbook load</td></tr>
+      <tr><td><code>/devstarter-doctor</code></td><td>Health check — verify DevStarter installation is correct and complete</td><td>Checks skills/, agents/, sdlc/, templates/</td></tr>
+      <tr><td><code>/devstarter-knowledge [topic?]</code></td><td>Capture a technique / know-how note to the Obsidian knowledge vault</td><td>Shared across all projects; sanitised on write</td></tr>
+      <tr><td><code>/devstarter-postmortem</code></td><td>Write a full incident post-mortem after a production incident. Emits rca-note to vault.</td><td>Output: docs/postmortem-[date].html</td></tr>
+      <tr><td><code>/devstarter-bug-postmortem</code></td><td>Write the canonical engineering RCA record after a bug fix is landed and validated</td><td>Output: docs/bug-postmortem-[date].html</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── SECTION 7: Understand Wrappers ── -->
+  <div class="section-header" id="section-7">
+    <span class="section-number s7">7</span>
+    <h2 class="section-title">Understand Wrappers</h2>
+  </div>
+
+  <div class="card note">
+    <div class="card-title">Dependency — Understand-Anything plugin</div>
+    <p style="margin:0">All commands in this section delegate to the <code>understand-anything</code> Claude Code plugin (v5.6.0+). Each skill runs a preflight: if the plugin is absent, it prompts a one-step install before proceeding. Install once via <code>/plugin install understand-anything</code>, then restart Claude Code.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>Command</th><th>Purpose</th><th>Inline Arg</th></tr></thead>
+    <tbody>
+      <tr><td><code>/devstarter-understand</code></td><td>Build a knowledge graph of the codebase; entry point for all understand-* subcommands</td><td>Yes — topic / question</td></tr>
+      <tr><td><code>/devstarter-understand-dashboard</code></td><td>Visual overview dashboard — file map, dependency graph, hotspot heatmap</td><td>No</td></tr>
+      <tr><td><code>/devstarter-understand-chat</code></td><td>Interactive Q&amp;A over the codebase knowledge graph</td><td>Yes — opening question</td></tr>
+      <tr><td><code>/devstarter-understand-diff</code></td><td>Change-impact analysis for a diff, branch, or PR number</td><td>Yes — branch or PR ref</td></tr>
+      <tr><td><code>/devstarter-understand-explain</code></td><td>Plain-language explanation of a file, function, or module</td><td>Yes — file path or symbol</td></tr>
+      <tr><td><code>/devstarter-understand-onboard</code></td><td>Auto-generate an onboarding guide from the codebase knowledge graph</td><td>No</td></tr>
+      <tr><td><code>/devstarter-understand-domain</code></td><td>Extract domain model — entities, relationships, bounded contexts</td><td>No</td></tr>
+      <tr><td><code>/devstarter-understand-knowledge</code></td><td>Export codebase knowledge as structured Markdown notes</td><td>No</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── SECTION 8: Governance & Process ── -->
   <div class="section-header" id="section-8">
     <span class="section-number s8">8</span>
+    <h2 class="section-title">Governance &amp; Process</h2>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-council</div>
+    <div class="cmd-desc">Four-voice deliberation for decisions where smart people would disagree. Runs Architect / Skeptic / Pragmatist / Critic in parallel, then synthesises a recommendation.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-red">Model: Opus</span>
+    </div>
+    <table>
+      <thead><tr><th>Voice</th><th>Perspective</th></tr></thead>
+      <tbody>
+        <tr><td>Architect</td><td>Correctness, maintainability, long-term health</td></tr>
+        <tr><td>Skeptic</td><td>Challenges the premise itself</td></tr>
+        <tr><td>Pragmatist</td><td>Shipping speed, ops reality</td></tr>
+        <tr><td>Critic</td><td>Edge cases, downside risk, failure modes</td></tr>
+      </tbody>
+    </table>
+    <p>Use for: tech selection with real tradeoffs, irreversible architectural decisions, risk assessment under uncertainty. Not for code review → use <code>/devstarter-review</code>.</p>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-verification-loop [continuous?]</div>
+    <div class="cmd-desc">Run a full 6-phase quality gate on current changes before committing: build → types → lint → tests (80% threshold) → security scan → diff review.</div>
+    <div class="cmd-meta">
+      <span class="badge badge-green">Inline args: yes</span>
+    </div>
+    <table>
+      <thead><tr><th>Inline Arg</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td>(none)</td><td>Run once</td></tr>
+        <tr><td><code>continuous</code></td><td>Re-run every 15 minutes</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <table>
+    <thead><tr><th>Command</th><th>Purpose</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>/devstarter-adr [title?]</code></td><td>Capture a formal Architecture Decision Record as a bilingual HTML document</td><td>Output: docs/adr/[N]-[slug].html</td></tr>
+      <tr><td><code>/devstarter-compliance [framework?]</code></td><td>Compliance audit — WCAG 2.1 / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001</td><td>Output: docs/compliance-report.html</td></tr>
+      <tr><td><code>/devstarter-profile</code></td><td>Set or update USER.md — skill level, preferences, working style</td><td>Writes to install-root ~/.claude/USER.md</td></tr>
+      <tr><td><code>/devstarter-management-talk</code></td><td>Translate technical work into plain management language for stakeholders</td><td>Input: tech description → Output: exec brief</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── SECTION 9: Setup, Infra & Utility ── -->
+  <div class="section-header" id="section-9">
+    <span class="section-number s9">9</span>
+    <h2 class="section-title">Setup, Infra &amp; Utility</h2>
+  </div>
+
+  <div class="cmd-card">
+    <div class="cmd-name">/devstarter-mcp [server?]</div>
+    <div class="cmd-desc">Select and activate MCP (Model Context Protocol) server configs for Claude Code. Copies or merges the selected config into <code>~/.claude/mcp.json</code>. Ships 29 pre-built configs.</div>
+    <div class="cmd-meta"><span class="badge badge-green">Inline args: yes</span></div>
+    <table>
+      <thead><tr><th>Inline Arg</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>(none)</td><td>Interactive picker — show all 29 available configs</td></tr>
+        <tr><td><code>github</code></td><td>Activate GitHub MCP directly</td></tr>
+        <tr><td><code>postgres</code></td><td>Activate PostgreSQL MCP directly</td></tr>
+        <tr><td><code>sqlite</code></td><td>Activate SQLite MCP directly</td></tr>
+        <tr><td><code>brave-search</code></td><td>Activate Brave Search MCP directly</td></tr>
+        <tr><td><code>list</code></td><td>Show currently active MCP servers</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <table>
+    <thead><tr><th>Command</th><th>Purpose</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>/devstarter-env</code></td><td>Generate .env files and document required environment variables</td><td>Output: .env + .env.example</td></tr>
+      <tr><td><code>/devstarter-secrets</code></td><td>Secrets management — env-file, HashiCorp Vault, AWS, Azure, GCP backends</td><td>Selects backend from devstarter-config.yml</td></tr>
+      <tr><td><code>/devstarter-monitor</code></td><td>Setup monitoring, alerting, and observability dashboards</td><td>Outputs infra config + runbook</td></tr>
+      <tr><td><code>/devstarter-export</code></td><td>Export DevStarter config and docs for backup or machine transfer</td><td>Creates a portable archive</td></tr>
+      <tr><td><code>/devstarter-import</code></td><td>Import DevStarter from a previously exported archive</td><td>Restores config + docs</td></tr>
+      <tr><td><code>/devstarter-update</code></td><td>Update DevStarter to the latest version via install.sh</td><td>Preserves agents/custom/ and .env</td></tr>
+      <tr><td><code>/devstarter-registry</code></td><td>List all registered DevStarter skills with metadata (name, version, runbook)</td><td>Read-only; no runbook</td></tr>
+      <tr><td><code>/devstarter-agents</code></td><td>List all available specialist agents, aliases, and capabilities</td><td>Read-only; shows short @alias</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── SECTION 10: Agent Direct-Invoke ── -->
+  <div class="section-header" id="section-10">
+    <span class="section-number s10">10</span>
+    <h2 class="section-title">Agent Direct-Invoke</h2>
+  </div>
+
+  <p>Each of the 13 core specialist agents has a direct-invoke command. Typing <code>/devstarter-[agent]</code> loads the agent's full persona and enters an open-ended session. Short aliases (<code>@pm</code>, <code>@backend</code>, etc.) also work within a conversation.</p>
+
+  <table>
+    <thead><tr><th>Command</th><th>Short Alias</th><th>Character</th><th>Domain</th></tr></thead>
+    <tbody>
+      <tr><td><code>/devstarter-pm</code></td><td><code>@pm</code></td><td>Hello Kitty</td><td>Sprint planning, backlog, stakeholder comms, Notion/Jira</td></tr>
+      <tr><td><code>/devstarter-techlead</code></td><td><code>@techlead</code></td><td>Tuxedo Sam</td><td>Architecture, ADRs, AI/LLM decisions, tech selection</td></tr>
+      <tr><td><code>/devstarter-ba</code></td><td><code>@ba</code></td><td>My Melody</td><td>Requirements, BRD, user stories, acceptance criteria</td></tr>
+      <tr><td><code>/devstarter-backend</code></td><td><code>@backend</code></td><td>Badtz-Maru</td><td>APIs, services, server-side logic, database interactions</td></tr>
+      <tr><td><code>/devstarter-frontend</code></td><td><code>@frontend</code></td><td>Cinnamoroll</td><td>UI components, state management, accessibility</td></tr>
+      <tr><td><code>/devstarter-dba</code></td><td><code>@dba</code></td><td>Pochacco</td><td>Schema design, migrations, query optimisation</td></tr>
+      <tr><td><code>/devstarter-qa</code></td><td><code>@qa</code></td><td>Keroppi</td><td>Test strategy, automation, coverage analysis</td></tr>
+      <tr><td><code>/devstarter-security</code></td><td><code>@security</code></td><td>Kuromi</td><td>OWASP, auth, secrets, penetration testing guidance</td></tr>
+      <tr><td><code>/devstarter-devops</code></td><td><code>@devops</code></td><td>Pompompurin</td><td>CI/CD, Docker, Kubernetes, infrastructure as code</td></tr>
+      <tr><td><code>/devstarter-uxui</code></td><td><code>@uxui</code></td><td>Kiki</td><td>Design system, prototypes, user research synthesis</td></tr>
+      <tr><td><code>/devstarter-docs</code></td><td><code>@docs</code></td><td>Gudetama</td><td>Technical writing, API docs, runbooks</td></tr>
+      <tr><td><code>/devstarter-mobile</code></td><td><code>@mobile</code></td><td>Aggretsuko</td><td>Flutter, React Native, iOS/Android specifics</td></tr>
+      <tr><td><code>/devstarter-mlops</code></td><td><code>@mlops</code></td><td>—</td><td>ML pipelines, model serving, experiment tracking</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card note">
+    <div class="card-title">Extended agents (--profile full)</div>
+    <p style="margin:0">An additional 50+ specialist agents (code reviewers, build resolvers, domain specialists) are available with <code>bash install.sh --profile full</code>. Run <code>/devstarter-agents</code> to see the full list after installation.</p>
+  </div>
+
+  <!-- ── APPENDIX: Inline Args ── -->
+  <div class="section-header" id="section-inline">
+    <span class="section-number s1">~</span>
     <h2 class="section-title">Inline Args Convention</h2>
   </div>
-  <p>Commands that support inline args allow users to bypass the question flow by providing a description directly after the command name. The system extracts intent from the first word(s) and skips all questions that can be inferred.</p>
+  <p>Commands that support inline args allow bypassing the question flow by providing a description directly after the command name. The skill extracts intent from the first word(s) and skips all questions that can be inferred.</p>
   <table>
     <thead><tr><th>Command</th><th>Inline Arg Format</th><th>What is skipped</th></tr></thead>
     <tbody>
@@ -372,8 +621,16 @@
       <tr><td>/devstarter-audit</td><td><code>/devstarter-audit [type] [outcome]</code></td><td>Picker + Q1 + Q5</td></tr>
       <tr><td>/devstarter-document</td><td><code>/devstarter-document [type]</code></td><td>Quick-picker</td></tr>
       <tr><td>/devstarter-consult</td><td><code>/devstarter-consult [topic]</code></td><td>Topic question</td></tr>
+      <tr><td>/devstarter-debug</td><td><code>/devstarter-debug [problem description]</code></td><td>Intake question Q1</td></tr>
+      <tr><td>/devstarter-gitsetup</td><td><code>/devstarter-gitsetup cleanup</code></td><td>Phases 1–4 (jumps to branch cleanup only)</td></tr>
+      <tr><td>/devstarter-mcp</td><td><code>/devstarter-mcp [server-name]</code></td><td>Interactive picker</td></tr>
+      <tr><td>/devstarter-knowledge</td><td><code>/devstarter-knowledge [topic]</code></td><td>Topic question</td></tr>
+      <tr><td>/devstarter-verification-loop</td><td><code>/devstarter-verification-loop continuous</code></td><td>Run-once mode (switches to loop)</td></tr>
+      <tr><td>/devstarter-adr</td><td><code>/devstarter-adr [decision title]</code></td><td>Title question</td></tr>
+      <tr><td>/devstarter-compliance</td><td><code>/devstarter-compliance gdpr</code></td><td>Framework picker</td></tr>
     </tbody>
   </table>
+
 </main>
 <script>
   function toggleTheme(){var h=document.documentElement;var d=h.getAttribute('data-theme')==='dark';if(d){h.removeAttribute('data-theme');localStorage.setItem('docportal-theme','light');document.getElementById('themeIcon').innerHTML='&#9788;';}else{h.setAttribute('data-theme','dark');localStorage.setItem('docportal-theme','dark');document.getElementById('themeIcon').innerHTML='&#9790;';}}
