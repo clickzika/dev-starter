@@ -2,35 +2,31 @@
   "workflow": "devstarter-change",
   "version": "develop",
   "status": "completed",
-  "branch": "develop",
+  "branch": "chore/remove-obsidian-understand",
   "started_at": "2026-06-08",
   "completed_at": "2026-06-08",
-  "intent": "CR-2026-06-08-001 — vault-ingest HTML Support",
+  "intent": "CR-2026-06-08-002 — Remove Obsidian Knowledge Vault + Understand-Anything",
+  "phase": "DONE",
   "results": {
-    "change_id": "CR-2026-06-08-001",
-    "change_type": "Modify Feature",
-    "feature": "vault-ingest-html-support",
-    "files_modified": [
-      "sdlc/devstarter-vault-ingest.md — Step I1 extended + Step I1b added",
-      "skills/devstarter-vault-ingest/SKILL.md — inline args + description updated"
-    ],
+    "change_id": "CR-2026-06-08-002",
+    "change_type": "Remove Feature",
+    "feature": "remove-obsidian-understand",
+    "files_deleted": 51,
+    "files_modified": 20,
+    "pr": "https://github.com/clickzika/dev-starter-dev/pull/90",
+    "pr_status": "merged",
     "docs_generated": [
-      "docs/feature/vault-ingest-html-support/kickoff.html",
-      "docs/feature/vault-ingest-html-support/plan.html"
-    ],
-    "merge_commit": "feature/vault-ingest-html-support → develop (no-ff)"
+      "docs/feature/remove-obsidian-understand/kickoff.html",
+      "docs/feature/remove-obsidian-understand/plan.html",
+      "docs/feature/remove-obsidian-understand/summary.html",
+      "docs/feature/remove-obsidian-understand/mgmt-brief.html"
+    ]
   },
-  "open_items": [
-    "T0 (v5.7.0 carryover) — live vault end-to-end validation: run /devstarter-knowledge 'test' against D:\\Projects\\Obsidian",
-    "Enable hierarchical mode: add folder_structure: hierarchical to devstarter-config.yml, run /devstarter-vault-ingest --scaffold",
-    "C2 — understand-anything delegation: validate after '/plugin install understand-anything' + restart",
-    "Branch protection on main/uat needs GitHub Pro or public repo",
-    "Test HTML ingest: run /devstarter-vault-ingest docs/feature/vault-ingest-html-support/kickoff.html"
-  ],
+  "open_items": [],
   "previous_session": {
-    "workflow": "devstarter-release",
-    "version": "v6.0.0",
-    "completed_at": "2026-06-07",
-    "intent": "Release v6.0.0 — Obsidian Vault Design + Ingest Skill"
+    "workflow": "devstarter-change",
+    "version": "CR-2026-06-08-001",
+    "completed_at": "2026-06-08",
+    "intent": "vault-ingest HTML Support"
   }
 }
