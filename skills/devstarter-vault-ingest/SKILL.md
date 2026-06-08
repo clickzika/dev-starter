@@ -5,7 +5,7 @@ description: Analyze any existing Markdown file, auto-classify it (bug / techniq
 
 # /devstarter-vault-ingest — Analyze & Emit Existing Markdown to Vault
 
-Reads any `.md` file, auto-classifies it, proposes frontmatter, discovers related notes in the vault via tag/language/category grep, and emits a sanitized, wikilinked note to the correct vault folder — all confirmed at a gate before writing.
+Reads any `.md` or `.html`/`.htm` file, auto-classifies it, proposes frontmatter, discovers related notes in the vault via tag/language/category grep, and emits a sanitized, wikilinked note to the correct vault folder — all confirmed at a gate before writing. HTML files are preprocessed to clean Markdown (Step I1b) before classification.
 
 > **Opt-in.** Requires `obsidian.enabled: true` + `vault_path` in `devstarter-config.yml`. If off, shows setup instructions. See `docs/obsidian-vault-guide.md` Section 7.
 
@@ -13,7 +13,7 @@ Reads any `.md` file, auto-classifies it, proposes frontmatter, discovers relate
 
 ## When to use vs alternatives
 
-- **Use this** to ingest an *existing* Markdown file (meeting notes, personal notes, external docs).
+- **Use this** to ingest an *existing* Markdown or HTML file (meeting notes, personal notes, external docs, DevStarter-generated feature docs).
 - **Use /devstarter-knowledge** for capturing a new technique or know-how snippet interactively.
 - **Use /devstarter-bug-postmortem** for a full bug record after a fix (emits to vault automatically).
 - **Use /devstarter-vault-ingest --scaffold** to create the hierarchical folder structure only.
@@ -21,7 +21,8 @@ Reads any `.md` file, auto-classifies it, proposes frontmatter, discovers relate
 ## Inline Args
 
 ```
-/devstarter-vault-ingest path/to/note.md       ← analyze + emit a file
+/devstarter-vault-ingest path/to/note.md       ← analyze + emit a .md file
+/devstarter-vault-ingest path/to/doc.html      ← extract + emit an HTML file (preprocessed to MD)
 /devstarter-vault-ingest --scaffold            ← create folder structure only (no file)
 ```
 
