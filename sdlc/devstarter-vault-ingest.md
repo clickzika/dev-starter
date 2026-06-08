@@ -180,7 +180,31 @@ Open HOME.md in Obsidian and set it as your vault startup note.
 
 #### Step I1 — Read input file
 
-Read the file at `<file>`. If not found or not `.md` → stop and tell the user.
+Read the file at `<file>`. If not found → stop and tell the user.
+
+Determine the file extension:
+- If `.md` → continue to Step I2 (no preprocessing needed).
+- If `.html` or `.htm` → continue to Step I1b (HTML preprocessing).
+- Otherwise → stop and tell the user: "Only `.md`, `.html`, and `.htm` files are supported."
+
+#### Step I1b — HTML preprocessing (HTML/HTM files only)
+
+Skip this step for `.md` files — go directly to I2.
+
+For `.html`/`.htm` files: extract clean Markdown from the HTML before continuing to I2.
+
+**Extraction rules:**
+
+1. **Title** — use the text content of the first `<h1>` element; if none, use the `<title>` tag content (strip any " — DevStarter" suffix if present).
+2. **Sections** — each `<section>`, `<main>`, or `<article>` block → `##` heading (use the block's inner `<h2>` or first heading as the heading text) followed by its content.
+3. **Headings** — `<h2>` → `##`  |  `<h3>` → `###`
+4. **Tables** — `<table>` → GFM pipe table (`| col | col |`)
+5. **Code blocks** — `<pre><code class="lang-X">` → fenced `` ` `` ` `` ` `` X block; if no `class` attribute, use plain fenced block without language specifier.
+6. **Paragraphs** — `<p>` content → plain text paragraph.
+7. **Strip (do not emit)** — `<nav>`, `<header>`, `<footer>`, `<script>`, `<style>`, `<aside>` and all their contents; all HTML attributes except `class` on `<code>` elements (needed for language detection in rule 5).
+8. **Compose** — assemble the extracted content as a clean Markdown string.
+
+Feed this Markdown string into Step I2 as the source content (treating it as if it were the contents of a `.md` file). The original filename (without extension) is used for slug generation in Step I7.
 
 #### Step I2 — Classify
 

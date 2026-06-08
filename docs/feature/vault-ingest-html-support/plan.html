@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modify Feature Plan — vault-ingest HTML Support — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
+    --bg-card:#f8f9fb; --bg-hover:#e8ebf0; --accent:#e94560; --accent-light:#d63851;
+    --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4;
+    --border-light:#e2e7ed; --status-draft:#f59e0b; --status-review:#3b82f6;
+    --status-approved:#10b981; --status-pending:#8b5cf6;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
+    --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316;
+    --section-7:#06b6d4;
+    --header-h:64px; --sidebar-w:280px;
+    --code-bg:#f1f5f9; --code-inline-bg:rgba(233,69,96,0.08);
+    --code-inline-color:#d63851; --table-even-bg:rgba(0,0,0,0.02);
+    --table-hover-bg:rgba(233,69,96,0.04); --shadow:0 1px 3px rgba(0,0,0,0.06);
+    --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-header:#1a1a2e; --bg-sidebar:#16213e; --bg-content:#1e1e3a;
+    --bg-card:#252547; --bg-hover:#0f3460; --accent:#e94560; --accent-light:#ff6b81;
+    --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f;
+    --border-light:#2d4a6f; --code-bg:#0d0d1a; --code-inline-bg:rgba(233,69,96,0.1);
+    --code-inline-color:#ff6b81; --table-even-bg:rgba(255,255,255,0.02);
+    --table-hover-bg:rgba(233,69,96,0.05); --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.6; height:100vh; overflow:hidden; transition:background 0.3s,color 0.3s; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--bg-header); border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; transition:background 0.3s,border-color 0.3s; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; letter-spacing:-0.3px; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); font-weight:500; }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+  .doc-status-badge.pending { background:rgba(139,92,246,0.15); color:var(--status-pending); border:1px solid rgba(139,92,246,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s,background 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; transition:background 0.3s,border-color 0.3s; }
+  .doc-sidebar::-webkit-scrollbar { width:4px; }
+  .doc-sidebar::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-item { display:block; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s ease; border-left:3px solid transparent; }
+  .toc-link:hover { background:var(--bg-hover); color:var(--text); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent-light); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; flex-shrink:0; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
+  .toc-number.s7{background:var(--section-7);}
+  .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; transition:background 0.3s,border-color 0.3s; }
+  .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
+  .doc-info-row span:first-child { color:var(--text-muted); }
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:40px 48px 80px; background:var(--bg-content); transition:background 0.3s; }
+  .doc-content::-webkit-scrollbar { width:6px; }
+  .doc-content::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:6px; }
+  .section-header { display:flex; align-items:center; gap:14px; margin:48px 0 20px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
+  .section-number.s7{background:var(--section-7);}
+  .section-title { font-size:22px; font-weight:700; letter-spacing:-0.3px; }
+  h3 { font-size:16px; font-weight:600; color:var(--text); margin:28px 0 12px; border-left:3px solid var(--accent); padding-left:12px; }
+  h4 { font-size:14px; font-weight:600; color:var(--text-dim); margin:20px 0 8px; }
+  p { color:var(--text-dim); margin-bottom:16px; font-size:14px; line-height:1.7; }
+  table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:13px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  thead th { background:var(--bg-sidebar); color:var(--text); font-weight:600; text-align:left; padding:12px 16px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--accent); transition:background 0.3s; }
+  tbody tr { border-bottom:1px solid var(--border); transition:background 0.1s ease; }
+  tbody tr:nth-child(even) { background:var(--table-even-bg); }
+  tbody tr:hover { background:var(--table-hover-bg); }
+  td { padding:10px 16px; color:var(--text-dim); vertical-align:top; }
+  pre { background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:16px 20px; overflow-x:auto; margin:12px 0 20px; font-size:13px; line-height:1.5; transition:background 0.3s,border-color 0.3s; }
+  code { font-family:'JetBrains Mono','Fira Code','Consolas',monospace; font-size:13px; }
+  :not(pre) > code { background:var(--code-inline-bg); color:var(--code-inline-color); padding:2px 6px; border-radius:4px; font-size:12px; }
+  ul,ol { margin:8px 0 16px 24px; color:var(--text-dim); font-size:14px; }
+  li { margin-bottom:6px; line-height:1.6; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin:16px 0 24px; transition:background 0.3s,border-color 0.3s; }
+  .card-title { font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text); }
+  .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
+  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
+  .critical { border-left:4px solid var(--section-5); background:rgba(239,68,68,0.05); }
+  .success { border-left:4px solid var(--section-4); background:rgba(16,185,129,0.05); }
+  .badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.3px; }
+  .badge-red{background:rgba(239,68,68,0.15);color:#ef4444;}
+  .badge-orange{background:rgba(249,115,22,0.15);color:#f97316;}
+  .badge-yellow{background:rgba(245,158,11,0.15);color:#f59e0b;}
+  .badge-green{background:rgba(16,185,129,0.15);color:#10b981;}
+  .badge-blue{background:rgba(59,130,246,0.15);color:#3b82f6;}
+  .badge-purple{background:rgba(139,92,246,0.15);color:#8b5cf6;}
+  hr { border:none; border-top:1px solid var(--border); margin:32px 0; }
+  .approval-block { background:var(--bg-card); border:2px solid var(--border); border-radius:12px; padding:28px 32px; margin:32px 0; text-align:center; }
+  .approval-block.pending { border-color:rgba(139,92,246,0.4); background:rgba(139,92,246,0.04); }
+  .approval-title { font-size:18px; font-weight:700; margin-bottom:8px; }
+  .approval-subtitle { font-size:14px; color:var(--text-dim); margin-bottom:20px; }
+  .approval-status { font-size:13px; font-weight:600; margin-top:16px; }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); transition:all 0.2s; }
+  .lang-btn:hover { background:var(--bg-hover); color:var(--text); }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); transition:all 0.2s; }
+  .pdf-btn:hover { background:rgba(233,69,96,0.2); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3, [data-lang="th"] h4 { font-family:'Sarabun',system-ui,sans-serif; }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:24px 16px 60px;} }
+  @media print {
+    .doc-header{position:static;border-bottom:2px solid #000;box-shadow:none;}
+    .doc-sidebar{display:none;}
+    .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;}
+    body{background:#fff;color:#000;overflow:auto;}
+    table{page-break-inside:avoid;} .section-header{page-break-after:avoid;} h3{page-break-after:avoid;}
+    .theme-toggle,.lang-btn,.pdf-btn{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Modify Feature Plan — vault-ingest HTML Support</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>CR-2026-06-08-001 · 2026-06-08</div>
+      <div>Author: Natthaphat Wajanavisit</div>
+    </div>
+    <span class="doc-status-badge pending">● PENDING APPROVAL</span>
+    <button class="pdf-btn" onclick="window.print()" title="Export as PDF">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()" title="Switch language / เปลี่ยนภาษา"><span id="langLabel">EN</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li class="toc-item"><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวมการเปลี่ยนแปลง</span></a></li>
+    <li class="toc-item"><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Problem / Requirement</span><span class="lang-th">ปัญหา / ความต้องการ</span></a></li>
+    <li class="toc-item"><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Proposed Solution</span><span class="lang-th">แนวทางแก้ไขที่เสนอ</span></a></li>
+    <li class="toc-item"><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Scope &amp; Impact</span><span class="lang-th">ขอบเขตและผลกระทบ</span></a></li>
+    <li class="toc-item"><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Implementation Steps</span><span class="lang-th">ขั้นตอนการพัฒนา</span></a></li>
+    <li class="toc-item"><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยงและการย้อนกลับ</span></a></li>
+    <li class="toc-item"><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> <span class="lang-en">Approval</span><span class="lang-th">การอนุมัติ</span></a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Change ID</span> <span>CR-2026-06-08-001</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Modify Feature</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>S</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>Medium</span></div>
+    <div class="doc-info-row"><span>Date</span> <span>2026-06-08</span></div>
+    <div class="doc-info-row"><span>Status</span> <span>Pending Approval</span></div>
+  </div>
+</nav>
+
+<main class="doc-content">
+
+  <!-- Section 1: Change Overview -->
+  <div class="section-header" id="section-1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวมการเปลี่ยนแปลง</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Change ID</td><td><code>CR-2026-06-08-001</code></td></tr>
+      <tr><td>Change Type</td><td><span class="badge badge-blue">Modify Feature</span></td></tr>
+      <tr><td>Feature / Fix Name</td><td>vault-ingest HTML Support</td></tr>
+      <tr><td>Slug</td><td><code>vault-ingest-html-support</code></td></tr>
+      <tr><td>Date</td><td>2026-06-08</td></tr>
+      <tr><td>Author</td><td>Natthaphat Wajanavisit</td></tr>
+      <tr><td>Priority</td><td><span class="badge badge-yellow">Medium</span></td></tr>
+      <tr><td>Effort</td><td>S</td></tr>
+      <tr><td>Branch</td><td><code>feature/vault-ingest-html-support</code></td></tr>
+      <tr><td>Status</td><td><span class="badge badge-purple">Pending Approval</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 2: Problem / Requirement -->
+  <div class="section-header" id="section-2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">Problem / Requirement</span><span class="lang-th">ปัญหา / ความต้องการ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Root Problem</span><span class="lang-th">ต้นตอของปัญหา</span></h3>
+  <p>
+    <span class="lang-en">Step I1 of <code>sdlc/devstarter-vault-ingest.md</code> performs a hard-stop for any file that is not <code>.md</code>: <em>"If not found or not .md → stop and tell the user."</em> No HTML extraction layer exists between the raw HTML input and the classify/frontmatter flow (Steps I2+). The runbook was originally designed for Markdown-only ingest and HTML support was never added.</span><span class="lang-th">Step I1 ใน <code>sdlc/devstarter-vault-ingest.md</code> หยุดทำงานทันทีสำหรับไฟล์ที่ไม่ใช่ <code>.md</code>: <em>"If not found or not .md → stop and tell the user."</em> ไม่มีชั้นดึงข้อมูล HTML ระหว่าง input HTML กับกระบวนการ classify/frontmatter (Steps I2+) รันบุ๊กถูกออกแบบมาสำหรับ Markdown-only ingest และไม่เคยเพิ่มการรองรับ HTML</span>
+  </p>
+
+  <h3><span class="lang-en">Business Requirement</span><span class="lang-th">ความต้องการทางธุรกิจ</span></h3>
+  <p>
+    <span class="lang-en">DevStarter's <code>docs/</code> directory contains 37 HTML files generated by SDLC workflows: feature kickoffs, plans, summaries, management briefs, ADRs, and release notes. All are generated by DevStarter itself using a consistent <code>&lt;section&gt;/&lt;h1&gt;/&lt;h2&gt;/&lt;pre&gt;</code> template structure. These files should be ingestible into the Obsidian vault as searchable Markdown notes using the same <code>/devstarter-vault-ingest</code> command already used for <code>.md</code> files.</span><span class="lang-th">โฟลเดอร์ <code>docs/</code> ของ DevStarter มีไฟล์ HTML 37 ไฟล์ที่สร้างโดย SDLC workflows: feature kickoffs, plans, summaries, management briefs, ADRs และ release notes ทั้งหมดสร้างโดย DevStarter เองโดยใช้โครงสร้าง template <code>&lt;section&gt;/&lt;h1&gt;/&lt;h2&gt;/&lt;pre&gt;</code> ที่สม่ำเสมอ ไฟล์เหล่านี้ควรนำเข้า Obsidian vault เป็น Markdown notes ที่ค้นหาได้โดยใช้คำสั่ง <code>/devstarter-vault-ingest</code> เดิมที่ใช้กับไฟล์ <code>.md</code> อยู่แล้ว</span>
+  </p>
+
+  <h3><span class="lang-en">User Story</span><span class="lang-th">เรื่องราวของผู้ใช้</span></h3>
+  <div class="card note">
+    <p>
+      <span class="lang-en"><strong>As a</strong> DevStarter user,<br>
+      <strong>I want to</strong> run <code>/devstarter-vault-ingest</code> on a <code>.html</code> file from <code>docs/</code>,<br>
+      <strong>So that</strong> a sanitized vault note is created with the document's title and content — without manually converting the file to Markdown.</span><span class="lang-th"><strong>ในฐานะ</strong>ผู้ใช้ DevStarter,<br>
+      <strong>ฉันต้องการ</strong>รัน <code>/devstarter-vault-ingest</code> กับไฟล์ <code>.html</code> จาก <code>docs/</code>,<br>
+      <strong>เพื่อที่</strong>จะได้ vault note ที่ผ่านการ sanitize พร้อมชื่อเรื่องและเนื้อหาของเอกสาร โดยไม่ต้องแปลงไฟล์เป็น Markdown ด้วยตนเอง</span>
+    </p>
+  </div>
+
+  <h3><span class="lang-en">Acceptance Criteria</span><span class="lang-th">เกณฑ์การยอมรับ</span></h3>
+  <ul>
+    <li><span class="lang-en"><code>/devstarter-vault-ingest docs/feature/branch-guard-hook/plan.html</code> emits a vault note; title from HTML <code>&lt;h1&gt;</code> (not filename); body from document content only (nav/footer/script stripped); E4 sanitize applied; frontmatter gate shown; note written as <code>.md</code></span><span class="lang-th"><code>/devstarter-vault-ingest docs/feature/branch-guard-hook/plan.html</code> ส่งออก vault note; ชื่อเรื่องจาก <code>&lt;h1&gt;</code> ของ HTML (ไม่ใช่ชื่อไฟล์); เนื้อหาจาก document body เท่านั้น; ผ่าน E4 sanitize; แสดง frontmatter gate; เขียนเป็น <code>.md</code></span></li>
+    <li><span class="lang-en">Existing <code>.md</code> file ingest behaviour unchanged (no regression)</span><span class="lang-th">พฤติกรรมการนำเข้าไฟล์ <code>.md</code> ที่มีอยู่ไม่เปลี่ยนแปลง (ไม่มี regression)</span></li>
+    <li><span class="lang-en">Steps I2&ndash;I11 flow unchanged; HTML preprocessing pre-I2 only</span><span class="lang-th">Flow ของ Steps I2&ndash;I11 ไม่เปลี่ยนแปลง; HTML preprocessing อยู่ก่อน I2 เท่านั้น</span></li>
+    <li><span class="lang-en">A non-<code>.md</code>/<code>.html</code>/<code>.htm</code> file (e.g. <code>.pdf</code>) still triggers the hard-stop error</span><span class="lang-th">ไฟล์ที่ไม่ใช่ <code>.md</code>/<code>.html</code>/<code>.htm</code> (เช่น <code>.pdf</code>) ยังแสดง error เช่นเดิม</span></li>
+    <li><span class="lang-en">Scaffold mode (<code>--scaffold</code>) unaffected</span><span class="lang-th">โหมด scaffold (<code>--scaffold</code>) ไม่ได้รับผลกระทบ</span></li>
+  </ul>
+
+  <!-- Section 3: Proposed Solution -->
+  <div class="section-header" id="section-3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">Proposed Solution</span><span class="lang-th">แนวทางแก้ไขที่เสนอ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Approach — Option A: Model-native HTML Extraction</span><span class="lang-th">แนวทาง — ตัวเลือก A: Model-native HTML Extraction</span></h3>
+  <p>
+    <span class="lang-en">Add a new preprocessing step (Step I1b) to the vault-ingest runbook. When the input file is <code>.html</code> or <code>.htm</code>, the model reads the file and extracts clean Markdown using the following rules, then feeds the result into the existing I2&ndash;I11 flow as if it were a <code>.md</code> source file:</span><span class="lang-th">เพิ่มขั้นตอน preprocessing ใหม่ (Step I1b) ใน vault-ingest runbook เมื่อไฟล์ input เป็น <code>.html</code> หรือ <code>.htm</code> model จะอ่านไฟล์และดึงเนื้อหา Markdown ที่สะอาดโดยใช้กฎต่อไปนี้ จากนั้นส่งผลลัพธ์เข้าสู่ flow I2&ndash;I11 ที่มีอยู่เหมือนกับว่าเป็นไฟล์ <code>.md</code></span>
+  </p>
+  <pre><code>Extraction rules for Step I1b:
+1. Title     → first &lt;h1&gt; content OR &lt;title&gt; text (strip " — DevStarter" suffix if present)
+2. Sections  → each &lt;section&gt;/&lt;main&gt;/&lt;article&gt; → ## heading + body
+3. Headings  → &lt;h2&gt; → ##  |  &lt;h3&gt; → ###
+4. Tables    → &lt;table&gt; → GFM pipe table
+5. Code      → &lt;pre&gt;&lt;code class="lang-X"&gt; → ``` X fenced block
+6. Paragraphs→ &lt;p&gt; text → plain paragraph
+7. Strip     → &lt;nav&gt;, &lt;header&gt;, &lt;footer&gt;, &lt;script&gt;, &lt;style&gt;, &lt;aside&gt;, all HTML attributes
+8. Compose   → clean MD string → feed to I2 (classify) as if it were the source .md content</code></pre>
+
+  <h3><span class="lang-en">Why This Approach</span><span class="lang-th">เหตุผลที่เลือกแนวทางนี้</span></h3>
+  <p>
+    <span class="lang-en">DevStarter's architecture constraint is <strong>bash + markdown only, no external tools, install.sh distribution</strong>. Adding pandoc or markdownify as system dependencies breaks this contract entirely. All 37 target HTML files are DevStarter-generated with predictable structure — model extraction is reliable for this known template. Option A requires zero new system dependencies.</span><span class="lang-th">ข้อจำกัดทางสถาปัตยกรรมของ DevStarter คือ <strong>bash + markdown เท่านั้น ไม่มีเครื่องมือภายนอก ใช้ install.sh สำหรับแจกจ่าย</strong> การเพิ่ม pandoc หรือ markdownify เป็น system dependencies จะทำลาย contract นี้โดยสิ้นเชิง ไฟล์ HTML เป้าหมายทั้ง 37 ไฟล์สร้างโดย DevStarter ที่มีโครงสร้างที่คาดเดาได้ ทำให้ model extraction เชื่อถือได้สำหรับ template ที่รู้จักนี้ ตัวเลือก A ไม่ต้องการ system dependencies ใหม่เลย</span>
+  </p>
+
+  <h3><span class="lang-en">Alternatives Considered</span><span class="lang-th">ทางเลือกอื่นที่พิจารณา</span></h3>
+  <table>
+    <thead><tr><th>Option</th><th>Reason Rejected</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="lang-en">Option B — External shell converter (pandoc / python markdownify)</span><span class="lang-th">ตัวเลือก B — แปลงด้วย shell ภายนอก (pandoc / python markdownify)</span></td>
+        <td><span class="lang-en">Breaks "no external deps" architecture constraint. Adds pandoc/Python as install requirements; incompatible with bash install.sh-only distribution model.</span><span class="lang-th">ทำลายข้อจำกัด "ไม่มี external deps" ต้องติดตั้ง pandoc/Python เพิ่มเติม ไม่เข้ากันกับโมเดลการแจกจ่ายแบบ bash install.sh</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Option C — Hybrid: template-aware + model fallback</span><span class="lang-th">ตัวเลือก C — Hybrid: รู้จัก template + fallback ด้วย model</span></td>
+        <td><span class="lang-en">Two code paths adds runbook complexity with marginal quality gain over A, since target HTML is already structured DevStarter output. Complexity not justified by the gain.</span><span class="lang-th">สองเส้นทางเพิ่มความซับซ้อนของรันบุ๊ก แต่คุณภาพดีกว่าตัวเลือก A เพียงเล็กน้อย เนื่องจาก HTML เป้าหมายเป็น output ของ DevStarter ที่มีโครงสร้างชัดเจนอยู่แล้ว ความซับซ้อนไม่คุ้มค่า</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Section 4: Scope & Impact -->
+  <div class="section-header" id="section-4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">Scope &amp; Impact</span><span class="lang-th">ขอบเขตและผลกระทบ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Files to Modify</span><span class="lang-th">ไฟล์ที่ต้องแก้ไข</span></h3>
+  <table>
+    <thead><tr><th>File Path</th><th>Change Type</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>sdlc/devstarter-vault-ingest.md</code></td>
+        <td><span class="badge badge-yellow">Modify</span></td>
+        <td><span class="lang-en">Step I1: extend accepted extensions to include <code>.html</code>/<code>.htm</code>. Add new Step I1b: HTML preprocessing block with extraction rules.</span><span class="lang-th">Step I1: ขยายนามสกุลที่รับได้ให้รวม <code>.html</code>/<code>.htm</code> เพิ่ม Step I1b ใหม่: HTML preprocessing block พร้อม extraction rules</span></td>
+      </tr>
+      <tr>
+        <td><code>skills/devstarter-vault-ingest/SKILL.md</code></td>
+        <td><span class="badge badge-yellow">Modify</span></td>
+        <td><span class="lang-en">Update inline args docs: mention HTML support in the <code>/devstarter-vault-ingest path/to/note.md</code> example section.</span><span class="lang-th">อัปเดต inline args docs: ระบุการรองรับ HTML ในส่วน example ของ <code>/devstarter-vault-ingest path/to/note.md</code></span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Files NOT to Touch (Regression Guard)</span><span class="lang-th">ไฟล์ที่ต้องไม่แก้ไข (ป้องกันผลกระทบ)</span></h3>
+  <ul>
+    <li><span class="lang-en">All Steps I2&ndash;I11 logic in <code>sdlc/devstarter-vault-ingest.md</code> (unchanged)</span><span class="lang-th">Logic ของ Steps I2&ndash;I11 ทั้งหมดใน <code>sdlc/devstarter-vault-ingest.md</code> (ไม่เปลี่ยน)</span></li>
+    <li><span class="lang-en">The scaffold runbook section (<code>--scaffold</code> mode) in the same file</span><span class="lang-th">ส่วน scaffold runbook (<code>--scaffold</code> mode) ในไฟล์เดียวกัน</span></li>
+    <li><span class="lang-en">E4 sanitize procedure (runs unchanged on extracted content)</span><span class="lang-th">กระบวนการ E4 sanitize (ทำงานเหมือนเดิมกับเนื้อหาที่ดึงมา)</span></li>
+    <li><span class="lang-en"><code>agents/devstarter-docs.md</code>, <code>sdlc/devstarter-knowledge.md</code>, and all other SDLC runbooks</span><span class="lang-th"><code>agents/devstarter-docs.md</code>, <code>sdlc/devstarter-knowledge.md</code> และ SDLC runbooks อื่น ๆ ทั้งหมด</span></li>
+  </ul>
+
+  <h3><span class="lang-en">System Impact</span><span class="lang-th">ผลกระทบต่อระบบ</span></h3>
+  <table>
+    <thead><tr><th>Area</th><th>Impact</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Database</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">No database — not applicable to this project</span><span class="lang-th">ไม่มีฐานข้อมูล — ไม่เกี่ยวข้องกับโปรเจกต์นี้</span></td></tr>
+      <tr><td>API</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">No API surface — not applicable to this project</span><span class="lang-th">ไม่มี API — ไม่เกี่ยวข้องกับโปรเจกต์นี้</span></td></tr>
+      <tr><td>UI</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">No UI — CLI skill only; terminal output format unchanged</span><span class="lang-th">ไม่มี UI — เป็น CLI skill เท่านั้น รูปแบบ terminal output ไม่เปลี่ยน</span></td></tr>
+      <tr><td>Security</td><td><span class="badge badge-green">Low</span></td><td><span class="lang-en">E4 sanitize runs on extracted HTML content before write — deny-list protection unchanged and mandatory</span><span class="lang-th">E4 sanitize ทำงานกับเนื้อหา HTML ที่ดึงมาก่อนเขียน — การป้องกัน deny-list ไม่เปลี่ยนแปลงและยังคงบังคับ</span></td></tr>
+    </tbody>
+  </table>
+
+  <!-- Section 5: Implementation Steps -->
+  <div class="section-header" id="section-5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title"><span class="lang-en">Implementation Steps</span><span class="lang-th">ขั้นตอนการพัฒนา</span></h2>
+  </div>
+
+  <ol>
+    <li>
+      <span class="lang-en"><strong>Create branch</strong> <code>feature/vault-ingest-html-support</code> from <code>develop</code></span><span class="lang-th"><strong>สร้าง branch</strong> <code>feature/vault-ingest-html-support</code> จาก <code>develop</code></span>
+    </li>
+    <li>
+      <span class="lang-en"><strong>Modify <code>sdlc/devstarter-vault-ingest.md</code> — Step I1:</strong> Change the extension check from <code>".md only → stop"</code> to <code>".md or .html/.htm → continue; others → stop"</code></span><span class="lang-th"><strong>แก้ไข <code>sdlc/devstarter-vault-ingest.md</code> — Step I1:</strong> เปลี่ยนการตรวจสอบนามสกุลจาก <code>".md only → stop"</code> เป็น <code>".md or .html/.htm → continue; others → stop"</code></span>
+    </li>
+    <li>
+      <span class="lang-en"><strong>Modify <code>sdlc/devstarter-vault-ingest.md</code> — Add Step I1b (HTML only):</strong> Insert preprocessing block after I1, before I2. Block triggers only when input is <code>.html</code>/<code>.htm</code>. Extraction rules: title from <code>&lt;h1&gt;</code>/<code>&lt;title&gt;</code>; sections from <code>&lt;section&gt;</code>/<code>&lt;main&gt;</code>/<code>&lt;article&gt;</code>; headings <code>&lt;h2&gt;</code>/<code>&lt;h3&gt;</code>; tables to GFM; code blocks to fenced; paragraphs; strip chrome (nav/header/footer/script/style/aside, all HTML attributes). Compose clean MD string. Feed to I2 as source content.</span><span class="lang-th"><strong>แก้ไข <code>sdlc/devstarter-vault-ingest.md</code> — เพิ่ม Step I1b (เฉพาะ HTML):</strong> แทรก preprocessing block หลัง I1 ก่อน I2 Block ทำงานเฉพาะเมื่อ input เป็น <code>.html</code>/<code>.htm</code> Extraction rules: ชื่อเรื่องจาก <code>&lt;h1&gt;</code>/<code>&lt;title&gt;</code>; sections จาก <code>&lt;section&gt;</code>/<code>&lt;main&gt;</code>/<code>&lt;article&gt;</code>; headings <code>&lt;h2&gt;</code>/<code>&lt;h3&gt;</code>; ตารางเป็น GFM; code blocks เป็น fenced; ย่อหน้า; ลบ chrome (nav/header/footer/script/style/aside, HTML attributes ทั้งหมด) สร้าง MD string ที่สะอาด ส่งให้ I2 เป็นเนื้อหาต้นทาง</span>
+    </li>
+    <li>
+      <span class="lang-en"><strong>Modify <code>skills/devstarter-vault-ingest/SKILL.md</code>:</strong> Update the "Inline Args" section to add <code>/devstarter-vault-ingest path/to/note.html</code> as an accepted input alongside <code>path/to/note.md</code>. One-line note: HTML files are preprocessed to Markdown before classify/emit.</span><span class="lang-th"><strong>แก้ไข <code>skills/devstarter-vault-ingest/SKILL.md</code>:</strong> อัปเดตส่วน "Inline Args" เพื่อเพิ่ม <code>/devstarter-vault-ingest path/to/note.html</code> เป็น input ที่รับได้ ควบคู่กับ <code>path/to/note.md</code> หนึ่งบรรทัด: ไฟล์ HTML จะถูก preprocess เป็น Markdown ก่อน classify/emit</span>
+    </li>
+    <li>
+      <span class="lang-en"><strong>Test:</strong> Run <code>/devstarter-vault-ingest</code> on an existing HTML file (e.g. <code>docs/feature/branch-guard-hook/plan.html</code>). Verify title from <code>&lt;h1&gt;</code>, body content only (no nav/footer), E4 applied, frontmatter gate shows, note written to vault as <code>.md</code>.</span><span class="lang-th"><strong>ทดสอบ:</strong> รัน <code>/devstarter-vault-ingest</code> กับไฟล์ HTML ที่มีอยู่ (เช่น <code>docs/feature/branch-guard-hook/plan.html</code>) ตรวจสอบ: ชื่อเรื่องจาก <code>&lt;h1&gt;</code>, เนื้อหาเฉพาะ body (ไม่มี nav/footer), E4 ทำงาน, frontmatter gate แสดง, note เขียนใน vault เป็น <code>.md</code></span>
+    </li>
+    <li>
+      <span class="lang-en"><strong>Regression test:</strong> Run <code>/devstarter-vault-ingest</code> on an existing <code>.md</code> file (e.g. a previously ingested knowledge note). Verify output is unchanged from before this feature.</span><span class="lang-th"><strong>ทดสอบ regression:</strong> รัน <code>/devstarter-vault-ingest</code> กับไฟล์ <code>.md</code> ที่มีอยู่ (เช่น knowledge note ที่เคยนำเข้าแล้ว) ตรวจสอบว่า output ไม่เปลี่ยนแปลงจากก่อนที่จะมีฟีเจอร์นี้</span>
+    </li>
+    <li>
+      <span class="lang-en"><strong>Commit and create PR</strong> to merge <code>feature/vault-ingest-html-support</code> → <code>develop</code></span><span class="lang-th"><strong>Commit และสร้าง PR</strong> เพื่อ merge <code>feature/vault-ingest-html-support</code> → <code>develop</code></span>
+    </li>
+  </ol>
+
+  <h3><span class="lang-en">Dependencies</span><span class="lang-th">สิ่งที่ต้องพึ่งพา</span></h3>
+  <ul>
+    <li><span class="lang-en">None — no new system dependencies. Model-native extraction requires only the existing Claude Code session.</span><span class="lang-th">ไม่มี — ไม่มี system dependencies ใหม่ Model-native extraction ต้องการเพียง Claude Code session ที่มีอยู่</span></li>
+  </ul>
+
+  <h3><span class="lang-en">Testing Approach</span><span class="lang-th">แนวทางการทดสอบ</span></h3>
+  <p>
+    <span class="lang-en">Manual testing via the skill itself: run <code>/devstarter-vault-ingest</code> on one HTML file from <code>docs/</code> and one existing <code>.md</code> file. DevStarter has no automated test runner — correctness is verified by reviewing the emitted vault note at the frontmatter gate before the final write.</span><span class="lang-th">ทดสอบด้วยตนเองผ่าน skill เอง: รัน <code>/devstarter-vault-ingest</code> กับไฟล์ HTML หนึ่งไฟล์จาก <code>docs/</code> และไฟล์ <code>.md</code> ที่มีอยู่หนึ่งไฟล์ DevStarter ไม่มี automated test runner — ตรวจสอบความถูกต้องโดยการรีวิว vault note ที่ปล่อยออกมาที่ frontmatter gate ก่อนการเขียนขั้นสุดท้าย</span>
+  </p>
+
+  <!-- Section 6: Risk & Rollback -->
+  <div class="section-header" id="section-6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title"><span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยงและการย้อนกลับ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Risks</span><span class="lang-th">ความเสี่ยง</span></h3>
+  <table>
+    <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="lang-en">Complex third-party HTML extracts imperfectly</span><span class="lang-th">HTML ของบุคคลที่สามที่ซับซ้อนดึงข้อมูลได้ไม่สมบูรณ์</span></td>
+        <td><span class="badge badge-yellow">Low</span></td>
+        <td><span class="lang-en">Acceptable — target is DevStarter-generated HTML with known structure. User reviews extracted content at frontmatter gate before write.</span><span class="lang-th">ยอมรับได้ — เป้าหมายคือ HTML ที่สร้างโดย DevStarter ที่มีโครงสร้างที่รู้จัก ผู้ใช้รีวิวเนื้อหาที่ดึงมาที่ frontmatter gate ก่อนเขียน</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">Code block language detection fails if <code>class="lang-X"</code> absent</span><span class="lang-th">การตรวจจับภาษา code block ล้มเหลวหากไม่มี <code>class="lang-X"</code></span></td>
+        <td><span class="badge badge-green">Very Low</span></td>
+        <td><span class="lang-en">Fall back to plain fenced block without language specifier. Content preserved; only syntax highlighting is lost in vault.</span><span class="lang-th">ใช้ fenced block ธรรมดาแทน เนื้อหาถูกเก็บรักษา; เสียแค่ syntax highlighting ใน vault เท่านั้น</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Rollback Plan</span><span class="lang-th">แผนการย้อนกลับ</span></h3>
+  <p>
+    <span class="lang-en">Revert the two modified files to their pre-change state via <code>git revert</code> on the merge commit, or by checking out the pre-change version of <code>sdlc/devstarter-vault-ingest.md</code> and <code>skills/devstarter-vault-ingest/SKILL.md</code>. No vault notes, no config, and no other files are affected. Rollback restores <code>.md</code>-only ingest behaviour instantly.</span><span class="lang-th">ย้อนกลับไฟล์ที่แก้ไขสองไฟล์สู่สถานะก่อนการเปลี่ยนแปลงผ่าน <code>git revert</code> บน merge commit หรือโดยการ checkout เวอร์ชันก่อนการเปลี่ยนแปลงของ <code>sdlc/devstarter-vault-ingest.md</code> และ <code>skills/devstarter-vault-ingest/SKILL.md</code> ไม่มี vault notes, config หรือไฟล์อื่น ๆ ที่ได้รับผลกระทบ การ rollback คืนพฤติกรรม ingest แบบ <code>.md</code>-only ได้ทันที</span>
+  </p>
+
+  <!-- Section 7: Approval -->
+  <div class="section-header" id="section-7">
+    <span class="section-number s7">7</span>
+    <h2 class="section-title"><span class="lang-en">Approval</span><span class="lang-th">การอนุมัติ</span></h2>
+  </div>
+
+  <div class="card warning">
+    <div class="card-title">Action Required</div>
+    <p><span class="lang-en">Review all sections above. When satisfied, approve in the Claude Code terminal to start development on branch <code>feature/vault-ingest-html-support</code>.</span><span class="lang-th">รีวิวทุกหัวข้อด้านบน เมื่อพอใจแล้ว อนุมัติใน Claude Code terminal เพื่อเริ่มการพัฒนาบน branch <code>feature/vault-ingest-html-support</code></span></p>
+  </div>
+
+  <div class="approval-block pending" id="approval-block">
+    <div class="approval-title">&#9888; Awaiting Approval</div>
+    <div class="approval-subtitle"><span class="lang-en">Return to the terminal and approve to start development.</span><span class="lang-th">กลับไปที่ terminal และอนุมัติเพื่อเริ่มการพัฒนา</span></div>
+    <table style="margin:16px auto;width:auto;min-width:320px;">
+      <thead><tr><th>Field</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Change ID</td><td><code>CR-2026-06-08-001</code></td></tr>
+        <tr><td>Branch to create</td><td><code>feature/vault-ingest-html-support</code></td></tr>
+        <tr><td>Requested by</td><td>Natthaphat Wajanavisit</td></tr>
+        <tr><td>Date</td><td>2026-06-08</td></tr>
+      </tbody>
+    </table>
+    <div class="approval-status">Status: <span class="badge badge-purple">PENDING APPROVAL</span></div>
+  </div>
+
+  <!-- Revision History -->
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>CR-2026-06-08-001</code></td>
+        <td>2026-06-08</td>
+        <td>MODIFY</td>
+        <td><span class="lang-en">Initial change plan created — vault-ingest HTML Support</span><span class="lang-th">สร้างแผนการเปลี่ยนแปลงครั้งแรก — vault-ingest HTML Support</span></td>
+        <td>Natthaphat Wajanavisit</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function toggleLang() {
+    var html = document.documentElement; var isThai = html.getAttribute('data-lang') === 'th'; var label = document.getElementById('langLabel');
+    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
+    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
+  }
+  (function() { var l=localStorage.getItem('docportal-lang'); if (l==='th') { document.documentElement.setAttribute('data-lang','th'); var lb=document.getElementById('langLabel'); if(lb) lb.textContent='TH'; } })();
+  function toggleTheme() {
+    var html = document.documentElement;
+    var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function() {
+    var saved = localStorage.getItem('docportal-theme');
+    if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  })();
+  const sections = document.querySelectorAll('.section-header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const content = document.querySelector('.doc-content');
+  content.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (content.scrollTop >= s.offsetTop - content.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+  });
+  tocLinks.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(l.getAttribute('href'));
+      if (t) content.scrollTo({ top: t.offsetTop - content.offsetTop - 20, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
