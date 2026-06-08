@@ -76,35 +76,6 @@ For each improvement identified:
 
 ---
 
-## ⚡ Vault Emit — Retrospective Lessons (v5.9.0+)
-
-After Phase 4 (GitHub issues + Notion tasks created), optionally capture process lessons to the vault.
-
-Read `obsidian.enabled` from `devstarter-config.yml`.
-If `obsidian.enabled: false` or `obsidian:` block absent → silently skip; proceed to Phase 5.
-If `obsidian.enabled: true`:
-  Use `AskUserQuestion` with:
-  - question: "Save retro lessons to vault?"
-  - options: ["Yes — capture process lessons", "No — skip"]
-  If "Yes": collect significant lessons (Q2: what did not go well + Q3: what would you do differently + top 1–3 action items from Phase 4):
-    For each distinct process lesson worth sharing:
-      Run Vault Emit Procedure (E1–E5) from `sdlc/devstarter-knowledge.md`
-      Template: `~/.claude/templates/obsidian/technique-note.md`
-      Fill:
-        type: technique
-        topic: process
-        title: "[Sprint N] — [lesson title]"
-        symptom: what went wrong / what caused friction
-        root_cause_category: most appropriate vocabulary term (e.g. config-drift, missing-validation, process-gap)
-        tags: [technique, process, sprint-retro]
-        source: Sprint [N] retrospective — [date]
-      Emit one note per distinct lesson (not one per action item; group related items).
-    Show E5 confirmation per emitted note.
-  If "No": continue.
-  If transport: git — remind (do not auto-run): commit + push vault repo.
-
----
-
 ## PHASE 5 — Update CLAUDE.md
 
 - Move incomplete tasks to next sprint in Progress Tracker

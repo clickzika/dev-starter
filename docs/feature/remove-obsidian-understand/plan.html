@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remove Feature Plan — Remove Obsidian + Understand-Anything — DevStarter</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg-page:#f5f7fa; --bg-header:#ffffff; --bg-sidebar:#f0f2f5; --bg-content:#ffffff;
+    --bg-card:#f8f9fb; --bg-hover:#e8ebf0; --accent:#e94560; --accent-light:#d63851;
+    --text:#1a1a2e; --text-dim:#5a6578; --text-muted:#8493a8; --border:#d8dde4;
+    --border-light:#e2e7ed; --status-draft:#f59e0b; --status-review:#3b82f6;
+    --status-approved:#10b981; --status-pending:#8b5cf6;
+    --section-1:#3b82f6; --section-2:#8b5cf6; --section-3:#f59e0b;
+    --section-4:#10b981; --section-5:#ef4444; --section-6:#f97316; --section-7:#06b6d4;
+    --header-h:64px; --sidebar-w:280px;
+    --code-bg:#f1f5f9; --code-inline-bg:rgba(233,69,96,0.08); --code-inline-color:#d63851;
+    --table-even-bg:rgba(0,0,0,0.02); --table-hover-bg:rgba(233,69,96,0.04);
+    --shadow:0 1px 3px rgba(0,0,0,0.06); --toggle-bg:#e2e6eb; --toggle-knob:#ffffff;
+  }
+  [data-theme="dark"] {
+    --bg-page:#0f0f23; --bg-header:#1a1a2e; --bg-sidebar:#16213e; --bg-content:#1e1e3a;
+    --bg-card:#252547; --bg-hover:#0f3460; --accent:#e94560; --accent-light:#ff6b81;
+    --text:#eeeeee; --text-dim:#94a3b8; --text-muted:#64748b; --border:#1e3a5f;
+    --border-light:#2d4a6f; --code-bg:#0d0d1a; --code-inline-bg:rgba(233,69,96,0.1);
+    --code-inline-color:#ff6b81; --table-even-bg:rgba(255,255,255,0.02);
+    --table-hover-bg:rgba(233,69,96,0.05); --shadow:0 1px 3px rgba(0,0,0,0.3);
+    --toggle-bg:#1e3a5f; --toggle-knob:#e94560;
+  }
+  body { font-family:'Inter',system-ui,sans-serif; background:var(--bg-page); color:var(--text); line-height:1.6; height:100vh; overflow:hidden; transition:background 0.3s,color 0.3s; }
+  .doc-header { position:fixed; top:0; left:0; right:0; height:var(--header-h); background:var(--bg-header); border-bottom:1px solid var(--border); box-shadow:var(--shadow); display:flex; align-items:center; justify-content:space-between; padding:0 32px; z-index:100; }
+  .doc-header-left { display:flex; align-items:center; gap:16px; }
+  .doc-header-logo { width:36px; height:36px; background:var(--accent); border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#fff; }
+  .doc-header-title { display:flex; flex-direction:column; }
+  .doc-header-project { font-size:18px; font-weight:700; letter-spacing:-0.3px; color:var(--text); }
+  .doc-header-docname { font-size:12px; color:var(--text-dim); font-weight:500; }
+  .doc-header-right { display:flex; align-items:center; gap:16px; }
+  .doc-header-meta { text-align:right; font-size:12px; color:var(--text-dim); }
+  .doc-status-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+  .doc-status-badge.pending { background:rgba(139,92,246,0.15); color:var(--status-pending); border:1px solid rgba(139,92,246,0.3); }
+  .theme-toggle { display:flex; align-items:center; gap:6px; cursor:pointer; user-select:none; }
+  .theme-toggle-icon { font-size:14px; color:var(--text-dim); }
+  .theme-toggle-track { width:44px; height:24px; background:var(--toggle-bg); border-radius:12px; position:relative; transition:background 0.3s; border:1px solid var(--border); }
+  .theme-toggle-knob { width:18px; height:18px; background:var(--toggle-knob); border-radius:50%; position:absolute; top:2px; left:3px; transition:transform 0.3s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .theme-toggle-knob { transform:translateX(20px); }
+  .doc-sidebar { position:fixed; top:var(--header-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--bg-sidebar); border-right:1px solid var(--border); overflow-y:auto; padding:20px 0; z-index:50; }
+  .doc-sidebar::-webkit-scrollbar { width:4px; }
+  .doc-sidebar::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+  .doc-sidebar-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:var(--text-muted); padding:0 20px 12px; border-bottom:1px solid var(--border); margin-bottom:8px; }
+  .toc-list { list-style:none; padding:0; }
+  .toc-link { display:flex; align-items:center; gap:10px; padding:8px 20px; color:var(--text-dim); text-decoration:none; font-size:13px; font-weight:500; transition:all 0.15s; border-left:3px solid transparent; }
+  .toc-link:hover { background:var(--bg-hover); color:var(--text); border-left-color:var(--accent); }
+  .toc-link.active { background:rgba(233,69,96,0.1); color:var(--accent-light); border-left-color:var(--accent); }
+  .toc-number { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; font-size:11px; font-weight:700; flex-shrink:0; color:#fff; }
+  .toc-number.s1{background:var(--section-1);} .toc-number.s2{background:var(--section-2);}
+  .toc-number.s3{background:var(--section-3);} .toc-number.s4{background:var(--section-4);}
+  .toc-number.s5{background:var(--section-5);} .toc-number.s6{background:var(--section-6);}
+  .toc-number.s7{background:var(--section-7);}
+  .doc-info-card { margin:16px 12px 0; padding:14px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; font-size:12px; }
+  .doc-info-row { display:flex; justify-content:space-between; padding:4px 0; color:var(--text-dim); }
+  .doc-info-row span:first-child { color:var(--text-muted); }
+  .doc-content { margin-left:var(--sidebar-w); margin-top:var(--header-h); height:calc(100vh - var(--header-h)); overflow-y:auto; padding:40px 48px 80px; background:var(--bg-content); }
+  .doc-content::-webkit-scrollbar { width:6px; }
+  .doc-content::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:6px; }
+  .section-header { display:flex; align-items:center; gap:14px; margin:48px 0 20px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .section-header:first-child { margin-top:0; }
+  .section-number { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; font-size:14px; font-weight:800; color:#fff; flex-shrink:0; }
+  .section-number.s1{background:var(--section-1);} .section-number.s2{background:var(--section-2);}
+  .section-number.s3{background:var(--section-3);} .section-number.s4{background:var(--section-4);}
+  .section-number.s5{background:var(--section-5);} .section-number.s6{background:var(--section-6);}
+  .section-number.s7{background:var(--section-7);}
+  .section-title { font-size:22px; font-weight:700; letter-spacing:-0.3px; }
+  h3 { font-size:16px; font-weight:600; color:var(--text); margin:28px 0 12px; border-left:3px solid var(--accent); padding-left:12px; }
+  p { color:var(--text-dim); margin-bottom:16px; font-size:14px; line-height:1.7; }
+  table { width:100%; border-collapse:collapse; margin:16px 0 24px; font-size:13px; border-radius:8px; overflow:hidden; border:1px solid var(--border); }
+  thead th { background:var(--bg-sidebar); color:var(--text); font-weight:600; text-align:left; padding:12px 16px; font-size:12px; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid var(--accent); }
+  tbody tr { border-bottom:1px solid var(--border); transition:background 0.1s; }
+  tbody tr:nth-child(even) { background:var(--table-even-bg); }
+  tbody tr:hover { background:var(--table-hover-bg); }
+  td { padding:10px 16px; color:var(--text-dim); vertical-align:top; }
+  pre { background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:16px 20px; overflow-x:auto; margin:12px 0 20px; font-size:13px; line-height:1.5; }
+  code { font-family:'JetBrains Mono','Fira Code',monospace; font-size:13px; }
+  :not(pre) > code { background:var(--code-inline-bg); color:var(--code-inline-color); padding:2px 6px; border-radius:4px; font-size:12px; }
+  ul,ol { margin:8px 0 16px 24px; color:var(--text-dim); font-size:14px; }
+  li { margin-bottom:6px; line-height:1.6; }
+  .card { background:var(--bg-card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin:16px 0 24px; }
+  .card-title { font-size:14px; font-weight:600; margin-bottom:8px; color:var(--text); }
+  .note { border-left:4px solid var(--section-1); background:rgba(59,130,246,0.05); }
+  .warning { border-left:4px solid var(--status-draft); background:rgba(245,158,11,0.05); }
+  .badge { display:inline-block; padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.3px; }
+  .badge-red{background:rgba(239,68,68,0.15);color:#ef4444;}
+  .badge-green{background:rgba(16,185,129,0.15);color:#10b981;}
+  .badge-blue{background:rgba(59,130,246,0.15);color:#3b82f6;}
+  .badge-purple{background:rgba(139,92,246,0.15);color:#8b5cf6;}
+  .badge-gray{background:rgba(132,147,168,0.15);color:#8493a8;}
+  .approval-block { background:var(--bg-card); border:2px solid rgba(139,92,246,0.4); border-radius:12px; padding:28px 32px; margin:32px 0; text-align:center; background:rgba(139,92,246,0.04); }
+  .approval-title { font-size:18px; font-weight:700; margin-bottom:8px; }
+  .approval-subtitle { font-size:14px; color:var(--text-dim); margin-bottom:20px; }
+  .approval-status { font-size:13px; font-weight:600; margin-top:16px; }
+  hr { border:none; border-top:1px solid var(--border); margin:32px 0; }
+  .lang-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; cursor:pointer; user-select:none; background:var(--toggle-bg); border:1px solid var(--border); color:var(--text-dim); transition:all 0.2s; }
+  .pdf-btn { display:flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:600; cursor:pointer; user-select:none; background:rgba(233,69,96,0.1); border:1px solid rgba(233,69,96,0.3); color:var(--accent); }
+  .lang-th { display:none; } .lang-en { display:inline; }
+  [data-lang="th"] .lang-th { display:inline; } [data-lang="th"] .lang-en { display:none; }
+  [data-lang="th"], [data-lang="th"] p, [data-lang="th"] li, [data-lang="th"] td, [data-lang="th"] h3 { font-family:'Sarabun',system-ui,sans-serif; }
+  @media (max-width:768px) { .doc-sidebar{display:none;} .doc-content{margin-left:0;padding:24px 16px 60px;} }
+  @media print { .doc-header{position:static;} .doc-sidebar{display:none;} .doc-content{margin-left:0;height:auto;overflow:visible;padding:20px;} body{background:#fff;color:#000;overflow:auto;} .theme-toggle,.lang-btn,.pdf-btn{display:none;} }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <div class="doc-header-left">
+    <div class="doc-header-logo">DS</div>
+    <div class="doc-header-title">
+      <div class="doc-header-project">DevStarter</div>
+      <div class="doc-header-docname">Remove Feature Plan — Remove Obsidian + Understand-Anything</div>
+    </div>
+  </div>
+  <div class="doc-header-right">
+    <div class="doc-header-meta">
+      <div>CR-2026-06-08-002 · 2026-06-08</div>
+      <div>Author: Natthaphat Wajanavisit</div>
+    </div>
+    <span class="doc-status-badge pending">● PENDING APPROVAL</span>
+    <button class="pdf-btn" onclick="window.print()">&#128462; Export PDF</button>
+    <div class="lang-btn" onclick="toggleLang()"><span id="langLabel">EN</span></div>
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="theme-toggle-icon" id="themeIcon">&#9788;</span>
+      <div class="theme-toggle-track"><div class="theme-toggle-knob"></div></div>
+    </div>
+  </div>
+</header>
+
+<nav class="doc-sidebar">
+  <div class="doc-sidebar-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#section-1" class="toc-link active"><span class="toc-number s1">1</span> <span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวมการเปลี่ยนแปลง</span></a></li>
+    <li><a href="#section-2" class="toc-link"><span class="toc-number s2">2</span> <span class="lang-en">Reason for Removal</span><span class="lang-th">เหตุผลในการนำออก</span></a></li>
+    <li><a href="#section-3" class="toc-link"><span class="toc-number s3">3</span> <span class="lang-en">Removal Approach</span><span class="lang-th">แนวทางการนำออก</span></a></li>
+    <li><a href="#section-4" class="toc-link"><span class="toc-number s4">4</span> <span class="lang-en">Scope &amp; Impact</span><span class="lang-th">ขอบเขตและผลกระทบ</span></a></li>
+    <li><a href="#section-5" class="toc-link"><span class="toc-number s5">5</span> <span class="lang-en">Implementation Steps</span><span class="lang-th">ขั้นตอนการดำเนินงาน</span></a></li>
+    <li><a href="#section-6" class="toc-link"><span class="toc-number s6">6</span> <span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยงและการย้อนกลับ</span></a></li>
+    <li><a href="#section-7" class="toc-link"><span class="toc-number s7">7</span> <span class="lang-en">Approval</span><span class="lang-th">การอนุมัติ</span></a></li>
+  </ul>
+  <div class="doc-info-card">
+    <div class="doc-info-row"><span>Change ID</span> <span>CR-2026-06-08-002</span></div>
+    <div class="doc-info-row"><span>Type</span> <span>Remove Feature</span></div>
+    <div class="doc-info-row"><span>Effort</span> <span>L</span></div>
+    <div class="doc-info-row"><span>Priority</span> <span>High</span></div>
+    <div class="doc-info-row"><span>Date</span> <span>2026-06-08</span></div>
+    <div class="doc-info-row"><span>Status</span> <span>Pending Approval</span></div>
+  </div>
+</nav>
+
+<main class="doc-content">
+
+  <div class="section-header" id="section-1">
+    <span class="section-number s1">1</span>
+    <h2 class="section-title"><span class="lang-en">Change Overview</span><span class="lang-th">ภาพรวมการเปลี่ยนแปลง</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Change ID</td><td><code>CR-2026-06-08-002</code></td></tr>
+      <tr><td>Change Type</td><td><span class="badge badge-red">Remove Feature</span></td></tr>
+      <tr><td>Feature / Fix Name</td><td>Remove Obsidian Knowledge Vault + Understand-Anything Integration</td></tr>
+      <tr><td>Slug</td><td><code>remove-obsidian-understand</code></td></tr>
+      <tr><td>Date</td><td>2026-06-08</td></tr>
+      <tr><td>Author</td><td>Natthaphat Wajanavisit</td></tr>
+      <tr><td>Priority</td><td><span class="badge badge-red">High</span></td></tr>
+      <tr><td>Effort</td><td>L</td></tr>
+      <tr><td>Branch</td><td><code>chore/remove-obsidian-understand</code></td></tr>
+      <tr><td>Status</td><td><span class="badge badge-purple">Pending Approval</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-2">
+    <span class="section-number s2">2</span>
+    <h2 class="section-title"><span class="lang-en">Reason for Removal</span><span class="lang-th">เหตุผลในการนำออก</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Root Problem</span><span class="lang-th">ต้นตอของปัญหา</span></h3>
+  <p>
+    <span class="lang-en">Both feature sets were added to extend DevStarter's scope beyond its core purpose. The Obsidian integration (v5.7.0–v6.0.0) introduced 9 integration points across the SDLC runbooks, creating ongoing maintenance burden. The Understand-Anything wrappers (v5.6.0) added 8 commands that delegate to an external plugin dependency. Neither feature set aligns with the toolkit's core mission of structured SDLC automation.</span>
+    <span class="lang-th">ฟีเจอร์ทั้งสองชุดถูกเพิ่มเพื่อขยายขอบเขตของ DevStarter เกินกว่าจุดประสงค์หลัก การผสานรวม Obsidian (v5.7.0–v6.0.0) สร้างจุดเชื่อมต่อ 9 จุดใน SDLC runbook ก่อให้เกิดภาระการบำรุงรักษาต่อเนื่อง wrapper ของ Understand-Anything (v5.6.0) เพิ่ม command 8 รายการที่ส่งต่อไปยัง plugin ภายนอก ฟีเจอร์ทั้งสองชุดไม่สอดคล้องกับพันธกิจหลักของ toolkit ในการทำให้ SDLC เป็นอัตโนมัติอย่างมีโครงสร้าง</span>
+  </p>
+
+  <h3><span class="lang-en">Business Requirement</span><span class="lang-th">ความต้องการทางธุรกิจ</span></h3>
+  <p>
+    <span class="lang-en">Project owner explicitly requested removal of both feature sets. Simplify the toolkit to its core SDLC automation commands, reduce maintenance surface, and eliminate the external plugin dependency for Understand-Anything.</span>
+    <span class="lang-th">เจ้าของโปรเจกต์ร้องขอให้นำฟีเจอร์ทั้งสองชุดออก เพื่อลดความซับซ้อนของ toolkit ให้เหลือเพียง command อัตโนมัติ SDLC หลัก ลด surface area การบำรุงรักษา และขจัด dependency ต่อ plugin ภายนอกสำหรับ Understand-Anything</span>
+  </p>
+
+  <h3><span class="lang-en">User Story</span><span class="lang-th">เรื่องราวของผู้ใช้</span></h3>
+  <div class="card note">
+    <p>
+      <strong>As a</strong> DevStarter maintainer,<br>
+      <strong>I want to</strong> remove the Obsidian vault and Understand-Anything features entirely,<br>
+      <strong>So that</strong> the toolkit stays focused on core SDLC automation with no external plugin dependencies.
+    </p>
+  </div>
+
+  <h3><span class="lang-en">Acceptance Criteria</span><span class="lang-th">เกณฑ์การยอมรับ</span></h3>
+  <ul>
+    <li><span class="lang-en">No devstarter-knowledge, devstarter-vault-ingest, or devstarter-understand* dirs exist in skills/</span><span class="lang-th">ไม่มี dir devstarter-knowledge, devstarter-vault-ingest หรือ devstarter-understand* ใน skills/</span></li>
+    <li><span class="lang-en">No corresponding SDLC runbooks exist in sdlc/</span><span class="lang-th">ไม่มี SDLC runbook ที่สอดคล้องใน sdlc/</span></li>
+    <li><span class="lang-en">devstarter-menu.md has no items pointing to removed commands; numbering is clean</span><span class="lang-th">devstarter-menu.md ไม่มีรายการที่ชี้ไป command ที่ถูกลบ การจัดเรียงหมายเลขถูกต้อง</span></li>
+    <li><span class="lang-en">grep -r "devstarter-knowledge\|devstarter-vault-ingest\|devstarter-understand\|understand-anything" skills/ sdlc/ returns no hits</span><span class="lang-th">grep -r ที่ค้นหา command ที่ถูกลบใน skills/ sdlc/ ไม่พบผลลัพธ์</span></li>
+    <li><span class="lang-en">devstarter-config.yml has no obsidian: block or plugin detection</span><span class="lang-th">devstarter-config.yml ไม่มีบล็อก obsidian: หรือ plugin detection</span></li>
+    <li><span class="lang-en">9 reference runbooks compile (no broken section references)</span><span class="lang-th">runbook อ้างอิงทั้ง 9 รายการไม่มี reference ที่เสียหาย</span></li>
+  </ul>
+
+  <div class="section-header" id="section-3">
+    <span class="section-number s3">3</span>
+    <h2 class="section-title"><span class="lang-en">Removal Approach</span><span class="lang-th">แนวทางการนำออก</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Approach</span><span class="lang-th">แนวทาง</span></h3>
+  <p>
+    <span class="lang-en">Clean delete: remove all primary files first (skills dirs, SDLC runbooks, templates, ADRs, feature docs, runtime artifacts), then edit each reference file to strip vault/understand blocks. The approach is ordered upstream-to-downstream to avoid editing a file that references a file we haven't deleted yet.</span>
+    <span class="lang-th">ลบแบบสะอาด: นำไฟล์หลักทั้งหมดออกก่อน (skills dir, SDLC runbook, template, ADR, feature doc, runtime artifact) จากนั้นแก้ไขแต่ละไฟล์อ้างอิงเพื่อลบบล็อก vault/understand ลำดับเป็นไปจาก upstream ไป downstream เพื่อหลีกเลี่ยงการแก้ไขไฟล์ที่อ้างอิงไฟล์ที่ยังไม่ได้ลบ</span>
+  </p>
+
+  <h3><span class="lang-en">Why This Approach</span><span class="lang-th">เหตุผลที่เลือกแนวทางนี้</span></h3>
+  <p>
+    <span class="lang-en">Deprecation-first is unnecessary — these features have no external consumers (DevStarter is a local toolkit installed per-user). A clean delete produces a cleaner result with no dead code, no deprecation notices cluttering the runbooks, and a smaller diff that is easier to review and revert if needed.</span>
+    <span class="lang-th">การ deprecate ก่อนไม่จำเป็น เนื่องจากฟีเจอร์เหล่านี้ไม่มีผู้ใช้ภายนอก (DevStarter เป็น local toolkit ที่ install ต่อผู้ใช้) การลบแบบสะอาดให้ผลลัพธ์ที่ดีกว่า ไม่มีโค้ดที่ตายแล้ว ไม่มีประกาศ deprecation ที่รบกวน runbook และมี diff ที่เล็กกว่าซึ่งง่ายต่อการ review และ revert หากจำเป็น</span>
+  </p>
+
+  <h3><span class="lang-en">Alternatives Considered</span><span class="lang-th">ทางเลือกอื่นที่พิจารณา</span></h3>
+  <table>
+    <thead><tr><th>Option</th><th>Reason Rejected</th></tr></thead>
+    <tbody>
+      <tr><td><span class="lang-en">Deprecate first, delete later</span><span class="lang-th">Deprecate ก่อน ลบทีหลัง</span></td><td><span class="lang-en">No external consumers. Adds noise without value. Owner wants clean removal now.</span><span class="lang-th">ไม่มีผู้ใช้ภายนอก เพิ่ม noise โดยไม่มีประโยชน์ เจ้าของต้องการลบแบบสะอาดทันที</span></td></tr>
+      <tr><td><span class="lang-en">Move to an optional --profile flag</span><span class="lang-th">ย้ายไปเป็น optional --profile flag</span></td><td><span class="lang-en">Increases install complexity. Owner decision is to remove entirely.</span><span class="lang-th">เพิ่มความซับซ้อนในการติดตั้ง เจ้าของตัดสินใจนำออกทั้งหมด</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-4">
+    <span class="section-number s4">4</span>
+    <h2 class="section-title"><span class="lang-en">Scope &amp; Impact</span><span class="lang-th">ขอบเขตและผลกระทบ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Files to Delete (Primary)</span><span class="lang-th">ไฟล์ที่ต้องลบ (หลัก)</span></h3>
+  <table>
+    <thead><tr><th>File / Directory</th><th>Feature</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td><code>skills/devstarter-knowledge/</code></td><td>Obsidian</td><td><span class="lang-en">Primary skill entry point</span><span class="lang-th">จุดเข้า skill หลัก</span></td></tr>
+      <tr><td><code>skills/devstarter-vault-ingest/</code></td><td>Obsidian</td><td><span class="lang-en">Primary skill entry point</span><span class="lang-th">จุดเข้า skill หลัก</span></td></tr>
+      <tr><td><code>sdlc/devstarter-knowledge.md</code></td><td>Obsidian</td><td><span class="lang-en">SDLC runbook</span><span class="lang-th">SDLC runbook</span></td></tr>
+      <tr><td><code>sdlc/devstarter-vault-ingest.md</code></td><td>Obsidian</td><td><span class="lang-en">SDLC runbook</span><span class="lang-th">SDLC runbook</span></td></tr>
+      <tr><td><code>templates/obsidian/</code> (4 files)</td><td>Obsidian</td><td><span class="lang-en">Note templates for vault</span><span class="lang-th">Note template สำหรับ vault</span></td></tr>
+      <tr><td><code>docs/obsidian-vault-guide.md</code></td><td>Obsidian</td><td><span class="lang-en">Feature guide</span><span class="lang-th">คู่มือฟีเจอร์</span></td></tr>
+      <tr><td><code>docs/adr/0002-obsidian-knowledge-vault.html</code></td><td>Obsidian</td><td><span class="lang-en">Architecture decision record</span><span class="lang-th">บันทึกการตัดสินใจสถาปัตยกรรม</span></td></tr>
+      <tr><td><code>docs/feature/obsidian-project-snapshot/</code> (4 files)</td><td>Obsidian</td><td><span class="lang-en">Feature delivery docs</span><span class="lang-th">เอกสาร delivery ฟีเจอร์</span></td></tr>
+      <tr><td><code>docs/feature/obsidian-sdlc-wiring/</code> (4 files)</td><td>Obsidian</td><td><span class="lang-en">Feature delivery docs</span><span class="lang-th">เอกสาร delivery ฟีเจอร์</span></td></tr>
+      <tr><td><code>docs/feature/obsidian-vault-design-analyzer/</code> (4 files)</td><td>Obsidian</td><td><span class="lang-en">Feature delivery docs</span><span class="lang-th">เอกสาร delivery ฟีเจอร์</span></td></tr>
+      <tr><td><code>docs/feature/vault-ingest-html-support/</code> (2 files)</td><td>Obsidian</td><td><span class="lang-en">Feature delivery docs</span><span class="lang-th">เอกสาร delivery ฟีเจอร์</span></td></tr>
+      <tr><td><code>memory/change-log-obsidian-*.md</code> (4 files)</td><td>Obsidian</td><td><span class="lang-en">Session artifacts</span><span class="lang-th">Session artifacts</span></td></tr>
+      <tr><td><code>memory/consult-*obsidian*.md</code> (4 files)</td><td>Obsidian</td><td><span class="lang-en">Consult artifacts</span><span class="lang-th">Consult artifacts</span></td></tr>
+      <tr><td><code>skills/devstarter-understand*/</code> (8 dirs)</td><td>Understand-Anything</td><td><span class="lang-en">Primary skill entry points</span><span class="lang-th">จุดเข้า skill หลัก</span></td></tr>
+      <tr><td><code>sdlc/devstarter-understand*.md</code> (8 files)</td><td>Understand-Anything</td><td><span class="lang-en">SDLC runbooks</span><span class="lang-th">SDLC runbook</span></td></tr>
+      <tr><td><code>docs/adr/0001-understand-anything-integration.html</code></td><td>Understand-Anything</td><td><span class="lang-en">Architecture decision record</span><span class="lang-th">บันทึกการตัดสินใจสถาปัตยกรรม</span></td></tr>
+      <tr><td><code>docs/feature/understand-wrappers/</code> (4 files)</td><td>Understand-Anything</td><td><span class="lang-en">Feature delivery docs</span><span class="lang-th">เอกสาร delivery ฟีเจอร์</span></td></tr>
+      <tr><td><code>.understand-anything/</code> (4 runtime files)</td><td>Understand-Anything</td><td><span class="lang-en">Runtime plugin artifacts</span><span class="lang-th">Runtime artifacts ของ plugin</span></td></tr>
+      <tr><td><code>memory/change-log-understand-wrappers.md</code></td><td>Understand-Anything</td><td><span class="lang-en">Session artifact</span><span class="lang-th">Session artifact</span></td></tr>
+      <tr><td><code>memory/consult-understand-anything-integration.md</code></td><td>Understand-Anything</td><td><span class="lang-en">Consult artifact</span><span class="lang-th">Consult artifact</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Files to Edit (References)</span><span class="lang-th">ไฟล์ที่ต้องแก้ไข (อ้างอิง)</span></h3>
+  <table>
+    <thead><tr><th>File</th><th>Change</th></tr></thead>
+    <tbody>
+      <tr><td><code>sdlc/devstarter-starter.md</code></td><td><span class="lang-en">Remove vault snapshot emit block</span><span class="lang-th">ลบบล็อก vault snapshot emit</span></td></tr>
+      <tr><td><code>sdlc/devstarter-starter-gates.md</code></td><td><span class="lang-en">Remove vault gate reference</span><span class="lang-th">ลบ vault gate reference</span></td></tr>
+      <tr><td><code>sdlc/devstarter-change-add.md</code></td><td><span class="lang-en">Remove vault recall block (before A-PHASE 2)</span><span class="lang-th">ลบบล็อก vault recall (ก่อน A-PHASE 2)</span></td></tr>
+      <tr><td><code>sdlc/devstarter-debug.md</code></td><td><span class="lang-en">Remove vault recall at Phase 1</span><span class="lang-th">ลบ vault recall ที่ Phase 1</span></td></tr>
+      <tr><td><code>sdlc/devstarter-postmortem.md</code></td><td><span class="lang-en">Remove vault emit block</span><span class="lang-th">ลบบล็อก vault emit</span></td></tr>
+      <tr><td><code>sdlc/devstarter-review.md</code></td><td><span class="lang-en">Remove vault emit block</span><span class="lang-th">ลบบล็อก vault emit</span></td></tr>
+      <tr><td><code>sdlc/devstarter-retrospective.md</code></td><td><span class="lang-en">Remove vault emit block</span><span class="lang-th">ลบบล็อก vault emit</span></td></tr>
+      <tr><td><code>sdlc/devstarter-audit.md</code></td><td><span class="lang-en">Remove vault emit block</span><span class="lang-th">ลบบล็อก vault emit</span></td></tr>
+      <tr><td><code>sdlc/devstarter-onboarding.md</code></td><td><span class="lang-en">Remove vault recall at session start</span><span class="lang-th">ลบ vault recall ที่ session start</span></td></tr>
+      <tr><td><code>devstarter-menu.md</code></td><td><span class="lang-en">Remove items 37–46 (8 understand + 2 vault); renumber</span><span class="lang-th">ลบรายการ 37–46 (8 understand + 2 vault); จัดเรียงหมายเลขใหม่</span></td></tr>
+      <tr><td><code>devstarter-config.yml</code></td><td><span class="lang-en">Remove obsidian: block + plugin detection block</span><span class="lang-th">ลบบล็อก obsidian: + plugin detection</span></td></tr>
+      <tr><td><code>templates/devstarter-config.template.yml</code></td><td><span class="lang-en">Remove same blocks from template</span><span class="lang-th">ลบบล็อกเดียวกันออกจาก template</span></td></tr>
+      <tr><td><code>CLAUDE.md</code></td><td><span class="lang-en">Mark v5.6.0–v6.0.0 vault/understand entries as removed in Recently Shipped table</span><span class="lang-th">ระบุรายการ v5.6.0–v6.0.0 vault/understand ใน Recently Shipped ว่าถูกนำออกแล้ว</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Files NOT to Touch (Regression Guard)</span><span class="lang-th">ไฟล์ที่ต้องไม่แก้ไข (ป้องกันผลกระทบ)</span></h3>
+  <ul>
+    <li><span class="lang-en">All other 37 SDLC runbooks not in the reference list above</span><span class="lang-th">SDLC runbook อื่นทั้งหมด 37 รายการที่ไม่อยู่ในรายการอ้างอิงข้างต้น</span></li>
+    <li><code>templates/secrets/vault-*.md</code> <span class="lang-en">(HashiCorp Vault — unrelated)</span><span class="lang-th">(HashiCorp Vault — ไม่เกี่ยวข้อง)</span></li>
+    <li><code>docs/index.html</code> <span class="lang-en">— only remove links to deleted feature docs; do not rewrite</span><span class="lang-th">— ลบเฉพาะ link ไปยัง feature doc ที่ถูกลบ ไม่ rewrite</span></li>
+    <li><code>CHANGELOG.md</code> <span class="lang-en">— historical record; do not rewrite past entries</span><span class="lang-th">— บันทึกประวัติ ไม่เขียนรายการในอดีตใหม่</span></li>
+    <li><code>agents/devstarter-opensource-sanitizer.md</code> <span class="lang-en">— referenced by knowledge but has its own purpose; stays</span><span class="lang-th">— อ้างอิงโดย knowledge แต่มีวัตถุประสงค์เป็นของตัวเอง คงอยู่</span></li>
+  </ul>
+
+  <h3><span class="lang-en">System Impact</span><span class="lang-th">ผลกระทบต่อระบบ</span></h3>
+  <table>
+    <thead><tr><th>Area</th><th>Impact</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Database</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">No database in DevStarter</span><span class="lang-th">DevStarter ไม่มี database</span></td></tr>
+      <tr><td>API</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">No API in DevStarter</span><span class="lang-th">DevStarter ไม่มี API</span></td></tr>
+      <tr><td>UI</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">No UI; menu.md loses 10 items (renumbered)</span><span class="lang-th">ไม่มี UI; menu.md เสียรายการ 10 รายการ (จัดเรียงหมายเลขใหม่)</span></td></tr>
+      <tr><td>Security</td><td><span class="badge badge-green">None</span></td><td><span class="lang-en">Removal reduces attack surface (fewer external integrations)</span><span class="lang-th">การนำออกลด attack surface (integration ภายนอกน้อยลง)</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header" id="section-5">
+    <span class="section-number s5">5</span>
+    <h2 class="section-title"><span class="lang-en">Implementation Steps</span><span class="lang-th">ขั้นตอนการดำเนินงาน</span></h2>
+  </div>
+
+  <ol>
+    <li><span class="lang-en">Create branch <code>chore/remove-obsidian-understand</code> from <code>develop</code></span><span class="lang-th">สร้าง branch <code>chore/remove-obsidian-understand</code> จาก <code>develop</code></span></li>
+    <li><span class="lang-en">Delete all Obsidian primary files and directories (skills/, sdlc/, templates/obsidian/, docs/obsidian-vault-guide.md, docs/adr/0002-*, docs/feature/obsidian-*, docs/feature/vault-ingest-html-support/)</span><span class="lang-th">ลบไฟล์และ directory หลักของ Obsidian ทั้งหมด</span></li>
+    <li><span class="lang-en">Delete Obsidian session/consult artifacts from memory/</span><span class="lang-th">ลบ session/consult artifact ของ Obsidian จาก memory/</span></li>
+    <li><span class="lang-en">Delete all Understand-Anything primary files and directories (skills/devstarter-understand*/, sdlc/devstarter-understand*.md, docs/adr/0001-*, docs/feature/understand-wrappers/, .understand-anything/, memory artifacts)</span><span class="lang-th">ลบไฟล์และ directory หลักของ Understand-Anything ทั้งหมด</span></li>
+    <li><span class="lang-en">Edit 9 reference SDLC runbooks: remove vault emit/recall blocks from starter, starter-gates, change-add, debug, postmortem, review, retrospective, audit, onboarding</span><span class="lang-th">แก้ไข SDLC runbook อ้างอิง 9 รายการ: ลบบล็อก vault emit/recall</span></li>
+    <li><span class="lang-en">Edit devstarter-menu.md: remove items 37–46 (8 understand commands + 2 vault commands); renumber all remaining items sequentially</span><span class="lang-th">แก้ไข devstarter-menu.md: ลบรายการ 37–46; จัดเรียงหมายเลขรายการที่เหลือใหม่</span></li>
+    <li><span class="lang-en">Edit devstarter-config.yml and templates/devstarter-config.template.yml: remove obsidian: config block and plugin detection block</span><span class="lang-th">แก้ไข devstarter-config.yml และ template: ลบบล็อก obsidian: และ plugin detection</span></li>
+    <li><span class="lang-en">Edit CLAUDE.md: update Recently Shipped table — annotate v5.6.0–v6.0.0 vault/understand entries as "(removed CR-2026-06-08-002)"</span><span class="lang-th">แก้ไข CLAUDE.md: อัปเดตตาราง Recently Shipped — ระบุรายการ v5.6.0–v6.0.0 ว่า "(removed CR-2026-06-08-002)"</span></li>
+    <li><span class="lang-en">Remove links to deleted feature docs from docs/index.html (obsidian-*, understand-*, vault-ingest-html-support entries)</span><span class="lang-th">ลบ link ไปยัง feature doc ที่ถูกลบออกจาก docs/index.html</span></li>
+    <li><span class="lang-en">Post-removal verification grep: confirm no broken references remain in skills/ and sdlc/</span><span class="lang-th">grep ตรวจสอบหลังนำออก: ยืนยันว่าไม่มี reference ที่เสียหายใน skills/ และ sdlc/</span></li>
+    <li><span class="lang-en">Commit and raise PR to develop</span><span class="lang-th">Commit และสร้าง PR ไปยัง develop</span></li>
+  </ol>
+
+  <h3><span class="lang-en">Dependencies</span><span class="lang-th">สิ่งที่ต้องพึ่งพา</span></h3>
+  <ul>
+    <li><span class="lang-en">None — all changes are file deletes and text edits with no compile step</span><span class="lang-th">ไม่มี — การเปลี่ยนแปลงทั้งหมดเป็นการลบไฟล์และแก้ไขข้อความโดยไม่มีขั้นตอน compile</span></li>
+  </ul>
+
+  <h3><span class="lang-en">Testing Approach</span><span class="lang-th">แนวทางการทดสอบ</span></h3>
+  <p>
+    <span class="lang-en">Post-removal grep pass: search for "devstarter-knowledge", "devstarter-vault-ingest", "devstarter-understand", "understand-anything", and "obsidian:" across skills/ and sdlc/ to confirm zero functional references remain. Inspect devstarter-menu.md item numbering is sequential. Verify devstarter-config.yml has no obsidian block.</span>
+    <span class="lang-th">grep pass หลังนำออก: ค้นหาคำสำคัญที่เกี่ยวข้องใน skills/ และ sdlc/ เพื่อยืนยันว่าไม่มี functional reference เหลืออยู่ ตรวจสอบการจัดเรียงหมายเลขรายการใน devstarter-menu.md ยืนยันว่า devstarter-config.yml ไม่มีบล็อก obsidian</span>
+  </p>
+
+  <div class="section-header" id="section-6">
+    <span class="section-number s6">6</span>
+    <h2 class="section-title"><span class="lang-en">Risk &amp; Rollback</span><span class="lang-th">ความเสี่ยงและการย้อนกลับ</span></h2>
+  </div>
+
+  <h3><span class="lang-en">Risks</span><span class="lang-th">ความเสี่ยง</span></h3>
+  <table>
+    <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="lang-en">Missed vault reference left in an edited runbook causing a broken step</span><span class="lang-th">พลาด vault reference ที่เหลืออยู่ใน runbook ที่แก้ไขทำให้ขั้นตอนเสียหาย</span></td>
+        <td><span class="badge badge-red">Medium</span></td>
+        <td><span class="lang-en">Post-removal grep verification before PR; addresses 100% of functional references</span><span class="lang-th">grep ตรวจสอบหลังนำออกก่อน PR ครอบคลุม functional reference ทั้งหมด</span></td>
+      </tr>
+      <tr>
+        <td><span class="lang-en">devstarter-menu.md item numbering gap or duplicate</span><span class="lang-th">หมายเลขรายการ devstarter-menu.md เว้นช่องหรือซ้ำกัน</span></td>
+        <td><span class="badge badge-green">Low</span></td>
+        <td><span class="lang-en">Manual review of menu after edit; sequential numbering is easy to verify visually</span><span class="lang-th">ตรวจสอบ menu ด้วยตัวเองหลังแก้ไข การจัดเรียงหมายเลขต่อเนื่องตรวจสอบด้วยสายตาได้ง่าย</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3><span class="lang-en">Rollback Plan</span><span class="lang-th">แผนการย้อนกลับ</span></h3>
+  <p>
+    <span class="lang-en">Revert the merge commit on develop: <code>git revert &lt;merge-commit-sha&gt;</code>. This restores all deleted files and reverts all reference edits in a single operation. No database migration, no service restart, no external state to unwind.</span>
+    <span class="lang-th">Revert merge commit บน develop: <code>git revert &lt;merge-commit-sha&gt;</code> การดำเนินการนี้กู้คืนไฟล์ที่ถูกลบทั้งหมดและ revert การแก้ไข reference ทั้งหมดในขั้นตอนเดียว ไม่มี database migration, ไม่มีการ restart service, ไม่มี external state ที่ต้องแก้ไข</span>
+  </p>
+
+  <div class="section-header" id="section-7">
+    <span class="section-number s7">7</span>
+    <h2 class="section-title"><span class="lang-en">Approval</span><span class="lang-th">การอนุมัติ</span></h2>
+  </div>
+
+  <div class="card warning">
+    <div class="card-title"><span class="lang-en">Action Required</span><span class="lang-th">ต้องดำเนินการ</span></div>
+    <p><span class="lang-en">Review all sections above. When satisfied, approve in the Claude Code terminal to create branch <code>chore/remove-obsidian-understand</code> and start removal.</span><span class="lang-th">ตรวจสอบทุกหัวข้อข้างต้น เมื่อพอใจแล้ว อนุมัติใน Claude Code terminal เพื่อสร้าง branch <code>chore/remove-obsidian-understand</code> และเริ่มดำเนินการนำออก</span></p>
+  </div>
+
+  <div class="approval-block" id="approval-block">
+    <div class="approval-title">&#9888; <span class="lang-en">Awaiting Approval</span><span class="lang-th">รอการอนุมัติ</span></div>
+    <div class="approval-subtitle"><span class="lang-en">Return to the terminal and approve to start removal.</span><span class="lang-th">กลับไปที่ terminal และอนุมัติเพื่อเริ่มดำเนินการนำออก</span></div>
+    <table style="margin:16px auto;width:auto;min-width:320px;">
+      <thead><tr><th>Field</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Change ID</td><td><code>CR-2026-06-08-002</code></td></tr>
+        <tr><td>Branch to create</td><td><code>chore/remove-obsidian-understand</code></td></tr>
+        <tr><td>Requested by</td><td>Natthaphat Wajanavisit</td></tr>
+        <tr><td>Date</td><td>2026-06-08</td></tr>
+      </tbody>
+    </table>
+    <div class="approval-status"><span class="lang-en">Status:</span><span class="lang-th">สถานะ:</span> <span class="badge badge-purple">PENDING APPROVAL</span></div>
+  </div>
+
+  <div class="section-header" id="revision-history">
+    <span class="section-number s1">R</span>
+    <h2 class="section-title"><span class="lang-en">Revision History</span><span class="lang-th">ประวัติการแก้ไข</span></h2>
+  </div>
+  <table>
+    <thead><tr><th>CR ID</th><th>Date</th><th>Type</th><th>Description</th><th>Author</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>CR-2026-06-08-002</code></td>
+        <td>2026-06-08</td>
+        <td>REMOVE</td>
+        <td><span class="lang-en">Initial removal plan created</span><span class="lang-th">สร้างแผนการนำออกเริ่มต้น</span></td>
+        <td>Natthaphat Wajanavisit</td>
+      </tr>
+    </tbody>
+  </table>
+
+</main>
+
+<script>
+  function toggleLang() {
+    var html = document.documentElement; var isThai = html.getAttribute('data-lang') === 'th'; var label = document.getElementById('langLabel');
+    if (isThai) { html.removeAttribute('data-lang'); localStorage.setItem('docportal-lang','en'); if (label) label.textContent='EN'; }
+    else { html.setAttribute('data-lang','th'); localStorage.setItem('docportal-lang','th'); if (label) label.textContent='TH'; }
+  }
+  (function() { var l=localStorage.getItem('docportal-lang'); if (l==='th') { document.documentElement.setAttribute('data-lang','th'); var lb=document.getElementById('langLabel'); if(lb) lb.textContent='TH'; } })();
+  function toggleTheme() {
+    var html = document.documentElement; var isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('docportal-theme','light'); document.getElementById('themeIcon').innerHTML='&#9788;'; }
+    else { html.setAttribute('data-theme','dark'); localStorage.setItem('docportal-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; }
+  }
+  (function() { var saved = localStorage.getItem('docportal-theme'); if (saved === 'dark') { document.documentElement.setAttribute('data-theme','dark'); document.getElementById('themeIcon').innerHTML='&#9790;'; } })();
+  const sections = document.querySelectorAll('.section-header[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const content = document.querySelector('.doc-content');
+  content.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (content.scrollTop >= s.offsetTop - content.offsetTop - 100) current = s.id; });
+    tocLinks.forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === '#' + current) l.classList.add('active'); });
+  });
+  tocLinks.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      const t = document.querySelector(l.getAttribute('href'));
+      if (t) content.scrollTo({ top: t.offsetTop - content.offsetTop - 20, behavior: 'smooth' });
+    });
+  });
+</script>
+</body>
+</html>
