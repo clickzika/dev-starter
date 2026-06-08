@@ -159,34 +159,6 @@ Ask which finding number, then expand:
 
 ---
 
-## ⚡ Vault Emit — Code Quality Findings (v5.9.0+)
-
-After all post-review actions in Phase 4, optionally capture recurring findings to the vault.
-
-Read `obsidian.enabled` from `devstarter-config.yml`.
-If `obsidian.enabled: false` or `obsidian:` block absent → silently skip.
-If review verdict was ✅ Approved with 0 blockers and 0 majors → silently skip (nothing worth capturing).
-If `obsidian.enabled: true` AND review found ≥1 MAJOR or BLOCKER finding:
-  Use `AskUserQuestion` with:
-  - question: "Save recurring findings as vault notes?"
-  - options: ["Yes — capture to vault", "No — skip"]
-  If "Yes": for each distinct finding *category* (not every finding line):
-    Run Vault Emit Procedure (E1–E5) from `sdlc/devstarter-knowledge.md`
-    Template: `~/.claude/templates/obsidian/technique-note.md`
-    Fill:
-      type: technique
-      topic: code-quality
-      title: "[category] — [brief description]"
-      symptom: the finding description (most representative instance)
-      root_cause_category: map to closest vocabulary term (e.g. null-deref, missing-validation, etc.)
-      tags: [technique, code-quality, "<language>"]
-      source: PR #[N] or branch [name] — date [today]
-    Show E5 confirmation per emitted note.
-  If "No": continue.
-  Either way: if transport: git — remind (do not auto-run): commit + push vault repo.
-
----
-
 ## When to use vs alternatives
 
 - **Use /devstarter-review** when: you want a structured 3-reviewer pass

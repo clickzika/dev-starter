@@ -66,23 +66,6 @@ Show this menu and ask ONE question:
   27. ⚡ Profile (proactive performance investigation)
   28. 🛡️  Compliance (WCAG / GDPR / HIPAA / SOC 2 / PCI-DSS / ISO 27001)
 
-── UNDERSTAND (codebase analysis) ─────────────
-  37. 🧠 Understand — analyze codebase → knowledge graph
-  38. 📊 Understand Dashboard — interactive graph viewer
-  39. 💬 Understand Chat — ask questions about the codebase
-  40. 🔀 Understand Diff — change impact analysis
-  41. 🔎 Understand Explain — deep-dive a file/function
-  42. 🧭 Understand Onboard — codebase onboarding guide
-  43. 🗂️  Understand Domain — business domains & flows
-  44. 📚 Understand Knowledge — analyze an LLM wiki
-       (all 37–44 require the Understand-Anything plugin: `/plugin install understand-anything`)
-
-── KNOWLEDGE VAULT (Obsidian) ─────────────────
-  45. 🧠 Knowledge — `/devstarter-knowledge` (capture technique / know-how / RCA into a shared, cross-project Obsidian vault)
-       (opt-in: set the `obsidian:` block in devstarter-config.yml — see docs/obsidian-vault-guide.md)
-  46. 📥 Vault Ingest — `/devstarter-vault-ingest <file>` (analyze existing MD file → auto-classify → discover related notes → emit with wikilinks)
-       Use `--scaffold` to create hierarchical folder structure + MOC pages without ingesting a file.
-
 ── DIRECT-INVOKE SKILLS (no SDLC gates) ───────
   33. 🧠 Debug Mantra — `/devstarter-debug-mantra` (4-step debugging discipline)
   34. 📝 Bug Post-Mortem — `/devstarter-bug-postmortem` (engineering RCA writeup; different from #25 incident)
@@ -161,13 +144,3 @@ Route to correct file:
 | 34 | `~/.claude/skills/devstarter-bug-postmortem/SKILL.md` (direct-invoke) |
 | 35 | `~/.claude/skills/devstarter-scrutinize/SKILL.md` (direct-invoke) |
 | 36 | `~/.claude/skills/devstarter-management-talk/SKILL.md` (direct-invoke) |
-| 37 | `~/.claude/sdlc/devstarter-understand.md` (delegates to Understand-Anything `/understand`) |
-| 38 | `~/.claude/sdlc/devstarter-understand-dashboard.md` (delegates to `/understand-dashboard`) |
-| 39 | `~/.claude/sdlc/devstarter-understand-chat.md` (delegates to `/understand-chat`) |
-| 40 | `~/.claude/sdlc/devstarter-understand-diff.md` (delegates to `/understand-diff`) |
-| 41 | `~/.claude/sdlc/devstarter-understand-explain.md` (delegates to `/understand-explain`) |
-| 42 | `~/.claude/sdlc/devstarter-understand-onboard.md` (delegates to `/understand-onboard`) |
-| 43 | `~/.claude/sdlc/devstarter-understand-domain.md` (delegates to `/understand-domain`) |
-| 44 | `~/.claude/sdlc/devstarter-understand-knowledge.md` (delegates to `/understand-knowledge`) |
-| 45 | `~/.claude/sdlc/devstarter-knowledge.md` (capture into Obsidian knowledge vault) |
-| 46 | `~/.claude/sdlc/devstarter-vault-ingest.md` (analyze existing MD → classify → link → emit to vault) |
