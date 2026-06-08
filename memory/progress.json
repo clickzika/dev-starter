@@ -1,33 +1,36 @@
 {
-  "workflow": "devstarter-release",
-  "version": "v6.0.0",
+  "workflow": "devstarter-change",
+  "version": "develop",
   "status": "completed",
   "branch": "develop",
-  "started_at": "2026-06-07",
-  "completed_at": "2026-06-07",
-  "intent": "Release v6.0.0 — Obsidian Vault Design + Ingest Skill",
+  "started_at": "2026-06-08",
+  "completed_at": "2026-06-08",
+  "intent": "CR-2026-06-08-001 — vault-ingest HTML Support",
   "results": {
-    "release_tag": "v6.0.0",
-    "origin_main": "3aef9e7 — merged from uat",
-    "release_remote_main": "0edd08f — clean (docs/ + memory/ stripped)",
-    "github_release": "https://github.com/clickzika/dev-starter/releases/tag/v6.0.0",
-    "branches_pushed": "origin/main, origin/uat, origin/develop, origin/release/v6.0.0",
-    "gate_1_dev": "PASSED",
-    "gate_2_sit": "PASSED",
-    "gate_3_uat": "PASSED",
-    "gate_4_deploy": "PASSED",
-    "feature_cr": "CR-2026-06-07-001 — Obsidian Vault Design + Ingest Skill"
+    "change_id": "CR-2026-06-08-001",
+    "change_type": "Modify Feature",
+    "feature": "vault-ingest-html-support",
+    "files_modified": [
+      "sdlc/devstarter-vault-ingest.md — Step I1 extended + Step I1b added",
+      "skills/devstarter-vault-ingest/SKILL.md — inline args + description updated"
+    ],
+    "docs_generated": [
+      "docs/feature/vault-ingest-html-support/kickoff.html",
+      "docs/feature/vault-ingest-html-support/plan.html"
+    ],
+    "merge_commit": "feature/vault-ingest-html-support → develop (no-ff)"
   },
   "open_items": [
     "T0 (v5.7.0 carryover) — live vault end-to-end validation: run /devstarter-knowledge 'test' against D:\\Projects\\Obsidian",
     "Enable hierarchical mode: add folder_structure: hierarchical to devstarter-config.yml, run /devstarter-vault-ingest --scaffold",
     "C2 — understand-anything delegation: validate after '/plugin install understand-anything' + restart",
-    "Branch protection on main/uat needs GitHub Pro or public repo"
+    "Branch protection on main/uat needs GitHub Pro or public repo",
+    "Test HTML ingest: run /devstarter-vault-ingest docs/feature/vault-ingest-html-support/kickoff.html"
   ],
   "previous_session": {
-    "workflow": "devstarter-change",
+    "workflow": "devstarter-release",
     "version": "v6.0.0",
     "completed_at": "2026-06-07",
-    "intent": "CR-2026-06-07-001 — Obsidian Vault Design + Ingest Skill"
+    "intent": "Release v6.0.0 — Obsidian Vault Design + Ingest Skill"
   }
 }
