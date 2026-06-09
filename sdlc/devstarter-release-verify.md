@@ -359,39 +359,6 @@ Announce:
 > architecture docs already cover the pre-build kickoff/plan roles. Only the
 > post-build delivery brief was missing, and it lives here at the launch trigger.
 
-### ⚡ Vault Emit — Versioned Project Snapshot (optional, v5.8.0+)
-
-Read `obsidian.enabled` from `devstarter-config.yml`.
-If `obsidian.enabled: false` or `obsidian:` block absent → silently skip; proceed to Phase 10.
-If `obsidian.enabled: true`:
-  Use `AskUserQuestion` with:
-  - question: "Update project-snapshot in vault for v[version]?"
-  - options: ["Yes — emit versioned snapshot", "Skip"]
-  If "Yes": run **Vault Emit Procedure** (E1–E5) from `sdlc/devstarter-knowledge.md`
-    Template: `~/.claude/templates/obsidian/project-snapshot-note.md`
-    Fill placeholders:
-      {{TITLE}}            = "[project.name] — Project Snapshot v[version]"
-      {{PROJECT}}          = project.name from devstarter-config.yml
-      {{VERSION}}          = current release tag (e.g. v5.8.0)
-      {{DATE}}             = today
-      {{AUTHOR}}           = Name from install-root `~/.claude/USER.md` (fallback: IT Dept)
-      {{STACK}}            = project.language from config
-      {{ARCH_PATTERN}}     = current architecture pattern (read from CLAUDE.md or docs/infrastructure-guide.html)
-      {{KEY_DECISIONS}}    = any new architectural decisions made this release (from CHANGELOG or release notes)
-      {{CONSTRAINTS}}      = team.size + team.skill_level + any release constraints
-      {{REPO_URL}}         = vcs.repo URL
-      {{PROJECT_OVERVIEW}} = project.description from config
-      {{STACK_DETAIL}}     = current stack summary
-      {{KEY_DECISIONS_DETAIL}} = brief summary of this release's changes
-      {{CONSTRAINTS_DETAIL}}   = team + any sprint constraints
-      {{TEAM_NOTES}}       = team.size + " team, " + team.skill_level + " level"
-      {{BRANCH_STRATEGY}}  = vcs.branch_strategy
-      {{CI_TYPE}}          = ci.type
-    Note: filename = `<DATE>-<project-slug>-snapshot-v[version].md` (unique per Rule 3 — never overwrites prior snapshots)
-    Show E5 confirmation: 🧠 Vault note written: <path> type: project-snapshot version: [version]
-    If `transport: git` — remind (do not auto-run): commit + push the vault repo to share it.
-  If "Skip": continue.
-
 ---
 
 ## PHASE 10 — Secondary VCS Mirror (if configured)

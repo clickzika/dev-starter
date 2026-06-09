@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Management Brief — DevStarter v6.0.0</title>
+  <style>
+    :root {
+      --bg: #ffffff; --text: #1a1a1a; --border: #e0e0e0;
+      --accent: #2563eb; --accent-light: #eff6ff;
+      --success: #16a34a; --success-light: #f0fdf4;
+      --tag-bg: #f1f5f9; --tag-text: #475569;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a; --text: #e2e8f0; --border: #1e293b;
+        --accent: #60a5fa; --accent-light: #1e3a5f;
+        --success: #4ade80; --success-light: #14532d;
+        --tag-bg: #1e293b; --tag-text: #94a3b8;
+      }
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 24px; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .header { border-bottom: 2px solid var(--accent); padding-bottom: 16px; margin-bottom: 32px; }
+    .header h1 { font-size: 1.75rem; margin: 0 0 4px; color: var(--accent); }
+    .meta { font-size: 0.85rem; color: var(--tag-text); }
+    .lang-toggle { float: right; }
+    .lang-toggle button { background: var(--tag-bg); border: 1px solid var(--border); color: var(--text); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+    .lang-toggle button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    h2 { font-size: 1.1rem; border-left: 4px solid var(--accent); padding-left: 12px; margin-top: 32px; }
+    .bilingual .lang-th { display: none; }
+    body.th .bilingual .lang-en { display: none; }
+    body.th .bilingual .lang-th { display: inline; }
+    .badge { display: inline-block; background: var(--success-light); color: var(--success); border: 1px solid var(--success); border-radius: 4px; padding: 2px 8px; font-size: 0.78rem; font-weight: 600; }
+    .exec-summary { background: var(--accent-light); border: 1px solid var(--accent); border-radius: 8px; padding: 20px; margin-top: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 16px; }
+    .tile { border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .tile .icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .tile h3 { font-size: 0.9rem; margin: 0 0 6px; }
+    .tile p { font-size: 0.85rem; margin: 0; color: var(--tag-text); }
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+    .before, .after { border-radius: 8px; padding: 16px; }
+    .before { background: var(--tag-bg); border: 1px solid var(--border); }
+    .after { background: var(--success-light); border: 1px solid var(--success); }
+    .before h3, .after h3 { font-size: 0.9rem; margin: 0 0 8px; }
+    .before ul, .after ul { font-size: 0.85rem; padding-left: 20px; margin: 0; }
+    .before li, .after li { margin-bottom: 4px; }
+    .next-steps { font-size: 0.88rem; }
+    .next-steps li { margin-bottom: 8px; }
+    code { background: var(--tag-bg); padding: 1px 5px; border-radius: 3px; font-size: 0.85em; }
+    @media print { .lang-toggle { display: none; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="lang-toggle">
+      <button class="active" onclick="setLang('en')">EN</button>
+      <button onclick="setLang('th')">TH</button>
+    </div>
+    <h1>
+      <span class="bilingual">
+        <span class="lang-en">Management Brief — DevStarter v6.0.0</span>
+        <span class="lang-th">สรุปผู้บริหาร — DevStarter v6.0.0</span>
+      </span>
+    </h1>
+    <div class="meta">
+      <span class="bilingual"><span class="lang-en">Released:</span><span class="lang-th">ปล่อยเมื่อ:</span></span> 2026-06-07 &nbsp;|&nbsp;
+      <span class="bilingual"><span class="lang-en">Author:</span><span class="lang-th">ผู้จัดทำ:</span></span> Natthaphat Wajanavisit &nbsp;|&nbsp;
+      <span class="badge">v6.0.0 — SHIPPED</span>
+    </div>
+  </div>
+
+  <h2><span class="bilingual"><span class="lang-en">Executive Summary</span><span class="lang-th">สรุปสำหรับผู้บริหาร</span></span></h2>
+  <div class="exec-summary">
+    <p class="bilingual">
+      <span class="lang-en">DevStarter v6.0.0 delivers the Obsidian Vault Design + Ingest capability — the final piece of the knowledge management system. Teams can now automatically organize and cross-link engineering knowledge (bugs, techniques, root causes, project snapshots) into a structured Obsidian vault. No manual filing or link maintenance required.</span>
+      <span class="lang-th">DevStarter v6.0.0 ส่งมอบความสามารถ Obsidian Vault Design + Ingest — ส่วนสุดท้ายของระบบจัดการความรู้ ทีมสามารถจัดระเบียบและเชื่อมโยงความรู้ด้านวิศวกรรม (bug, technique, root cause, project snapshot) เข้า Obsidian vault แบบมีโครงสร้างโดยอัตโนมัติ ไม่ต้องจัดเก็บหรือดูแล link เอง</span>
+    </p>
+  </div>
+
+  <h2><span class="bilingual"><span class="lang-en">Before vs After</span><span class="lang-th">ก่อน vs หลัง</span></span></h2>
+  <div class="compare">
+    <div class="before">
+      <h3><span class="bilingual"><span class="lang-en">Before v6.0.0</span><span class="lang-th">ก่อน v6.0.0</span></span></h3>
+      <ul>
+        <li class="bilingual"><span class="lang-en">All notes in one flat folder — hard to navigate</span><span class="lang-th">โน้ตทั้งหมดในโฟลเดอร์เดียว — ยากต่อการนำทาง</span></li>
+        <li class="bilingual"><span class="lang-en">No index pages — no overview of what's in the vault</span><span class="lang-th">ไม่มีหน้าสารบัญ — ไม่รู้ว่ามีอะไรใน vault</span></li>
+        <li class="bilingual"><span class="lang-en">No skill to ingest existing Markdown files</span><span class="lang-th">ไม่มีสกิลสำหรับนำเข้าไฟล์ Markdown ที่มีอยู่</span></li>
+        <li class="bilingual"><span class="lang-en">Wikilinks required manual authoring</span><span class="lang-th">ต้องสร้าง wikilink เอง</span></li>
+      </ul>
+    </div>
+    <div class="after">
+      <h3><span class="bilingual"><span class="lang-en">After v6.0.0</span><span class="lang-th">หลัง v6.0.0</span></span></h3>
+      <ul>
+        <li class="bilingual"><span class="lang-en">Type-based folders: <code>bugs/</code> <code>techniques/</code> <code>rcas/</code> <code>snapshots/</code></span><span class="lang-th">โฟลเดอร์ตามประเภท: <code>bugs/</code> <code>techniques/</code> <code>rcas/</code> <code>snapshots/</code></span></li>
+        <li class="bilingual"><span class="lang-en">MOC index pages with live Dataview queries</span><span class="lang-th">หน้า MOC พร้อม Dataview query แบบ live</span></li>
+        <li class="bilingual"><span class="lang-en"><code>/devstarter-vault-ingest</code> — auto-classify and emit any .md file</span><span class="lang-th"><code>/devstarter-vault-ingest</code> — จัดประเภทและนำเข้าไฟล์ .md อัตโนมัติ</span></li>
+        <li class="bilingual"><span class="lang-en">Auto-generated wikilinks from vault grep</span><span class="lang-th">สร้าง wikilink อัตโนมัติจากการค้นหา vault</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><span class="bilingual"><span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></span></h2>
+  <div class="grid">
+    <div class="tile">
+      <div class="icon">📥</div>
+      <h3><span class="bilingual"><span class="lang-en">Vault Ingest Skill</span><span class="lang-th">สกิล Vault Ingest</span></span></h3>
+      <p class="bilingual">
+        <span class="lang-en">Menu item 46. Analyzes any .md file, classifies it (bug / technique / rca / snapshot), proposes frontmatter, finds related notes, and writes with wikilinks. Gated — no blind writes.</span>
+        <span class="lang-th">รายการที่ 46. วิเคราะห์ไฟล์ .md ใดก็ได้ จัดประเภท เสนอ frontmatter หาโน้ตที่เกี่ยวข้อง และเขียนพร้อม wikilink มีเกต — ไม่เขียนโดยไม่มีการยืนยัน</span>
+      </p>
+    </div>
+    <div class="tile">
+      <div class="icon">🗂️</div>
+      <h3><span class="bilingual"><span class="lang-en">Scaffold Command</span><span class="lang-th">คำสั่ง Scaffold</span></span></h3>
+      <p class="bilingual">
+        <span class="lang-en"><code>--scaffold</code> creates full folder structure + HOME.md + 4 MOC pages in one command. Safe to run on existing vaults.</span>
+        <span class="lang-th"><code>--scaffold</code> สร้างโครงสร้างโฟลเดอร์ + HOME.md + หน้า MOC 4 หน้าในคำสั่งเดียว ปลอดภัยบน vault ที่มีอยู่</span>
+      </p>
+    </div>
+    <div class="tile">
+      <div class="icon">🔗</div>
+      <h3><span class="bilingual"><span class="lang-en">Auto-Wikilink Generation</span><span class="lang-th">สร้าง Wikilink อัตโนมัติ</span></span></h3>
+      <p class="bilingual">
+        <span class="lang-en">Vault grep surfaces top 1–5 related notes. Links follow <code>[[folder/slug]]</code> convention and are proposed before writing.</span>
+        <span class="lang-th">ค้นหา vault เพื่อดึง 1–5 โน้ตที่เกี่ยวข้อง link ใช้รูปแบบ <code>[[folder/slug]]</code> และเสนอก่อนเขียน</span>
+      </p>
+    </div>
+  </div>
+
+  <h2><span class="bilingual"><span class="lang-en">Next Steps</span><span class="lang-th">ขั้นตอนต่อไป</span></span></h2>
+  <ul class="next-steps">
+    <li class="bilingual">
+      <span class="lang-en"><strong>T0 (carryover):</strong> Live vault validation — run <code>/devstarter-knowledge</code> against <code>D:\Projects\Obsidian</code> to confirm end-to-end emit + git push.</span>
+      <span class="lang-th"><strong>T0 (ยกยอด):</strong> ทดสอบ vault จริง — รัน <code>/devstarter-knowledge</code> กับ <code>D:\Projects\Obsidian</code> เพื่อยืนยัน emit + git push ครบวงจร</span>
+    </li>
+    <li class="bilingual">
+      <span class="lang-en"><strong>Enable hierarchical mode:</strong> Set <code>folder_structure: hierarchical</code> in <code>devstarter-config.yml</code>, then run <code>/devstarter-vault-ingest --scaffold</code>.</span>
+      <span class="lang-th"><strong>เปิด hierarchical mode:</strong> ตั้งค่า <code>folder_structure: hierarchical</code> ใน <code>devstarter-config.yml</code> แล้วรัน <code>/devstarter-vault-ingest --scaffold</code></span>
+    </li>
+    <li class="bilingual">
+      <span class="lang-en"><strong>Ingest existing notes:</strong> Use <code>/devstarter-vault-ingest path/to/note.md</code> to migrate notes already in the vault.</span>
+      <span class="lang-th"><strong>นำเข้าโน้ตเก่า:</strong> ใช้ <code>/devstarter-vault-ingest path/to/note.md</code> เพื่อย้ายโน้ตที่มีอยู่แล้ว</span>
+    </li>
+  </ul>
+
+</div>
+<script>
+function setLang(l){
+  document.body.className = l;
+  document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.remove('active'));
+  document.querySelector('.lang-toggle button:' + (l==='en'?'first':'last') + '-child').classList.add('active');
+}
+</script>
+</body>
+</html>

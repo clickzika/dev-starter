@@ -1,6 +1,6 @@
 # DevStarter
 
-A complete development workflow system for **Claude Code** — and any other AI tool (Copilot, Gemini, ChatGPT, Cursor). Drop it into `~/.claude/` and get a full software team — 83 AI agents, 51 slash commands, 30 SDLC runbooks, 29 MCP server configs, 18 language rule sets, and battle-tested templates — ready to build any project from scratch.
+A complete development workflow system for **Claude Code** — and any other AI tool (Copilot, Gemini, ChatGPT, Cursor). Drop it into `~/.claude/` and get a full software team — 83 AI agents, 36 slash commands, 30 SDLC runbooks, 29 MCP server configs, 18 language rule sets, and battle-tested templates — ready to build any project from scratch.
 
 ## What's Inside
 
@@ -15,7 +15,7 @@ A complete development workflow system for **Claude Code** — and any other AI 
 │   ├── [12 build resolvers]        ← full profile
 │   └── [38 specialist agents]      ← full profile
 │
-├── skills/ (43+ slash commands)
+├── skills/ (36 slash commands)
 │   ├── devstarter-new/SKILL.md
 │   ├── devstarter-change/SKILL.md
 │   ├── devstarter-debug/SKILL.md
@@ -319,7 +319,7 @@ Then: `bash ~/.codex/devstarter-invoke.sh menu` to list workflows as copy-paste 
 
 | Feature | Claude Code | Other AIs |
 |---------|-------------|-----------|
-| All 51 workflows | ✅ slash commands | ✅ Universal Prompt (copy-paste) |
+| All 36 workflows | ✅ slash commands | ✅ Universal Prompt (copy-paste) |
 | All 83 agents | ✅ `@agent-name` | ✅ paste agent file as context |
 | Gate-based approvals | ✅ automatic | ✅ AI stops and waits |
 | Hooks, MCP, slash commands | ✅ | ❌ Claude Code only |
