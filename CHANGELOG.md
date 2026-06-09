@@ -1,5 +1,45 @@
 # Changelog
 
+## v7.0.0 — Remove Obsidian Knowledge Vault + Understand-Anything Integration (2026-06-09)
+
+Removes two optional integration layers that required external tools most users don't have. DevStarter is now fully self-contained with 36 commands (down from 46), no external dependency requirements, and no silent no-op steps in core workflows.
+
+### Removed
+- **`/devstarter-knowledge`** — vault knowledge-capture command (skill + SDLC runbook)
+- **`/devstarter-vault-ingest`** — vault bulk-ingest command (skill + SDLC runbook)
+- **`/devstarter-understand`** and 7 variants (`-chat`, `-dashboard`, `-diff`, `-domain`, `-explain`, `-knowledge`, `-onboard`) — Understand-Anything wrapper commands (8 skills + 8 SDLC runbooks)
+- **`templates/obsidian/`** — all 4 Obsidian note templates (`bug-note.md`, `project-snapshot-note.md`, `rca-note.md`, `technique-note.md`)
+- **`docs/obsidian-vault-guide.md`** — vault user guide
+- **`docs/adr/0001-understand-anything-integration.html`** and **`0002-obsidian-knowledge-vault.html`** — ADRs for the removed integrations
+- **`docs/feature/obsidian-project-snapshot/`**, **`obsidian-sdlc-wiring/`**, **`obsidian-vault-design-analyzer/`**, **`understand-wrappers/`** — all associated feature doc subdirectories
+- **`.understand-anything/`** — runtime fingerprint/knowledge-graph files
+- **5 memory/consult-*.md files** — untracked consult session files for removed features
+
+### Changed
+- **`sdlc/devstarter-change-add.md`** — Vault Recall block removed
+- **`sdlc/devstarter-debug.md`** — Step 1.0 Vault Recall subsection removed
+- **`sdlc/devstarter-postmortem.md`** — Knowledge Vault emit subsection removed
+- **`sdlc/devstarter-review.md`** — Vault Emit Code Quality section removed
+- **`sdlc/devstarter-retrospective.md`** — Vault Emit Retro Lessons removed
+- **`sdlc/devstarter-audit.md`** — Vault Emit Audit Findings removed
+- **`sdlc/devstarter-onboarding.md`** — Session Start Vault Recall removed
+- **`sdlc/devstarter-starter-gates.md`** — Vault Emit Initial Snapshot removed
+- **`skills/devstarter-bug-postmortem/SKILL.md`** — Vault Emit optional section removed
+- **`sdlc/devstarter-release-verify.md`** — Vault Emit Versioned Project Snapshot removed
+- **`devstarter-menu.md`** — items 37–46 removed; 36 commands remain (was 46)
+- **`devstarter-config.yml`** — `obsidian:` block removed
+- **`templates/devstarter-config.template.yml`** — `obsidian:` block removed
+- **`CLAUDE.md`** — v5.6.0–v6.0.0 history rows marked `(removed CR-2026-06-08-002)`
+- **`docs/index.html`** — ~19 dead links to removed features removed; post-removal doc family registered
+
+### Docs
+- `docs/feature/remove-obsidian-understand/kickoff.html` — pre-removal sign-off
+- `docs/feature/remove-obsidian-understand/plan.html` — technical removal plan
+- `docs/feature/remove-obsidian-understand/summary.html` — post-removal technical summary
+- `docs/feature/remove-obsidian-understand/mgmt-brief.html` — management brief
+
+---
+
 ## v6.0.0 — Obsidian Vault Design + Ingest Skill (2026-06-07)
 
 Adds hierarchical vault folder structure with MOC index pages and a new `/devstarter-vault-ingest` skill that analyzes existing Markdown files, auto-classifies them, discovers related notes, and emits with auto-generated wikilinks.

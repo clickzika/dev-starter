@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Release Summary — DevStarter v6.0.0</title>
+  <style>
+    :root {
+      --bg: #ffffff; --text: #1a1a1a; --border: #e0e0e0;
+      --accent: #2563eb; --accent-light: #eff6ff;
+      --success: #16a34a; --success-light: #f0fdf4;
+      --tag-bg: #f1f5f9; --tag-text: #475569;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a; --text: #e2e8f0; --border: #1e293b;
+        --accent: #60a5fa; --accent-light: #1e3a5f;
+        --success: #4ade80; --success-light: #14532d;
+        --tag-bg: #1e293b; --tag-text: #94a3b8;
+      }
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 24px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .header { border-bottom: 2px solid var(--accent); padding-bottom: 16px; margin-bottom: 32px; }
+    .header h1 { font-size: 1.75rem; margin: 0 0 4px; color: var(--accent); }
+    .meta { font-size: 0.85rem; color: var(--tag-text); }
+    .lang-toggle { float: right; }
+    .lang-toggle button { background: var(--tag-bg); border: 1px solid var(--border); color: var(--text); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+    .lang-toggle button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    h2 { font-size: 1.1rem; border-left: 4px solid var(--accent); padding-left: 12px; margin-top: 32px; }
+    .bilingual .lang-th { display: none; }
+    body.th .bilingual .lang-en { display: none; }
+    body.th .bilingual .lang-th { display: inline; }
+    .badge { display: inline-block; background: var(--success-light); color: var(--success); border: 1px solid var(--success); border-radius: 4px; padding: 2px 8px; font-size: 0.78rem; font-weight: 600; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 16px; }
+    .card { border: 1px solid var(--border); border-radius: 8px; padding: 16px; background: var(--accent-light); }
+    .card h3 { font-size: 0.95rem; margin: 0 0 8px; color: var(--accent); }
+    .card p { font-size: 0.88rem; margin: 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 12px; }
+    th { background: var(--tag-bg); text-align: left; padding: 8px 12px; border: 1px solid var(--border); }
+    td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; }
+    code { background: var(--tag-bg); padding: 1px 5px; border-radius: 3px; font-size: 0.85em; }
+    .check { color: var(--success); font-weight: 700; }
+    @media print { .lang-toggle { display: none; } }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="lang-toggle">
+      <button class="active" onclick="setLang('en')">EN</button>
+      <button onclick="setLang('th')">TH</button>
+    </div>
+    <h1>
+      <span class="bilingual">
+        <span class="lang-en">Release Summary — DevStarter v6.0.0</span>
+        <span class="lang-th">สรุปการปล่อยเวอร์ชัน — DevStarter v6.0.0</span>
+      </span>
+    </h1>
+    <div class="meta">
+      <span class="bilingual"><span class="lang-en">Released:</span><span class="lang-th">ปล่อยเมื่อ:</span></span> 2026-06-07 &nbsp;|&nbsp;
+      <span class="bilingual"><span class="lang-en">Author:</span><span class="lang-th">ผู้จัดทำ:</span></span> Natthaphat Wajanavisit &nbsp;|&nbsp;
+      <span class="bilingual"><span class="lang-en">Branch:</span><span class="lang-th">สาขา:</span></span> main &nbsp;|&nbsp;
+      <span class="badge">v6.0.0 — SHIPPED</span>
+    </div>
+  </div>
+
+  <h2><span class="bilingual"><span class="lang-en">Overview</span><span class="lang-th">ภาพรวม</span></span></h2>
+  <p class="bilingual">
+    <span class="lang-en">DevStarter v6.0.0 ships the Obsidian Vault Design + Ingest Skill — a major addition to the knowledge management layer. Users can now organize vault notes in a structured hierarchy and ingest any existing Markdown file into the vault with auto-classification and wikilink generation.</span>
+    <span class="lang-th">DevStarter v6.0.0 นำเสนอ Obsidian Vault Design + Ingest Skill — การปรับปรุงใหญ่ในชั้น knowledge management ผู้ใช้สามารถจัดระเบียบโน้ตในโฟลเดอร์แบบมีโครงสร้าง และนำไฟล์ Markdown ที่มีอยู่เข้า vault พร้อมการจัดประเภทอัตโนมัติและสร้าง wikilink</span>
+  </p>
+
+  <h2><span class="bilingual"><span class="lang-en">What Was Delivered</span><span class="lang-th">สิ่งที่ส่งมอบ</span></span></h2>
+  <div class="grid">
+    <div class="card">
+      <h3><span class="bilingual"><span class="lang-en">New Skill</span><span class="lang-th">สกิลใหม่</span></span></h3>
+      <p class="bilingual">
+        <span class="lang-en"><code>/devstarter-vault-ingest</code> — 4-phase ingest: classify → discover related notes → sanitize → emit with wikilinks. Scaffold mode creates full folder structure + MOC pages.</span>
+        <span class="lang-th"><code>/devstarter-vault-ingest</code> — 4 เฟสในการนำเข้า: จัดประเภท → ค้นหาโน้ตที่เกี่ยวข้อง → ล้างข้อมูล → ส่งออกพร้อม wikilink โหมด scaffold สร้างโครงสร้างโฟลเดอร์และหน้า MOC</span>
+      </p>
+    </div>
+    <div class="card">
+      <h3><span class="bilingual"><span class="lang-en">Hierarchical Vault</span><span class="lang-th">Vault แบบมีลำดับชั้น</span></span></h3>
+      <p class="bilingual">
+        <span class="lang-en">Type-based folders: <code>bugs/</code>, <code>techniques/</code>, <code>rcas/</code>, <code>snapshots/</code>, <code>_index/</code>. MOC pages with Dataview queries. Config field <code>folder_structure: flat|hierarchical</code>.</span>
+        <span class="lang-th">โฟลเดอร์ตามประเภท: <code>bugs/</code>, <code>techniques/</code>, <code>rcas/</code>, <code>snapshots/</code>, <code>_index/</code> หน้า MOC พร้อม Dataview และ config field <code>folder_structure: flat|hierarchical</code></span>
+      </p>
+    </div>
+    <div class="card">
+      <h3><span class="bilingual"><span class="lang-en">Auto-Wikilinks</span><span class="lang-th">Wikilink อัตโนมัติ</span></span></h3>
+      <p class="bilingual">
+        <span class="lang-en">Vault grep by tags + language + root_cause_category discovers 1–5 related notes and proposes <code>[[folder/slug]]</code> links automatically.</span>
+        <span class="lang-th">ค้นหา vault ด้วย tags + language + root_cause_category เพื่อค้นพบโน้ตที่เกี่ยวข้อง 1–5 รายการ และสร้าง <code>[[folder/slug]]</code> อัตโนมัติ</span>
+      </p>
+    </div>
+  </div>
+
+  <h2><span class="bilingual"><span class="lang-en">Files Changed (18 files)</span><span class="lang-th">ไฟล์ที่เปลี่ยนแปลง (18 ไฟล์)</span></span></h2>
+  <table>
+    <tr><th><span class="bilingual"><span class="lang-en">File</span><span class="lang-th">ไฟล์</span></span></th><th><span class="bilingual"><span class="lang-en">Change</span><span class="lang-th">การเปลี่ยนแปลง</span></span></th></tr>
+    <tr><td><code>skills/devstarter-vault-ingest/SKILL.md</code></td><td class="bilingual"><span class="lang-en">NEW — skill entry point</span><span class="lang-th">ใหม่ — จุดเข้าสกิล</span></td></tr>
+    <tr><td><code>sdlc/devstarter-vault-ingest.md</code></td><td class="bilingual"><span class="lang-en">NEW — full runbook (scaffold S1–S5 + ingest I1–I11)</span><span class="lang-th">ใหม่ — runbook ฉบับเต็ม</span></td></tr>
+    <tr><td><code>devstarter-config.yml</code></td><td class="bilingual"><span class="lang-en">MODIFIED — added <code>folder_structure: flat</code></span><span class="lang-th">แก้ไข — เพิ่ม <code>folder_structure: flat</code></span></td></tr>
+    <tr><td><code>sdlc/devstarter-knowledge.md</code></td><td class="bilingual"><span class="lang-en">MODIFIED — E1 updated for hierarchical path resolution</span><span class="lang-th">แก้ไข — E1 รองรับ hierarchical path</span></td></tr>
+    <tr><td><code>templates/obsidian/*.md</code> (×4)</td><td class="bilingual"><span class="lang-en">MODIFIED — folder path comments added</span><span class="lang-th">แก้ไข — เพิ่ม comment เส้นทางโฟลเดอร์</span></td></tr>
+    <tr><td><code>docs/obsidian-vault-guide.md</code></td><td class="bilingual"><span class="lang-en">MODIFIED — Section 7 + 7b added</span><span class="lang-th">แก้ไข — เพิ่ม Section 7 + 7b</span></td></tr>
+    <tr><td><code>devstarter-menu.md</code></td><td class="bilingual"><span class="lang-en">MODIFIED — item 46 added</span><span class="lang-th">แก้ไข — เพิ่ม item 46</span></td></tr>
+    <tr><td><code>docs/brd.html</code></td><td class="bilingual"><span class="lang-en">MODIFIED — US-OBS-08–09 added</span><span class="lang-th">แก้ไข — เพิ่ม US-OBS-08–09</span></td></tr>
+    <tr><td><code>CHANGELOG.md</code>, <code>VERSION</code>, <code>CLAUDE.md</code></td><td class="bilingual"><span class="lang-en">MODIFIED — v6.0.0 entries</span><span class="lang-th">แก้ไข — รายการ v6.0.0</span></td></tr>
+  </table>
+
+  <h2><span class="bilingual"><span class="lang-en">Release Verification</span><span class="lang-th">การยืนยันการปล่อยเวอร์ชัน</span></span></h2>
+  <table>
+    <tr><th><span class="bilingual"><span class="lang-en">Gate</span><span class="lang-th">เกต</span></span></th><th><span class="bilingual"><span class="lang-en">Status</span><span class="lang-th">สถานะ</span></span></th></tr>
+    <tr><td><span class="bilingual"><span class="lang-en">Gate 1 — DEV approved</span><span class="lang-th">เกต 1 — DEV อนุมัติ</span></span></td><td><span class="check">✓ PASS</span></td></tr>
+    <tr><td><span class="bilingual"><span class="lang-en">Gate 2 — SIT approved</span><span class="lang-th">เกต 2 — SIT อนุมัติ</span></span></td><td><span class="check">✓ PASS</span></td></tr>
+    <tr><td><span class="bilingual"><span class="lang-en">Gate 3 — UAT approved</span><span class="lang-th">เกต 3 — UAT อนุมัติ</span></span></td><td><span class="check">✓ PASS</span></td></tr>
+    <tr><td><span class="bilingual"><span class="lang-en">Gate 4 — Deploy approved</span><span class="lang-th">เกต 4 — Deploy อนุมัติ</span></span></td><td><span class="check">✓ PASS</span></td></tr>
+    <tr><td><span class="bilingual"><span class="lang-en">origin/main pushed</span><span class="lang-th">push ไปยัง origin/main</span></span></td><td><span class="check">✓ 3aef9e7</span></td></tr>
+    <tr><td><span class="bilingual"><span class="lang-en">release remote pushed (clean)</span><span class="lang-th">push ไปยัง release remote (ไม่มี docs/memory)</span></span></td><td><span class="check">✓ 0edd08f</span></td></tr>
+    <tr><td><span class="bilingual"><span class="lang-en">Tag v6.0.0 on both remotes</span><span class="lang-th">Tag v6.0.0 บน remote ทั้งสอง</span></span></td><td><span class="check">✓</span></td></tr>
+    <tr><td><span class="bilingual"><span class="lang-en">GitHub Release created</span><span class="lang-th">สร้าง GitHub Release แล้ว</span></span></td><td><span class="check">✓ clickzika/dev-starter</span></td></tr>
+  </table>
+
+</div>
+<script>
+function setLang(l){
+  document.body.className = l;
+  document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.remove('active'));
+  document.querySelector('.lang-toggle button:' + (l==='en'?'first':'last') + '-child').classList.add('active');
+}
+</script>
+</body>
+</html>

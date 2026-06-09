@@ -323,35 +323,6 @@ All fixes use the Revision Protocol from dev-starter.md:
 
 ---
 
-## ⚡ Vault Emit — Audit Findings (v5.9.0+)
-
-After Phase 5 (Fix Execution) completes (or after Gate 1 if Q3 = report-only), optionally capture critical/high findings to the vault.
-
-Read `obsidian.enabled` from `devstarter-config.yml`.
-If `obsidian.enabled: false` or `obsidian:` block absent → silently skip; proceed.
-If `obsidian.enabled: true` and audit has ≥1 🔴 Critical or 🟠 High finding:
-  Use `AskUserQuestion` with:
-  - question: "Save critical/high audit findings to vault?"
-  - options: ["Yes — capture to vault", "No — skip"]
-  If "Yes": for each 🔴 Critical and 🟠 High finding:
-    Run Vault Emit Procedure (E1–E5) from `sdlc/devstarter-knowledge.md`
-    Template: `~/.claude/templates/obsidian/rca-note.md`
-    Fill:
-      type: rca
-      title: "[Audit finding title]"
-      symptom: one-line description of the finding
-      root_cause_category: audit-gap
-      language: from project config
-      framework: from project config
-      source: docs/audit-report.html — [date]
-      tags: [rca, audit-gap, "<language>"]
-    Show E5 confirmation per emitted note.
-  If "No": continue.
-  If transport: git — remind (do not auto-run): commit + push vault repo.
-If audit had only 🟡 Medium / 🔵 Low / ⚪ Info findings → silently skip (not worth vault noise for low-severity items).
-
----
-
 ## Audit Report HTML Template
 
 Save to `docs/audit-report.html` with sections:

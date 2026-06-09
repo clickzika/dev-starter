@@ -255,19 +255,6 @@ post-mortem and the index. See the placeholder mapping in
 `~/.claude/sdlc/devstarter-hotfix.md` → "Generate Incident Brief".
 (Symmetric family — post-incident: incident-brief = plain, postmortem = technical.)
 
-### Knowledge Vault emit (optional)
-
-If `obsidian.enabled: true` in `devstarter-config.yml`, also emit a sanitized
-RCA note to the shared knowledge vault so this root cause is reusable across
-projects. Follow the **Vault Emit Procedure** (E1–E5) in
-`~/.claude/sdlc/devstarter-knowledge.md` using the `rca-note.md` template
-(map: 5-Whys root cause → `{{ROOT_CAUSE}}`, contributing factors →
-`{{CONTRIBUTING_FACTORS}}`, severity → `{{SEVERITY}}`; pick a
-`root_cause_category` from the recall vocabulary). **Redact before write** —
-the emit step scrubs the note inline against the Step E4 deny-list (secrets,
-PII, internal URLs); mandatory for `transport: network`.
-If `obsidian.enabled` is false or absent, skip silently.
-
 ---
 
 ## PHASE 7 — Blameless Review Gate
