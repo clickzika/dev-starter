@@ -1,6 +1,6 @@
 # Changelog
 
-## CR-2026-06-08-002 — Remove Obsidian Knowledge Vault + Understand-Anything Integration (2026-06-09)
+## v7.0.0 — Remove Obsidian Knowledge Vault + Understand-Anything Integration (2026-06-09)
 
 Removes two optional integration layers that required external tools most users don't have. DevStarter is now fully self-contained with 36 commands (down from 46), no external dependency requirements, and no silent no-op steps in core workflows.
 
