@@ -90,18 +90,6 @@ secrets:
   # azure:   backend_url: https://my-vault.vault.azure.net
   # gcp:     backend_region: us-central1
 
-# ── Knowledge Vault (Obsidian) ───────────────────────
-# Capture know-how / bugs / root causes as Markdown notes into a shared
-# Obsidian vault, reusable across projects. See docs/obsidian-vault-guide.md
-# and ADR-0002. Emit points: /devstarter-postmortem, /devstarter-bug-postmortem,
-# /devstarter-knowledge. Recall: /devstarter-debug greps the vault at start.
-obsidian:
-  enabled: false           # true to capture notes into the vault
-  vault_path: ""           # absolute path to vault root (git clone dir, or e.g. P:\obsidiandev)
-  transport: git           # git (recommended — history/merge/attribution) | network (raw share)
-  sanitize: true           # scrub secrets/PII inline (deny-list) before write — REQUIRED for transport=network
-  subdir: knowledge        # folder inside the vault for DevStarter-emitted notes
-
 ai:
   provider: claude         # claude | litellm | openai | gemini | codex | copilot | local
   model: claude-sonnet-4-6
